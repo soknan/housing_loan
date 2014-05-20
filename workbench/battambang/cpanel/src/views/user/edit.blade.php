@@ -6,8 +6,8 @@
 <?php
 echo FormPanel2::make(
     'General',
-     Former::text_hidden('hidden_id',$row->id).''
-    .Former::text('first_name', 'First Name', $row->first_name)->required() . ''
+//     Former::text_hidden('hidden_id',$row->id).''
+    Former::text('first_name', 'First Name', $row->first_name)->required() . ''
     . Former::text('last_name', 'Last Name', $row->last_name)->required()
     . Former::text('email', 'Email', $row->email)->required()
     ,
@@ -21,13 +21,16 @@ echo FormPanel2::make(
     'Permission',
     Former::text('expire_day', 'Expire Day', $row->expire_day)->required() . ''
     . Former::select('activated', 'Activated', GetLists::getActivatedList(), $row->activated)->placeholder('- Select One -')->required()
-    ,
-    Former::text('activated_at', 'Activated Date')
+    . Former::text('activated_at', 'Activated Date')
         ->value(date('d-m-Y',strtotime($row->activated_at)))
         ->placeholder(' dd-mm-yyyy')
-        ->append('<span class="glyphicon glyphicon-calendar"></span>')
-    . ''
-    . Former::select('cp_group_id', 'Group', GetLists::getGroupList(), $row->cp_group_id)->placeholder('- Select One -')->required()
+        ->append('<span class="glyphicon glyphicon-calendar"></span>'). ''
+    ,
+    Former::select('group[]', 'Group')
+        ->options(GetLists::getGroupList(), json_decode($row->cp_group_id_arr, true))
+        ->id('group')
+        ->multiple()
+        ->required().''
 );
 ?>
 

@@ -6,7 +6,7 @@
 <?php
 echo FormPanel2::make(
     'General',
-    Former::text_hidden('hidden_id', null).''
+    Former::text_hidden('hidden_id', null) . ''
     . Former::text('first_name', 'First Name')->required()
     . Former::text('last_name', 'Last Name')->required()
     . Former::text('email', 'Email')->required()
@@ -20,12 +20,18 @@ echo FormPanel2::make(
 echo FormPanel2::make(
     'Permission',
     Former::text('expire_day', 'Expire Day')->required() . ''
-    . Former::select('activated', 'Activated', GetLists::getActivatedList())->placeholder('- Select One -')->required() . ''
-    ,
-    Former::text('activated_at', 'Activated Date')
+    . Former::select('activated', 'Activated', GetLists::getActivatedList())
+        ->placeholder('- Select One -')
+        ->required() . ''
+    . Former::text('activated_at', 'Activated Date')
         ->placeholder(' dd-mm-yyyy')
         ->append('<span class="glyphicon glyphicon-calendar"></span>') . ''
-    . Former::select('cp_group_id', 'Group', GetLists::getGroupList())->placeholder('- Select One -')->required() . ''
+    ,
+    Former::select('group[]', 'Group')
+        ->options(GetLists::getGroupList())
+        ->id('group')
+        ->multiple()
+        ->required() . ''
 );
 ?>
 

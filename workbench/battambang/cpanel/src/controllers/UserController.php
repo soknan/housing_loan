@@ -62,7 +62,7 @@ class UserController extends BaseController
                 ->with('success', trans('battambang/cpanel::user.create_success'));
 
         }
-        return Redirect::back()->withInput()->withErrors($validator->instance());
+        return Redirect::back()->withInput()->withErrors($validator->errors());
     }
 
     public function update($id)
@@ -79,7 +79,7 @@ class UserController extends BaseController
                 return Redirect::back()
                     ->with('success', trans('battambang/cpanel::user.update_success'));
             }
-            return Redirect::back()->withInput()->withErrors($validator->instance());
+            return Redirect::back()->withInput()->withErrors($validator->errors());
         } catch (\Exception $e) {
             return Redirect::route('cpanel.user.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }
@@ -128,7 +128,7 @@ class UserController extends BaseController
         $data->expire_day = $inputs['expire_day'];
         $data->activated = $inputs['activated'];
         $data->activated_at = $inputs['activated_at'];
-        $data->cp_group_id = $inputs['cp_group_id'];
+        $data->cp_group_id_arr = json_encode($inputs['group']);
 //        $data->remember_token = '';
         $data->save();
     }
