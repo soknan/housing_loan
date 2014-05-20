@@ -1,0 +1,215 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Administrator
+ * Date: 1/14/14
+ * Time: 4:42 PM
+ */
+
+namespace Battambang\Cpanel;
+
+use Battambang\Cpanel\Validators\UserChangePasswordValidator;
+use Battambang\Cpanel\Validators\UserValidator;
+use Hash;
+use View;
+use Redirect;
+use Input;
+use Config;
+use DB,
+    Action;
+
+class UserController extends BaseController
+{
+    public function index()
+    {
+        $item = array('Action', 'ID', 'First Name', 'Last Name', 'Email', 'Username', 'Group', 'Expire Day', 'Activated', 'activated_at');
+//        $data['btnAction'] = array('Add New' => route('cpanel.user.create'));
+        $data['table'] = \Datatable::table()
+            ->addColumn($item) // these are the column headings to be shown
+            ->setUrl(route('api.user')) // this is the route where data will be retrieved
+            ->setOptions(
+                'aLengthMenu',
+                array(
+                    array('10', '25', '50', '100', '-1'),
+                    array('10', '25', '50', '100', 'All')
+                )
+            )
+            ->setOptions("iDisplayLength", '10')// default show entries
+            ->render('battambang/cpanel::layout.templates.template');
+        return $this->renderLayout(
+            View::make(Config::get('battambang/cpanel::views.user_index'), $data)
+        );
+    }
+
+    public function create()
+    {
+        return $this->renderLayout(
+            View::make(Config::get('battambang/cpanel::views.user_create'))
+        );
+    }
+
+    public function store()
+    {
+        $validator = UserValidator::make();
+        if ($validator->passes()) {
+
+            $inputs = $validator->inputs();
+
+            $data = new User();
+            $this->saveData($data, $inputs);
+
+            return Redirect::back()
+                ->with('success', trans('battambang/cpanel::user.create_success'));
+
+        }
+        return Redirect::back()->withInput()->withErrors($validator->instance());
+    }
+
+    public function update($id)
+    {
+        try {
+            $validator = UserValidator::make();
+            if ($validator->passes()) {
+
+                $inputs = $validator->inputs();
+
+                $data = User::findOrFail($id);
+                $this->saveData($data, $inputs);
+
+                return Redirect::back()
+                    ->with('success', trans('battambang/cpanel::user.update_success'));
+            }
+            return Redirect::back()->withInput()->withErrors($validator->instance());
+        } catch (\Exception $e) {
+            return Redirect::route('cpanel.user.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+        }
+    }
+
+    public function edit($code)
+    {
+        try {
+            $arr['row'] = User::find($code);
+            return $this->renderLayout(
+                View::make(Config::get('battambang/cpanel::views.user_edit'), $arr)
+            );
+        } catch (\Exception $e) {
+            return Redirect::route('cpanel.user.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+        }
+    }
+
+    public function destroy($id)
+    {
+        try {
+            $currentUser = \Auth::user()->id;
+            if ($currentUser == $id) {
+                return Redirect::back()
+                    ->with('error', trans('battambang/cpanel::user.delete_denied'));
+            }
+//            $arr['row'] = User::find($id)->delete();
+
+            $data = User::findOrFail($id);
+            $data->delete();
+            return Redirect::back()->with('success', trans('battambang/cpanel::user.delete_success'));
+        } catch (\Exception $e) {
+            return Redirect::route('cpanel.user.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+        }
+    }
+
+    private function saveData($data, $inputs)
+    {
+        $passHash = Hash::make($inputs['password']);
+
+        $data->first_name = $inputs['first_name'];
+        $data->last_name = $inputs['last_name'];
+        $data->email = $inputs['email'];
+        $data->username = $inputs['username'];
+        $data->password = $passHash;
+        $data->password_his_arr = json_encode(array($passHash));
+        $data->expire_day = $inputs['expire_day'];
+        $data->activated = $inputs['activated'];
+        $data->activated_at = $inputs['activated_at'];
+        $data->cp_group_id = $inputs['cp_group_id'];
+//        $data->remember_token = '';
+        $data->save();
+    }
+
+    public function getDatatable()
+    {
+        $item = array('id', 'first_name', 'last_name', 'email', 'username', 'cp_group_id_arr', 'expire_day', 'activated', 'activated_at');
+        $arr = DB::table('cp_user')->orderBy('id');
+//        $arr = DB::table('view_user')->orderBy('id');
+        return \Datatable::query($arr)
+            ->addColumn(
+                'action',
+                function ($model) {
+                    return Action::make()
+                        ->edit(route('cpanel.user.edit', $model->id))
+                        ->delete(route('cpanel.user.destroy', $model->id), $model->id)
+//                    ->show(route('cpanel.user.show', $model->id))
+                        ->get();
+                }
+            )
+            ->showColumns($item)
+            ->searchColumns(array('id', 'first_name', 'last_name', 'email', 'username'))
+            ->orderColumns($item)
+            ->make();
+    }
+
+    public function changePwd()
+    {
+//        $arr['code'] = \Auth::user()->id;
+
+        return $this->renderLayout(
+            View::make(Config::get('battambang/cpanel::views.user_pwd'))
+//            View::make(Config::get('battambang/cpanel::views.user_pwd'), $arr)
+        );
+    }
+
+    public function postChangePwd()
+    {
+        try {
+
+            $validator = UserChangePasswordValidator::make();
+
+            if ($validator->passes()) {
+                $code = \Auth::user()->id;
+                $userId = User::findOrFail($code);
+                $passHistory = json_decode($userId->password_his_arr, true);
+
+                if (count($passHistory) == 5) {
+                    unset($passHistory[0]);
+                }
+                $passHistory[] = Hash::make(Input::get('old_password'));
+//                $arr = array(
+//                    'password' => \Hash::make(Input::get('password')),
+//                    'password_his_arr' => json_encode($user),
+//                    'activated_at' => new \DateTime(),
+//                );
+
+                $data = User::findOrFail($code);
+                $data->password = Hash::make(Input::get('password'));
+                $data->password_his_arr = json_encode($passHistory);
+                $data->save();
+//                echo var_dump($passHistory); exit;
+
+//                DB::table('cp_user')->where('id', '=', $code)->update($arr);
+                \Auth::logout();
+                \UserSession::clear();
+                return Redirect::to('cpanel/login')->with('logout', 'Your Password has been changed.');
+//                return Redirect::back()
+//                    ->with(
+//                        'success',
+//                        'Your Password has been changed ! Please Logout to completed  ' . '<a href="' . route(
+//                            "cpanel.logout"
+//                        ) . '">Log Out</a>'
+//                    );
+            }
+
+            return Redirect::back()->withInput()->withErrors($validator->instance());
+
+        } catch
+        (\Exception $e) {
+            return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
+        }
+    }
+} 

@@ -1,0 +1,810 @@
+<?xml version="1.0"?>
+<?mso-application progid="Excel.Sheet"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:o="urn:schemas-microsoft-com:office:office"
+ xmlns:x="urn:schemas-microsoft-com:office:excel"
+ xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+ xmlns:html="http://www.w3.org/TR/REC-html40">
+ <DocumentProperties xmlns="urn:schemas-microsoft-com:office:office">
+  <Author>SOKNAN</Author>
+  <LastAuthor>SOKNAN</LastAuthor>
+  <Created>2014-04-10T08:19:20Z</Created>
+  <Version>14.00</Version>
+ </DocumentProperties>
+ <OfficeDocumentSettings xmlns="urn:schemas-microsoft-com:office:office">
+  <AllowPNG/>
+ </OfficeDocumentSettings>
+ <ExcelWorkbook xmlns="urn:schemas-microsoft-com:office:excel">
+  <WindowHeight>7485</WindowHeight>
+  <WindowWidth>20115</WindowWidth>
+  <WindowTopX>585</WindowTopX>
+  <WindowTopY>240</WindowTopY>
+  <ProtectStructure>False</ProtectStructure>
+  <ProtectWindows>False</ProtectWindows>
+ </ExcelWorkbook>
+ <Styles>
+  <Style ss:ID="Default" ss:Name="Normal">
+   <Alignment ss:Vertical="Bottom"/>
+   <Borders/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"/>
+   <Interior/>
+   <NumberFormat/>
+   <Protection/>
+  </Style>
+  <Style ss:ID="m115185916">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="m41709216">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s62">
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s63">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s64">
+   <Alignment ss:Vertical="Bottom"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s65">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s66">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1" ss:Underline="Single"/>
+  </Style>
+  <Style ss:ID="s67">
+   <Alignment ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s68">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+   <NumberFormat ss:Format="Standard"/>
+  </Style>
+  <Style ss:ID="s69">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s73">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+   <NumberFormat ss:Format="Medium Date"/>
+  </Style>
+  <Style ss:ID="s74">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s75">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+   <Interior ss:Color="#CCCCCC" ss:Pattern="Solid"/>
+  </Style>
+  <Style ss:ID="s76">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s77">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s78">
+   <Alignment ss:Horizontal="Right" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+   <NumberFormat ss:Format="Standard"/>
+  </Style>
+  <Style ss:ID="s79">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Borders>
+    <Border ss:Position="Bottom" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Left" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Right" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+    <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"
+     ss:Color="#000000"/>
+   </Borders>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s82">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s83">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+   <Interior/>
+  </Style>
+  <Style ss:ID="s84">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s85">
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+   <Interior/>
+  </Style>
+  <Style ss:ID="s86">
+   <Alignment ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s87">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s88">
+   <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
+  </Style>
+  <Style ss:ID="s89">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"
+    ss:Underline="Single"/>
+  </Style>
+  <Style ss:ID="s90">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Top"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s91">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="11" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+  <Style ss:ID="s92">
+   <Alignment ss:Horizontal="Left" ss:Vertical="Center"/>
+   <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="12" ss:Color="#000000"
+    ss:Bold="1"/>
+  </Style>
+ </Styles>
+ <Worksheet ss:Name="Loan History">
+  <Table x:FullColumns="1"
+   x:FullRows="1" ss:StyleID="s62" ss:DefaultRowHeight="12">
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="45.75"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="58.5"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="39.75"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="56.25"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="60"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="64.5" ss:Span="1"/>
+   <Column ss:Index="8" ss:StyleID="s62" ss:Width="78"/>
+   <Column ss:StyleID="s62" ss:AutoFitWidth="0" ss:Width="68.25"/>
+   <Row ss:Height="15.75">
+    <Cell ss:StyleID="s92"><Data ss:Type="String"><?php echo $company_name;?></Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row ss:Height="15">
+    <Cell ss:StyleID="s91"><Data ss:Type="String">Branch Office : <?php echo $branch;?></Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row ss:Height="15">
+    <Cell ss:StyleID="s90"><Data ss:Type="String">Loan History Report</Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row ss:Height="15">
+    <Cell ss:StyleID="s90"><Data ss:Type="String">Period : <?php echo date('d-M-Y',strtotime($view_at));?></Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s82"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="15">
+    <Cell ss:MergeAcross="8" ss:StyleID="s89"><Data ss:Type="String">Customer Info</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s82"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Customer Code:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $client->id; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Kh Name:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $client->kh_last_name.' '.$client->kh_first_name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="7" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">En Name:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $client->en_last_name.' '.$client->en_first_name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><Data ss:Type="String">Kh Nick Name:&#160;&#160;&#160;<?php echo $client->kh_nick_name; ?></Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><Data ss:Type="String">En Nick Name:&#160;&#160;&#160;<?php echo $client->en_nick_name; ?></Data></Cell>
+    <Cell ss:Index="7" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Sex:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$client->ln_lv_gender)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Date of Birth:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $client->dob; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Nationality:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$client->ln_lv_nationality)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="7"><Data ss:Type="String">Branch Office: <?php echo $client->cp_office_id; ?></Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell><ss:Data ss:Type="String" xmlns="http://www.w3.org/TR/REC-html40"><B><Font
+        html:Color="#000000">POB:</Font></B><Font html:Color="#000000"> <?php echo $client->place_birth; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s84"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+      <?php
+              foreach($disburse as $k=>$dis_data){
+              ?>
+   <Row ss:AutoFitHeight="0" ss:Height="15">
+    <Cell ss:MergeAcross="8" ss:StyleID="s89"><Data ss:Type="String">Loan Disburse Info (Cycle: <?php echo $k+1;?>)</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s82"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s65"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Center: </Font></B><Font
+       html:Color="#000000"> <?php echo Battambang\Loan\Center::where('id','=',$dis_data->ln_center_id)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s88"/>
+    <Cell ss:StyleID="s88"/>
+    <Cell ss:StyleID="s65"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Product: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\Product::where('id','=',$dis_data->ln_product_id)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s88"/>
+    <Cell ss:StyleID="s88"/>
+    <Cell ss:StyleID="s65"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Disburse Date: </Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->disburse_date;?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s88"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s87"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Account Type: </Font></B><Font
+       html:Color="#000000"> <?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_account_type)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Currency: </Font></B><Font
+       html:Color="#000000"> <?php echo Battambang\Loan\Currency::where('id','=',$dis_data->cp_currency_id)->first()->code; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Staff Name:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->kh_last_name.' '.$dis_data->kh_first_name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Meeting Schedule:</Font></B><Font
+       html:Color="#000000"> <?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_meeting_schedule)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Number Install:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->num_installment; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Install Frequency:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->installment_frequency; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Number Payment:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->num_payment; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Principal Frequency:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->installment_principal_frequency; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Principal %:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->installment_principal_percentage;?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Interest Rate: </Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->interest_rate;?> %</Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Fund:</Font></B><Font
+       html:Color="#000000"> <?php echo Battambang\Loan\Fund::where('id','=',$dis_data->ln_fund_id)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s84"><Data ss:Type="String">_________________________________________</Data></Cell>
+    <Cell ss:StyleID="s84"/>
+    <Cell ss:StyleID="s84"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Disburs Code:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->ln_disburse_id; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Business: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_business)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Activity:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_activity)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Client ID:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->ln_client_id; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Poverty Status: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_poverty_status)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Collateral Type: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_collateral_type)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">ID Type:&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_id_type)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s85"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Income Amount:</Font></B><Font
+       html:Color="#000000"> <?php echo $dis_data->income_amount; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Security:&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_security)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">ID Number: </Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->id_num; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Handicap: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_handicap)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><Data ss:Type="String">Security Des:&#160;&#160;&#160;</Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Expire Date: </Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->expire_date; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Contact Type:</Font></B><Font
+       html:Color="#000000"> <?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_contact_type)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Loan Amount:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->amount; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Marital Status: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_marital_status)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">History:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_history)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Education: </Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_education)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Family Member:&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->family_member; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Purpose:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_purpose)->first()->name; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Vocher Code:&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->voucher_id; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Number Dependent: </Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->num_dependent; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Purpose Des:&#160;&#160;&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->purpose_des; ?></Font></ss:Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s86"><Data ss:Type="String">Email: <?php echo $dis_data->email; ?></Data></Cell>
+    <Cell ss:Index="9" ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s86"><ss:Data ss:Type="String"
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Address: </Font></B><Font
+       html:Color="#000000"><?php echo $dis_data->address; ?></Font></ss:Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s84"/>
+    <Cell ss:StyleID="s85"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:Index="3" ss:StyleID="s84"/>
+    <Cell ss:StyleID="s83"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="15">
+    <Cell ss:MergeAcross="8" ss:StyleID="s66"><Data ss:Type="String">Repayment Schedule</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s82"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">No</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Due Date</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Day Num</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Principal</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Interest</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Fee</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Total</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Outstanding</Data></Cell>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+      <?php
+               $schedule = array();
+              $schedule = Battambang\Loan\Schedule::where('ln_disburse_client_id','=',$dis_data->id)
+              ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->get();
+
+              $num_total = 0;
+              $pri_total = 0;
+              $int_total = 0;
+              $fee_total = 0;
+              $all_total = 0;
+              foreach($schedule as $s=>$sch){
+              $total = $sch->principal + $sch->interest + $sch->fee;
+              $num_total+=$sch->num_day;
+              $pri_total+=$sch->principal;
+              $int_total+=$sch->interest;
+              $fee_total+=$sch->fee;
+              $all_total+=$total;
+              ?>
+   <Row>
+    <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $sch->index;?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="DateTime"><?php echo $sch->due_date;?></Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $sch->num_day;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $sch->principal;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $sch->interest;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $sch->fee;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $total;?></Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $sch->balance;?></Data></Cell>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+<?php } ?>
+   <Row ss:AutoFitHeight="0" ss:Height="15">
+    <Cell ss:MergeAcross="1" ss:StyleID="m41709216"><Data ss:Type="String">Total</Data></Cell>
+    <Cell ss:StyleID="s79"><Data ss:Type="Number"><?php echo $num_total;?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $pri_total;?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $int_total;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $fee_total;?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $all_total;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s63"/>
+   </Row>
+   <Row ss:AutoFitHeight="0" ss:Height="15">
+    <Cell ss:MergeAcross="8" ss:StyleID="s66"><Data ss:Type="String">Loan Collection Info</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s76"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">No</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Ref Code</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Mention</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Classify</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Col Date</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Col Principal</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Col Interest</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Col Penalty</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Total Collected</Data></Cell>
+   </Row>
+      <?php
+              $perform = array();
+              $perform = Battambang\Loan\Perform::where('ln_disburse_client_id','=',$dis_data->id)
+                        ->where('perform_type','=','repayment')->get();
+              $pri_total = 0;
+              $int_total = 0;
+              $pen_total = 0;
+              $all_total = 0;
+              foreach($perform as $p=>$per){
+                    $total = $per->principal + $per->interest;
+                    $pri_total += $per->principal;
+                    $int_total += $per->interest;
+              $all_total = $pri_total + $int_total + $pen_total;
+              ?>
+   <Row>
+    <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $p+1;?></Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo $per->ln_disburse_client_id;?></Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo $per->repayment_type;?></Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo $per->current_product_status;?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="DateTime"><?php echo $per->repayment_date;?></Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_principal;?></Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_interest;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $per->repayemnt_penalty;?></Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $total;?></Data></Cell>
+   </Row>
+   <?php }?>
+   <Row>
+    <Cell ss:MergeAcross="4" ss:StyleID="m115185916"><Data ss:Type="String">Total</Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $pri_total;?></Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $int_total;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $pen_total;?></Data></Cell>
+    <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $all_total;?></Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s67"/>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s66"><Data ss:Type="String">Note:</Data></Cell>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">- Resign Contract: 12-Jan-2011</Data></Cell>
+    <Cell ss:StyleID="s65"/>
+    <Cell ss:StyleID="s65"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">- Waive Penalty: 12-Jan-2011</Data></Cell>
+    <Cell ss:Index="3" ss:StyleID="s65"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">Waive Penalty Amount: 1,200.00</Data></Cell>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+    <Cell ss:StyleID="s64"/>
+   </Row>
+   <Row>
+    <Cell ss:MergeAcross="8" ss:StyleID="s63"/>
+   </Row>
+      <?php } ?>
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.25" x:Left="0.2" x:Right="0.2" x:Top="0.5"/>
+   </PageSetup>
+   <Print>
+    <ValidPrinterInfo/>
+    <HorizontalResolution>600</HorizontalResolution>
+    <VerticalResolution>600</VerticalResolution>
+   </Print>
+   <Selected/>
+   <Panes>
+    <Pane>
+     <Number>3</Number>
+     <ActiveRow>11</ActiveRow>
+     <ActiveCol>9</ActiveCol>
+    </Pane>
+   </Panes>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet1">
+  <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="1" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet2">
+  <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="1" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+ <Worksheet ss:Name="Sheet3">
+  <Table ss:ExpandedColumnCount="1" ss:ExpandedRowCount="1" x:FullColumns="1"
+   x:FullRows="1" ss:DefaultRowHeight="15">
+  </Table>
+  <WorksheetOptions xmlns="urn:schemas-microsoft-com:office:excel">
+   <PageSetup>
+    <Header x:Margin="0.3"/>
+    <Footer x:Margin="0.3"/>
+    <PageMargins x:Bottom="0.75" x:Left="0.7" x:Right="0.7" x:Top="0.75"/>
+   </PageSetup>
+   <ProtectObjects>False</ProtectObjects>
+   <ProtectScenarios>False</ProtectScenarios>
+  </WorksheetOptions>
+ </Worksheet>
+</Workbook>

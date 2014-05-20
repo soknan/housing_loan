@@ -1,0 +1,18 @@
+
+/* new */
+.item_hover{
+	background:#3399ff;
+	cursor: default;
+	color:#fff;
+}
+.div_items{
+	max-height:200px;
+	overflow-y: scroll;
+	z-index:100;
+}
+
+.div_items td{
+	padding-right: 10px;
+	padding-left:5px;
+}
+

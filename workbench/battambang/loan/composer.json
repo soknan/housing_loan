@@ -1,0 +1,25 @@
+{
+    "name": "battambang/loan",
+    "description": "",
+    "authors": [
+        {
+            "name": "Yuom Theara",
+            "email": "yuom.theara@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations",
+			"src/controllers",
+			"src/models"
+        ],
+        "psr-0": {
+            "Battambang\\Loan\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}
