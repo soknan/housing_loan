@@ -28,7 +28,6 @@ echo FormPanel2::make(
     ,
     Former::select('group[]', 'Group')
         ->options(GetLists::getGroupList(), json_decode($row->cp_group_id_arr, true))
-        ->id('group')
         ->multiple()
         ->required().''
 );

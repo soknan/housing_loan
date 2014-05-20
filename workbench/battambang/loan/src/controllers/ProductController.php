@@ -78,9 +78,6 @@ class ProductController extends BaseController
 
         $validation = $this->getValidationService('product');
         if ($validation->passes()) {
-//            $data = $this->getData();
-//            $data['id'] = \AutoCode::make('ln_product', 'id', '', 1);
-//            Product::insert($data);
 
             $data = new Product();
             $this->saveData($data);

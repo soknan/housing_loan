@@ -29,7 +29,6 @@ echo FormPanel2::make(
     ,
     Former::select('group[]', 'Group')
         ->options(GetLists::getGroupList())
-        ->id('group')
         ->multiple()
         ->required() . ''
 );

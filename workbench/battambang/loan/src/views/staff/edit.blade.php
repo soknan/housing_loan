@@ -36,7 +36,8 @@ echo FormPanel2::make(
     . Former::text('telephone', 'Telephone', $row->telephone)->required()
     . Former::text('email', 'Email', $row->email)
     ,
-    Former::select('cp_office_id', 'Branch Office', \GetLists::getSubBranchListNoAjax(),$row->cp_office_id)
+    Former::select('cp_office_id', 'Branch Office')
+        ->options(\GetLists::getSubBranchList(), $row->cp_office_id)
         ->required()
         ->placeholder('- Select One -') . ''
     . Former::file('attach_photo', 'Photo') . ''

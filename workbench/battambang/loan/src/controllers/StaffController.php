@@ -22,7 +22,7 @@ class StaffController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'ID', 'Name(EN)', 'Name(Kh)','Gender','DOB','Position', 'Photo');
+        $item = array('Action', 'ID', 'Name(EN)', 'Name(Kh)','Gender','DOB','Position', 'Office', 'Photo');
 
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -162,7 +162,7 @@ class StaffController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('id', 'en_name', 'kh_name', 'gender_name','dob','title_code');
+        $item = array('id', 'en_name', 'kh_name', 'gender_name','dob','title_code', 'office_en_name');
         $arr = DB::table('view_staff');
 
         return \Datatable::query($arr)
