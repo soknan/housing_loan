@@ -75,16 +75,6 @@ class HolidayController extends BaseController
         $validation = $this->getValidationService('holiday');
         if ($validation->passes()) {
 
-            /*$date = new \Carbon();
-            $all = $date->createFromFormat('Y-m-d', Input::get('holiday_to'))->day - $date->createFromFormat('Y-m-d', Input::get('holiday_from'))->day;
-            $holidayDate = $date->createFromFormat('Y-m-d', Input::get('holiday_from'));
-            for($i=1;$i <= $all ;$i++){
-                $data = new Holiday();
-                $data->holiday_date = $holidayDate;
-                 $this->saveData($data);
-                $holidayDate = $holidayDate->addDay();
-
-            }*/
             $data = new Holiday();
             $this->saveData($data);
             return Redirect::back()
@@ -124,7 +114,7 @@ class HolidayController extends BaseController
 
     private function saveData($data)
     {
-        $data->holiday_date = Input::get('holiday_date');
+        $data->holiday_date = date('Y-m-d', strtotime(Input::get('holiday_date')));
         $data->name = Input::get('name');
         $data->save();
     }
