@@ -1,15 +1,25 @@
 <?php
 
+$iconList = 'glyphicon glyphicon-list'; // for all breadcrumb
+$iconAdd = 'glyphicon glyphicon-plus'; // for all breadcrumb
+$iconEdit = 'glyphicon glyphicon-edit'; // for all breadcrumb
+$iconShow = 'glyphicon glyphicon-eye-open'; // for all breadcrumb
+$iconReport = 'glyphicon glyphicon-list-alt'; // for all breadcrumb
+$iconUpload = 'glyphicon glyphicon-upload'; // for all breadcrumb
+$iconDownload = 'glyphicon glyphicon-download'; // for all breadcrumb
+$iconBackup = 'glyphicon glyphicon-cloud-download'; // for all breadcrumb
+$iconRestore = 'glyphicon glyphicon-cloud-upload'; // for all breadcrumb
+
 return array(
     // For add new, edit
 
     'show' => array(
-        'icon' => 'glyphicon glyphicon-eye-open',
+        'icon' => $iconShow,
         'label' => 'Show',
         'url' => ''
     ),
     'create' => array(
-        'icon' => 'glyphicon glyphicon-plus',
+        'icon' => $iconAdd,
         'label' => 'Add New',
         'url' => ''
     ),
@@ -19,22 +29,20 @@ return array(
         'url' => ''
     ),
     'edit' => array(
-        'icon' => 'glyphicon glyphicon-edit',
+        'icon' => $iconEdit,
         'label' => 'Edit',
         'url' => ''
     ),
     'report' => array(
-        'icon' => 'glyphicon glyphicon-book',
+        'icon' => $iconReport,
         'label' => 'Reports',
         'url' => ''
     ),
-
     'changepwd' => array(
-        'icon' => 'glyphicon glyphicon-pencil',
+        'icon' => $iconEdit,
         'label' => 'Change Password',
         'url' => ''
     ),
-
     // For page
     'login' => array(
         'icon' => 'glyphicon glyphicon-log-in',
@@ -47,34 +55,32 @@ return array(
         'url' => route('cpanel.package.home')
     ),
     'package' => array(
-        'icon' => 'glyphicon glyphicon-th-large',
+        'icon' => 'glyphicon glyphicon-briefcase',
         'label' => 'Package',
         'url' => route('cpanel.package')
     ),
     'group' => array(
-        'icon' => 'glyphicon glyphicon-list',
+        'icon' => $iconList,
         'label' => 'Group',
         'url' => route('cpanel.group.index')
     ),
     'user' => array(
-        'icon' => 'glyphicon glyphicon-user',
+        'icon' => $iconList,
         'label' => 'User',
         'url' => route('cpanel.user.index')
     ),
-
     'company' => array(
-        'icon' => 'glyphicon glyphicon-stats',
+        'icon' => $iconList,
         'label' => 'Company',
-        'url' => route('cpanel.company.edit',1)
+        'url' => route('cpanel.company.edit', 1)
     ),
-
     'office' => array(
-        'icon' => 'glyphicon glyphicon-tower',
+        'icon' => $iconList,
         'label' => 'Office',
         'url' => route('cpanel.office.index')
     ),
     'workday' => array(
-        'icon' => 'glyphicon glyphicon-briefcase',
+        'icon' => $iconList,
         'label' => 'Working Day',
         'url' => route('cpanel.workday.index')
     ),
