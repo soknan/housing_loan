@@ -5,13 +5,13 @@
     <dt>Usr Gruop</dt>
     <dd>
         <?php
-        echo UserSession::read()->group->name;
+        echo UserSession::read()->group_name;
         ?>
     </dd>
     <dt>Package</dt>
     <dd>
         <?php
-        echo ucfirst(UserSession::read()->group->package);
+        echo ucfirst(UserSession::read()->package);
         ?>
     </dd>
     <dt>Branch Office</dt>

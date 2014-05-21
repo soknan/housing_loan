@@ -4,7 +4,8 @@
 {{Former::open( route('loan.rpt_disburse_client.report'))->method('POST')}}
 <?php echo FormPanel2::make(
     'General',
-    Former::select('cp_office_id[]','Branch Office',GetLists::getSubBranchListNoAjax(UserSession::read()->package))
+    Former::select('cp_office_id[]','Branch Office')
+        ->options(\GetLists::getSubBranchList(json_decode(\UserSession::read()->branch_arr, true)))
         ->multiple('multiple')
         ->required()
         .''

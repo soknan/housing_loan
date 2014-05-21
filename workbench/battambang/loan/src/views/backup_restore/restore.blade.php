@@ -6,21 +6,19 @@
 <?php
 echo FormPanel2::make(
     'Restore Database',
-    Former::select('package', 'Package')
-        ->options(GetLists::getPackageList())
-        ->placeholder('--Select One--')
+    Former::hidden('package', \UserSession::read()->package) . ''
+    . Former::select('branch[]', 'Branch Office')
+        ->options(\GetLists::getSubBranchList(json_decode(\UserSession::read()->branch_arr, true)))
+        ->multiple('multiple')
+        ->size(7)
         ->required() . ''
-    .Former::select('branch[]', 'Branch Office')
-    ->options(GetLists::getSubBranchListNoAjax(UserSession::read()->package))
-    ->multiple('multiple')
-    ->required() . ''
     ,
     Former::select('table[]', 'Table')
         ->options($table)
         ->multiple('multiple')
-        /*->class('select2')*/
+        ->size(4)
         ->required() . ''
-    .Former::file('file_to_restore', 'File')->required().''
+    . Former::file('file_to_restore', 'File')->required() . ''
 
 );
 ?>

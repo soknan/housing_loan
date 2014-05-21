@@ -2,9 +2,10 @@
 
 @section('content')
 {{Former::open( route('loan.rpt_loan_repay.report'))->method('POST')}}
-<?php echo FormPanel2::make('',
+<?php echo FormPanel2::make(
+    'General',
     Former::select('cp_office_id[]','Branch Office')
-        ->options(GetLists::getSubBranchListNoAjax(UserSession::read()->package))
+        ->options(\GetLists::getSubBranchList(json_decode(\UserSession::read()->branch_arr, true)))
         ->multiple('multiple')
         ->required()
         .''

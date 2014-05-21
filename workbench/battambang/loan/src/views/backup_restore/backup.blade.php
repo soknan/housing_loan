@@ -6,20 +6,18 @@
 <?php
 echo FormPanel2::make(
     'Backup Database',
-    Former::select('package', 'Package')
-        ->options(GetLists::getPackageList())
-        ->placeholder('--Select One--')
-        ->required() . ''
-    .Former::select('branch[]', 'Branch Office')
-    ->options(GetLists::getSubBranchListNoAjax(UserSession::read()->package))
+    Former::hidden('package', \UserSession::read()->package) . ''
+    . Former::select('branch[]', 'Branch Office')
+        ->options(\GetLists::getSubBranchList(json_decode(\UserSession::read()->branch_arr, true)))
         ->multiple('multiple')
+        ->size(7)
         ->required() . ''
     ,
-Former::select('table[]', 'Table')
-    ->options($table)
-    ->multiple('multiple')
-/*->class('select2')*/
-    ->required() . ''
+    Former::select('table[]', 'Table')
+        ->options($table)
+        ->multiple('multiple')
+        ->size(7)
+        ->required() . ''
 );
 
 ?>
@@ -34,6 +32,7 @@ Former::select('table[]', 'Table')
     <?php
 /*    echo FormerAjax::make('my_form', 'package', 'change', URL::to('loan/package/package_change'))
         ->getChange(array("branch" => 'html(data.branch)'));
-    */?>
+    */
+?>
 @stop-->
 
