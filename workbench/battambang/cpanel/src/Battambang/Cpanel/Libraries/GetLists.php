@@ -249,7 +249,7 @@ class GetLists
     public function getAllBranchList()
     {
         $data = Office::where('cp_office_id', '=', '')->get();
-        $arr[''] = '--Select One--';
+        $arr[''] = '- None -';
         foreach ($data as $row) {
             $arr[$row->id] = $row->id . ' : ' . $row->en_name;
         }
