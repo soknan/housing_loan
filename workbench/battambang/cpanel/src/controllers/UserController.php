@@ -22,7 +22,18 @@ class UserController extends BaseController
 {
     public function index()
     {
-        $item = array('Action', 'ID', 'First Name', 'Last Name', 'Email', 'Username', 'Group', 'Expire Day', 'Activated', 'activated_at');
+        $item = array(
+            'Action',
+            'ID',
+            'First Name',
+            'Last Name',
+            'Email',
+            'Username',
+            'Group',
+            'Expire Day',
+            'Activated',
+            'activated_at'
+        );
 //        $data['btnAction'] = array('Add New' => route('cpanel.user.create'));
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -135,7 +146,17 @@ class UserController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('id', 'first_name', 'last_name', 'email', 'username', 'cp_group_id_arr', 'expire_day', 'activated', 'activated_at');
+        $item = array(
+            'id',
+            'first_name',
+            'last_name',
+            'email',
+            'username',
+            'cp_group_id_arr',
+            'expire_day',
+            'activated',
+            'activated_at'
+        );
         $arr = DB::table('cp_user')->orderBy('id');
 //        $arr = DB::table('view_user')->orderBy('id');
         return \Datatable::query($arr)
@@ -157,11 +178,8 @@ class UserController extends BaseController
 
     public function changePwd()
     {
-//        $arr['code'] = \Auth::user()->id;
-
         return $this->renderLayout(
             View::make(Config::get('battambang/cpanel::views.user_pwd'))
-//            View::make(Config::get('battambang/cpanel::views.user_pwd'), $arr)
         );
     }
 
@@ -180,32 +198,17 @@ class UserController extends BaseController
                     unset($passHistory[0]);
                 }
                 $passHistory[] = Hash::make(Input::get('old_password'));
-//                $arr = array(
-//                    'password' => \Hash::make(Input::get('password')),
-//                    'password_his_arr' => json_encode($user),
-//                    'activated_at' => new \DateTime(),
-//                );
 
                 $data = User::findOrFail($code);
                 $data->password = Hash::make(Input::get('password'));
                 $data->password_his_arr = json_encode($passHistory);
                 $data->save();
-//                echo var_dump($passHistory); exit;
-
-//                DB::table('cp_user')->where('id', '=', $code)->update($arr);
                 \Auth::logout();
                 \UserSession::clear();
                 return Redirect::to('cpanel/login')->with('logout', 'Your Password has been changed.');
-//                return Redirect::back()
-//                    ->with(
-//                        'success',
-//                        'Your Password has been changed ! Please Logout to completed  ' . '<a href="' . route(
-//                            "cpanel.logout"
-//                        ) . '">Log Out</a>'
-//                    );
             }
 
-            return Redirect::back()->withInput()->withErrors($validator->instance());
+            return Redirect::back()->withInput()->withErrors($validator->errors());
 
         } catch
         (\Exception $e) {

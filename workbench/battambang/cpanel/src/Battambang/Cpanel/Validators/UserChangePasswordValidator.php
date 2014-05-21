@@ -11,12 +11,14 @@ class UserChangePasswordValidator extends \ValidatorAssistant
         \Rule::add('old_password')
             ->required()
             ->oldPassword()->message('The old password is not a valid.');
-        \Rule::add('password')->required()->alphaNum()->digitsBetween(6, 15)->confirmed()
+        \Rule::add('password')->required()->digitsBetween(6, 15)->confirmed()
             ->sameOldPassword()->message('The new password is same old password.')
-            ->historyPassword()->message('The new password is same history password.');
-        \Rule::add('password_confirmation')->required()->alphaNum()->digitsBetween(6, 15)
+            ->historyPassword()->message('The new password is same history password.')
+            ->alphaAndNum()->message('The field must be contain letters and numeric.');
+        \Rule::add('password_confirmation')->required()->digitsBetween(6, 15)
             ->sameOldPassword()->message('The new password is same old password.')
-            ->historyPassword()->message('The new password is same history password.');
+            ->historyPassword()->message('The new password is same history password.')
+            ->alphaAndNum()->message('The field must be contain letters and numeric.');
 
         $this->rules = \Rule::get();
         $this->messages = \Rule::getMessages();
@@ -52,4 +54,18 @@ class UserChangePasswordValidator extends \ValidatorAssistant
         }
         return true;
     }
+
+    protected function customAlphaAndNum($attribute, $value, $parameters)
+    {
+        if (!preg_match('/[0-9]+/', $value)) {
+            return false;
+        }
+
+        if (!preg_match('/[a-zA-Z]+/', $value)) {
+            return false;
+        }
+
+        return true;
+    }
+
 }
