@@ -23,8 +23,7 @@ class GetLists
     {
         $arr = array();
         $data = DB::select(
-            'SELECT * FROM cp_user INNER JOIN cp_group on cp_user.cp_group_id=cp_group.id where cp_user.id ="' . Auth::user(
-            )->id . '"'
+            'SELECT * FROM cp_user INNER JOIN cp_group on cp_user.cp_group_id=cp_group.id where cp_user.id ="' . Auth::user()->id . '"'
         );
 
         if ($data) {

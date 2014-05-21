@@ -18,10 +18,9 @@ echo FormPanel2::make(
     . Former::text('dob', 'DOB')->required()->append('mm/dd/yyyy')
     . Former::textarea('place_birth', 'POB')
     . Former::select('ln_lv_nationality', 'Nationality', \LookupValueList::getBy('nationality'))->required()->placeholder('- Select One -')
-    .Former::select('cp_office_id', 'Branch Office', \GetLists::getSubBranchListNoAjax(),UserSession::read()->sub_branch)
-        ->required()
-        ->placeholder('- Select One -') . ''
-    . Former::file('attach_photo', 'Photo').''
+    .Former::hidden('cp_office_id', \UserSession::read()->sub_branch)
+    . Former::file('attach_photo', 'Photo')
+    .Former::hidden('cp_office_id', \UserSession::read()->sub_branch)
 
 );
 ?>

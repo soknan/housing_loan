@@ -18,11 +18,9 @@ echo FormPanel2::make(
     . Former::text('dob', 'DOB', \Carbon::createFromFormat('Y-m-d',$row->dob)->format('d-m-Y'))->required()->append('mm/dd/yyyy')
     . Former::textarea('place_birth', 'POB', $row->place_birth)
     . Former::select('ln_lv_nationality', 'Nationality', \LookupValueList::getBy('nationality'), $row->ln_lv_nationality)->required()->placeholder('- Select One -')
-    .Former::select('cp_office_id', 'Branch Office', \GetLists::getSubBranchListNoAjax(),$row->cp_office_id)
-        ->required()
-        ->placeholder('- Select One -') . ''
     . Former::file('attach_photo', 'Photo')
     . '<div class="text-center"><img src="' . $row->attach_photo . '" width="100px" height="100px"/></div>'.''
+    .Former::hidden('cp_office_id', \UserSession::read()->sub_branch)
 
 );
 ?>
