@@ -6,6 +6,7 @@
     'General',
     Former::select('ln_disburse_client_id','Loan Acc #')
     ->options(LookupValueList::getLoanAccount())
+    ->placeholder('- Select One -')
     ->class('select2')
     ->required().'',
     Former::text('view_at','Date',date('d-m-Y'))->append('dd-mm-yyyy')->required()

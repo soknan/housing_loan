@@ -4,6 +4,7 @@
 {{ FormPanel2::make('General',
     Former::select('ln_client_id','Client Name')
     ->options(LookupValueList::getClientLoan())
+    ->placeholder('- Select One -')
     ->class('select2')
     ->required()
     .'',
