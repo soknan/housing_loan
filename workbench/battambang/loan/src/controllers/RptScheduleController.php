@@ -62,9 +62,12 @@ class RptScheduleController extends BaseController{
         $companyName=Company::first()->kh_name;
         $office=Office::find(\UserSession::read()->sub_branch);
 
+        // Header
         $objWorkSheet->getCell('A1')->setValue($companyName);
         $objWorkSheet->getCell('A2')->setValue('ការិយាល័យ៖ '.$office->kh_name);
         $objWorkSheet->getCell('A3')->setValue('អាសយដ្ឋាន៖ '.$office->kh_address.', ទូរស័ព្ទ៖ '.$office->telephone);
+
+        // Page filter
         $objWorkSheet->getCell('A5')->setValue('លេខកូដ៖ '.$data['dis']->ln_disburse_client_id.' ('.$data['dis']->account_type_code.')');
         $objWorkSheet->getCell('A6')->setValue('ឈ្មោះ៖ '.$data['dis']->ln_client_kh_name);
 
@@ -78,7 +81,7 @@ class RptScheduleController extends BaseController{
         $objWorkSheet->getCell('A10')->setValue('អាសយដ្ឋាន៖ '.$data['dis']->address);
 
         $objWorkSheet->getCell('D5')->setValue('រំលស់ការ៖ '.$data['dis']->installment_frequency.' '.$frequency.'ម្តង');
-        $objWorkSheet->getCell('D6')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_frequency.' '.$frequency.'ម្តង');
+        $objWorkSheet->getCell('D6')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_frequency.' វគ្គម្តង');
         $objWorkSheet->getCell('D7')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_percentage.' %');
         $objWorkSheet->getCell('D8')->setValue('អត្រាការប្រាក់៖ '.$data['dis']->interest_rate.' %');
         $objWorkSheet->getCell('D9')->setValue('ចំនួនលើកនៃការខ្ចី៖ '.$data['dis']->cycle);

@@ -15,7 +15,7 @@ echo FormPanel2::make(
     . Former::text('kh_nick_name', 'Kh Nick Name')
     ,
     Former::select('ln_lv_gender', 'Gender', \LookupValueList::getBy('gender'))->required()->placeholder('- Select One -') . ''
-    . Former::text('dob', 'DOB')->required()->append('mm/dd/yyyy')
+    . Former::text('dob', 'DOB')->required()->append('dd-mm-yyyy')
     . Former::textarea('place_birth', 'POB')
     . Former::select('ln_lv_nationality', 'Nationality', \LookupValueList::getBy('nationality'))->required()->placeholder('- Select One -')
     .Former::hidden('cp_office_id', \UserSession::read()->sub_branch)

@@ -15,7 +15,7 @@ echo FormPanel2::make(
     . Former::text('kh_nick_name', 'Kh Nick Name', $row->kh_nick_name)
     ,
     Former::select('ln_lv_gender', 'Gender', \LookupValueList::getBy('gender'), $row->ln_lv_gender)->required()->placeholder('- Select One -') . ''
-    . Former::text('dob', 'DOB', \Carbon::createFromFormat('Y-m-d',$row->dob)->format('d-m-Y'))->required()->append('mm/dd/yyyy')
+    . Former::text('dob', 'DOB', \Carbon::createFromFormat('Y-m-d',$row->dob)->format('d-m-Y'))->required()->append('dd-mm-yyyy')
     . Former::textarea('place_birth', 'POB', $row->place_birth)
     . Former::select('ln_lv_nationality', 'Nationality', \LookupValueList::getBy('nationality'), $row->ln_lv_nationality)->required()->placeholder('- Select One -')
     . Former::file('attach_photo', 'Photo')
