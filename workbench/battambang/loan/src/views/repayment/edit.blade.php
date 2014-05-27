@@ -28,7 +28,7 @@ echo FormPanel2::make(
 //        ->options($disburseClient,$client_id)
         ->options(LookupValueList::getLoanAccount(), $client_id)
         ->required()
-        ->readonly('readonly')
+        //->readonly('readonly')
         ->class('select2')
     .Former::select('repayment_status', 'Type')
         ->options($status,$option)
