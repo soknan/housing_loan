@@ -22,10 +22,11 @@ class CpanelServiceProvider extends ServiceProvider
     {
         $this->package('battambang/cpanel', 'battambang/cpanel');
         \Former::framework('TwitterBootstrap3');
-        include __DIR__ . '/../../phpsettings.php';
+        include __DIR__ . '/../../php_settings.php';
         include __DIR__ . '/../../filters.php';
         include __DIR__ . '/../../routes.php';
         include __DIR__ . '/../../events.php';
+        include __DIR__ . '/../../form_macros.php';
     }
 
     /**

@@ -7,7 +7,7 @@
 echo FormPanel2::make(
     'General',
     Former::textarea('kh_name', 'Kh Name', $row->kh_name)
-        ->required() . ''
+        ->required(). ''
     . Former::textarea('kh_short_name', 'Kh Short Name', $row->kh_short_name)
         ->required()
     . Former::textarea('en_name', 'En Name', $row->en_name)
@@ -15,10 +15,16 @@ echo FormPanel2::make(
     . Former::textarea('en_short_name', 'En Short Name', $row->en_short_name)
         ->required()
     ,
-    Former::text('register_at', 'Register Date', date('d-m-Y', strtotime($row->register_at)))
-        ->required()
-        ->placeholder(' dd-mm-yyyy')
-        ->append('<span class="glyphicon glyphicon-calendar"></span>') . ''
+//    Former::text('register_at', 'Register Date', date('d-m-Y', strtotime($row->register_at)))
+//        ->required()
+//        ->placeholder(' dd-mm-yyyy')
+//        ->append('<span class="glyphicon glyphicon-calendar"></span>') . ''
+    Form::datePicker(
+        'register_at',
+        'Register Date',
+        date('d-m-Y', strtotime($row->register_at))
+    )
+    . ''
     . Former::file('logo', 'Logo')
     . '<div class="row text-center"><img src="' . $row->logo . '" width="100px" height="100px"/></div>'
 );
@@ -46,6 +52,5 @@ echo FormPanel2::make(
 @stop
 
 @section('js')
-<?php echo DatePicker::make('register_at'); ?>
+<?php //echo DatePicker::make('register_at'); ?>
 @stop
-

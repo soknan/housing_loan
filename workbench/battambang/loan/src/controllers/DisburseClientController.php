@@ -199,7 +199,10 @@ class DisburseClientController extends BaseController
 
         if ($validation->passes()) {
             $disburseClient = new DisburseClient();
-            $disburseClient->id = \AutoCode::make('ln_disburse_client', 'id', Input::get('ln_disburse_id') . '-', 4);
+
+            // by Theara: change loan account id = disburse id '-' client id that substr(str, 5, 4).
+            $disburseClient->id = Input::get('ln_disburse_id'). '-'.substr(Input::get('ln_client_id'), 5, 4);
+//            $disburseClient->id = \AutoCode::make('ln_disburse_client', 'id', Input::get('ln_disburse_id') . '-', 4);
             $id = $disburseClient->id;
             $this->saveData($disburseClient);
 
@@ -471,11 +474,11 @@ class DisburseClientController extends BaseController
         return $data;
     }
 
-    // Calculate exchange for loan amount in product
+    // by Theara: Calculate exchange for loan amount in product
     private function loanAmountEx($currency, $min, $max, $default){
         $usd=1;
         $khr=4000;
-        $thb=40;
+        $thb=30;
         $unit=1000;
         $data=array();
         switch ($currency) {

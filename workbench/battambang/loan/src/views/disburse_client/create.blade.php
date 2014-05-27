@@ -26,7 +26,7 @@ if(Session::has('errors')){
 }
 echo FormPanel2::make(
     'General',
-    Former::text('ln_disburse_id', 'Loan Account ID')
+    Former::text('ln_disburse_id', 'Disburse ID')
         ->required()
         ->readonly() . ''
     . Former::number('amount', 'Amount',$pro->default_amount)

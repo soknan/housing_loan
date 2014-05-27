@@ -16,7 +16,9 @@ class CompanyValidator extends \ValidatorAssistant
         \Rule::add('telephone')->required();
         \Rule::add('logo')->chkLogo()->message('The :attribute must be an image (.png, .jpg).');
 
-        $this->inputs['register_at'] = date('Y-m-d', strtotime($this->inputs['register_at']));
+        if (!empty($this->inputs['register_at'])) {
+            $this->inputs['register_at'] = date('Y-m-d', strtotime($this->inputs['register_at']));
+        }
         $this->rules = \Rule::get();
         $this->messages = \Rule::getMessages();
     }

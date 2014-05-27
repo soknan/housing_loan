@@ -135,7 +135,7 @@ class CompanyController extends BaseController
             }
             return Redirect::back()
                 ->withInput()
-                ->withErrors($validator->instance());
+                ->withErrors($validator->errors());
         } catch (\Exception $e) {
             return Redirect::route('cpanel.company.edit', 1)
                 ->with('error', trans('battambang/cpanel::db_error.fail'));
