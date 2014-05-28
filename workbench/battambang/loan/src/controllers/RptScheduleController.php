@@ -105,7 +105,18 @@ class RptScheduleController extends BaseController{
         $objWorkSheet->removeRow(13, 2);
         foreach($data['result'] as $key=>$value){
             $rowNum=13+$key;
-            $dueDate=\LookupValueList::getKhmerDay($value->due_date).' '.$value->due_date;
+            $dueDate=\LookupValueList::getKhmerDay($value->due_date).' '.date('d-m-Y', strtotime($value->due_date));
+            if($data['dis']->ln_perform_num_installment_can_closing == $key){
+                $styleArray=array(
+                    'fill'=>array(
+                        'type'=>\PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => '4288CE'),
+                    )
+                );
+//                $objWorkSheet->getStyle('A'.$rowNum)->getFill()->applyFromArray($styleArray);
+                $objWorkSheet->getStyle('A'.$rowNum)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
+                $objWorkSheet->getStyle('A'.$rowNum)->getFill()->getStartColor()->setARGB('4288CE');
+            }
             $objWorkSheet->getCell('A'.$rowNum)->setValue($key);
             $objWorkSheet->getCell('B'.$rowNum)->setValue($dueDate);
             $objWorkSheet->getCell('C'.$rowNum)->setValue($value->num_day);
@@ -116,16 +127,22 @@ class RptScheduleController extends BaseController{
         }
 
         // Add client name and disburse date to sign
-        $objWorkSheet->getCell('F'.(21-2+$count))->setValue($data['dis']->ln_client_kh_name);
-        $objWorkSheet->getCell('B'.(23-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
-        $objWorkSheet->getCell('F'.(23-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+        $objWorkSheet->getCell('F'.(19-2+$count))->setValue($data['dis']->ln_client_kh_name);
+        $objWorkSheet->getCell('B'.(21-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+        $objWorkSheet->getCell('F'.(21-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
 
         // redirect output to client browser
-        header('Content-Type: application/vnd.openxmlformatsofficedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$rptName.'"');
-        header('Cache-Control: max-age=0');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8');
+        header('Content-Disposition: attachment; filename="'.$rptName.'"');
+//        header('Cache-Control: max-age=0'); // on PHPExcel
+        header('Cache-Control: cache, must-revalidate'); // on Laravel Excel
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: '.\Carbon::now()->format('D, d M Y H:i:s'));
+        header('Pragma: public');
+
         $objWriter = new \PHPExcel_Writer_Excel2007($objPHPExcel);
         $objWriter->save('php://output');
+        exit;
 
     }
 
