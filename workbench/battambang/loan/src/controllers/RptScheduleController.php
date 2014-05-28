@@ -54,9 +54,11 @@ class RptScheduleController extends BaseController{
 //            return \Report::make('rpt_schedule/source',$data,'repayment_schedules');
         //}
 
-        $rptName='Repayment Schedule.xlsx';
+        $rptName='Repayment Schedule';
+        $rptExtension='.xlsx';
+
         $objReader = new \PHPExcel_Reader_Excel2007();
-        $objPHPExcel=$objReader->load(storage_path('packages/loan/'.$rptName));
+        $objPHPExcel=$objReader->load(storage_path('packages/loan/'.$rptName.$rptExtension));
         $objWorkSheet=$objPHPExcel->getActiveSheet();
 
         $companyName=Company::first()->kh_name;
@@ -133,7 +135,7 @@ class RptScheduleController extends BaseController{
 
         // redirect output to client browser
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8');
-        header('Content-Disposition: attachment; filename="'.$rptName.'"');
+        header('Content-Disposition: attachment; filename="'.$rptName.' ['.$data['dis']->ln_disburse_client_id.']'.$rptExtension.'"');
 //        header('Cache-Control: max-age=0'); // on PHPExcel
         header('Cache-Control: cache, must-revalidate'); // on Laravel Excel
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
