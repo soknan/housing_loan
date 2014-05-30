@@ -24,7 +24,7 @@ class RepaymentController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'Repay Date', 'Repayment Status', 'Repayment Principal', 'Repayment Interest', 'Repayment Fee', 'Repayment Penalty');
+        $item = array('Action', 'Loan Acc #', 'Client Name', 'Date', 'Type', 'Principal', 'Interest', 'Fee', 'Penalty', 'Total');
 //        $data['btnAction'] = array('Add New' => route('loan.repayment.create'));
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -378,7 +378,7 @@ class RepaymentController extends BaseController
     public function getDatatable()
     {
         $item = array('repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty');
-        $arr = DB::table('ln_perform')->where('perform_type', '=', 'repayment');
+        $arr = DB::table('ln_perform')->where('perform_type', '=', 'repayment')->orderBy('activated_at', 'DESC');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
@@ -388,7 +388,18 @@ class RepaymentController extends BaseController
                     ->delete(route('loan.repayment.destroy', $model->id), '', $this->_checkAction($model->id, $model->ln_disburse_client_id))
                     ->get();
             })
+            ->addColumn('ln_disburse_client_id', function($model){
+                    return ($model->ln_disburse_client_id);
+                })
+            ->addColumn('client_name', function($model){
+                    $client=ClientLoan::find(substr($model->ln_disburse_client_id, 0, 5).substr($model->ln_disburse_client_id, 12, 4));
+                    $clientName=$client->kh_last_name.' '.$client->kh_first_name;
+                    return ($clientName);
+                })
             ->showColumns($item)
+            ->addColumn('total', function($model){
+                    return number_format(($model->repayment_principal+$model->repayment_interest+$model->repayment_fee+$model->repayment_penalty), 2);
+                })
             ->searchColumns($item)
             ->orderColumns($item)
             ->make();
