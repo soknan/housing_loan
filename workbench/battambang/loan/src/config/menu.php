@@ -1,13 +1,13 @@
 <?php
 return array(
     //menu 2 type are available single or dropdown and it must be a url
-    'Manage Data' =>array(
+    'Manage Data' => array(
         'type' => 'dropdown',
         'links' => array(
-           /* 'Dashboard' => array(
-                'type' => 'single',
-                'url' => route('loan.dashboard.index')
-            ),*/
+            /* 'Dashboard' => array(
+                 'type' => 'single',
+                 'url' => route('loan.dashboard.index')
+             ),*/
             'Clients' => array(
                 'type' => 'single',
                 'url' => route('loan.client.index')
@@ -24,39 +24,39 @@ return array(
                 'type' => 'single',
                 'url' => route('loan.write_off.index')
             ),
+            'Exchange' => array(
+                'type' => 'single',
+                'url' => route('loan.exchange.index')
+            ),
         )
     ),
-
     'Setting' => array(
-        'type' => 'dropdown', 
+        'type' => 'dropdown',
         'links' => array(
-            'Category' => array(
+            'Staff' => array(
                 'type' => 'single',
-                'url' => route('loan.category.index')
-            ),
-            'Product' => array(
-                'type' => 'single',
-                'url' => route('loan.product.index')
+                'url' => route('loan.staff.index')
             ),
             'Centers' => array(
                 'type' => 'single',
                 'url' => route('loan.center.index')
             ),
-            'Staff' => array(
-                'type' => 'single',
-                'url' => route('loan.staff.index')
+            'Product' => array(
+                'type' => 'dropdown',
+                'links' => array(
+                    'Category' => array(
+                        'type' => 'single',
+                        'url' => route('loan.category.index')
+                    ),
+                    'Type' => array(
+                        'type' => 'single',
+                        'url' => route('loan.product.index')
+                    ),
+                ),
             ),
             'Fund' => array(
                 'type' => 'single',
                 'url' => route('loan.fund.index')
-            ),
-            'Holiday' => array(
-                'type' => 'single',
-                'url' => route('loan.holiday.index')
-            ),
-            'Exchange' => array(
-                'type' => 'single',
-                'url' => route('loan.exchange.index')
             ),
             'Fee' => array(
                 'type' => 'single',
@@ -70,6 +70,10 @@ return array(
                 'type' => 'single',
                 'url' => route('loan.penalty_closing.index')
             ),
+            'Holiday' => array(
+                'type' => 'single',
+                'url' => route('loan.holiday.index')
+            ),
 
             /*'Lookup' => array(
                 'type' => 'single',
@@ -82,8 +86,7 @@ return array(
         ),
 
     ),
-
-    'Reports' =>array(
+    'Reports' => array(
         'type' => 'dropdown',
         'links' => array(
             'Repayment Schedules' => array(
@@ -135,7 +138,7 @@ return array(
                     ),
                     'Loan Classification, Provisioning and Delinquency Ratio' => array(
                         'type' => 'single',
-                        'url' =>route('loan.rpt_nbc_7.index')
+                        'url' => route('loan.rpt_nbc_7.index')
                     ),
                     'Network Information' => array(
                         'type' => 'single',
@@ -145,7 +148,7 @@ return array(
             ),
         )
     ),
-    'Tools' =>array(
+    'Tools' => array(
         'type' => 'dropdown',
         'links' => array(
             'Backup' => array(
