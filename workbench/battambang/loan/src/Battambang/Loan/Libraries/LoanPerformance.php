@@ -760,35 +760,33 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $cPrin = 0;
                 $cInt = 0;
 
-                foreach ($sch as $value) {
-                    $cPrin += $value->principal;
-                    $cInt += $value->interest;
+                foreach ($sch as $j=> $value) {
+                    if($j >= 1){
+                        $cPrin += $value->principal;
+                        $cInt += $value->interest;
+                    }
+
                 }
 
                 $tmpPrin =0;
                 $i=0;
                 foreach ($sch as $key=>$row) {
                     if($principal !=0){
-                        if($key == 0){
+                        //if($key == 0){
                             if($this->_isDate($this->_arrears['last']['date'])){
-                                $lPrin = $cPrin - $this->_arrears['last']['principal'];
-                                $lInt = $cInt - $this->_arrears['last']['interest'];
+                                $tmp_p = $this->_arrears['last']['principal'] - $cPrin;
+                                $tmp_i = $this->_arrears['last']['interest'] - $cInt;
 
-                                if($row->interest - $lInt >0 and $this->_arrears['last']['interest']!=0){
-                                    $row->interest = $row->interest - $lInt;
-                                }else{
-                                    $row->interest = $this->_arrears['last']['interest'];
+                                if($tmp_p > 0 and $tmp_i>0){
+                                    $row->principal = $tmp_p;
+                                    $row->interest = 0;
                                 }
-
-                                if($row->principal - $lPrin >0){
-                                    $row->principal = $row->principal - $lPrin;
-                                }elseif($row->principal - $lPrin == 0){
-                                    $row->principal = $this->_arrears['last']['principal'];
-                                }else{
-                                    $row->principal = $this->_arrears['last']['principal'] - $lPrin;
+                                if($tmp_p>0 and $i<=0){
+                                    $row->principal = $tmp_p - $tmp_i;
+                                    $row->interest = 0;
                                 }
                             }
-                        }
+                        //}
 
                         $tmpInt = $principal - $row->interest;
                         $tmpPrin = $tmpInt - $row->principal;
