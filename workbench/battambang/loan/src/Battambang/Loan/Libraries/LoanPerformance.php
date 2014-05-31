@@ -772,7 +772,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $i=0;
                 foreach ($sch as $key=>$row) {
                     if($principal !=0){
-                        //if($key == 0){
+                        if($key == 0){
                             if($this->_isDate($this->_arrears['last']['date'])){
                                 $tmp_p = $this->_arrears['last']['principal'] - $cPrin;
                                 $tmp_i = $this->_arrears['last']['interest'] - $cInt;
@@ -786,7 +786,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                                     $row->interest = 0;
                                 }
                             }
-                        //}
+                        }
 
                         $tmpInt = $principal - $row->interest;
                         $tmpPrin = $tmpInt - $row->principal;
