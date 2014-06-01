@@ -12,7 +12,8 @@
         "chumper/zipper": "dev-master",
         "fadion/validator-assistant": "dev-master",
         "fadion/rule": "dev-master",
-        "maatwebsite/excel": "1.*"
+        "maatwebsite/excel": "1.*",
+        "pingpong/menus": "1.0.*"
     },
     "autoload": {
         "classmap": [

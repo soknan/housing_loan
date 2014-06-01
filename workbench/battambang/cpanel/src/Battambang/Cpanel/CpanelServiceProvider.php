@@ -27,6 +27,7 @@ class CpanelServiceProvider extends ServiceProvider
         include __DIR__ . '/../../routes.php';
         include __DIR__ . '/../../events.php';
         include __DIR__ . '/../../form_macros.php';
+        include __DIR__ . '/../../menus.php';
     }
 
     /**
@@ -108,9 +109,9 @@ class CpanelServiceProvider extends ServiceProvider
 //        );
 
         // Facade for Menu
-        $this->app['menu'] = $this->app->share(
+        $this->app['menu1'] = $this->app->share(
             function ($app) {
-                return new Libraries\Menu;
+                return new Libraries\Menu1;
             }
         );
 

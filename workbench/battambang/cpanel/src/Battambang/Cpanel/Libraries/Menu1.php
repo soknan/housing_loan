@@ -11,7 +11,7 @@ namespace Battambang\Cpanel\Libraries;
 
 use HTML;
 
-class Menu
+class Menu1
 {
     //Main Menu
     public function make($menu)

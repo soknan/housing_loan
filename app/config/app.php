@@ -13,7 +13,7 @@ return array(
 	|
 	*/
 
-	'debug' => false,
+	'debug' => true,
 
 	/*
 	|--------------------------------------------------------------------------
@@ -130,6 +130,7 @@ return array(
         'Fadion\ValidatorAssistant\ValidatorAssistantServiceProvider',
         'Fadion\Rule\RuleServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
+        'Pingpong\Menus\MenusServiceProvider',
 
 	),
 
@@ -204,7 +205,7 @@ return array(
         'ComboAjax'       => 'Battambang\Cpanel\Facades\ComboAjax',
         'AutoCode'        => 'Battambang\Cpanel\Facades\AutoCode',
         'Action'          => 'Battambang\Cpanel\Facades\Action',
-        'Menu'            => 'Battambang\Cpanel\Facades\Menu',
+        'Menu1'            => 'Battambang\Cpanel\Facades\Menu1',
         'Report'          => 'Battambang\Cpanel\Facades\Report',
         'FormPanel2'      => 'Battambang\Cpanel\Facades\FormPanel2',
         'Currency'        => 'Battambang\Cpanel\Facades\Currency',
@@ -215,6 +216,7 @@ return array(
         'ValidatorAssistant' => 'Fadion\ValidatorAssistant\ValidatorAssistant',
         'Rule' => 'Fadion\Rule\Facades\Rule',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
-	),
+        'Menu'          =>  'Pingpong\Menus\Facades\Menu',
 
+	),
 );

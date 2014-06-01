@@ -38,9 +38,14 @@
                 </div>
                 @endif
                 <div class="collapse navbar-collapse">
-                    <ul class="nav navbar-nav">
-                        {{ isset($menu) ? $menu : '' }}
-                    </ul>
+<!--                    <ul class="nav navbar-nav">-->
+                        <?php
+                            if (UserSession::read()->package) {
+                                echo Menu::render('home');
+                            }
+                            echo Menu::render(UserSession::read()->package);
+                        ?>
+<!--                    </ul>-->
                     <ul class="nav navbar-nav navbar-right">
                         {{ isset($hiUser) ? $hiUser : '' }}
                     </ul>

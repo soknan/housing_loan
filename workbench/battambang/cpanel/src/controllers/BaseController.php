@@ -16,7 +16,7 @@ use Controller,
     Session,
     Route,
     UserSession,
-    Menu;
+    Menu1;
 
 class BaseController extends Controller
 {
@@ -60,8 +60,8 @@ class BaseController extends Controller
                 ),
             );
 
-            $menu = Menu::make($home);
-            $menu .= Menu::make($this->getConfigByPackage('menu'));
+            $menu = Menu1::make($home);
+            $menu .= Menu1::make($this->getConfigByPackage('menu'));
 
             return $menu;
         }
