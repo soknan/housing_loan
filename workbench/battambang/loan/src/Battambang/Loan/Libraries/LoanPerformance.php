@@ -755,7 +755,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $sch = \DB::select('SELECT * FROM ln_schedule INNER JOIN ln_schedule_dt on ln_schedule.id = ln_schedule_dt.ln_schedule_id
                                     WHERE ln_schedule.ln_disburse_client_id = "'.$this->_disburse_client_id.'"
                                     AND Date(ln_schedule.due_date) '.$c.' "'.$this->_last_perform_date.'"
-                                    AND Date(ln_schedule.due_date) <= "'.$this->_endOfDate($this->_activated_at).'" ');
+                                    AND Date(ln_schedule.due_date) <= "'.$this->_endOfDate($this->_activated_at).'" and ln_schedule.index >0 ');
 
                 $cPrin = 0;
                 $cInt = 0;
