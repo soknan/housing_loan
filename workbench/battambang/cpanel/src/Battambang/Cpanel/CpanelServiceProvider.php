@@ -108,12 +108,6 @@ class CpanelServiceProvider extends ServiceProvider
 //            }
 //        );
 
-        // Facade for Menu
-        $this->app['menu1'] = $this->app->share(
-            function ($app) {
-                return new Libraries\Menu1;
-            }
-        );
 
 //        $this->app->booting(
 //            function () {

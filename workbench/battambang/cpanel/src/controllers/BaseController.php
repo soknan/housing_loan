@@ -15,8 +15,7 @@ use Controller,
     Redirect,
     Session,
     Route,
-    UserSession,
-    Menu1;
+    UserSession;
 
 class BaseController extends Controller
 {
@@ -26,7 +25,6 @@ class BaseController extends Controller
         $this->layout = $view;
         $this->layout->title = 'Microfis';
         $this->layout->package = $this->getPackageName();
-        $this->layout->menu = $this->getMenu();
         $this->layout->hiUser = $this->getHiUser();
         $this->layout->breadcrumb = $this->getBreadcrumb();
         $this->layout->nowDate = date("l, d-F-Y", time());
@@ -48,23 +46,6 @@ class BaseController extends Controller
         }
 
         return $tmp;
-    }
-
-    protected function getMenu()
-    {
-        if (UserSession::read()->package) {
-            $home = array(
-                'Home' => array(
-                    'type' => 'single',
-                    'url' => route('cpanel.package.home')
-                ),
-            );
-
-            $menu = Menu1::make($home);
-            $menu .= Menu1::make($this->getConfigByPackage('menu'));
-
-            return $menu;
-        }
     }
 
     protected function getHiUser()

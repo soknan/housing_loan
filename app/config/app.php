@@ -131,6 +131,7 @@ return array(
         'Fadion\Rule\RuleServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
         'Pingpong\Menus\MenusServiceProvider',
+        'DaveJamesMiller\Breadcrumbs\ServiceProvider',
 
 	),
 
@@ -205,7 +206,6 @@ return array(
         'ComboAjax'       => 'Battambang\Cpanel\Facades\ComboAjax',
         'AutoCode'        => 'Battambang\Cpanel\Facades\AutoCode',
         'Action'          => 'Battambang\Cpanel\Facades\Action',
-        'Menu1'            => 'Battambang\Cpanel\Facades\Menu1',
         'Report'          => 'Battambang\Cpanel\Facades\Report',
         'FormPanel2'      => 'Battambang\Cpanel\Facades\FormPanel2',
         'Currency'        => 'Battambang\Cpanel\Facades\Currency',
@@ -217,6 +217,7 @@ return array(
         'Rule' => 'Fadion\Rule\Facades\Rule',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Menu'          =>  'Pingpong\Menus\Facades\Menu',
+        'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 
 	),
 );
