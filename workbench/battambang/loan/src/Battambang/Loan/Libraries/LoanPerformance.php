@@ -555,9 +555,10 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             //$this->_new_due['num_day'] = $num;
             $this->_new_due['num_day'] = $this->_countDate($this->_new_due['date'],$this->_activated_at) + $lnumDay ;
             $this->_new_due['penalty'] = $pen;
-
-            $this->_new_due['product_status'] = $this->_getProductStatus($this->_new_due['num_day'])->id;
-            $this->_new_due['product_status_date'] = $this->_getProductStatusDate($this->_new_due['num_day']);
+            if($this->_new_due['num_day']>0){
+                $this->_new_due['product_status'] = $this->_getProductStatus($this->_new_due['num_day'])->id;
+                $this->_new_due['product_status_date'] = $this->_getProductStatusDate($this->_new_due['num_day']);
+            }
 
             $this->_arrears['cur']['date'] = $this->_new_due['date'];
             $this->_arrears['cur']['num_day'] = $this->_new_due['num_day'] + $this->_arrears['last']['num_day'];
@@ -591,7 +592,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->error = 'Now you are on maturity date '.$this->_maturity_date.'';
             }
             $this->getNext();
-            $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_new_due['interest']);
+            //$this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_new_due['interest']);
+            $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest);
             $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_new_due['principal'];
         }
     }
@@ -675,15 +677,15 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
     public function _getPenaltyClosing($interest)
     {
-        $data = PenaltyClosing::where('id', '=', $this->_disburse->ln_penalty_closing_id)->first();
+        /*$data = PenaltyClosing::where('id', '=', $this->_disburse->ln_penalty_closing_id)->first();
         $amt = 0;
         if ($this->_can_closing > $this->_activated_num_installment) {
             $amt = \Currency::round($this->_disburse->cp_currency_id,($interest * $data->percentage_interest_remainder) / 100);
-        }
-        /*$amt = 0;
-        if($this->_can_closing > $this->_activated_num_installment){
-            $amt = \Currency::round($this->_disburse->cp_currency_id,($interest - ($this->_balance_principal * $this->_due['num_day'] * $this->_disburse->interest / 100)));
         }*/
+        $amt = 0;
+        if($this->_can_closing > $this->_activated_num_installment){
+            $amt = \Currency::round($this->_disburse->cp_currency_id,($interest - (($this->_balance_principal * $this->_due['num_day']) * $this->_disburse->interest_rate / 100)));
+        }
         return $amt;
     }
 
