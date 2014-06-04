@@ -13,7 +13,6 @@
         "fadion/validator-assistant": "dev-master",
         "fadion/rule": "dev-master",
         "maatwebsite/excel": "1.*",
-        "pingpong/menus": "1.0.*",
         "davejamesmiller/laravel-breadcrumbs": "~2.2.1"
     },
     "autoload": {

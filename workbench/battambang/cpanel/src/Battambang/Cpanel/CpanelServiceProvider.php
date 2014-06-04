@@ -1,6 +1,5 @@
 <?php namespace Battambang\Cpanel;
 
-use Battambang\Cpanel\Libraries\BArray;
 use Illuminate\Support\ServiceProvider;
 
 class CpanelServiceProvider extends ServiceProvider
@@ -169,6 +168,13 @@ class CpanelServiceProvider extends ServiceProvider
         $this->app['b_array'] = $this->app->share(
             function ($app) {
                 return new Libraries\BArray;
+            }
+        );
+
+        // Facade for Menu
+        $this->app['menu'] = $this->app->share(
+            function ($app) {
+                return new Libraries\Menu\Menu();
             }
         );
     }

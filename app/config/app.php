@@ -130,7 +130,6 @@ return array(
         'Fadion\ValidatorAssistant\ValidatorAssistantServiceProvider',
         'Fadion\Rule\RuleServiceProvider',
         'Maatwebsite\Excel\ExcelServiceProvider',
-        'Pingpong\Menus\MenusServiceProvider',
         'DaveJamesMiller\Breadcrumbs\ServiceProvider',
 
 	),
@@ -216,7 +215,7 @@ return array(
         'ValidatorAssistant' => 'Fadion\ValidatorAssistant\ValidatorAssistant',
         'Rule' => 'Fadion\Rule\Facades\Rule',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
-        'Menu'          =>  'Pingpong\Menus\Facades\Menu',
+        'Menu' => 'Battambang\Cpanel\Facades\Menu',
         'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 
 	),
