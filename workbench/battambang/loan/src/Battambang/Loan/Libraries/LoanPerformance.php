@@ -336,6 +336,7 @@ class LoanPerformance
 
                 if ($this->_isEqualDate($this->_activated_at, $row->activated_at)) {
                     if($this->_isDate($this->_arrears['cur']['date'])){
+
                         $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
                         $this->_arrears['last']['date'] = $this->_arrears['cur']['date'];
                         $this->_arrears['last']['num_day'] = $this->_arrears['cur']['num_day'];
@@ -344,6 +345,21 @@ class LoanPerformance
                         $this->_arrears['last']['interest'] = $this->_arrears['cur']['interest'];
                         $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
                         $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
+
+                        $this->_due['date'] = '';
+                        $this->_due['num_day'] = 0;
+                        $this->_due['principal'] = 0;
+                        $this->_due['interest'] = 0;
+                        $this->_due['fee'] = 0;
+                        $this->_due['penalty'] = 0;
+
+                        $this->_new_due['date'] = '';
+                        $this->_new_due['num_day'] = 0;
+                        $this->_new_due['num_installment'] = 0;
+                        $this->_new_due['principal'] = 0;
+                        $this->_new_due['interest'] = 0;
+                        $this->_new_due['fee'] = 0;
+                        $this->_new_due['penalty'] = 0;
 
                         /*$this->_arrears['cur']['date'] = '';
                         $this->_arrears['cur']['num_day'] = 0;
@@ -360,6 +376,14 @@ class LoanPerformance
                     '.date('d-M-Y',strtotime($row->activated_at)).'
                     . Your Next Perform is on
                     '.date('d-M-Y',strtotime($this->_next_due['date']));
+
+                    $this->_arrears['cur']['date'] = '';
+                    $this->_arrears['cur']['num_day'] = 0;
+                    $this->_arrears['cur']['num_installment'] = 0;
+                    $this->_arrears['cur']['principal'] = 0;
+                    $this->_arrears['cur']['interest'] = 0;
+                    $this->_arrears['cur']['fee'] = 0;
+                    $this->_arrears['cur']['penalty'] = 0;
 
                     return $this;
                 }
@@ -677,14 +701,15 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
     public function _getPenaltyClosing($interest)
     {
-        /*$data = PenaltyClosing::where('id', '=', $this->_disburse->ln_penalty_closing_id)->first();
-        $amt = 0;
+        $data = PenaltyClosing::where('id', '=', $this->_disburse->ln_penalty_closing_id)->first();
+        /*$amt = 0;
         if ($this->_can_closing > $this->_activated_num_installment) {
             $amt = \Currency::round($this->_disburse->cp_currency_id,($interest * $data->percentage_interest_remainder) / 100);
         }*/
         $amt = 0;
         if($this->_can_closing > $this->_activated_num_installment){
-            $amt = \Currency::round($this->_disburse->cp_currency_id,($interest - (($this->_balance_principal * $this->_due['num_day']) * $this->_disburse->interest_rate / 100)));
+            $acu_int= $this->_balance_principal * $this->_due['num_day'] * $this->_disburse->interest_rate / 100;
+            $amt = \Currency::round($this->_disburse->cp_currency_id,(($interest - $acu_int) * $data->percentage_interest_remainder /100));
         }
         return $amt;
     }
@@ -817,7 +842,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $i++;
                     }
                     else{
-                        if(count($sch) != $i){
+                        if(count($sch) != $i and $i=0){
                             $arrearsPrin += $row->principal;
                             $arrearsInt += $row->interest;
                         }
@@ -943,6 +968,16 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 }
 
                 break;
+            case 'fee':
+                $this->_repayment['cur']['date'] = $this->_activated_at;
+                $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
+                    . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
+                $this->_repayment['cur']['status'] = $this->_new_due['product_status'];
+                $this->_repayment['cur']['principal'] = 0;
+                $this->_repayment['cur']['interest'] = 0;
+                $this->_repayment['cur']['penalty'] = $penalty;
+                $this->_repayment['cur']['type'] = $option;
+                $this->_repayment['cur']['fee'] = $principal;
         }
     }
 
