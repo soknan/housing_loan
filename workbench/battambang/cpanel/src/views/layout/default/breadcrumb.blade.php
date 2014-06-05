@@ -13,7 +13,7 @@
                 </div>
                 <div class="pull-right">
                     <ol class="breadcrumb">
-                        <li style="color: #999">{{ isset($nowDate)? $nowDate:'' }}</li>
+                        <li class="active">{{ isset($nowDate)? $nowDate:'' }}</li>
                     </ol>
                 </div>
             </div>

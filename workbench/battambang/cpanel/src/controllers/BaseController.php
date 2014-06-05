@@ -51,8 +51,11 @@ class BaseController extends Controller
     protected function getHiUser()
     {
         if (\Auth::check()) {
+            $user = \Auth::user()->last_name . ' ' . \Auth::user()->first_name;
             $tmp = \Auth::user()->getRemainDay();
-            if (\Auth::user()->getRemainDay() != 'unlimited') $tmp = 'Expired in ' . \Auth::user()->getRemainDay() . ' Day(s)';
+            if (\Auth::user()->getRemainDay() != 'unlimited') {
+                $tmp = \Auth::user()->getRemainDay() . ' Day(s)';
+            }
 //            $tmp = '<li class="dropdown">
 //                            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 //                                Hi ' . \Auth::user()->username . ' [ ' . $tmp . ' ] !<b class="caret"></b>
@@ -60,12 +63,19 @@ class BaseController extends Controller
 //                            <ul class="dropdown-menu"><li><a href="' . route('cpanel.changepwd') . '">Change Password</a></li></ul>
 //                        </li>';
             // Check package session
-            if(is_null(UserSession::read()->package)){
-                $tmp = '<li><a href="#" title="Change password, please click Go...">Hi ' . \Auth::user()->last_name . ' ' . \Auth::user()->first_name . ' [ ' . $tmp . ' ] !</a></li>';
-            }else{
-                $tmp = '<li><a href="' . route('cpanel.changepwd.index') . '" title="Change password">Hi ' . \Auth::user()->last_name . ' ' . \Auth::user()->first_name . ' [ ' . $tmp . ' ] !</a></li>';
+            if (is_null(UserSession::read()->package)) {
+                $userInfo = '<li><a href="#" title="Please click [Go] to change password.">' . $user . ' [ ' . ucwords($tmp) . ' ] !</a></li>';
+            } else {
+//                $userInfo = '<li><a href="' . route('cpanel.changepwd.index') . '" title="Change password">Hi ' . $user . ' [ ' . $tmp . ' ] !</a></li>';
+                $userInfo = '<li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user . ' [ ' . ucwords($tmp) . ' ] ! <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Profile</a></li>
+                                <li><a href="' . route('cpanel.changepwd.index') . '">Change Password</a></li>
+                            </ul>
+                        </li>';
             }
-            return $tmp;
+            return $userInfo;
         }
     }
 
@@ -74,7 +84,9 @@ class BaseController extends Controller
 
         $tmp = array();
         $data = explode('.', \Route::currentRouteName());
-        if (!isset($data[2])) $data[2] = '';
+        if (!isset($data[2])) {
+            $data[2] = '';
+        }
         switch ($data[2]) {
             case '':
                 $tmp = array($data[1]);
@@ -83,25 +95,25 @@ class BaseController extends Controller
                 $tmp = array('package', $data[2]);
                 break;
             case 'report':
-                $tmp = array('package','home', $data[1]);
+                $tmp = array('package', 'home', $data[1]);
                 break;
             case 'backup':
-                $tmp = array('package','home', $data[2]);
+                $tmp = array('package', 'home', $data[2]);
                 break;
             case 'restore':
-                $tmp = array('package','home', $data[2]);
+                $tmp = array('package', 'home', $data[2]);
                 break;
             case 'index':
-                if($data[1]=='disburse_client'){
-                    $tmp = array('package', 'home','disburse', $data[1]);
-                }else{
+                if ($data[1] == 'disburse_client') {
+                    $tmp = array('package', 'home', 'disburse', $data[1]);
+                } else {
                     $tmp = array('package', 'home', $data[1]);
                 }
                 break;
             default:
-                if($data[1]=='disburse_client'){
-                    $tmp = array('package', 'home','disburse', $data[1],$data[2]);
-                }else{
+                if ($data[1] == 'disburse_client') {
+                    $tmp = array('package', 'home', 'disburse', $data[1], $data[2]);
+                } else {
                     $tmp = array('package', 'home', $data[1], $data[2]);
                 }
                 break;
@@ -112,7 +124,7 @@ class BaseController extends Controller
         $bread = '';
 
         foreach ($tmp as $key => $val) {
-            if (in_array($val, array('create','add', 'edit', 'show','package', 'login', 'home', 'changepwd'))) {
+            if (in_array($val, array('create', 'add', 'edit', 'show', 'package', 'login', 'home', 'changepwd'))) {
                 $curURL = Config::get('battambang/cpanel::breadcrumb.' . $val . '.url');
                 $curLabel = Config::get('battambang/cpanel::breadcrumb.' . $val . '.label');
                 $curIcon = Config::get('battambang/cpanel::breadcrumb.' . $val . '.icon');
@@ -130,7 +142,9 @@ class BaseController extends Controller
             $i++;
         }
 
-        if ($var == false) return $header = array($curLabel, $curIcon);
+        if ($var == false) {
+            return $header = array($curLabel, $curIcon);
+        }
         return $bread;
     }
 
@@ -174,7 +188,9 @@ class BaseController extends Controller
     protected function getConfigByPackage($name)
     {
         if (UserSession::read()->package) {
-            return Config::get(Config::get('battambang/cpanel::package.' . UserSession::read()->package . '.namespace') . '::' . $name);
+            return Config::get(
+                Config::get('battambang/cpanel::package.' . UserSession::read()->package . '.namespace') . '::' . $name
+            );
         }
         return '';
     }
