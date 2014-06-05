@@ -48,8 +48,13 @@ class Bootstrap3
 
     public function link($title, $url, $icon = null)
     {
+        // Check active link
+        $active = '';
+        if (\URL::current() == $url) {
+            $active = ' class="active"';
+        }
         $icon = $this->getIcon($icon);
-        $tmp = '<li><a href="' . $url . '">' . $icon . $title . '</a></li>';
+        $tmp = '<li' . $active . '><a href="' . $url . '">' . $icon . $title . '</a></li>';
 
         return $tmp;
     }
