@@ -63,18 +63,17 @@ class BaseController extends Controller
 //                            <ul class="dropdown-menu"><li><a href="' . route('cpanel.changepwd') . '">Change Password</a></li></ul>
 //                        </li>';
             // Check package session
-            if (is_null(UserSession::read()->package)) {
-                $userInfo = '<li><a href="#" title="Please click [Go] to change password.">' . $user . ' [ ' . ucwords($tmp) . ' ] !</a></li>';
-            } else {
+//            if (is_null(UserSession::read()->package)) {
+//                $userInfo = '<li><a href="#" title="Please click [Go] to change password.">' . $user . ' [ ' . ucwords($tmp) . ' ] !</a></li>';
+//            } else {
 //                $userInfo = '<li><a href="' . route('cpanel.changepwd.index') . '" title="Change password">Hi ' . $user . ' [ ' . $tmp . ' ] !</a></li>';
                 $userInfo = '<li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user . ' [ ' . ucwords($tmp) . ' ] ! <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="#">Profile</a></li>
                                 <li><a href="' . route('cpanel.changepwd.index') . '">Change Password</a></li>
                             </ul>
                         </li>';
-            }
+//            }
             return $userInfo;
         }
     }

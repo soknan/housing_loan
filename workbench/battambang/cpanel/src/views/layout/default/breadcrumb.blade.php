@@ -3,13 +3,15 @@
         <div class="container">
             <div class="row">
                 <div class="pull-left">
-<!--                    --><?php //echo Breadcrumbs::render(); ?>
-                    <ol class="breadcrumb">
-                        <!--<li><a href="#">Home</a></li>
-                        <li><a href="#">Library</a></li>
-                        <li class="active">Data</li>-->
-                        {{ isset($breadcrumb)? $breadcrumb:''}}
-                    </ol>
+                    <?php
+/*                    if (Auth::check() and UserSession::read()->package == 'loan') {
+                        echo '<ol class="breadcrumb">';
+                        echo(isset($breadcrumb) ? $breadcrumb : '');
+                        echo '</ol>';
+                    } else {
+*/                        echo Breadcrumbs::render();
+//                    }
+                    ?>
                 </div>
                 <div class="pull-right">
                     <ol class="breadcrumb">
