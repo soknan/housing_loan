@@ -206,14 +206,21 @@ Breadcrumbs::register(
     'loan.disburse_client.index',
     function ($bc) {
         $bc->parent('loan.disburse.index');
-        $bc->push('Disbursement Client', URL::route('loan.disburse_client.index'));
+
+        // Check add / edit
+        if (Request::segment(3) == 'add') {
+            $param = Request::segment(4);
+        } else {
+            $param = substr(Request::segment(4), 0, 11);
+        }
+        $bc->push('Disbursement Client', URL::route('loan.disburse_client.index', $param));
     }
 );
 Breadcrumbs::register(
     'loan.disburse_client.add',
     function ($bc) {
         $bc->parent('loan.disburse_client.index');
-        $bc->push('>> Client', URL::route('loan.disburse_client.add'));
+        $bc->push('>> Client', URL::route('loan.disburse_client.add', Input::get('ln_disburse_id')));
     }
 );
 Breadcrumbs::register(
@@ -340,7 +347,7 @@ Breadcrumbs::register(
         $bc->push('Edit', URL::route('loan.center.edit'));
     }
 );
-// Center
+// Fund
 Breadcrumbs::register(
     'loan.fund.index',
     function ($bc) {
@@ -455,7 +462,7 @@ Breadcrumbs::register(
     'loan.category.index',
     function ($bc) {
         $bc->parent('cpanel.package.home');
-        $bc->push('Category', URL::route('loan.category.index'));
+        $bc->push('Product Category', URL::route('loan.category.index'));
     }
 );
 Breadcrumbs::register(
@@ -477,7 +484,7 @@ Breadcrumbs::register(
     'loan.product.index',
     function ($bc) {
         $bc->parent('cpanel.package.home');
-        $bc->push('Product', URL::route('loan.product.index'));
+        $bc->push('Product Type', URL::route('loan.product.index'));
     }
 );
 Breadcrumbs::register(

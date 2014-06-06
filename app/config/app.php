@@ -216,6 +216,7 @@ return array(
         'Rule' => 'Fadion\Rule\Facades\Rule',
         'Excel' => 'Maatwebsite\Excel\Facades\Excel',
         'Menu' => 'Battambang\Cpanel\Facades\Menu',
+        'PageHeader' => 'Battambang\Cpanel\Facades\PageHeader',
         'Breadcrumbs' => 'DaveJamesMiller\Breadcrumbs\Facade',
 
 	),

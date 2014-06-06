@@ -2,7 +2,8 @@
 
 @section('content')
 {{Former::open( route('loan.rpt_breakdown_purpose.report'))->method('POST')}}
-<?php echo FormPanel2::make('',
+<?php echo FormPanel2::make(
+    'General',
     Former::select('cp_office_id[]','Branch Office')
         ->options(\GetLists::getSubBranchList(json_decode(\UserSession::read()->branch_arr, true)))
         ->multiple('multiple')

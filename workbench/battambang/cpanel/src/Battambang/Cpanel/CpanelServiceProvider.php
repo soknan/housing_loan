@@ -27,6 +27,7 @@ class CpanelServiceProvider extends ServiceProvider
         include __DIR__ . '/../../events.php';
         include __DIR__ . '/../../form_macros.php';
         include __DIR__ . '/../../menus.php';
+        include __DIR__ . '/../../page_headers.php';
     }
 
     /**
@@ -175,6 +176,13 @@ class CpanelServiceProvider extends ServiceProvider
         $this->app['menu'] = $this->app->share(
             function ($app) {
                 return new Libraries\Menu\Menu();
+            }
+        );
+
+        // Page Header
+        $this->app['page-header'] = $this->app->share(
+            function ($app) {
+                return new Libraries\PageHeader\PageHeader();
             }
         );
     }
