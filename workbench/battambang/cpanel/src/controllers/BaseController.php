@@ -68,9 +68,9 @@ class BaseController extends Controller
 //            } else {
 //                $userInfo = '<li><a href="' . route('cpanel.changepwd.index') . '" title="Change password">Hi ' . $user . ' [ ' . $tmp . ' ] !</a></li>';
                 $userInfo = '<li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">' . $user . ' [ ' . ucwords($tmp) . ' ] ! <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-user"></span> ' . $user . ' [ ' . ucwords($tmp) . ' ] <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                                <li><a href="' . route('cpanel.changepwd.index') . '">Change Password</a></li>
+                                <li><a href="' . route('cpanel.changepwd.index') . '"><span class="glyphicon glyphicon-lock"></span> Change Password</a></li>
                             </ul>
                         </li>';
 //            }
