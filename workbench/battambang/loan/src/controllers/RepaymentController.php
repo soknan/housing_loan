@@ -102,8 +102,9 @@ class RepaymentController extends BaseController
             $int_closing ='';
             $pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).' )';
             $int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).' )';
+
             if($status == 'closing'){
-                if($data->_repayment['cur']['type'] != 'finish'){
+                if($data->_repayment['cur']['type'] != 'closing'){
                     if($totalArrears !=0){
                         $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
                         $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'];
@@ -112,7 +113,7 @@ class RepaymentController extends BaseController
                         $pri_closing = ' ( Late : '.($data->_new_due['principal'] - $data->_due['principal']).', Closing : '.$data->_due_closing['principal_closing'].' )';
                         $int_closing = ' ( Late : '.($data->_new_due['interest'] - $data->_due['interest']).', Closing : '.$data->_due_closing['interest_closing'].' )';
                     }else{
-                        if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0){
+                        if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;
                             $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest);
                             $data->_repayment['cur']['type'] = $status;
@@ -123,8 +124,11 @@ class RepaymentController extends BaseController
                         }
                     }
                 }
-
+            }elseif($data->_repayment['cur']['type'] == 'closing' and $data->_arrears['cur']['penalty']>0){
+                $data->error ='Repay on Penalty !.';
+                $data->_repayment['cur']['type'] = 'penalty';
             }
+
 
 
             if (Input::has('confirm')) {
@@ -141,12 +145,23 @@ class RepaymentController extends BaseController
             }
 
             $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
+
+            if($penalty!=0){
+                if(bccomp($totalArrears,$principal,4)==1 and ($data->_arrears['cur']['penalty'] > $penalty or bccomp($data->_arrears['cur']['penalty'],$penalty)== 0) ){
+                    //$data->__construct();
+                    $data->error = 'Please Repay Principal and Interest Before Repay Penalty!';
+                    $data->_repayment['cur']['type'] = $status;
+                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                }
+            }
+
             if(bccomp($principal,$totalArrears,4) == 1){
                 $data->__construct();
                 $data->error = 'Your Repay Amount > Arrears Principal. Please Confirm before save.';
                 $data->_repayment['cur']['type'] = $status;
                 return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
             }
+
             if(bccomp($penalty,$data->_arrears['cur']['penalty'],4)==1){
                 $data->__construct();
                 $data->error = 'Your Penalty Amount > Arrears Penalty.';
@@ -167,7 +182,7 @@ class RepaymentController extends BaseController
             }
             if($status == 'penalty'){
                 if($data->_repayment['cur']['type'] == 'normal'){
-                    $data->error = 'Your Current Account is not finish. Please Confirm before save.';
+                    $data->error = 'Your Current Account is not Closing. Please Confirm before save.';
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }else{
@@ -178,20 +193,21 @@ class RepaymentController extends BaseController
                     }
                 }
             }else{
-                if($principal == 0){
+                if($principal == 0 and $data->_arrears['cur']['penalty'] == 0){
                     $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
             }
-
+            var_dump($data); exit;
             $perform->repay(
                 Input::get('repayment_principal'),
-                Input::get('repayment_penalty'),
+               $penalty,
                 Input::get('repayment_status'),
                 Input::get('repayment_voucher_id')
             );
-            //var_dump($data); exit;
+
+            var_dump($data); exit;
             $classify = ProductStatus::where('id','=',$data->_current_product_status)->first();
 
             $msg = 'Repay Date = <strong>' . $data->_repayment['cur']['date'] . '</strong>, '
@@ -241,7 +257,7 @@ class RepaymentController extends BaseController
                 $pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).' )';
                 $int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).' )';
                 if($status == 'closing'){
-                    if($data->_repayment['cur']['type'] != 'finish'){
+                    if($data->_repayment['cur']['type'] != 'closing'){
                         if($totalArrears !=0){
                             $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
                             $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'];
