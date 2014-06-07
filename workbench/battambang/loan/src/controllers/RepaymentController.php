@@ -199,7 +199,7 @@ class RepaymentController extends BaseController
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
             }
-            var_dump($data); exit;
+            //var_dump($data); exit;
             $perform->repay(
                 Input::get('repayment_principal'),
                $penalty,
