@@ -100,27 +100,29 @@ class RepaymentController extends BaseController
             $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
             $pri_closing ='';
             $int_closing ='';
-            $pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).' )';
-            $int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).' )';
+            $pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).', Cur Pri : '.$data->_due['principal'].' )';
+            $int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).', Cur Int : '.$data->_due['interest'].' )';
 
             if($status == 'closing'){
                 if($data->_repayment['cur']['type'] != 'closing'){
                     if($totalArrears !=0){
                         $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
-                        $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'];
+                        $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
                         $data->_repayment['cur']['type'] = $status;
                         $data->error ='Closing normal !.';
-                        $pri_closing = ' ( Late : '.($data->_new_due['principal'] - $data->_due['principal']).', Closing : '.$data->_due_closing['principal_closing'].' )';
-                        $int_closing = ' ( Late : '.($data->_new_due['interest'] - $data->_due['interest']).', Closing : '.$data->_due_closing['interest_closing'].' )';
+                        $pri_closing = ' ( Late : '.($data->_new_due['principal'] - $data->_due['principal'])
+                            .', Cur Pri : '.$data->_due['principal'].', Closing : '.$data->_due_closing['principal_closing'].' )';
+                        $int_closing = ' ( Late : '.($data->_new_due['interest'] - $data->_due['interest'])
+                            .', Cur Int : '.$data->_due['interest'].', Closing : '.$data->_due_closing['interest_closing'].', Accrued Int : '.$data->_accru_int.' )';
                     }else{
                         if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;
-                            $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest);
+                            $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest) + $data->_accru_int;
                             $data->_repayment['cur']['type'] = $status;
-                            $data->error = 'Closing after disburse date !.';
+                            $data->error = 'Closing after disburse date or after repay !.';
 
                             $pri_closing = ' ( Late : 0 , Closing : '.$data->_balance_principal.' )';
-                            $int_closing = ' ( Late : 0 , Closing : '.$perform->_getPenaltyClosing($data->_balance_interest).' )';
+                            $int_closing = ' ( Late : 0 , Closing : '.$perform->_getPenaltyClosing($data->_balance_interest).', Accrued Int : '.$data->_accru_int.' )';
                         }
                     }
                 }
@@ -207,7 +209,7 @@ class RepaymentController extends BaseController
                 Input::get('repayment_voucher_id')
             );
 
-            //var_dump($data); exit;
+            var_dump($data); exit;
             $classify = ProductStatus::where('id','=',$data->_current_product_status)->first();
 
             $msg = 'Repay Date = <strong>' . $data->_repayment['cur']['date'] . '</strong>, '
@@ -270,7 +272,7 @@ class RepaymentController extends BaseController
                                 $data->_arrears['cur']['principal'] = $data->_balance_principal;
                                 $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest);
                                 $data->_repayment['cur']['type'] = $status;
-                                $data->error = 'Closing after disburse date !.';
+                                $data->error = 'Closing after disburse date or after repay !.';
 
                                 $pri_closing = ' ( Late : 0 , Closing : '.$data->_balance_principal.' )';
                                 $int_closing = ' ( Late : 0 , Closing : '.$perform->_getPenaltyClosing($data->_balance_interest).' )';
