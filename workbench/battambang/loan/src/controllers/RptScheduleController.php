@@ -98,8 +98,8 @@ class RptScheduleController extends BaseController{
             $currency='បាត';
         }
         $objWorkSheet->getCell('F7')->setValue('ចំនួនទឹកប្រាក់៖ '.number_format($data['dis']->amount,2,'.',',').' '.$currency);
-        $objWorkSheet->getCell('F8')->setValue('សោហ៊ុយសេវា៖ ');
-        $objWorkSheet->getCell('F9')->setValue('មន្រ្តីឥណទាន៖ '.$data['dis']->ln_staff_id.' | '.$data['dis']->ln_staff_kh_name);
+//        $objWorkSheet->getCell('F8')->setValue('សោហ៊ុយសេវា៖ ');
+        $objWorkSheet->getCell('F8')->setValue('មន្រ្តីឥណទាន៖ '.$data['dis']->ln_staff_id.' | '.$data['dis']->ln_staff_kh_name);
 
         // Content
         $count=count($data['result']);

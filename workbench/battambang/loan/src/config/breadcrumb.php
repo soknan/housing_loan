@@ -28,7 +28,7 @@ return array(
     ),
     'write_off' => array(
         'icon' => $iconList,
-        'label' => 'Write-Off ',
+        'label' => 'Write-Off',
         'url' => route('loan.write_off.index')
     ),
     'penalty_closing' => array(

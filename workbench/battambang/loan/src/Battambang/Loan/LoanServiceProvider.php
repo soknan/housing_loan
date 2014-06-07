@@ -20,6 +20,8 @@ class LoanServiceProvider extends ServiceProvider {
 	{
 		$this->package('battambang/loan','battambang/loan');
         include __DIR__ .'/../../routes.php';
+        include __DIR__ .'/../../menus.php';
+        include __DIR__ .'/../../page_headers.php';
 	}
 
 	/**

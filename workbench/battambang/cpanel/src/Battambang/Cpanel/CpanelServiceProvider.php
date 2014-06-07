@@ -1,6 +1,5 @@
 <?php namespace Battambang\Cpanel;
 
-use Battambang\Cpanel\Libraries\BArray;
 use Illuminate\Support\ServiceProvider;
 
 class CpanelServiceProvider extends ServiceProvider
@@ -27,6 +26,8 @@ class CpanelServiceProvider extends ServiceProvider
         include __DIR__ . '/../../routes.php';
         include __DIR__ . '/../../events.php';
         include __DIR__ . '/../../form_macros.php';
+        include __DIR__ . '/../../menus.php';
+        include __DIR__ . '/../../page_headers.php';
     }
 
     /**
@@ -107,12 +108,6 @@ class CpanelServiceProvider extends ServiceProvider
 //            }
 //        );
 
-        // Facade for Menu
-        $this->app['menu'] = $this->app->share(
-            function ($app) {
-                return new Libraries\Menu;
-            }
-        );
 
 //        $this->app->booting(
 //            function () {
@@ -174,6 +169,20 @@ class CpanelServiceProvider extends ServiceProvider
         $this->app['b_array'] = $this->app->share(
             function ($app) {
                 return new Libraries\BArray;
+            }
+        );
+
+        // Facade for Menu
+        $this->app['menu'] = $this->app->share(
+            function ($app) {
+                return new Libraries\Menu\Menu();
+            }
+        );
+
+        // Page Header
+        $this->app['page-header'] = $this->app->share(
+            function ($app) {
+                return new Libraries\PageHeader\PageHeader();
             }
         );
     }

@@ -12,7 +12,8 @@
         "chumper/zipper": "dev-master",
         "fadion/validator-assistant": "dev-master",
         "fadion/rule": "dev-master",
-        "maatwebsite/excel": "1.*"
+        "maatwebsite/excel": "1.*",
+        "davejamesmiller/laravel-breadcrumbs": "~2.2.1"
     },
     "autoload": {
         "classmap": [
