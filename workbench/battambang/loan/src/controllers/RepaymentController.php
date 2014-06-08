@@ -245,7 +245,7 @@ class RepaymentController extends BaseController
                 Input::get('repayment_voucher_id')
             );
 
-            var_dump($data); exit;
+            //var_dump($data); exit;
             $classify = ProductStatus::where('id','=',$data->_current_product_status)->first();
 
             $msg = 'Repay Date = <strong>' . $data->_repayment['cur']['date'] . '</strong>, '
