@@ -899,7 +899,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $i++;
                     }
                     else{
-                        if(count($sch) != $i and $i=0){
+                        if(count($sch) != $i){
                             $arrearsPrin += $row->principal;
                             $arrearsInt += $row->interest;
                         }
