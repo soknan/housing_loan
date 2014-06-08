@@ -418,6 +418,14 @@ class LoanPerformance
                     $this->_due['fee'] = 0;
                     $this->_due['penalty'] = 0;
 
+                    $this->_new_due['date'] = '';
+                    $this->_new_due['num_day'] = 0;
+                    $this->_new_due['num_installment'] = 0;
+                    $this->_new_due['principal'] = 0;
+                    $this->_new_due['interest'] = 0;
+                    $this->_new_due['fee'] = 0;
+                    $this->_new_due['penalty'] = 0;
+
                     $this->_arrears['cur']['date'] = '';
                     $this->_arrears['cur']['num_day'] = 0;
                     $this->_arrears['cur']['num_installment'] = 0;
