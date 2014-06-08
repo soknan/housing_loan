@@ -381,6 +381,11 @@ class LoanPerformance
                         $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
                         $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
 
+                        if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
+                            $this->_due['principal'] = $this->_arrears['cur']['principal'];
+                        }
+                        
+
                         /*$this->_due['date'] = '';
                         $this->_due['num_day'] = 0;
                         $this->_due['principal'] = 0;
