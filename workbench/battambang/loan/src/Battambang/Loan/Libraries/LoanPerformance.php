@@ -381,12 +381,12 @@ class LoanPerformance
                         $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
                         $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
 
-                        $this->_due['date'] = '';
+                        /*$this->_due['date'] = '';
                         $this->_due['num_day'] = 0;
                         $this->_due['principal'] = 0;
                         $this->_due['interest'] = 0;
                         $this->_due['fee'] = 0;
-                        $this->_due['penalty'] = 0;
+                        $this->_due['penalty'] = 0;*/
 
                         $this->_new_due['date'] = '';
                         $this->_new_due['num_day'] = 0;
@@ -1021,12 +1021,14 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_repayment['cur']['date'] = $this->_activated_at;
                 $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
                     . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
-                $this->_repayment['cur']['status'] = $this->_new_due['product_status'];
+                $this->_repayment['cur']['status'] = 1;
                 $this->_repayment['cur']['principal'] = 0;
                 $this->_repayment['cur']['interest'] = 0;
-                $this->_repayment['cur']['penalty'] = $penalty;
+                $this->_repayment['cur']['penalty'] = 0;
                 $this->_repayment['cur']['type'] = $option;
                 $this->_repayment['cur']['fee'] = $principal;
+
+                $this->_arrears['cur']['fee']=0;
         }
     }
 
