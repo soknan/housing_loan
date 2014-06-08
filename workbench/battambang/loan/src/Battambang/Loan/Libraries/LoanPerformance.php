@@ -317,6 +317,12 @@ class LoanPerformance
                 $this->_balance_principal = $row->balance_principal;
                 $this->_balance_interest = $row->balance_interest;
 
+                //Fee
+                if($this->_arrears['cur']['fee'] >0){
+
+                    return $this;
+                }
+
                 //Return Write Off
                 if($this->_perform_type == 'writeoff'){
                     return $this;
@@ -401,10 +407,16 @@ class LoanPerformance
                     }
                     //$this->__construct();
                     //$this->_activated_at = $row->activated_at;
+
                     $this->error = 'You are already Perform It on
                     '.date('d-M-Y',strtotime($row->activated_at)).'
                     . Your Next Perform is on
                     '.date('d-M-Y',strtotime($this->_next_due['date']));
+                    $this->_due['num_day'] = 0;
+                    $this->_due['principal'] = 0;
+                    $this->_due['interest'] = 0;
+                    $this->_due['fee'] = 0;
+                    $this->_due['penalty'] = 0;
 
                     $this->_arrears['cur']['date'] = '';
                     $this->_arrears['cur']['num_day'] = 0;
@@ -577,19 +589,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 if($this->_activated_at >= $row->due_date){
                     $tmpStart = $row->due_date;
                     $tmpEnd = $this->_activated_at;
-                    /*if($this->_activated_at < $this->_maturity_date){
-                        $tmpSch = Schedule::join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')
-                            ->where('ln_disburse_client_id', '=', $this->_disburse_client_id)
-                            ->where('index', '=', $row->index + 1)->first();
-                        $tmpStart = $row->due_date;
-                        $tmpEnd = $this->_activated_at;
-                    }*/
-                    /*if($this->_activated_at <= $tmpEnd ){
-                        $tmpEnd = $this->_activated_at;
-                    }*/
-                    /*if($tmpStart == $tmpEnd){
-                        $tmpEnd = $this->_activated_at;
-                    }*/
+
                     $curDate = $this->_countDate($tmpStart,$tmpEnd);
                     $num += $curDate;
                     $amount = $row->principal + $row->interest;
