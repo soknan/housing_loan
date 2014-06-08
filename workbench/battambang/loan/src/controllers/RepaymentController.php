@@ -286,7 +286,7 @@ class RepaymentController extends BaseController
                 }
 
                 $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
-                var_dump($data); exit;
+                //var_dump($data); exit;
                 // Fee
                 if($data->_arrears['cur']['fee'] > 0){
                     $data->error = 'Please repay fee !';
@@ -298,11 +298,14 @@ class RepaymentController extends BaseController
                             . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] .'</strong>
                         <P>Note : ' . $data->error . '</P>';
 
+                        unset($curData['created_at']);
+                        unset($curData['updated_at']);
+                        Perform::insert($curData);
                         return Redirect::back()
                             ->with('data', $data)
                             ->with('info', $msg);
                     }
-
+                    //var_dump($data); exit;
                     if($data->_arrears['cur']['fee']!=$principal){
                         $data->error = 'Repayment Principal not equal with Fee !';
                         return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
