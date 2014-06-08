@@ -365,6 +365,7 @@ class LookupValueList
             'normal' => 'Normal',
             'closing' => 'Closing',
             'penalty' => 'Penalty',
+            'fee' => 'Fee',
             /*'surplus'=>'Surplus',*/
         );
     }

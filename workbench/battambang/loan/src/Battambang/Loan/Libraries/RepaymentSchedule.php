@@ -32,7 +32,7 @@ class RepaymentSchedule {
             $this->_num_borrow_day += $value['num_day'];
             $this->_project_interest += $value['interest'];
             $this->_maturity_date = $value['due_date'];
-            $this->_fee = $value['fee'];
+            $this->_fee += $value['fee'];
             $this->_activated_at = $date;
             $this->_activated_num_installment = 0;
 

@@ -373,18 +373,21 @@ class LoanPerformance
                     if($this->_isDate($this->_arrears['cur']['date'])){
 
                         $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
-                        $this->_arrears['last']['date'] = $this->_arrears['cur']['date'];
+                        /*$this->_arrears['last']['date'] = $this->_arrears['cur']['date'];
                         $this->_arrears['last']['num_day'] = $this->_arrears['cur']['num_day'];
                         $this->_arrears['last']['num_installment'] = $this->_arrears['cur']['num_installment'];
                         $this->_arrears['last']['principal'] = $this->_arrears['cur']['principal'];
                         $this->_arrears['last']['interest'] = $this->_arrears['cur']['interest'];
                         $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
-                        $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
+                        $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];*/
+
 
                         if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
                             $this->_due['principal'] = $this->_arrears['cur']['principal'];
                         }
-                        
+                        if($this->_due['interest'] > $this->_arrears['cur']['interest'] ){
+                            $this->_due['interest'] = $this->_arrears['cur']['interest'];
+                        }
 
                         /*$this->_due['date'] = '';
                         $this->_due['num_day'] = 0;
@@ -829,9 +832,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     break;
                 }
 
-                if($this->_isDate($this->_arrears['last']['date'])){
+                if($this->_isDate($this->_arrears['cur']['date'])){
                     $c = '>=';
-                    $this->_last_perform_date = $this->_arrears['last']['date'];
+                    $this->_last_perform_date = $this->_arrears['cur']['date'];
                 }else{
                     $c = '>';
                     $this->_last_perform_date = $this->_endOfDate($this->_last_perform_date);
@@ -858,7 +861,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 foreach ($sch as $key=>$row) {
                     if($principal !=0){
                         if($key == 0){
-                            if($this->_isDate($this->_arrears['last']['date'])){
+                            if($this->_isDate($this->_arrears['cur']['date'])){
                                 $tmp_p = $this->_arrears['cur']['principal'] - $cPrin;
                                 $tmp_i = $this->_arrears['cur']['interest'] - $cInt;
 
@@ -1023,7 +1026,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
                 break;
             case 'fee':
-                $this->_repayment['cur']['date'] = $this->_activated_at;
+                $this->_repayment['cur']['date'] = $this->_due['date'];
                 $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
                     . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
                 $this->_repayment['cur']['status'] = 1;
@@ -1034,6 +1037,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_repayment['cur']['fee'] = $principal;
 
                 $this->_arrears['cur']['fee']=0;
+                $this->_arrears['cur']['principal']=0;
         }
     }
 

@@ -223,6 +223,7 @@ class DisburseClientController extends BaseController
             $perform->_due['date'] = $repay->_activated_at;
             $perform->_can_closing = $repay->_can_closing;
 
+            $perform->_arrears['cur']['fee']= $repay->_fee;
             $perform->_new_due['product_status'] = 1;
             $perform->_new_due['product_status_date'] = $repay->_activated_at;
             $perform->_current_product_status = 1;
@@ -294,6 +295,7 @@ class DisburseClientController extends BaseController
                 $perform->_num_borrow_day = $repay->_num_borrow_day;
                 $perform->_can_closing = $repay->_can_closing;
 
+                $perform->_arrears['cur']['fee']= $repay->_fee;
                 $perform->_new_due['product_status'] = 1;
                 $perform->_new_due['product_status_date'] = $repay->_activated_at;
                 $perform->_current_product_status = 1;

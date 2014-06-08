@@ -94,15 +94,49 @@ class RepaymentController extends BaseController
             }
 
             $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+
+            // Fee
+            if($data->_arrears['cur']['fee'] > 0){
+                $data->error = 'Please repay fee !';
+                $data->_repayment['cur']['type'] = 'fee';
+                $perform->_activated_at = $data->_due['date'];
+                $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
+                if(Input::has('confirm')){
+                    $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                        . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] .'</strong>
+                        <P>Note : ' . $data->error . '</P>';
+
+                    return Redirect::back()
+                        ->with('data', $data)
+                        ->with('info', $msg);
+                }
+
+                if($data->_arrears['cur']['fee']!=$principal){
+                    $data->error = 'Repayment Principal not equal with Fee !';
+                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                }
+
+                $perform->repay($principal,$penalty,$status,$voucher_id);
+                $msg = 'Due Date = <strong>' . $data->_repayment['cur']['date'] . '</strong> ,</br> '
+                        . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] .'</strong>
+                        <P>Successful !</P>';
+                $perform->save();
+
+                return Redirect::back()
+                    ->with('info',$msg)
+                    ->with('success',trans('battambang/loan::repayment.create_success'));
+            }
+
             //var_dump($data); exit;
 
             $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
             $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
             $pri_closing ='';
             $int_closing ='';
-            $pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).', Cur Pri : '.$data->_due['principal'].' )';
-            $int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).', Cur Int : '.$data->_due['interest'].' )';
-
+            //$pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).', Cur Pri : '.$data->_due['principal'].' )';
+            //$int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).', Cur Int : '.$data->_due['interest'].' )';
+            $pri_closing = ' ( Late : '.($data->_arrears['cur']['principal'] - $data->_due['principal']).', Cur Pri : '.$data->_due['principal'].' )';
+            $int_closing = ' ( Late : '.(($data->_arrears['cur']['interest'] - $data->_due['interest'])).', Cur Int : '.$data->_due['interest'].' )';
             if($status == 'closing'){
                 if($data->_repayment['cur']['type'] != 'closing'){
                     if($totalArrears !=0){
@@ -129,6 +163,8 @@ class RepaymentController extends BaseController
             }elseif($data->_repayment['cur']['type'] == 'closing' and $data->_arrears['cur']['penalty']>0){
                 $data->error ='Repay on Penalty !.';
                 $data->_repayment['cur']['type'] = 'penalty';
+            }else{
+                $data->_repayment['cur']['type'] = 'normal';
             }
 
 
@@ -209,7 +245,7 @@ class RepaymentController extends BaseController
                 Input::get('repayment_voucher_id')
             );
 
-            //var_dump($data); exit;
+            var_dump($data); exit;
             $classify = ProductStatus::where('id','=',$data->_current_product_status)->first();
 
             $msg = 'Repay Date = <strong>' . $data->_repayment['cur']['date'] . '</strong>, '
@@ -250,7 +286,38 @@ class RepaymentController extends BaseController
                 }
 
                 $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
-                //var_dump($data); exit;
+                var_dump($data); exit;
+                // Fee
+                if($data->_arrears['cur']['fee'] > 0){
+                    $data->error = 'Please repay fee !';
+                    $data->_repayment['cur']['type'] = 'fee';
+                    $perform->_activated_at = $data->_due['date'];
+                    $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
+                    if(Input::has('confirm')){
+                        $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                            . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] .'</strong>
+                        <P>Note : ' . $data->error . '</P>';
+
+                        return Redirect::back()
+                            ->with('data', $data)
+                            ->with('info', $msg);
+                    }
+
+                    if($data->_arrears['cur']['fee']!=$principal){
+                        $data->error = 'Repayment Principal not equal with Fee !';
+                        return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                    }
+
+                    $perform->repay($principal,$penalty,$status,$voucher_id);
+                    $msg = 'Due Date = <strong>' . $data->_repayment['cur']['date'] . '</strong> ,</br> '
+                        . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] .'</strong>
+                        <P>Successful !</P>';
+                    $perform->save();
+
+                    return Redirect::back()
+                        ->with('info',$msg)
+                        ->with('success',trans('battambang/loan::repayment.create_success'));
+                }
 
                 $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
                 $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
@@ -282,6 +349,8 @@ class RepaymentController extends BaseController
                 }elseif($data->_repayment['cur']['type'] == 'closing' and $data->_arrears['cur']['penalty']>0){
                     $data->error ='Repay on Penalty !.';
                     $data->_repayment['cur']['type'] = 'penalty';
+                }else{
+                    $data->_repayment['cur']['type'] = 'normal';
                 }
 
 
