@@ -373,14 +373,6 @@ class LoanPerformance
                     if($this->_isDate($this->_arrears['cur']['date'])){
 
                         $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
-                        /*$this->_arrears['last']['date'] = $this->_arrears['cur']['date'];
-                        $this->_arrears['last']['num_day'] = $this->_arrears['cur']['num_day'];
-                        $this->_arrears['last']['num_installment'] = $this->_arrears['cur']['num_installment'];
-                        $this->_arrears['last']['principal'] = $this->_arrears['cur']['principal'];
-                        $this->_arrears['last']['interest'] = $this->_arrears['cur']['interest'];
-                        $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
-                        $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];*/
-
 
                         if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
                             $this->_due['principal'] = $this->_arrears['cur']['principal'];
@@ -388,38 +380,18 @@ class LoanPerformance
                         if($this->_due['interest'] > $this->_arrears['cur']['interest'] ){
                             $this->_due['interest'] = $this->_arrears['cur']['interest'];
                         }
-
-                        /*$this->_due['date'] = '';
-                        $this->_due['num_day'] = 0;
-                        $this->_due['principal'] = 0;
-                        $this->_due['interest'] = 0;
-                        $this->_due['fee'] = 0;
-                        $this->_due['penalty'] = 0;*/
-
-                        /*$this->_new_due['date'] = '';
-                        $this->_new_due['num_day'] = 0;
-                        $this->_new_due['num_installment'] = 0;
-                        $this->_new_due['principal'] = 0;
-                        $this->_new_due['interest'] = 0;
-                        $this->_new_due['fee'] = 0;
-                        $this->_new_due['penalty'] = 0;*/
-
-                        /*$this->_arrears['cur']['date'] = '';
-                        $this->_arrears['cur']['num_day'] = 0;
-                        $this->_arrears['cur']['num_installment'] =0;
-                        $this->_arrears['cur']['principal'] = 0;
-                        $this->_arrears['cur']['interest'] = 0;
-                        $this->_arrears['cur']['fee'] = 0;
-                        $this->_arrears['cur']['penalty'] = 0;*/
+                        //Accrued interest
+                        $this->_getAccrueInt();
                         return $this;
                     }
-                    //$this->__construct();
-                    //$this->_activated_at = $row->activated_at;
 
                     $this->error = 'You are already Perform It on
                     '.date('d-M-Y',strtotime($row->activated_at)).'
                     . Your Next Perform is on
                     '.date('d-M-Y',strtotime($this->_next_due['date']));
+                    //Accrued interest
+                    $this->_getAccrueInt();
+
                     $this->_due['num_day'] = 0;
                     $this->_due['principal'] = 0;
                     $this->_due['interest'] = 0;
@@ -665,18 +637,27 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             //$this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest);
             $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_new_due['principal'];
             //Accrued interest
-            $rate_type = 30;
-            if($this->_disburse->ln_lv_repay_frequency == 3){
-                $rate_type = 7;
-            }
-            $int_rate = $this->_disburse->interest_rate / $rate_type / 100;
-            if(\DateTime::createFromFormat('Y-m-d',$this->_activated_at) > \DateTime::createFromFormat('Y-m-d',$this->_due['date'])){
-                $this->_accru_int = \Currency::round($this->_disburse->cp_currency_id,($this->_due_closing['principal_closing'] * $this->_due['num_day'] * $int_rate));
-            }
-            if(\DateTime::createFromFormat('Y-m-d',$this->_activated_at) >= \DateTime::createFromFormat('Y-m-d',$this->_maturity_date)){
-                $this->_accru_int = 0;
-            }
+            $this->_getAccrueInt();
+
         }
+    }
+
+    private function _getAccrueInt(){
+        $rate_type = 30;
+        $renum = 0;
+        if($this->_disburse->ln_lv_repay_frequency == 3){
+            $rate_type = 7;
+        }
+        $int_rate = $this->_disburse->interest_rate / $rate_type / 100;
+
+        if(\DateTime::createFromFormat('Y-m-d',$this->_activated_at) > \DateTime::createFromFormat('Y-m-d',$this->_due['date'])){
+            $renum = $this->_countDate($this->_due['date'],$this->_activated_at);
+            $this->_accru_int = \Currency::round($this->_disburse->cp_currency_id,($this->_due_closing['principal_closing'] * $renum * $int_rate));
+        }
+        if(\DateTime::createFromFormat('Y-m-d',$this->_activated_at) >= \DateTime::createFromFormat('Y-m-d',$this->_maturity_date)){
+            $this->_accru_int =0;
+        }
+
     }
 
     private function _getSchedule($lastDate, $performDate)

@@ -91,14 +91,10 @@ class RepaymentController extends BaseController
             $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
             if($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at){
                 $error = 'Your Perform Date < Last Perform Date ('.$perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at.') ! ';
-                //$perform->__construct();
-
-                //$data->_repayment['cur']['type'] = $status;
                 return Redirect::back()->with('error',$error)->with('data', $data);
             }
 
             //$data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
-
             // Fee
             if($data->_arrears['cur']['fee'] > 0){
                 $data->error = 'Please repay fee !';
@@ -106,7 +102,7 @@ class RepaymentController extends BaseController
                 $perform->_activated_at = $data->_due['date'];
                 $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                 if(Input::has('confirm')){
-                    $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                    $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
                         . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] .'</strong>
                         <P>Note : ' . $data->error . '</P>';
 
@@ -153,7 +149,7 @@ class RepaymentController extends BaseController
                         $int_closing = ' ( Late : '.($data->_new_due['interest'] - $data->_due['interest'])
                             .', Cur Int : '.$data->_due['interest'].', Closing : '.$data->_due_closing['interest_closing'].', Accrued Int : '.$data->_accru_int.' )';
                     }else{
-                        if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
+                        //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;
                             $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest) + $data->_accru_int;
                             $data->_repayment['cur']['type'] = $status;
@@ -161,7 +157,7 @@ class RepaymentController extends BaseController
 
                             $pri_closing = ' ( Late : 0 , Closing : '.$data->_balance_principal.' )';
                             $int_closing = ' ( Late : 0 , Closing : '.$perform->_getPenaltyClosing($data->_balance_interest).', Accrued Int : '.$data->_accru_int.' )';
-                        }
+                        //}
                     }
                 }
             }elseif($data->_repayment['cur']['type'] == 'closing' and $data->_arrears['cur']['penalty']>0){
@@ -174,7 +170,7 @@ class RepaymentController extends BaseController
 
 
             if (Input::has('confirm')) {
-                $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
                     . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] .'</strong>'.$pri_closing.' , '
                     . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>'.$int_closing.'.</br>'
                     . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> , '
@@ -252,7 +248,7 @@ class RepaymentController extends BaseController
             //var_dump($data); exit;
             $classify = ProductStatus::where('id','=',$data->_current_product_status)->first();
 
-            $msg = 'Repay Date = <strong>' . $data->_repayment['cur']['date'] . '</strong>, '
+            $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_repayment['cur']['date'])->format('d-m-Y') . '</strong>, '
                 . 'Repay Principal Amount = <strong>' . $data->_repayment['cur']['principal'] . '</strong>, '
                 . 'Repay Interest Amount = <strong>' . $data->_repayment['cur']['interest'] . '</strong>, '
                 . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) .$currency->code. '</strong>, '
@@ -298,7 +294,7 @@ class RepaymentController extends BaseController
                     $perform->_activated_at = $data->_due['date'];
                     $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                     if(Input::has('confirm')){
-                        $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                        $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
                             . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] .'</strong>
                         <P>Note : ' . $data->error . '</P>';
 
@@ -362,7 +358,7 @@ class RepaymentController extends BaseController
 
 
                 if (Input::has('confirm')) {
-                    $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                    $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
                         . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] .'</strong>'.$pri_closing.' , '
                         . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>'.$int_closing.'.</br>'
                         . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> , '
@@ -439,7 +435,7 @@ class RepaymentController extends BaseController
                 //var_dump($data); exit;
                 $classify = ProductStatus::where('id','=',$data->_current_product_status)->first();
 
-                $msg = 'Repay Date = <strong>' . $data->_repayment['cur']['date'] . '</strong>, '
+                $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_repayment['cur']['date'])->format('d-m-Y') . '</strong>, '
                     . 'Repay Principal Amount = <strong>' . $data->_repayment['cur']['principal'] . '</strong>, '
                     . 'Repay Interest Amount = <strong>' . $data->_repayment['cur']['interest'] . '</strong>, '
                     . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) .$currency->code. '</strong>, '
