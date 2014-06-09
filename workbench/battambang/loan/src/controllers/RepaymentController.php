@@ -90,8 +90,10 @@ class RepaymentController extends BaseController
         if ($validation->passes()) {
             $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
             if($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at){
+                $data->_arrears['cur']['principal'] = 0;
+                $data->_arrears['cur']['interest'] = 0;
                 $error = 'Your Perform Date < Last Perform Date ('.$perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at.') ! ';
-                return Redirect::back()->with('error',$error)->with('data', $data);
+                return Redirect::back()->with('error',$error)->with('data',$data);
             }
 
             //$data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
