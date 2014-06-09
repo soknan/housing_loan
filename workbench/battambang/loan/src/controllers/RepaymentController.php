@@ -128,7 +128,7 @@ class RepaymentController extends BaseController
             }
 
             //var_dump($data); exit;
-
+            $tmp_repay = $data->_repayment['cur']['type'];
             $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
             $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
             $pri_closing ='';
@@ -211,9 +211,9 @@ class RepaymentController extends BaseController
                 $data->_repayment['cur']['type'] = $status;
                 return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
             }
-            if($data->_repayment['cur']['type'] == 'finish'){
+            if($data->_repayment['cur']['type'] == 'closing'){
                 if($principal != $totalArrears){
-                    $data->error = 'Your Repay amount not equal with Principal amount. Your current status in finish !.';
+                    $data->error = 'Your Repay amount not equal with Principal amount. Your current status in Closing !.';
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
@@ -238,13 +238,12 @@ class RepaymentController extends BaseController
                 }
             }
 
-            if(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0){
+            if(($tmp_repay == 'closing' or $tmp_repay == 'penalty')){
                 if($status!='penalty'){
                     $data->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
                     $data->_repayment['cur']['type'] = 'penalty';
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
-
             }
 
             $perform->repay(
@@ -331,6 +330,7 @@ class RepaymentController extends BaseController
                         ->with('success',trans('battambang/loan::repayment.create_success'));
                 }
 
+                $tmp_repay = $data->_repayment['cur']['type'];
                 $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
                 $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
                 $pri_closing ='';
@@ -435,13 +435,12 @@ class RepaymentController extends BaseController
                     }
                 }
 
-                if(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0){
+                if(($tmp_repay == 'closing' or $tmp_repay == 'penalty')){
                     if($status!='penalty'){
-                        $data->error = 'Your Current has penalty !.';
+                        $data->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
                         $data->_repayment['cur']['type'] = 'penalty';
                         return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                     }
-
                 }
 
                 $perform->repay(
