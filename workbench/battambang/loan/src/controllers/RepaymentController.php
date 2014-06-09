@@ -88,12 +88,16 @@ class RepaymentController extends BaseController
         $voucher_id = Input::get('repayment_voucher_id');
 
         if ($validation->passes()) {
+            $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
             if($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at){
                 $error = 'Your Perform Date < Last Perform Date ('.$perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at.') ! ';
-                return Redirect::back()->withInput()->with('error',$error);
+                //$perform->__construct();
+
+                //$data->_repayment['cur']['type'] = $status;
+                return Redirect::back()->with('error',$error)->with('data', $data);
             }
 
-            $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+            //$data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
 
             // Fee
             if($data->_arrears['cur']['fee'] > 0){
