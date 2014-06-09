@@ -670,7 +670,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $rate_type = 7;
             }
             $int_rate = $this->_disburse->interest_rate / $rate_type / 100;
-            if($this->_activated_at > $this->_due['date']){
+            if(\DateTime::createFromFormat('Y-m-d',$this->_activated_at) > \DateTime::createFromFormat('Y-m-d',$this->_due['date'])){
                 $this->_accru_int = \Currency::round($this->_disburse->cp_currency_id,($this->_due_closing['principal_closing'] * $this->_due['num_day'] * $int_rate));
             }
             if(\DateTime::createFromFormat('Y-m-d',$this->_activated_at) >= \DateTime::createFromFormat('Y-m-d',$this->_maturity_date)){
