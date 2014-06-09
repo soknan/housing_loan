@@ -350,7 +350,7 @@ class LoanPerformance
                         return $this;
                     }else{
                         $this->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
-                        $this->_repayment['cur']['type'] = 'penalty';
+                        //$this->_repayment['cur']['type'] = 'penalty';
                         //$this->_due['date'] = '';
                         $this->_due['num_day'] = 0;
                         $this->_due['principal'] = 0;
@@ -547,42 +547,44 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         }
 
         $data = $this->_getSchedule($this->_endOfDate($this->_last_perform_date), $this->_endOfDate($this->_activated_at));
+        $dataPen = Penalty::where('id', '=', $this->_disburse->ln_penalty_id)->limit(1)->orderBy('id','desc')->first();
         $lnumDay=0;
+        $grace = false;
         if ($data->count() > 0) {
             foreach ($data as $key => $row) {
                 $this->_activated_num_installment = $row->index;
+
+                if ($key == 0) {
+                    $this->_new_due['date'] = $row->due_date;
+                    $this->_new_due['num_installment'] = $row->index;
+                    //penalty
+                    $num = $this->_countDate($row->due_date,$this->_activated_at);
+                    if($num > $dataPen->grace_period){
+                        $grace = true;
+                    }
+                }
+
+                if($grace == true){
+                    $num = $this->_countDate($row->due_date,$this->_activated_at);
+                   if($num > 0){
+                        $pen+= $this->_getPenalty($row->principal + $row->interest,$num,$dataPen->amount);
+                    }
+                }
+                //end penalty
+
                 if ($this->_isEqualDate($row->due_date, $this->_activated_at)) {
                     $this->_due['date'] = $row->due_date;
                     $this->_due['num_day'] = $this->_countDate($row->due_date,$this->_activated_at);
                     $this->_due['principal'] = $row->principal;
                     $this->_due['interest'] = $row->interest;
                     $this->_due['fee'] = $row->fee;
-                    $this->_due['penalty'] = $this->_getPenalty($this->_due['num_day'],$this->_due['principal'] + $this->_due['interest'],$this->_due['num_day']);
-
-                }
-                if ($key == 0) {
-                    $this->_new_due['date'] = $row->due_date;
-                    $this->_new_due['num_installment'] = $row->index;
-                    if($this->_isDate($this->_arrears['last']['date'])){
-                        $lnumDay = $this->_countDate($this->_arrears['last']['date'], $row->due_date);
-                        if($this->_activated_at < $row->due_date){
-                            $lnumDay = $this->_countDate($this->_arrears['last']['date'], $this->_activated_at);
+                    if($grace==true){
+                        if($this->_due['num_day'] >0){
+                            $this->_due['penalty'] = $this->_getPenalty($row->principal + $row->interest,$this->_due['num_day'] ,$dataPen->amount);
                         }
-                        $amount = $this->_arrears['last']['principal'] + $this->_arrears['last']['interest'];
-
-                        $pen = $this->_getPenalty($num, $amount,$lnumDay);
                     }
                 }
 
-                if($this->_activated_at >= $row->due_date){
-                    $tmpStart = $row->due_date;
-                    $tmpEnd = $this->_activated_at;
-
-                    $curDate = $this->_countDate($tmpStart,$tmpEnd);
-                    $num += $curDate;
-                    $amount = $row->principal + $row->interest;
-                    $pen += $this->_getPenalty($num,$amount,$curDate);
-                }
                 $prin += $row->principal;
                 $int += $row->interest;
             }
@@ -682,13 +684,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         return $data;
     }
 
-    public function _getPenalty($numDay, $amount,$curNum)
+    public function _getPenalty($amount,$curNum,$cru_amount)
     {
-        $data = Penalty::where('id', '=', $this->_disburse->ln_penalty_id)->limit(1)->orderBy('id','desc')->first();
-        $penalty = 0;
-        if ($numDay > $data->grace_period) {
-            $penalty = \Currency::round($this->_disburse->cp_currency_id,(($amount * $curNum * $data->amount) / 100));
-        }
+        $penalty = \Currency::round($this->_disburse->cp_currency_id,(($amount * $curNum * $cru_amount) / 100));
         return $penalty;
     }
 

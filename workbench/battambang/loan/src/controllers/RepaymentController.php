@@ -160,8 +160,8 @@ class RepaymentController extends BaseController
                         //}
                     }
                 }
-            }elseif($data->_repayment['cur']['type'] == 'closing' and $data->_arrears['cur']['penalty']>0){
-                $data->error ='Repay on Penalty !.';
+            }elseif(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0){
+                //$data->error ='Repay on Penalty !.';
                 $data->_repayment['cur']['type'] = 'penalty';
             }else{
                 $data->_repayment['cur']['type'] = 'normal';
@@ -236,6 +236,15 @@ class RepaymentController extends BaseController
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
+            }
+
+            if(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0){
+                if($status!='penalty'){
+                    $data->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
+                    $data->_repayment['cur']['type'] = 'penalty';
+                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                }
+
             }
 
             $perform->repay(
@@ -349,8 +358,8 @@ class RepaymentController extends BaseController
                             }
                         }
                     }
-                }elseif($data->_repayment['cur']['type'] == 'closing' and $data->_arrears['cur']['penalty']>0){
-                    $data->error ='Repay on Penalty !.';
+                }elseif(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty']>0){
+                    //$data->error ='Repay on Penalty !.';
                     $data->_repayment['cur']['type'] = 'penalty';
                 }else{
                     $data->_repayment['cur']['type'] = 'normal';
@@ -419,11 +428,20 @@ class RepaymentController extends BaseController
                         }
                     }
                 }else{
-                    if($principal == 0){
+                    if($principal == 0 and $data->_arrears['cur']['penalty']==0){
                         $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
                         $data->_repayment['cur']['type'] = $status;
                         return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                     }
+                }
+
+                if(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0){
+                    if($status!='penalty'){
+                        $data->error = 'Your Current has penalty !.';
+                        $data->_repayment['cur']['type'] = 'penalty';
+                        return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                    }
+
                 }
 
                 $perform->repay(
