@@ -144,7 +144,6 @@ Breadcrumbs::register(
     }
 );
 
-
 /*
 |--------------------------------------------------------------------------
 | Loan Breadcrumbs
@@ -603,5 +602,28 @@ Breadcrumbs::register(
     function ($bc) {
         $bc->parent('cpanel.package.home');
         $bc->push('Loan Network Information', URL::route('loan.rpt_nbc_11.index'));
+    }
+);
+
+/*
+|--------------------------------------------------------------------------
+| Tool Breadcrumbs
+|--------------------------------------------------------------------------
+*/
+
+// Backup
+Breadcrumbs::register(
+    'loan.backup.index',
+    function ($breadcrumbs) {
+        $breadcrumbs->parent('cpanel.package.home');
+        $breadcrumbs->push('Backup', URL::route('loan.backup.index'));
+    }
+);
+// Restore
+Breadcrumbs::register(
+    'loan.restore.index',
+    function ($breadcrumbs) {
+        $breadcrumbs->parent('cpanel.package.home');
+        $breadcrumbs->push('Restore', URL::route('loan.restore.index'));
     }
 );

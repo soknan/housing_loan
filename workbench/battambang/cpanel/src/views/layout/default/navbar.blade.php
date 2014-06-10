@@ -27,9 +27,9 @@
                              <i class="glyphicon glyphicon-repeat"></i>
                          </a>-->
                         &nbsp;
-<!--                        <a href="#helpModal" class="btn btn-default" rel="tooltip" data-placement="bottom" data-original-title="Help" data-toggle="modal">-->
-<!--                            <i class="glyphicon glyphicon-question-sign"></i>-->
-<!--                        </a>-->
+                        <!--                        <a href="#helpModal" class="btn btn-default" rel="tooltip" data-placement="bottom" data-original-title="Help" data-toggle="modal">-->
+                        <!--                            <i class="glyphicon glyphicon-question-sign"></i>-->
+                        <!--                        </a>-->
                         <a class="btn btn-danger" data-placement="bottom" data-original-title="Logout" rel="tooltip"
                            href="{{ route('cpanel.logout')}}">
                             <i class="glyphicon glyphicon-off"></i>
@@ -42,6 +42,9 @@
                     <?php
                     if (UserSession::read()->package) {
                         echo Menu::get(array('home', UserSession::read()->package));
+                        if (UserSession::read()->package == 'loan') {
+                            echo Menu::get(array('tool'));
+                        }
                     }
                     ?>
                     <!--                    </ul>-->

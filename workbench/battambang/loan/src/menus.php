@@ -66,3 +66,16 @@ Menu::make(
         );
     }
 );
+
+Menu::make(
+    'tool',
+    function ($menu) {
+        $menu->add(
+            'Tool',
+            function ($dropdown) {
+                $dropdown->add('Backup', route('loan.backup.index'));
+                $dropdown->add('Restore', route('loan.restore.index'));
+            }
+        );
+    }
+);

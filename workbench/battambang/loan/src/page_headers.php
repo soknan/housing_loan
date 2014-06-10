@@ -437,3 +437,23 @@ PageHeader::make(
         $header->add('Loan Network Information');
     }
 );
+
+/*
+|--------------------------------------------------------------------------
+| Tool
+|--------------------------------------------------------------------------
+*/
+PageHeader::make(
+    'loan.backup.index',
+    function (PageHeardItem $header) {
+        $header->icon('cloud-download');
+        $header->add('Backup');
+    }
+);
+PageHeader::make(
+    'loan.restore.index',
+    function (PageHeardItem $header) {
+        $header->icon('cloud-upload');
+        $header->add('Restore');
+    }
+);
