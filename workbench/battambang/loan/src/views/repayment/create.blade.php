@@ -28,13 +28,14 @@ if(Session::has('data')){
 
 echo FormPanel2::make(
     'General',
-    Former::text('repayment_date', 'Date',$activated_at)->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
-    .Former::select('ln_disburse_client_id', 'Loan Acc #')
+    Former::select('ln_disburse_client_id', 'Acc#')
 //        ->options($disburseClient, $client_id)
         ->options(LookupValueList::getLoanAccount(), $client_id)
         ->placeholder('- Select One -')
         ->class('select2')
         ->required()
+    .Former::text('repayment_date', 'Date',$activated_at)->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
+
     .Former::select('repayment_status', 'Type')
         ->options($status,$option)
         ->class('select2')
