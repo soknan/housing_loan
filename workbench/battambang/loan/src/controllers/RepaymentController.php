@@ -165,6 +165,8 @@ class RepaymentController extends BaseController
             }elseif(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0){
                 //$data->error ='Repay on Penalty !.';
                 $data->_repayment['cur']['type'] = 'penalty';
+            }elseif($data->_repayment['cur']['type'] == 'closing'){
+                $data->_repayment['cur']['type'] = 'closing';
             }else{
                 $data->_repayment['cur']['type'] = 'normal';
             }
@@ -174,9 +176,9 @@ class RepaymentController extends BaseController
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
                     . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] .'</strong>'.$pri_closing.' , '
-                    . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>'.$int_closing.'.</br>'
-                    . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> , '
-                    . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong>.
+                    . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>'.$int_closing.' , '
+                    . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> ,</br> '
+                    . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty']. '</strong> ( Cur : '.$data->cur_pen.', Late : '.$data->late_pen.').
                 <P>Note : ' . $data->error . '</P>';
 
                 return Redirect::back()
