@@ -851,6 +851,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $i=0;
                 $last_tmpInt = 0;
                 $last_tmpPrin = 0;
+                $ldate=true;
                 foreach ($sch as $key=>$row) {
                     if($principal >0){
                         if($key == 0){
@@ -890,11 +891,13 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                             $arrearsPrin += $row->principal;
                             $arrearsIndex = $row->index;
                             $tmpPrin = 0;
+                            $ldate = false;
                         }
                         $i++;
                     }
                     else{
                         if(count($sch) != $i){
+                            if($ldate){ $arrearsDate = $row->due_date; $ldate=false;}
                             $arrearsPrin += $row->principal;
                             $arrearsInt += $row->interest;
                         }
