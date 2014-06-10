@@ -581,14 +581,13 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         //$dataPen = Penalty::where('id', '=', $this->_disburse->ln_penalty_id)->limit(1)->orderBy('id','desc')->first();
         $lnumDay=0;
 
-        if(($this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest']) >0 ){
+        if($this->_isDate($this->_arrears['cur']['date']) ){
             // Arrears
             $re_data = $this->_getSchedule($this->_endOfDate($this->_arrears['cur']['date']), $this->_endOfDate($this->_last_perform_date));
             foreach ($re_data as $k=>$r) {
                 $lnumDay = $this->_countDate($r->due_date,$this->_last_perform_date);
                 $this->late_pen+= $this->_getPenalty($r->principal + $r->interest,$lnumDay);
             }
-
         }
 
         if ($data->count() > 0) {
@@ -870,8 +869,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                             }
                         }
 
-                        $tmpInt = $principal - $row->interest;
-                        $tmpPrin = $tmpInt - $row->principal;
+                        $tmpInt = number_format($principal,2) - $row->interest;
+                        $tmpPrin =  number_format($tmpInt,2) - $row->principal;
                         if($tmpInt >= 0){
                             $int += $row->interest;
                             if($tmpPrin >= 0){
@@ -879,8 +878,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                                 $arrearsDate = $row->due_date;
                             }else{
                                 $arrearsDate = $row->due_date;
-                                $prin += $tmpInt;
+                                ////
                                 $arrearsPrin = abs($tmpPrin);
+                                $prin += $tmpInt;
                                 $arrearsIndex = $row->index;
                             }
                         }else{
@@ -900,6 +900,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                             if($ldate){ $arrearsDate = $row->due_date; $ldate=false;}
                             $arrearsPrin += $row->principal;
                             $arrearsInt += $row->interest;
+
                         }
                     }
                     if($tmpPrin >0){
