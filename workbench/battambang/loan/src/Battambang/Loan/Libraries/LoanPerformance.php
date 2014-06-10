@@ -583,10 +583,10 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
         if($this->_isDate($this->_arrears['cur']['date']) ){
             // Arrears
-            $re_data = $this->_getSchedule($this->_endOfDate($this->_arrears['cur']['date']), $this->_endOfDate($this->_last_perform_date));
+            $re_data = $this->_getSchedule($this->_endOfDate($this->_arrears['cur']['date']), $this->_endOfDate($this->_activated_at));
             foreach ($re_data as $k=>$r) {
-                $lnumDay = $this->_countDate($r->due_date,$this->_last_perform_date);
-                $this->late_pen+= $this->_getPenalty($r->principal + $r->interest,$lnumDay);
+                $lnumDay = $this->_countDate($r->due_date,$this->_activated_at);
+                $pen+= $this->_getPenalty($r->principal + $r->interest,$lnumDay);
             }
         }
 
@@ -599,7 +599,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 }
                 // no Arrears Penalty
                 $lnumDay = $this->_countDate($row->due_date,$this->_activated_at);
-                $this->cur_pen+= $this->_getPenalty($row->principal + $row->interest,$lnumDay);
+                $pen+= $this->_getPenalty($row->principal + $row->interest,$lnumDay);
 
                 if ($this->_isEqualDate($row->due_date, $this->_activated_at)) {
                     $this->_due['date'] = $row->due_date;
@@ -615,7 +615,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $prin += $row->principal;
                 $int += $row->interest;
             }
-            $pen = $this->late_pen + $this->cur_pen;
 
             /*if($this->_last_due['num_day'] < 0){
                 $pen = $pen - $this->_getPenalty(abs($this->_last_due['num_day']),$this->_last_due['principal'] + $this->_last_due['interest']);
@@ -871,6 +870,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
                         $tmpInt = number_format($principal,2) - $row->interest;
                         $tmpPrin =  number_format($tmpInt,2) - $row->principal;
+                        /*$tmpInt = $principal - $row->interest;
+                        $tmpPrin =  $tmpInt - $row->principal;*/
+
                         if($tmpInt >= 0){
                             $int += $row->interest;
                             if($tmpPrin >= 0){

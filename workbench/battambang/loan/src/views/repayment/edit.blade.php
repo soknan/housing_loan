@@ -31,7 +31,7 @@ if(Session::has('data')){
 
 echo FormPanel2::make(
     'General',
-        Former::select('ln_disburse_client_id', 'Loan Account')
+        Former::select('ln_disburse_client_id', 'Acc#')
 //        ->options($disburseClient,$client_id)
         ->options(LookupValueList::getLoanAccount(), $client_id)
         ->required()
@@ -43,10 +43,10 @@ echo FormPanel2::make(
         ->options($status,$option)
         ->class('select2')->required()
     ,
-    Former::number('repayment_principal','Repayment Amount',$totalPrincipal)
+    Former::number('repayment_principal','Amount',$totalPrincipal)
         ->step('0.01')->min(0)->required()->readonly($onlyFee)
     .Former::number('repayment_penalty', 'penalty',$penalty)->step(0.01)->min(0)->required()->readonly($onlyFee).''
-    .Former::text('repayment_voucher_id',' Voucher ID',$voucher_id)->maxlength(6)
+    .Former::text('repayment_voucher_id',' Voucher',$voucher_id)->maxlength(6)
 );
 ?>
 <div class="text-center">

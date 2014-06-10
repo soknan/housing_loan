@@ -41,13 +41,13 @@ echo FormPanel2::make(
         ->class('select2')
         ->required()
     ,
-  Former::number('repayment_principal','Repayment Amount',$totalPrincipal)
+  Former::number('repayment_principal','Amount',$totalPrincipal)
       ->step('0.01')->min(0)
       ->readonly($onlyFee)
       ->required()
    .Former::number('repayment_penalty', 'penalty',$penalty)
       ->step('0.01')->min(0)->required()->readonly($onlyFee). ''
-    .Former::text('repayment_voucher_id',' Voucher ID')
+    .Former::text('repayment_voucher_id',' Voucher')
       ->maxlength(6)
 );
 ?>
