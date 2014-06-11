@@ -373,9 +373,9 @@ class RepaymentController extends BaseController
                 if (Input::has('confirm')) {
                     $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d',$data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
                         . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] .'</strong>'.$pri_closing.' , '
-                        . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>'.$int_closing.'.</br>'
-                        . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> , '
-                        . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong>.
+                        . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>'.$int_closing.' , '
+                        . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> ,</br> '
+                        . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty']. '</strong> ( Cur : '.$data->_new_due['penalty'].', Late : '.$data->_arrears['last']['penalty'].').
                 <P>Note : ' . $data->error . '</P>';
 
                     unset($curData['created_at']);

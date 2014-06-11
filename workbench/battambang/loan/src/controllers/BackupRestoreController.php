@@ -32,12 +32,12 @@ class BackupRestoreController extends BaseController
         'ln_payment_status'=>array('PST','Payment Status'),
         'ln_penalty'=>array('PNT','Penalty'),
         'ln_penalty_closing'=>array('PTC','Penalty Closing'),
-        'ln_perform'=>array('PF','Perform',"id LIKE '[office]%'"),
+        'ln_perform'=>array('PEF','Perform',"id LIKE '[office]%'"),
         'ln_product'=>array('PRO','Product'),
-        'ln_product_status'=>array('PS','Product Status'),
-        'ln_schedule'=>array('SC','Schedule',"id LIKE '[office]%'"),
+        'ln_product_status'=>array('PRS','Product Status'),
+        'ln_schedule'=>array('SCD','Schedule',"id LIKE '[office]%'"),
         'ln_schedule_dt'=>array('SCD','Schedule Detail',"id LIKE '[office]%'"),
-        'ln_staff'=>array('ST','Staff',"cp_office_id LIKE '[office]%'"),
+        'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
     );
     public $databaseType = array(
         'loan'=>array(
@@ -260,7 +260,8 @@ class BackupRestoreController extends BaseController
     public function getTableName($table)
     {
         if (isset($this->tableNames[$table])) {
-            return $this->tableNames[$table][0] . " - " . $this->tableNames[$table][1];
+            //return $this->tableNames[$table][0] . " - " . $this->tableNames[$table][1];
+            return $this->tableNames[$table][1];
         }
         return "OOO - " . $table;
     }

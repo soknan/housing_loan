@@ -1,7 +1,7 @@
 @extends(Config::get('battambang/cpanel::views.layout'))
 
 @section('content')
-{{Former::open( route('loan.restore.restore'))->method('POST')->enctype('multipart/form-data')}}
+{{Former::open(route('loan.restore.restore'))->method('POST')->enctype('multipart/form-data')}}
 
 <?php
 echo FormPanel2::make(

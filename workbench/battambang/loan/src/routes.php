@@ -1154,7 +1154,7 @@ Route::group(
             'restore',
             array(
                 'as' => 'loan.restore.restore',
-                'used' => 'Battambang\Loan\BackupRestoreController@postRestore'
+                'uses' => 'Battambang\Loan\BackupRestoreController@postRestore'
             )
         );
     }
