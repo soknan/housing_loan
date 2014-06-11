@@ -250,6 +250,14 @@ class RepaymentController extends BaseController
                 }
             }
 
+            if($data->_disburse->cp_currency_id !=2){
+                if(strpos($principal,'.')){
+                    $data->error='Your Currency is not USD, So do not type "."';
+                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                }
+            }
+
+
             $perform->repay(
                 Input::get('repayment_principal'),
                $penalty,
@@ -443,6 +451,13 @@ class RepaymentController extends BaseController
                     if($status!='penalty'){
                         $data->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
                         $data->_repayment['cur']['type'] = 'penalty';
+                        return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                    }
+                }
+
+                if($data->_disburse->cp_currency_id !=2){
+                    if(strpos($principal,'.')){
+                        $data->error='Your Currency is not USD, So do not type "."';
                         return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                     }
                 }
