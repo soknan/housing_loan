@@ -868,10 +868,13 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                             }
                         }
 
-                        $tmpInt = number_format($principal,2) - $row->interest;
-                        $tmpPrin =  number_format($tmpInt,2) - $row->principal;
-                        /*$tmpInt = $principal - $row->interest;
-                        $tmpPrin =  $tmpInt - $row->principal;*/
+                        $tmpInt = $principal - $row->interest;
+                        $tmpPrin =  $tmpInt - $row->principal;
+
+                        if($this->_disburse->cp_currency_id ==2){
+                            $tmpInt = number_format($principal,2) - $row->interest;
+                            $tmpPrin =  number_format($tmpInt,2) - $row->principal;
+                        }
 
                         if($tmpInt >= 0){
                             $int += $row->interest;
@@ -880,9 +883,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                                 $arrearsDate = $row->due_date;
                             }else{
                                 $arrearsDate = $row->due_date;
-                                ////
+                                $prin+=$tmpInt;
                                 $arrearsPrin = abs($tmpPrin);
-                                $prin += $tmpInt;
                                 $arrearsIndex = $row->index;
                             }
                         }else{
