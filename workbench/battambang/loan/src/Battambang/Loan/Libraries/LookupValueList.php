@@ -241,7 +241,7 @@ class LookupValueList
     public function getClientLoan()
     {
         $arr = array();
-        $data = ClientLoan::all();
+        $data = ClientLoan::where('cp_office_id','=',\UserSession::read()->sub_branch)->get();
         if ($data) {
             foreach ($data as $row) {
                 $arr[$row->id] = $row->id . ' | ' . $row->kh_last_name . ' ' . $row->kh_first_name.' | '. $row->en_last_name . ' '. $row->en_first_name;
@@ -253,7 +253,7 @@ class LookupValueList
     public function getStaff($more = '')
     {
         $arr = array();
-        $data = DB::select('select * from ln_staff where 1=1 ' . $more);
+        $data = DB::select('select * from ln_staff  where 1=1 and cp_office_id like "'.\UserSession::read()->sub_branch.'%" ' . $more);
         if ($data) {
             foreach ($data as $row) {
                 $arr[$row->id] = $row->en_last_name . ' ' . $row->en_first_name . ' | ' . $row->kh_last_name . ' ' . $row->kh_first_name;
@@ -376,7 +376,10 @@ class LookupValueList
         foreach (Perform::all() as $row) {
             $perform[] = $row->ln_disburse_client_id;
         }
-        $data = DB::table('view_disburse_client')->whereIn('id',$perform)->orderBy('id', 'desc')->get();
+        $data = DB::table('view_disburse_client')
+            ->whereIn('id',$perform)
+            ->where('id','like',\UserSession::read()->sub_branch.'%')
+            ->orderBy('id', 'desc')->get();
         $arr = array();
         foreach ($data as $row) {
             $arr[$row->id] = $row->id . ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));

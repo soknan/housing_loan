@@ -328,8 +328,7 @@ class LoanPerformance
                     return $this;
                 }
 
-                if($this->_repayment['cur']['type'] == 'closing' or $this->_repayment['cur']['type'] == 'penalty'){
-                    if($this->_arrears['cur']['penalty'] == 0){
+                if($this->_repayment['cur']['type'] == 'closing'){
                         $this->error ='Your Current Account Already Closing on '.$row->activated_at;
                         $this->_repayment['cur']['type'] = 'normal';
 
@@ -349,25 +348,24 @@ class LoanPerformance
                         $this->_new_due['penalty'] = 0;
 
                         return $this;
-                    }else{
-                        $this->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
-                        //$this->_repayment['cur']['type'] = 'penalty';
-                        //$this->_due['date'] = '';
-                        $this->_due['num_day'] = 0;
-                        $this->_due['principal'] = 0;
-                        $this->_due['interest'] = 0;
-                        $this->_due['fee'] = 0;
-                        $this->_due['penalty'] = 0;
+                }
 
-                        $this->_new_due['date'] = '';
-                        $this->_new_due['num_day'] = 0;
-                        $this->_new_due['num_installment'] = 0;
-                        $this->_new_due['principal'] = 0;
-                        $this->_new_due['interest'] = 0;
-                        $this->_new_due['fee'] = 0;
-                        $this->_new_due['penalty'] = 0;
-                        return $this;
-                    }
+                if(($this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest'])<=0 and $this->_arrears['cur']['penalty']>0){
+
+                    //$this->_due['date'] = '';
+                    $this->_due['num_day'] = 0;
+                    $this->_due['principal'] = 0;
+                    $this->_due['interest'] = 0;
+                    $this->_due['fee'] = 0;
+                    $this->_due['penalty'] = 0;
+                    $this->_new_due['date'] = '';
+                    $this->_new_due['num_day'] = 0;
+                    $this->_new_due['num_installment'] = 0;
+                    $this->_new_due['principal'] = 0;
+                    $this->_new_due['interest'] = 0;
+                    $this->_new_due['fee'] = 0;
+                    $this->_new_due['penalty'] = 0;
+                    return $this;
                 }
 
                 if ($this->_isEqualDate($this->_activated_at, $row->activated_at)) {

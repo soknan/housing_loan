@@ -162,8 +162,8 @@ class RepaymentController extends BaseController
                         //}
                     }
                 }
-            }elseif(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0 and $totalArrears <=0){
-                //$data->error ='Repay on Penalty !.';
+            }elseif($data->_arrears['cur']['penalty'] > 0 and $totalArrears <=0){
+                $data->error ='Repay on Penalty !.';
                 $data->_repayment['cur']['type'] = 'penalty';
             }elseif($data->_repayment['cur']['type'] == 'closing'){
                 $data->_repayment['cur']['type'] = 'closing';
@@ -196,14 +196,14 @@ class RepaymentController extends BaseController
             }
 
             if(bccomp($principal,$totalArrears,4) == 1){
-                $data->__construct();
+                //$data->__construct();
                 $data->error = 'Your Repay Amount > Arrears Principal. Please Confirm before save.';
                 $data->_repayment['cur']['type'] = $status;
                 return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
             }
 
             if(bccomp($penalty,$data->_arrears['cur']['penalty'],4)==1){
-                $data->__construct();
+                //$data->__construct();
                 $data->error = 'Your Penalty Amount > Arrears Penalty.';
                 $data->_repayment['cur']['type'] = $status;
                 return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
@@ -221,31 +221,27 @@ class RepaymentController extends BaseController
                 }
             }
             if($status == 'penalty'){
-                if($data->_repayment['cur']['type'] == 'normal'){
-                    $data->error = 'Your Current Account is not Closing. Please Confirm before save.';
+                if($data->_arrears['cur']['penalty'] <=0){
+                    $data->error = 'Your Current Account is not Penalty. Please Confirm before save.';
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
-                }else{
-                    if($data->_arrears['cur']['penalty'] == 0){
-                        $data->error = 'Your Current Account no Penalty. Please Confirm before save.';
-                        $data->_repayment['cur']['type'] = $status;
-                        return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
-                    }
-                }
-            }else{
-                if($principal == 0 and $data->_arrears['cur']['penalty'] == 0){
-                    $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
+                }elseif($data->_arrears['cur']['penalty']>0 and $totalArrears>0){
+                    $data->error = 'You can not choose Penalty. Please Confirm before save.';
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
             }
 
-            if(($tmp_repay == 'closing' or $tmp_repay == 'penalty') and $totalArrears <=0){
-                if($status!='penalty'){
-                    $data->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
-                    $data->_repayment['cur']['type'] = 'penalty';
-                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
-                }
+            if($data->_arrears['cur']['penalty'] >0 and $totalArrears<=0){
+                $data->error = 'Your Current Type is Penalty. Please Confirm before save !.';
+                $data->_repayment['cur']['type'] = 'penalty';
+                return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+            }
+
+            if($principal == 0 and $data->_arrears['cur']['penalty'] == 0){
+                $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
+                $data->_repayment['cur']['type'] = $status;
+                return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
             }
 
             if($data->_disburse->cp_currency_id !=2){
@@ -254,7 +250,6 @@ class RepaymentController extends BaseController
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
             }
-
 
             $perform->repay(
                 Input::get('repayment_principal'),
@@ -376,7 +371,7 @@ class RepaymentController extends BaseController
                             //}
                         }
                     }
-                }elseif(($data->_repayment['cur']['type'] == 'closing' or $data->_repayment['cur']['type'] == 'penalty') and $data->_arrears['cur']['penalty'] > 0 and $totalArrears <=0){
+                }elseif($data->_arrears['cur']['penalty'] > 0 and $totalArrears <=0){
                     //$data->error ='Repay on Penalty !.';
                     $data->_repayment['cur']['type'] = 'penalty';
                 }elseif($data->_repayment['cur']['type'] == 'closing'){
@@ -439,31 +434,27 @@ class RepaymentController extends BaseController
                     }
                 }
                 if($status == 'penalty'){
-                    if($data->_repayment['cur']['type'] == 'normal'){
-                        $data->error = 'Your Current Account is not Closing. Please Confirm before save.';
+                    if($data->_arrears['cur']['penalty'] <=0){
+                        $data->error = 'Your Current Account is not Penalty. Please Confirm before save.';
                         $data->_repayment['cur']['type'] = $status;
                         return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
-                    }else{
-                        if($data->_arrears['cur']['penalty'] == 0){
-                            $data->error = 'Your Current Account no Penalty. Please Confirm before save.';
-                            $data->_repayment['cur']['type'] = $status;
-                            return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
-                        }
-                    }
-                }else{
-                    if($principal == 0 and $data->_arrears['cur']['penalty'] == 0){
-                        $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
+                    }elseif($data->_arrears['cur']['penalty']>0 and $totalArrears>0){
+                        $data->error = 'You can not choose Penalty. Please Confirm before save.';
                         $data->_repayment['cur']['type'] = $status;
                         return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                     }
                 }
 
-                if(($tmp_repay == 'closing' or $tmp_repay == 'penalty') and $totalArrears <=0){
-                    if($status!='penalty'){
-                        $data->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
-                        $data->_repayment['cur']['type'] = 'penalty';
-                        return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
-                    }
+                if($data->_arrears['cur']['penalty'] >0 and $totalArrears<=0){
+                    $data->error = 'Your Current Type is Penalty. Please Confirm before save !.';
+                    $data->_repayment['cur']['type'] = 'penalty';
+                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
+                }
+
+                if($principal == 0 and $data->_arrears['cur']['penalty'] == 0){
+                    $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
+                    $data->_repayment['cur']['type'] = $status;
+                    return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
 
                 if($data->_disburse->cp_currency_id !=2){
