@@ -55,7 +55,7 @@ class BackupRestoreController extends BaseController
                 'ln_perform'=>array('PEF','Perform',"id LIKE '[office]%'"),
             ),
             'user_action'=>array(
-                'cp_user_action'=>array('CUA','User Action',''),
+                'cp_user_action'=>array('CUA','User Action',"cp_office_id LIKE '[office]%'"),
             ),
         ),
         'cpanel'=>array(
@@ -71,7 +71,7 @@ class BackupRestoreController extends BaseController
                 'cp_workday'=>array('CWD','Workday'),
             ),
             'user_action'=>array(
-                'cp_user_action'=>array('CUA','User Action',''),
+                'cp_user_action'=>array('CUA','User Action',"cp_office_id LIKE '[office]%'"),
             ),
         )
     );
@@ -194,9 +194,12 @@ class BackupRestoreController extends BaseController
 
         $file_name_arr = explode("+", $file_name . ".zip");
         $zip_name_arr = explode("+", $zip_name);
+        /*var_dump($zip_name_arr);
+        var_dump($file_name_arr);
+        exit;*/
         //echo count($file_name_arr);
         for ($i = 0; $i < count($file_name_arr); $i++) {
-            if ($i == 1) {
+            if ($i === 1) {
                 continue;
             }
             if (trim($file_name_arr[$i]) != trim($zip_name_arr[$i])) {
@@ -271,8 +274,8 @@ class BackupRestoreController extends BaseController
         // delete data
         foreach ($value["branch"] as $office) {
             $where = "";
-            if (isset($this->tableNames[$opt][$table][2])) {
-                $where = " WHERE " . str_replace('[office]', $office, $this->tableNames[$opt][$table][2]);
+            if (isset($this->tableNames[\UserSession::read()->package][$opt][$table][2])) {
+                $where = " WHERE " . str_replace('[office]', $office, $this->tableNames[\UserSession::read()->package][$opt][$table][2]);
             }
             $delete = "\n\n DELETE FROM " . $table . " " . $where . ";";
             $return .= $delete;
@@ -287,7 +290,7 @@ class BackupRestoreController extends BaseController
                 }
             }
 
-            if (!isset($this->tableNames[$table][2])) {
+            if (!isset($this->tableNames[\UserSession::read()->package][$opt][$table][2])) {
                 break;
             }
         }
@@ -296,7 +299,7 @@ class BackupRestoreController extends BaseController
 
     public function getData(){
         return array(
-            'branch'=>array(\UserSession::read()->sub_branch),
+            'branch'=>Input::get('branch'),
             'package'=>\UserSession::read()->package,
             'table'=>Input::get('table'),
         );

@@ -40,7 +40,10 @@ echo FormPanel2::make(
         ->options(LookupValueList::getBy('geography'))
         ->required()
         ->placeholder('- Select One -')
-    ,
+    ,Former::select('cp_office_id', 'Branch Office')
+        ->options(\GetLists::getSubBranchList())
+        ->required()
+        ->placeholder('- Select One -') . ''.
     Former::textarea('address', 'Address')
         ->required() . ''
 );

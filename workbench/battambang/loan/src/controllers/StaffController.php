@@ -163,7 +163,8 @@ class StaffController extends BaseController
     public function getDatatable()
     {
         $item = array('id', 'en_name', 'kh_name', 'gender_name','dob','title_code', 'office_en_name');
-        $arr = DB::table('view_staff');
+        $arr = DB::table('view_staff')
+            ->where('cp_office_id','=',\UserSession::read()->sub_branch);
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

@@ -145,7 +145,6 @@ class CenterController extends BaseController
     {
         if ($store) {
             $data->id = \AutoCode::make('ln_center', 'id', \UserSession::read()->sub_branch . '-', 3);
-            $data->cp_office_id = \UserSession::read()->sub_branch;
         }
         $data->name = Input::get('name');
         $data->meeting_weekly = Input::get('meeting_weekly');
@@ -156,6 +155,7 @@ class CenterController extends BaseController
         $data->address = Input::get('address');
         $data->des = Input::get('des');
         $data->ln_staff_id = Input::get('ln_staff_id');
+        $data->cp_office_id = Input::get('cp_office_id');
         $data->save();
 
 
@@ -180,7 +180,8 @@ class CenterController extends BaseController
     public function getDatatable()
     {
         $item = array('id','joining_date', 'center_name', 'meeting_weekly_name', 'meeting_monthly_name', 'staff_kh_last_name','staff_kh_first_name');
-        $arr = DB::table('view_center');
+        $arr = DB::table('view_center')
+            ->where('id','like',\UserSession::read()->sub_branch.'%');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

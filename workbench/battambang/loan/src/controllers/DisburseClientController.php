@@ -375,7 +375,7 @@ class DisburseClientController extends BaseController
     public function getDatatable($disburse)
     {
         $item = array('id', 'ln_disburse_id', 'center_name', 'product_name', 'amount', 'currency_code', 'voucher_id', 'cycle', 'client_en_name');
-        $arr = DB::table('view_disburse_client')->where('ln_disburse_id', '=', $disburse);
+        $arr = DB::table('view_disburse_client')->where('ln_disburse_id', '=', $disburse)->where('id','like',\UserSession::read()->sub_branch.'%');;
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

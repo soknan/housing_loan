@@ -525,7 +525,10 @@ class RepaymentController extends BaseController
     public function getDatatable()
     {
         $item = array('repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty');
-        $arr = DB::table('ln_perform')->where('perform_type', '=', 'repayment')->orderBy('activated_at', 'DESC');
+        $arr = DB::table('ln_perform')
+            ->where('perform_type', '=', 'repayment')
+            ->where('id','like',\UserSession::read()->sub_branch.'%')
+            ->orderBy('activated_at', 'DESC');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

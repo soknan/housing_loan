@@ -153,7 +153,9 @@ class RptScheduleController extends BaseController{
         foreach (Perform::all() as $row) {
             $perform[] = $row->ln_disburse_client_id;
         }
-        $data = DB::table('view_disburse_client')->whereIn('id',$perform)->orderBy('id', 'desc')->get();
+        $data = DB::table('view_disburse_client')
+            ->whereIn('id',$perform)->where('id','like',\UserSession::read()->sub_branch.'%')
+            ->orderBy('id', 'desc')->get();
         $arr = array();
         foreach ($data as $row) {
             $arr[$row->id] = $row->id . ' || ' . $row->client_kh_name . ' || ' . date('d-M-Y', strtotime($row->disburse_date));
