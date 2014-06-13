@@ -41,7 +41,7 @@ class BaseController extends Controller
         if (UserSession::read()->package) {
             $tmp = ' <a class="navbar-brand" href="' . route('cpanel.package.home') . '">';
             $tmp .= Config::get('battambang/cpanel::package.' . UserSession::read()->package . '.name');
-            $tmp.= ' ['.\Battambang\Cpanel\Office::find(\UserSession::read()->sub_branch)->en_short_name.']';
+            $tmp.= ' [ '.\Battambang\Cpanel\Office::find(\UserSession::read()->sub_branch)->en_short_name.' ]';
             $tmp .= '</a>';
         } else {
             $tmp = '<a class="navbar-brand" href="' . route('cpanel.package') . '">Microfis</a>';

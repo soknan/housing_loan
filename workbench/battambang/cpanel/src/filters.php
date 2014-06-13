@@ -68,38 +68,22 @@ Route::filter('guest.cpanel', function()
 
 Route::filter('package.cpanel', function()
 {
-/*    if (!(UserSession::read()->package) or ( Route::currentRouteName() != 'cpanel.package.home' and !(Str::startsWith(URL::current(), Config::get('battambang/cpanel::package.'.UserSession::read()->package.'.url'))))) return Redirect::to('cpanel/package');
-
-    list($prefix,$module,$rule) = explode('.',Route::currentRouteName());
-
-    switch($rule){
-        case 'index':
-        case 'show':
-        case 'report':
-            $userRule = 'show';
-            break;
-        case 'create':
-        case 'store':
-            $userRule = 'add';
-            break;
-        case 'edit':
-        case 'update':
-            $userRule = 'edit';
-            break;
-        case 'destroy':
-        case 'delete':
-            $userRule = 'delete';
-            break;
-        default:
-            $userRule = $module;
-            break;
-    }
-
-    if(!GetLists::hasPermissions($module,$userRule)){
-        try{
-            return Redirect::back()->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
-        }catch (Exception $e){
-            return Redirect::route('cpanel.package.home')->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
-        }
-    }*/
+//    $routeNameTem = Route::current()->getName();
+//    list($prefix, $resource, $action)=explode('.', $routeNameTem);
+//    switch($action){
+//        case 'store':
+//            $routeName=$prefix.'.'.$resource.'.create';
+//            break;
+//        case 'update':
+//            $routeName=$prefix.'.'.$resource.'.edit';
+//            break;
+//        default:
+//            $routeName=$routeNameTem;
+//            break;
+//    }
+//
+//    if(!in_array($routeName, UserSession::read()->permission)){
+//        return Redirect::back()
+//            ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
+//    }
 });

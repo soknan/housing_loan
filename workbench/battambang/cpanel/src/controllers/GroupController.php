@@ -134,7 +134,7 @@ class GroupController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('id', 'name', 'package', 'branch_arr', 'permission_arr');
+        $item = array('id', 'name', 'package', 'branch_arr');
         $arr = \DB::table('cp_group');
         return \Datatable::query($arr)
             ->addColumn(
@@ -148,6 +148,9 @@ class GroupController extends BaseController
                 }
             )
             ->showColumns($item)
+            ->addColumn('permission_arr', function($model){
+                    return implode(', ', json_decode($model->permission_arr, true));
+                })
             ->searchColumns($item)
             ->orderColumns($item)
             ->make();

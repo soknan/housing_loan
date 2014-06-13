@@ -23,7 +23,8 @@ class GetLists
     {
         $arr = array();
         $data = DB::select(
-            'SELECT * FROM cp_user INNER JOIN cp_group on cp_user.cp_group_id=cp_group.id where cp_user.id ="' . Auth::user()->id . '"'
+            'SELECT * FROM cp_user INNER JOIN cp_group on cp_user.cp_group_id=cp_group.id where cp_user.id ="' . Auth::user(
+            )->id . '"'
         );
 
         if ($data) {
@@ -290,21 +291,35 @@ class GetLists
         return $arr;
     }
 
+//    public function getAllMenuList($where)
+//    {
+//        $getPackageMenu = Config::get('battambang/cpanel::package.' . $where . '.menu');
+//        $arr = array();
+//        foreach ($getPackageMenu as $value) {
+//            if (starts_with($value, 'rpt')) {
+//                $arr[ucwords(str_replace('_', ' ', $value))] = array($value . '.show' => 'Show');
+//            } else {
+//                $arr[ucwords(str_replace('_', ' ', $value))] = array(
+//                    $value . '.show' => 'Show',
+//                    $value . '.add' => 'Add',
+//                    $value . '.edit' => 'Edit',
+//                    $value . '.delete' => 'Delete',
+//                );
+//            }
+//        }
+//        return $arr;
+//    }
+
     public function getAllMenuList($where)
     {
         $getPackageMenu = Config::get('battambang/cpanel::package.' . $where . '.menu');
         $arr = array();
-        foreach ($getPackageMenu as $value) {
-            if (starts_with($value, 'rpt')) {
-                $arr[ucwords(str_replace('_', ' ', $value))] = array($value . '.show' => 'Show');
-            } else {
-                $arr[ucwords(str_replace('_', ' ', $value))] = array(
-                    $value . '.show' => 'Show',
-                    $value . '.add' => 'Add',
-                    $value . '.edit' => 'Edit',
-                    $value . '.delete' => 'Delete',
-                );
+        foreach ($getPackageMenu as $gKey => $gValue) {
+            $arrList = array();
+            foreach ($gValue as $key => $value) {
+                $arrList[$key] = ucwords($value);
             }
+            $arr[ucwords($gKey)] = $arrList;
         }
         return $arr;
     }
@@ -313,20 +328,34 @@ class GetLists
     {
         $getPackageMenu = Config::get('battambang/cpanel::package.' . $where . '.menu');
         $arr = '';
-        foreach ($getPackageMenu as $value) {
-            $arr .= '<optgroup label="' . ucwords(str_replace('_', ' ', $value)) . '">';
-            if (starts_with($value, 'rpt')) {
-                $arr .= '<option value="' . $value . '.show">Show</option>';
-            } else {
-                $arr .= '<option value="' . $value . '.show">Show</option>';
-                $arr .= '<option value="' . $value . '.add">Add</option>';
-                $arr .= '<option value="' . $value . '.edit">Edit</option>';
-                $arr .= '<option value="' . $value . '.delete">Delete</option>';
+        foreach ($getPackageMenu as $gKey => $gValue) {
+            $arr .= '<optgroup label="' . ucwords($gKey) . '">';
+            foreach ($gValue as $key => $value) {
+                $arr .= '<option value="' . $key . '.show">' . ucwords($value) . '</option>';
             }
             $arr .= '</optgroup>';
         }
         return $arr;
     }
+
+//    public function getAllMenuListAjax($where)
+//    {
+//        $getPackageMenu = Config::get('battambang/cpanel::package.' . $where . '.menu');
+//        $arr = '';
+//        foreach ($getPackageMenu as $value) {
+//            $arr .= '<optgroup label="' . ucwords(str_replace('_', ' ', $value)) . '">';
+//            if (starts_with($value, 'rpt')) {
+//                $arr .= '<option value="' . $value . '.show">Show</option>';
+//            } else {
+//                $arr .= '<option value="' . $value . '.show">Show</option>';
+//                $arr .= '<option value="' . $value . '.add">Add</option>';
+//                $arr .= '<option value="' . $value . '.edit">Edit</option>';
+//                $arr .= '<option value="' . $value . '.delete">Delete</option>';
+//            }
+//            $arr .= '</optgroup>';
+//        }
+//        return $arr;
+//    }
 
     public function getAllPermissionList()
     {

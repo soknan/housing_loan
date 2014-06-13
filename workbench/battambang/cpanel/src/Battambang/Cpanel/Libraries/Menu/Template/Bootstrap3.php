@@ -9,6 +9,8 @@
 namespace Battambang\Cpanel\Libraries\Menu\Template;
 
 
+use Battambang\Cpanel\Libraries\Menu\Menu;
+
 class Bootstrap3
 {
     public function menu($menu)
@@ -46,15 +48,23 @@ class Bootstrap3
         return $tmp;
     }
 
-    public function link($title, $url, $icon = null)
+    public function link($title, $url, $icon = null, $filter)
     {
-        // Check active link
-        $active = '';
-        if (\URL::current() == $url) {
-            $active = ' class="active"';
+        // Set class
+        $class = '';
+
+        // Check filter
+        if (in_array($url, $filter)) {
+            $class = ' class="disabled"';
+            $url = '#';
+        } else {
+            if (\URL::current() == $url) {
+                $class = ' class="active"';
+            }
         }
+
         $icon = $this->getIcon($icon);
-        $tmp = '<li' . $active . '><a href="' . $url . '">' . $icon . $title . '</a></li>';
+        $tmp = '<li' . $class . '><a href="' . $url . '">' . $icon . $title . '</a></li>';
 
         return $tmp;
     }

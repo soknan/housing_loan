@@ -6,19 +6,51 @@ return array(
         'namespace' => 'battambang/cpanel',
         'author' => 'battambang',
         'url' => URL::to('cpanel'),
-        'menu'=> array('group','user','company','office','workday','decode')
+        'menu' => array(
+            'company' => array(
+                'cpanel.company.edit' => 'edit'
+            ),
+            'office' => array(
+                'cpanel.office.index' => 'list',
+                'cpanel.office.create' => 'create',
+                'cpanel.office.edit' => 'edit',
+                'cpanel.office.destroy' => 'delete'
+            ),
+            'work day' => array(
+                'cpanel.workday.index' => 'list',
+                'cpanel.workday.create' => 'create',
+                'cpanel.workday.edit' => 'edit',
+                'cpanel.workday.destroy' => 'delete'
+            ),
+            'decode' => array(
+                'cpanel.decode.index' => 'create'
+            ),
+            'group' => array(
+                'cpanel.group.index' => 'list',
+                'cpanel.group.create' => 'create',
+                'cpanel.group.edit' => 'edit',
+                'cpanel.group.destroy' => 'delete',
+            ),
+            'user' => array(
+                'cpanel.user.index' => 'list',
+                'cpanel.user.create' => 'create',
+                'cpanel.user.edit' => 'edit',
+                'cpanel.user.destroy' => 'delete',
+            ),
+        )
     ),
     'loan' => array(
         'name' => 'Loan System',
         'namespace' => 'battambang/loan',
         'author' => 'loan',
         'url' => URL::to('loan'),
-        'menu'=>array(
-            'client','disburse','disburse_client','repayment','write_off',
-            'category','product','center','staff','fund','holiday','exchange','fee','penalty','penalty_closing',
-            'rpt_schedule','rpt_disburse_client','rpt_loan_out','rpt_loan_repay','rpt_loan_finish','rpt_collection_sheet','rpt_loan_history',
-            'rpt_write_off_in','rpt_write_off_end','rpt_breakdown_currency','rpt_breakdown_purpose','rpt_nbc_7','rpt_nbc_11',
-            'backup','restore'
+        'menu' => array(
+            'client'=>array(
+                'loan.client.index'=>'list',
+                'loan.client.create'=>'create',
+                'loan.client.edit'=>'edit',
+                'loan.client.destroy'=>'delete',
+            ),
         )
     ),
 );

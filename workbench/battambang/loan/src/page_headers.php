@@ -251,6 +251,13 @@ PageHeader::make(
     }
 );
 PageHeader::make(
+    'loan.disburse.attach_file',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('Attachment File');
+    }
+);
+PageHeader::make(
     'loan.disburse_client.index',
     function (PageHeardItem $header) {
         $header->iconList();

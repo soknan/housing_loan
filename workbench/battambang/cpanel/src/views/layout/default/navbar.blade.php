@@ -9,7 +9,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                {{ $package}}
+                {{ $package }}
                 @if (Auth::check())
                 <div class="btn-toolbar topnav">
                     <div>

@@ -200,6 +200,14 @@ Breadcrumbs::register(
         $bc->push('Edit', URL::route('loan.disburse.edit'));
     }
 );
+Breadcrumbs::register(
+    'loan.disburse.attach_file',
+    function ($bc) {
+        $bc->parent('loan.disburse.index');
+        $bc->push('Add Attachment File', URL::route('loan.disburse.attach_file'));
+    }
+);
+
 // Disbursement Client
 Breadcrumbs::register(
     'loan.disburse_client.index',
