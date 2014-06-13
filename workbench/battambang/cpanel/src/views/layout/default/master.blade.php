@@ -6,10 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="favicon.png">
+    <link rel="shortcut icon" href="<?php echo url::to('icon.ico')?>">
 
     <title><?php echo isset($title) ? $title : ''; ?></title>
-
     <!-- jscal -->
     {{ HTML::style('packages/battambang/cpanel/jscal/css/jscal2.css') }}
     {{ HTML::style('packages/battambang/cpanel/jscal/css/border-radius.css') }}

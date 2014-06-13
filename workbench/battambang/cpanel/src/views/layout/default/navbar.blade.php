@@ -42,9 +42,9 @@
                     <?php
                     if (UserSession::read()->package) {
                         echo Menu::get(array('home', UserSession::read()->package));
-                        if (UserSession::read()->package == 'loan') {
+                        //if (UserSession::read()->package == 'loan') {
                             echo Menu::get(array('tool'));
-                        }
+                        //}
                     }
                     ?>
                     <!--                    </ul>-->

@@ -10,7 +10,6 @@ Menu::make(
 Menu::make(
     'cpanel',
     function ($menu) {
-
         // Manage Data
         $menu->add(
             'Manage Data',
