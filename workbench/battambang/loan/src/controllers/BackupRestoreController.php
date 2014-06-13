@@ -7,6 +7,7 @@
  */
 
 namespace Battambang\Loan;
+use Battambang\Cpanel\Libraries\UserSession;
 use Chumper\Zipper\Zipper;
 use Input,
     Redirect,
@@ -17,78 +18,121 @@ use Battambang\Cpanel\BaseController;
 
 class BackupRestoreController extends BaseController
 {
+    public $table = array(
+        'loan'=>array(
+            'general'=>'General',
+            'setting'=>'Setting',
+            'user_action'=>'User Logs'
+        ),
+        'cpanel'=>array(
+            'default'=>'Default',
+            'user_action'=>'User Logs'
+        )
+    );
     public $tableNames = array(
-        'ln_category'=>array('PCG','Product Category'),
-        'ln_center'=>array('CET','Center',"id LIKE '[office]%'"),
-        'ln_client'=>array('CLN','Client',"id LIKE '[office]%'"),
-        'ln_disburse'=>array('DIS','Disbursement',"id LIKE '[office]%'"),
-        'ln_disburse_client'=>array('DISC','Disburse Client',"id LIKE '[office]%'"),
-        'ln_exchange'=>array('EXR','Exchange Rate'),
-        'ln_fee'=>array('FEE','FEE'),
-        'ln_fund'=>array('FND','Fund'),
-        'ln_holiday'=>array('HLD','Holiday'),
-        'ln_lookup'=>array('LOK','Lookup'),
-        'ln_lookup_value'=>array('LOV','Lookup Value'),
-        'ln_payment_status'=>array('PST','Payment Status'),
-        'ln_penalty'=>array('PNT','Penalty'),
-        'ln_penalty_closing'=>array('PTC','Penalty Closing'),
-        'ln_perform'=>array('PEF','Perform',"id LIKE '[office]%'"),
-        'ln_product'=>array('PRO','Product'),
-        'ln_product_status'=>array('PRS','Product Status'),
-        'ln_schedule'=>array('SCD','Schedule',"id LIKE '[office]%'"),
-        'ln_schedule_dt'=>array('SCD','Schedule Detail',"id LIKE '[office]%'"),
-        'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
+        'loan'=>array(
+            'setting'=>array(
+                'ln_lookup'=>array('LOK','Lookup'),
+                'ln_lookup_value'=>array('LOV','Lookup Value'),
+                'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
+                'ln_center'=>array('CET','Center',"id LIKE '[office]%'"),
+                'ln_fee'=>array('FEE','FEE'),
+                'ln_fund'=>array('FND','Fund'),
+                'ln_holiday'=>array('HLD','Holiday'),
+                'ln_penalty'=>array('PNT','Penalty'),
+                'ln_penalty_closing'=>array('PTC','Penalty Closing'),
+                'ln_payment_status'=>array('PST','Payment Status'),
+                'ln_product_status'=>array('PRS','Product Status'),
+                'ln_category'=>array('PCG','Product Category'),
+                'ln_product'=>array('PRO','Product'),
+            ),
+            'general'=>array(
+                'ln_client'=>array('CLN','Client',"id LIKE '[office]%'"),
+                'ln_disburse'=>array('DIS','Disbursement',"id LIKE '[office]%'"),
+                'ln_disburse_client'=>array('DISC','Disburse Client',"id LIKE '[office]%'"),
+                'ln_schedule'=>array('SCD','Schedule',"id LIKE '[office]%'"),
+                 'ln_schedule_dt'=>array('SCD','Schedule Detail',"id LIKE '[office]%'"),
+                'ln_perform'=>array('PEF','Perform',"id LIKE '[office]%'"),
+            ),
+            'user_action'=>array(
+                'cp_user_action'=>array('CUA','User Action',''),
+            ),
+        ),
+        'cpanel'=>array(
+            'default'=>array(
+                'cp_lookup'=>array('CLK','Lookup'),
+                'cp_lookup_value'=>array('CLU','Lookup Value'),
+                'cp_location'=>array('CLC','Location'),
+                'cp_company'=>array('CCN','Company'),
+                'cp_office'=>array('CFF','Branch Office'),
+                'cp_currency'=>array('CCC','Currency'),
+                'cp_group'=>array('CGR','Group'),
+                'cp_user'=>array('CUS','User'),
+                'cp_workday'=>array('CWD','Workday'),
+            ),
+            'user_action'=>array(
+                'cp_user_action'=>array('CUA','User Action',''),
+            ),
+        )
     );
     public $databaseType = array(
         'loan'=>array(
-            array(
+            'setting'=>array(
                 'ln_lookup',
                 'ln_lookup_value',
-                'ln_payment_status',
-                'ln_penalty',
-                'ln_penalty_closing',
-                'ln_product_status',
-                'ln_category',
-                'ln_exchange',
+                'ln_staff',
+                'ln_center',
                 'ln_fee',
                 'ln_fund',
                 'ln_holiday',
-                'ln_staff',
+                'ln_penalty',
+                'ln_penalty_closing',
+                'ln_payment_status',
+                'ln_product_status',
+                'ln_category',
                 'ln_product',
             ),
-            array(
-                'ln_center',
+            'general'=>array(
                 'ln_client',
                 'ln_disburse',
                 'ln_disburse_client',
-                'ln_perform',
                 'ln_schedule',
                 'ln_schedule_dt',
+                'ln_perform',
+            ),
+            'user_action'=>array(
+                'cp_user_action',
             ),
 
         ),
         'cpanel'=>array(
-            'cp_company',
-            'cp_currency',
-            'cp_group',
-            'cp_location',
-            'cp_location',
-            'cp_lookup',
-            'cp_lookup_value',
-            'cp_office',
-            'cp_user',
-            'cp_workday',
+            'default'=>array(
+                'cp_lookup',
+                'cp_lookup_value',
+                'cp_location',
+                'cp_company',
+                'cp_office',
+                'cp_currency',
+                'cp_group',
+                'cp_user',
+                'cp_workday',
+            ),
+            'user_action'=>array(
+                'cp_user_action',
+            ),
         ),
+
     );
 
     public function indexBackup(){
-        $data['table']= $this->getTableList(\UserSession::read()->package);
+        $data['table'] = $this->table[\UserSession::read()->package];
         return $this->renderLayout(
             View::make('battambang/loan::backup_restore.backup',$data)
         );
     }
     public function indexRestore(){
-        $data['table']= $this->getTableList(\UserSession::read()->package);
+        //$data['table']= $this->getTableList(\UserSession::read()->package);
+        $data['table'] = $this->table[\UserSession::read()->package];
         return $this->renderLayout(
             View::make('battambang/loan::backup_restore.restore',$data)
         );
@@ -108,17 +152,18 @@ class BackupRestoreController extends BaseController
     {
         $return = "";
         $table_type = array();
-
-        foreach ($values["table"] as $table) {
-            $table_type[] = $this->getTableCode($table);
-            $return .= $this->getBackupScript($values, $table);
+        foreach ($values['table'] as $opt) {
+            //$table_type[]= $this->getTableCode($opt);
+            foreach ($this->tableNames[\UserSession::read()->package][$opt] as $key=>$table) {
+                $return .= $this->getBackupScript($values, $key,$opt);
+            }
         }
 
-        $return = "-- Microfis SQL Backup/Restore \n-- Version 2.0 \n-- Generation Time: " . date("Y-M-d h:i:s A") . "\n-- Database: " . ucfirst($values["package"]). "\n-- Branch Office: " . implode(", ", $values["branch"]) . "\n-- Tables Type: " . implode(", ", $table_type) . " \n-- Developed by: Battambang IT Team. \n \n-- --------------------------------------------------------;" . $return;
+        $return = "-- Microfis SQL Backup/Restore \n-- Version 2.0 \n-- Generation Time: " . date("Y-M-d h:i:s A") . "\n-- Database: " . ucfirst($values["package"]). "\n-- Branch Office: " . implode(", ", $values["branch"]) . "\n-- Tables Type: " . implode(", ", $values['table']) . " \n-- Developed by: Battambang IT Team. \n \n-- --------------------------------------------------------;" . $return;
         //$this->load->helper("file");
 
         $file_name = ucfirst($values["package"]);
-        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $table_type);
+        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values['table']);
 
         \File::put($file_name . '.sql', $return);
 
@@ -135,11 +180,11 @@ class BackupRestoreController extends BaseController
     public function restore($values,$err = "Invalid File Name.")
     {
         $table_type = array();
-        foreach ($values["table"] as $table) {
+        /*foreach ($values["table"] as $table) {
             $table_type[] = $this->getTableCode($table);
-        }
+        }*/
         $file_name = ucfirst($values["package"]);
-        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $table_type);
+        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values["table"]);
 
         $file_to_restore = $_FILES['file_to_restore'];
 
@@ -205,7 +250,7 @@ class BackupRestoreController extends BaseController
         return Redirect::back()->with('success','Restored OK !');
     }
 
-    public function getBackupScript($value, $table)
+    public function getBackupScript($value, $table,$opt)
     {
         $return = "\n\n--\n-- Backup Table: " . $table . "\n--;";
         // create table
@@ -226,8 +271,8 @@ class BackupRestoreController extends BaseController
         // delete data
         foreach ($value["branch"] as $office) {
             $where = "";
-            if (isset($this->tableNames[$table][2])) {
-                $where = " WHERE " . str_replace('[office]', $office, $this->tableNames[$table][2]);
+            if (isset($this->tableNames[$opt][$table][2])) {
+                $where = " WHERE " . str_replace('[office]', $office, $this->tableNames[$opt][$table][2]);
             }
             $delete = "\n\n DELETE FROM " . $table . " " . $where . ";";
             $return .= $delete;
@@ -251,8 +296,8 @@ class BackupRestoreController extends BaseController
 
     public function getData(){
         return array(
-            'branch'=>Input::get('branch'),
-            'package'=>Input::get('package'),
+            'branch'=>array(\UserSession::read()->sub_branch),
+            'package'=>\UserSession::read()->package,
             'table'=>Input::get('table'),
         );
     }
@@ -261,7 +306,10 @@ class BackupRestoreController extends BaseController
     {
         if (isset($this->tableNames[$table])) {
             //return $this->tableNames[$table][0] . " - " . $this->tableNames[$table][1];
-            return $this->tableNames[$table][1];
+            //return $this->tableNames[$table][0];
+            foreach ($this->tableNames[$table] as $key=>$val) {
+                $tmp[]=$val[1];
+            }
         }
         return "OOO - " . $table;
     }
@@ -269,10 +317,14 @@ class BackupRestoreController extends BaseController
     public function getTableCode($table)
     {
         if (isset($this->tableNames[$table])) {
-            return $this->tableNames[$table][0];
+            foreach ($this->tableNames[$table] as $key=>$val) {
+                    $tmp[]=$key;
+            }
+            return $tmp;
         }
         return "OOO";
     }
+
     public function getTableList($db_type = "", $echo = TRUE){
         $arr = array();
         if ($db_type == "") {

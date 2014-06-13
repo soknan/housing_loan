@@ -332,7 +332,8 @@ class LoanPerformance
                     if($this->_arrears['cur']['penalty'] == 0){
                         $this->error ='Your Current Account Already Closing on '.$row->activated_at;
                         $this->_repayment['cur']['type'] = 'normal';
-                        //$this->_due['date'] = '';
+
+                        $this->_due['date'] = '';
                         $this->_due['num_day'] = 0;
                         $this->_due['principal'] = 0;
                         $this->_due['interest'] = 0;
@@ -346,7 +347,7 @@ class LoanPerformance
                         $this->_new_due['interest'] = 0;
                         $this->_new_due['fee'] = 0;
                         $this->_new_due['penalty'] = 0;
-                        //$this->__construct();
+
                         return $this;
                     }else{
                         $this->error ='Your Current Account Already Closing, But you still have penalty. You must choose Penalty status.';
@@ -382,6 +383,19 @@ class LoanPerformance
                         }
                         //Accrued interest
                         $this->_getAccrueInt();
+                        //Penalty
+                        $this->_last_perform_date = $row->activated_at;
+                        if ($this->_isDate($this->_arrears['cur']['date'])) {
+                            $this->_arrears['last']['date'] = $this->_arrears['cur']['date'];
+                            $this->_arrears['last']['num_day'] = $this->_arrears['cur']['num_day'];
+                            $this->_arrears['last']['num_installment'] = $this->_arrears['cur']['num_installment'];
+                            $this->_arrears['last']['principal'] = $this->_arrears['cur']['principal'];
+                            $this->_arrears['last']['interest'] = $this->_arrears['cur']['interest'];
+                            $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
+                            $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
+                        }
+                        $this->_new_due['penalty'] = $this->_getLastArreasPen();
+                        $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
                         return $this;
                     }
 
@@ -406,13 +420,13 @@ class LoanPerformance
                     $this->_new_due['fee'] = 0;
                     $this->_new_due['penalty'] = 0;
 
-                    $this->_arrears['cur']['date'] = '';
+                    /*$this->_arrears['cur']['date'] = '';
                     $this->_arrears['cur']['num_day'] = 0;
                     $this->_arrears['cur']['num_installment'] = 0;
                     $this->_arrears['cur']['principal'] = 0;
                     $this->_arrears['cur']['interest'] = 0;
                     $this->_arrears['cur']['fee'] = 0;
-                    $this->_arrears['cur']['penalty'] = 0;
+                    $this->_arrears['cur']['penalty'] = 0;*/
 
                     return $this;
                 }
@@ -424,6 +438,7 @@ class LoanPerformance
                     $this->_new_due['penalty'] = 0;
                     $this->_new_due['num_day']=0;
                     $this->_new_due['num_installment']=0;
+
 
                     //Maturity Date is over
                     if ($this->_endOfDate($this->_activated_at) > $this->_endOfDate($this->_maturity_date)) {
@@ -452,8 +467,8 @@ class LoanPerformance
                         $this->error = 'Now you are on maturity date '.$this->_maturity_date.'';
                         return $this;
                     }
-
                     $this->getPerform();
+
                 }
             }
 
@@ -552,15 +567,15 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $pen =0;
         $num =0;
 
-        $this->_arrears['last']['date'] = '';
+        /*$this->_arrears['last']['date'] = '';
         $this->_arrears['last']['num_day'] = 0;
         $this->_arrears['last']['num_installment'] =0;
         $this->_arrears['last']['principal'] = 0;
         $this->_arrears['last']['interest'] = 0;
         $this->_arrears['last']['fee'] = 0;
-        $this->_arrears['last']['penalty'] = 0;
+        $this->_arrears['last']['penalty'] = 0;*/
 
-        if ($this->_isDate($this->_arrears['cur']['date'])) {
+        //if ($this->_isDate($this->_arrears['cur']['date'])) {
             $this->_arrears['last']['date'] = $this->_arrears['cur']['date'];
             $this->_arrears['last']['num_day'] = $this->_arrears['cur']['num_day'];
             $this->_arrears['last']['num_installment'] = $this->_arrears['cur']['num_installment'];
@@ -568,7 +583,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             $this->_arrears['last']['interest'] = $this->_arrears['cur']['interest'];
             $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
             $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
-        }
+        //}
 
         if($this->_isDate($this->_due['date'])){
             $this->_last_due['date'] = $this->_due['date'];
@@ -580,16 +595,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $data = $this->_getSchedule($this->_endOfDate($this->_last_perform_date), $this->_endOfDate($this->_activated_at));
         //$dataPen = Penalty::where('id', '=', $this->_disburse->ln_penalty_id)->limit(1)->orderBy('id','desc')->first();
         $lnumDay=0;
-
-        if($this->_isDate($this->_arrears['cur']['date']) ){
-            // Arrears
-            $re_data = $this->_getSchedule($this->_endOfDate($this->_arrears['cur']['date']), $this->_endOfDate($this->_activated_at));
-            foreach ($re_data as $k=>$r) {
-                $lnumDay = $this->_countDate($r->due_date,$this->_activated_at);
-                $pen+= $this->_getPenalty($r->principal + $r->interest,$lnumDay);
-            }
-        }
-
+        $pen = $this->_getLastArreasPen();
         if ($data->count() > 0) {
             foreach ($data as $key => $row) {
                 $this->_activated_num_installment = $row->index;
@@ -649,6 +655,34 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         }
     }
 
+    private function _getLastArreasPen(){
+        $pen=0;
+        if($this->_isDate($this->_arrears['cur']['date'])){
+            // Arrears
+            $sch = Schedule::join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')
+                ->where('ln_disburse_client_id', '=', $this->_disburse_client_id)
+                ->where('due_date', '>=', $this->_arrears['cur']['date'])
+                ->where('due_date', '<=', $this->_endOfDate($this->_last_perform_date))
+                ->get();
+
+            $cPen=0;
+            foreach ($sch as $j=> $value) {
+                if($j >= 1){
+                    $cPen += $value->principal+$value->interest;
+                }
+            }
+            foreach ($sch as $key=>$row) {
+                $tmp_p = $row->principal + $row->interest;
+                if($key == 0){
+                        $tmp_p = ($this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest']) - $cPen;
+                    }
+                $lnumDay = $this->_countDate($row->due_date,$this->_activated_at);
+                $pen+= $this->_getPenalty($tmp_p,$lnumDay);
+            }
+        }
+        return $pen;
+    }
+
     private function _getAccrueInt(){
         $rate_type = 30;
         $renum = 0;
@@ -695,6 +729,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $penalty = 0;
         if($curNum > $dataPen->grace_period){
             $penalty = \Currency::round($this->_disburse->cp_currency_id,(($amount * $curNum * $dataPen->amount) / 100));
+            //$penalty = ($amount * $curNum * $dataPen->amount) / 100;
         }
         return $penalty;
     }
@@ -767,7 +802,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $tmp_principal = $principal;
         $this->_perform_type = 'repayment';
 
-        if ($this->_isDate($this->_repayment['cur']['date'])) {
+        /*if ($this->_isDate($this->_repayment['cur']['date'])) {
             $this->_repayment['last']['date'] = $this->_repayment['cur']['date'];
             $this->_repayment['last']['voucher_id'] = $this->_repayment['cur']['voucher_id'];
             $this->_repayment['last']['status'] = $this->_repayment['cur']['status'];
@@ -775,7 +810,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             $this->_repayment['last']['interest'] = $this->_repayment['cur']['interest'];
             $this->_repayment['last']['penalty'] = $this->_repayment['cur']['penalty'];
             $this->_repayment['last']['type'] = $this->_repayment['cur']['type'];
-        }
+        }*/
 
         $total = $this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest'];
 
@@ -785,7 +820,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $arrearsInt =0;
                 $arrearsIndex =1;
                 $arrearsDate ='';
-                if((float)$principal == (float)$total){
+                if(round($principal,2) == round($total,2)){
                     if($this->_isEqualDate($this->_activated_at,$this->_maturity_date) or $this->_activated_at >= $this->_maturity_date){
                         $option = 'closing';
                     }
@@ -1045,12 +1080,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
                 $this->_arrears['cur']['fee']=0;
                 $this->_arrears['cur']['principal']=0;
-        }
-    }
-
-    public function addWriteOff(){
-        if($this->_arrears['cur']['num_day']){
-
         }
     }
 

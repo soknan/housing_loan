@@ -295,7 +295,7 @@
     <Cell ss:StyleID="s63"><Data ss:Type="String"><?php echo $company_name;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s64">
-    <Cell ss:StyleID="s65"><Data ss:Type="String">Branch Office : 03 - Battambang</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">Branch Office : <?php echo $cp_office;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s64">
     <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Outstanding Report</Data></Cell>
