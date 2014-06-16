@@ -157,7 +157,16 @@ class UserController extends BaseController
             'activated',
             'activated_at'
         );
-        $arr = DB::table('cp_user')->orderBy('id');
+
+        // Check user is 'superadmin'
+        if(\Auth::user()->id == 1){
+            $arr = DB::table('cp_user')
+                ->orderBy('id');
+        }else{
+            $arr = DB::table('cp_user')
+                ->where('id', '!=', 1)
+                ->orderBy('id');
+        }
 //        $arr = DB::table('view_user')->orderBy('id');
         return \Datatable::query($arr)
             ->addColumn(

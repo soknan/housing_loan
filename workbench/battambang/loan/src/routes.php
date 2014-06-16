@@ -101,7 +101,7 @@ Route::group(
         Route::delete(
             'disburse/destroy/{id}',
             array(
-                'as' => 'loan.disburse.delete',
+                'as' => 'loan.disburse.destroy',
                 'uses' => 'Battambang\Loan\DisburseController@destroy'
             )
         );

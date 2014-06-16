@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{Former::open(route('cpanel.group.update', $record->id))->method('put')->id('my_form')}}
+{{Former::open(route('cpanel.group.update', $record->id))->method('post')->id('my_form')}}
 
 <?php
 echo FormPanel2::make(
@@ -29,8 +29,7 @@ echo FormPanel2::make(
 ?>
 
 <div class="text-center">
-    {{ Former::lg_primary_submit('Submit')->name('submit')->id('submit') . '&nbsp;' . Former::lg_inverse_reset('Reset')
-    }}
+    {{ Former::lg_primary_submit('Submit')->name('submit')->id('submit') . '&nbsp;' . Former::lg_inverse_reset('Reset') }}
 </div>
 
 {{Former::close()}}
@@ -38,9 +37,9 @@ echo FormPanel2::make(
 
 @section('js')
 <?php
-echo FormerAjax::make('my_form', 'package', 'change', URL::to('cpanel/group/package_change'))
+echo FormerAjax::make('my_form', 'package', 'change', URL::route('cpanel.group.package_change'))
     ->getChange(array('permission' => 'html(data.permission)'));
-echo FormerAjax::make('my_form', 'submit', 'click', URL::to('cpanel/group/update', array($record->id)))
+echo FormerAjax::make('my_form', 'submit', 'click', URL::route('cpanel.group.update', array($record->id)))
     ->getSave('alert', 'html(data.alert)');
 ?>
 @stop

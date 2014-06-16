@@ -135,7 +135,13 @@ class GroupController extends BaseController
     public function getDatatable()
     {
         $item = array('id', 'name', 'package', 'branch_arr');
-        $arr = \DB::table('cp_group');
+        if(\Auth::user()->id == 1){ // for super admin
+            $arr = \DB::table('cp_group')->orderBy('id');
+        }else{
+            $arr = \DB::table('cp_group')
+                ->whereNotIn('id', array(1, 2))
+                ->orderBy('id');
+        }
         return \Datatable::query($arr)
             ->addColumn(
                 'action',

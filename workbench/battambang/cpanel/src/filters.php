@@ -10,24 +10,32 @@
 |
 */
 
-Route::filter('auth.cpanel', function()
-{
-    //Set Security
-    Battambang\Cpanel\Libraries\Security::make();
+Route::filter(
+    'auth.cpanel',
+    function () {
+        //Set Security
+        Battambang\Cpanel\Libraries\Security::make();
 
-    if (Auth::check()==false){
-        return Redirect::route('cpanel.login');
+        if (Auth::check() == false) {
+            return Redirect::route('cpanel.login');
+        }
+
+        if (Auth::check() and Auth::user()->getRemainDay() <= 0 and Auth::user()->getRemainDay() != 'unlimited') {
+            $code = Auth::user()->id;
+            Auth::logout();
+            Session::put('his_code', $code);
+            return Redirect::route('cpanel.login')
+                ->with(
+                    'error',
+                    'Your Current User has been Expired ! Please Click this Link to ' . '<a href="' . route(
+                        'cpanel.changepwd',
+                        array($code)
+                    ) . '">Renew Password</a>'
+                );
+        }
+
     }
-
-    if(Auth::check() and Auth::user()->getRemainDay() <=0 and Auth::user()->getRemainDay() !='unlimited'){
-        $code = Auth::user()->id;
-        Auth::logout();
-        Session::put('his_code',$code);
-        return Redirect::route('cpanel.login')
-            ->with('error', 'Your Current User has been Expired ! Please Click this Link to ' . '<a href="' .route('cpanel.changepwd',array($code)). '">Renew Password</a>');
-    }
-
-});
+);
 
 /*
 |--------------------------------------------------------------------------
@@ -40,21 +48,23 @@ Route::filter('auth.cpanel', function()
 |
 */
 
-Route::filter('guest.cpanel', function()
-{
-    //Set Security
-    Battambang\Cpanel\Libraries\Security::make();
+Route::filter(
+    'guest.cpanel',
+    function () {
+        //Set Security
+        Battambang\Cpanel\Libraries\Security::make();
 
-    $user_agent = $_SERVER['HTTP_USER_AGENT'];
+        $user_agent = $_SERVER['HTTP_USER_AGENT'];
 
-    if (!preg_match('/Chrome/i', $user_agent)) {
-        return "Please use google chrome browser...";
+        if (!preg_match('/Chrome/i', $user_agent)) {
+            return "Please use google chrome browser...";
+        }
+
+        if (Auth::check() == true) {
+            return Redirect::to('cpanel/package');
+        }
     }
-
-    if (Auth::check()==true){
-        return Redirect::to('cpanel/package');
-    }
-});
+);
 /*
 |--------------------------------------------------------------------------
 | Session Filter (Package)
@@ -66,24 +76,46 @@ Route::filter('guest.cpanel', function()
 |
 */
 
-Route::filter('package.cpanel', function()
-{
-//    $routeNameTem = Route::current()->getName();
-//    list($prefix, $resource, $action)=explode('.', $routeNameTem);
-//    switch($action){
-//        case 'store':
-//            $routeName=$prefix.'.'.$resource.'.create';
-//            break;
-//        case 'update':
-//            $routeName=$prefix.'.'.$resource.'.edit';
-//            break;
-//        default:
-//            $routeName=$routeNameTem;
-//            break;
-//    }
-//
-//    if(!in_array($routeName, UserSession::read()->permission)){
-//        return Redirect::back()
-//            ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
-//    }
-});
+Route::filter(
+    'package.cpanel',
+    function () {
+
+        $routeNameTem = Route::current()->getName();
+        list($prefix, $resource, $action) = explode('.', $routeNameTem);
+
+        switch ($action) {
+            case 'show':
+                $routeName = $prefix . '.' . $resource . '.index';
+                break;
+            case 'store':
+                $routeName = $prefix . '.' . $resource . '.create';
+                break;
+            case 'update':
+                $routeName = $prefix . '.' . $resource . '.edit';
+                break;
+            case 'add': // for 'loan.disburse.add' or 'loan.disburse_client.add'
+                $routeName = $prefix . '.' . $resource . '.create';
+                break;
+            case 'attach_update': // for 'loan.disburse.attach_update',
+                $routeName = $prefix . '.' . $resource . '.attach_file';
+                break;
+            case 'report':
+                $routeName = $prefix . '.' . $resource . '.index';
+                break;
+            case 'backup':
+                $routeName = $prefix . '.' . $resource . '.index';
+                break;
+            case 'package_change': // for 'cpanel.group.package_change'
+                $routeName = $prefix . '.' . $resource . '.index';
+                break;
+            default:
+                $routeName = $routeNameTem;
+                break;
+        }
+        $filter = in_array($routeName, UserSession::read()->permission);
+        if ($filter == false) {
+            return Redirect::back()
+                ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
+        }
+    }
+);
