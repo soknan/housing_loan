@@ -50,10 +50,10 @@ return array(
         'url' => URL::to('loan'),
         'menu' => array(
             'staff' => array(
-                'loan.client.index' => 'list',
-                'loan.client.create' => 'create',
-                'loan.client.edit' => 'edit',
-                'loan.client.destroy' => 'delete',
+                'loan.staff.index' => 'list',
+                'loan.staff.create' => 'create',
+                'loan.staff.edit' => 'edit',
+                'loan.staff.destroy' => 'delete',
             ),
             'center' => array(
                 'loan.center.index' => 'list',
