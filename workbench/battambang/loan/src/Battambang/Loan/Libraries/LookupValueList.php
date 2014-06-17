@@ -265,12 +265,11 @@ class LookupValueList
     public function getCenter($more = '')
     {
         $arr = array();
-        $data = DB::select(
-            "select ln_center.id as id,ln_center.name,ln_staff.en_first_name from ln_center inner join ln_staff on ln_center.ln_staff_id = ln_staff.id where 1=1 " . $more
-        );
+        $data = DB::select('select * from ln_center where cp_office_id like "'.\UserSession::read()->sub_branch.'" ' . $more );
         if ($data) {
             foreach ($data as $row) {
-                $arr[$row->id] = $row->name;
+                $staff=Staff::find($row->ln_staff_id);
+                $arr[$row->id] = $row->name.' | '.$staff->kh_last_name.' '.$staff->kh_first_name;
             }
         }
         return $arr;

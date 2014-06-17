@@ -17,7 +17,7 @@ class DisburseController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'Disburse ID','Disburse Date', 'Center', 'Staff Name', 'Product', 'Account Type','Currency','Status');
+        $item = array('Action', 'Disburse #','Disburse Date', 'Center', 'Staff Name', 'Product', 'Acc Type','Currency','Client #');
         /*$data['btnAction'] = array('Add New' => route('loan.disburse.add'));*/
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -297,7 +297,7 @@ class DisburseController extends BaseController
             ->addColumn('action', function ($model) {
                 return \Action::make()
                     ->edit(route('loan.disburse.edit', $model->id),$this->_checkStatus($model->id))
-                    ->delete(route('loan.disburse.delete', $model->id),'',$this->_checkStatus($model->id))
+                    ->delete(route('loan.disburse.destroy', $model->id),'',$this->_checkStatus($model->id))
                     ->custom(route('loan.disburse_client.add',$model->id),'Add New Client',$this->_checkDisburse($model->id))
                     ->custom(route('loan.disburse_client.index',$model->id),'Client List')
                     ->custom(route('loan.disburse.attach_file',$model->id),'Add Attach File')
@@ -306,12 +306,27 @@ class DisburseController extends BaseController
             ->showColumns($item)
             ->searchColumns($item)
             ->orderColumns($item)
-            ->addColumn('status', function ($model) {
+            ->addColumn('Client #', function ($model) {
                 $data = DisburseClient::where('ln_disburse_id','=',$model->id)->count();
+                $class='danger';
+                $title='remove-sign';
+                $client=0;
                 if($data > 0){
-                    return '<span class="btn btn-xs btn-success">'.$data.'</span>';
+                    $client=$data;
+                    if($model->account_type_name == 'Single'){
+                        $title='ok-sign';
+                        $class='success';
+                    }else{
+                        if($client>1){
+                            $title='OK';
+                            $class='ok-sign';
+                        }else{
+                            $title='exclamation-sign';
+                            $class='warning';
+                        }
+                    }
                 }
-                return '<span class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-ban-circle"></i></span>';
+                return '<a class="btn btn-'.$class.' btn-xs" href="#" role="button"><span class="glyphicon glyphicon-'.$title.'"></span> '.$client.'</a>';
             })
             ->make();
     }

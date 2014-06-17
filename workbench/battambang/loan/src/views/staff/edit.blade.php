@@ -34,12 +34,13 @@ echo FormPanel2::make(
     'Contact',
     Former::textarea('address', 'Address', $row->address)->required() . ''
     . Former::text('telephone', 'Telephone', $row->telephone)->required()
-    . Former::text('email', 'Email', $row->email)
     ,
-    Former::select('cp_office_id', 'Branch Office')
-        ->options(\GetLists::getSubBranchList(), $row->cp_office_id)
-        ->required()
-        ->placeholder('- Select One -') . ''
+    Former::text('email', 'Email', $row->email)
+    .Former::hidden('cp_office_id', UserSession::read()->sub_branch)
+//    Former::select('cp_office_id', 'Branch Office')
+//        ->options(\GetLists::getSubBranchList(), $row->cp_office_id)
+//        ->required()
+//        ->placeholder('- Select One -') . ''
     . Former::file('attach_photo', 'Photo') . ''
     . '<div class="text-center"><img src="' . $row->attach_photo . '" width="100px" height="100px"/></div>'.''
 );

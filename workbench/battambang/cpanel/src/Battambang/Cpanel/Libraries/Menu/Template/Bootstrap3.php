@@ -54,14 +54,14 @@ class Bootstrap3
         $class = '';
 
         // Check filter
-        if (in_array($url, $filter)) {
-            $class = ' class="disabled"';
-            $url = '#';
-        } else {
+//        if (!in_array($url, $filter)) {
+//            $class = ' class="disabled"';
+//            $url = '#';
+//        } else {
             if (\URL::current() == $url) {
                 $class = ' class="active"';
             }
-        }
+//        }
 
         $icon = $this->getIcon($icon);
         $tmp = '<li' . $class . '><a href="' . $url . '">' . $icon . $title . '</a></li>';

@@ -33,12 +33,13 @@ echo FormPanel2::make(
     'Contact',
     Former::textarea('address', 'Address')->required() . ''
     . Former::text('telephone', 'Telephone')->required()
-    .Former::text('email', 'Email')
     ,
-    Former::select('cp_office_id', 'Branch Office')
-        ->options(\GetLists::getSubBranchList())
-        ->required()
-        ->placeholder('- Select One -') . ''
+    Former::text('email', 'Email')
+    .Former::hidden('cp_office_id', UserSession::read()->sub_branch)
+//    Former::select('cp_office_id', 'Branch Office')
+//        ->options(\GetLists::getSubBranchList())
+//        ->required()
+//        ->placeholder('- Select One -') . ''
     . Former::file('attach_photo', 'Photo') . ''
 );
 ?>

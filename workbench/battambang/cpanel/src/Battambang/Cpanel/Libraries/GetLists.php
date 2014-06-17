@@ -284,7 +284,13 @@ class GetLists
         $arr = array();
         if ($data) {
             foreach ($data as $key => $row) {
-                $arr[$key] = $row['name'];
+                if ($key == 'cpanel') {
+                    if (Auth::user()->id == 1) {
+                        $arr[$key] = $row['name'];
+                    }
+                } else {
+                    $arr[$key] = $row['name'];
+                }
             }
             return $arr;
         }
@@ -331,7 +337,7 @@ class GetLists
         foreach ($getPackageMenu as $gKey => $gValue) {
             $arr .= '<optgroup label="' . ucwords($gKey) . '">';
             foreach ($gValue as $key => $value) {
-                $arr .= '<option value="' . $key . '.show">' . ucwords($value) . '</option>';
+                $arr .= '<option value="' . $key . '">' . ucwords($value) . '</option>';
             }
             $arr .= '</optgroup>';
         }
@@ -381,7 +387,13 @@ class GetLists
         $arr = array();
         if ($data) {
             foreach ($data as $row) {
-                $arr[$row->id] = $row->name;
+                if ($row->id == 1) {
+                    if (Auth::user()->id == 1) {
+                        $arr[$row->id] = $row->name;
+                    }
+                } else {
+                    $arr[$row->id] = $row->name;
+                }
             }
             return $arr;
         }
@@ -443,4 +455,5 @@ class GetLists
 
         return $data;
     }
+
 }

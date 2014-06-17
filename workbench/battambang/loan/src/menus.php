@@ -2,9 +2,6 @@
 Menu::make(
     'loan',
     function ($menu) {
-        // Filter
-//        $menu->filter(route('loan.client.index'));
-
         // Manage Data
         $menu->add(
             'Manage Data',

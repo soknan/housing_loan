@@ -36,9 +36,9 @@ echo FormPanel2::make(
 
 @section('js')
 <?php
-echo FormerAjax::make('my_form', 'package', 'change', URL::to('cpanel/group/package_change'))
+echo FormerAjax::make('my_form', 'package', 'change', URL::route('cpanel.group.package_change'))
     ->getChange(array('permission' => 'html(data.permission)'));
-echo FormerAjax::make('my_form', 'submit', 'click', URL::to('cpanel/group'))
+echo FormerAjax::make('my_form', 'submit', 'click', URL::route('cpanel.group.index'))
     ->getSave('alert', 'html(data.alert)');
 ?>
 @stop

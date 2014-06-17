@@ -142,7 +142,7 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
         'as'=>'cpanel.group.edit',
         'uses'=>'Battambang\Cpanel\GroupController@edit'
     ));
-    Route::put('group/update/{id}',array(
+    Route::post('group/update/{id}',array( // change from 'put' to 'post', because use ajax
         'as'=>'cpanel.group.update',
         'uses'=>'Battambang\Cpanel\GroupController@update'
     ));
@@ -152,7 +152,11 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
     ));
 
     // Group Page (package onChange to)
-    Route::post('group/package_change', 'Battambang\Cpanel\GroupController@postPackageChange');
+    Route::post('group/package_change',
+        array(
+            'as'=>'cpanel.group.package_change',
+            'uses'=>'Battambang\Cpanel\GroupController@postPackageChange'
+        ));
 /*
  * Decode Text
  */
