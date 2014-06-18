@@ -133,18 +133,16 @@ class RepaymentController extends BaseController
             $tmp_repay = $data->_repayment['cur']['type'];
             $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
             $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
-            $pri_closing ='';
-            $int_closing ='';
-            //$pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).', Cur Pri : '.$data->_due['principal'].' )';
-            //$int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).', Cur Int : '.$data->_due['interest'].' )';
             $pri_closing = ' ( Late : '.($data->_arrears['cur']['principal'] - $data->_due['principal']).', Cur Pri : '.$data->_due['principal'].' )';
             $int_closing = ' ( Late : '.(($data->_arrears['cur']['interest'] - $data->_due['interest'])).', Cur Int : '.$data->_due['interest'].' )';
+
+
             if($status == 'closing'){
                 if($data->_repayment['cur']['type'] != 'closing'){
                     if($totalArrears !=0){
                         $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
                         $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
-                        $data->_repayment['cur']['type'] = $status;
+                        $data->_repayment['cur']['type'] = 'closing';
                         $data->error ='Closing normal !.';
                         $pri_closing = ' ( Late : '.($data->_new_due['principal'] - $data->_due['principal'])
                             .', Cur Pri : '.$data->_due['principal'].', Closing : '.$data->_due_closing['principal_closing'].' )';
@@ -154,7 +152,7 @@ class RepaymentController extends BaseController
                         //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;
                             $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest) + $data->_accru_int;
-                            $data->_repayment['cur']['type'] = $status;
+                            $data->_repayment['cur']['type'] = 'closing';
                             $data->error = 'Closing after disburse date or after repay !.';
 
                             $pri_closing = ' ( Late : 0 , Closing : '.$data->_balance_principal.' )';
@@ -232,7 +230,7 @@ class RepaymentController extends BaseController
                 }
             }
 
-            if($data->_arrears['cur']['penalty'] >0 and $totalArrears<=0){
+            if($data->_arrears['cur']['penalty'] >0 and $totalArrears<=0 and $status!='penalty'){
                 $data->error = 'Your Current Type is Penalty. Please Confirm before save !.';
                 $data->_repayment['cur']['type'] = 'penalty';
                 return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
@@ -445,7 +443,7 @@ class RepaymentController extends BaseController
                     }
                 }
 
-                if($data->_arrears['cur']['penalty'] >0 and $totalArrears<=0){
+                if($data->_arrears['cur']['penalty'] >0 and $totalArrears<=0 and $status!='penalty'){
                     $data->error = 'Your Current Type is Penalty. Please Confirm before save !.';
                     $data->_repayment['cur']['type'] = 'penalty';
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
