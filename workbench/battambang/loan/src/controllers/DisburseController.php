@@ -191,9 +191,13 @@ class DisburseController extends BaseController
         $validation = $this->getValidationService('disburse');
         if ($validation->passes()) {
             $disburse = new Disburse();
+            $disburse->id = \AutoCode::make('ln_disburse', 'id', UserSession::read()->sub_branch . '-', 6);
+            $disburse_id = $disburse->id;
             $this->saveData($disburse);
             return Redirect::route('loan.disburse.add')
-                ->with('success', trans('battambang/loan::disburse.create_success'));
+                ->with('success', trans('battambang/loan::disburse.create_success')
+                    .' '.\HTML::link(route('loan.disburse_client.add',$disburse_id),'Add Disburse Client')
+                );
 
         }
         return Redirect::back()->withInput()->withErrors($validation->getErrors());
@@ -227,9 +231,9 @@ class DisburseController extends BaseController
 
     private function saveData($data,$store = true)
     {
-        if($store){
+        /*if($store){
             $data->id = \AutoCode::make('ln_disburse', 'id', UserSession::read()->sub_branch . '-', 6);
-        }
+        }*/
         $data->ln_center_id = Input::get('ln_center_id');
         $data->ln_lv_meeting_schedule = Input::get('ln_lv_meeting_schedule');
         $data->ln_staff_id = Input::get('ln_staff_id');
