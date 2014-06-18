@@ -10,7 +10,10 @@ Menu::make(
                 $dropdown->add('Disbursement', route('loan.disburse.index'));
                 $dropdown->add('Repayment', route('loan.repayment.index'));
                 $dropdown->add('Loan Write-Off', route('loan.write_off.index'));
+                $dropdown->divider();
                 $dropdown->add('Exchange', route('loan.exchange.index'));
+                $dropdown->add('Staff', route('loan.staff.index'));
+                $dropdown->add('Centers', route('loan.center.index'));
             }
         );
 
@@ -18,8 +21,6 @@ Menu::make(
         $menu->add(
             'Setting',
             function ($dropdown) {
-                $dropdown->add('Staff', route('loan.staff.index'));
-                $dropdown->add('Centers', route('loan.center.index'));
                 $dropdown->add('Fund', route('loan.fund.index'));
                 $dropdown->add('Fee', route('loan.fee.index'));
                 $dropdown->add('Penalty', route('loan.penalty.index'));

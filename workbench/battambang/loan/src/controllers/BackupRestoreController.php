@@ -20,7 +20,7 @@ class BackupRestoreController extends BaseController
 {
     public $table = array(
         'loan'=>array(
-            'general'=>'General',
+            'default'=>'Default',
             'setting'=>'Setting',
             'user_action'=>'User Logs'
         ),
@@ -34,8 +34,6 @@ class BackupRestoreController extends BaseController
             'setting'=>array(
                 'ln_lookup'=>array('LOK','Lookup'),
                 'ln_lookup_value'=>array('LOV','Lookup Value'),
-                'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
-                'ln_center'=>array('CET','Center',"id LIKE '[office]%'"),
                 'ln_fee'=>array('FEE','FEE'),
                 'ln_fund'=>array('FND','Fund'),
                 'ln_holiday'=>array('HLD','Holiday'),
@@ -46,12 +44,14 @@ class BackupRestoreController extends BaseController
                 'ln_category'=>array('PCG','Product Category'),
                 'ln_product'=>array('PRO','Product'),
             ),
-            'general'=>array(
+            'default'=>array(
+                'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
+                'ln_center'=>array('CET','Center',"id LIKE '[office]%'"),
                 'ln_client'=>array('CLN','Client',"id LIKE '[office]%'"),
                 'ln_disburse'=>array('DIS','Disbursement',"id LIKE '[office]%'"),
                 'ln_disburse_client'=>array('DISC','Disburse Client',"id LIKE '[office]%'"),
                 'ln_schedule'=>array('SCD','Schedule',"id LIKE '[office]%'"),
-                 'ln_schedule_dt'=>array('SCD','Schedule Detail',"id LIKE '[office]%'"),
+                'ln_schedule_dt'=>array('SCD','Schedule Detail',"id LIKE '[office]%'"),
                 'ln_perform'=>array('PEF','Perform',"id LIKE '[office]%'"),
             ),
             'user_action'=>array(
@@ -80,8 +80,6 @@ class BackupRestoreController extends BaseController
             'setting'=>array(
                 'ln_lookup',
                 'ln_lookup_value',
-                'ln_staff',
-                'ln_center',
                 'ln_fee',
                 'ln_fund',
                 'ln_holiday',
@@ -92,7 +90,9 @@ class BackupRestoreController extends BaseController
                 'ln_category',
                 'ln_product',
             ),
-            'general'=>array(
+            'default'=>array(
+                'ln_staff',
+                'ln_center',
                 'ln_client',
                 'ln_disburse',
                 'ln_disburse_client',
@@ -155,26 +155,31 @@ class BackupRestoreController extends BaseController
         foreach ($values['table'] as $opt) {
             //$table_type[]= $this->getTableCode($opt);
             foreach ($this->tableNames[\UserSession::read()->package][$opt] as $key=>$table) {
-                $return .= $this->getBackupScript($values, $key,$opt);
+                $return .= $this->getBackupScript($values, $key, $opt);
             }
         }
 
-        $return = "-- Microfis SQL Backup/Restore \n-- Version 2.0 \n-- Generation Time: " . date("Y-M-d h:i:s A") . "\n-- Database: " . ucfirst($values["package"]). "\n-- Branch Office: " . implode(", ", $values["branch"]) . "\n-- Tables Type: " . implode(", ", $values['table']) . " \n-- Developed by: Battambang IT Team. \n \n-- --------------------------------------------------------;" . $return;
+        $return = "-- Microfis SQL Backup/Restore \n-- Version 2.0 \n-- Generation Time: " . date("Y-M-d h:i:s A") . "\n-- Database: " . ucwords($values["package"]). "\n-- Branch Office: " . implode(", ", $values["branch"]) . "\n-- Tables Type: " . ucwords(implode(", ", $values['table'])) . " \n-- Developed by: Battambang IT Team. \n \n-- --------------------------------------------------------;" . $return;
         //$this->load->helper("file");
 
-        $file_name = ucfirst($values["package"]);
-        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values['table']);
+        $file_name = ucwords($values["package"]);
+        $file_name .= " + " . ucwords(implode(", ", $values['table'])) . " + " . implode(", ", $values["branch"])." + " . date("Y-m-d His");
+//        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values['table']);
 
         \File::put($file_name . '.sql', $return);
 
         $zipFile = new Zipper();
-        $zipFile->zip(public_path().'/backup/'.$file_name.'.zip')->add($file_name . '.sql');
+        $zipFile->zip($file_name.'.zip')->add($file_name . '.sql');
         $zipFile->close();
 
-        unlink($file_name.'.sql');
-        //unlink($file_name.'.zip');
-        return \Response::download(public_path().'/backup/'.$file_name . '.zip');
+        // Delete source backup
+        \App::finish(function($request, $response) use ($file_name)
+        {
+            unlink($file_name.'.sql');
+            unlink($file_name.'.zip');
+        });
 
+        return \Response::download($file_name . '.zip');
     }
 
     public function restore($values,$err = "Invalid File Name.")
@@ -183,13 +188,17 @@ class BackupRestoreController extends BaseController
         /*foreach ($values["table"] as $table) {
             $table_type[] = $this->getTableCode($table);
         }*/
-        $file_name = ucfirst($values["package"]);
-        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values["table"]);
+        $file_name = ucwords($values["package"]);
+        $file_name .= " + " . ucwords(implode(", ", $values['table'])) . " + " . implode(", ", $values["branch"])." + " . date("Y-m-d His");
+//        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values["table"]);
+
+//        return $file_name; exit;
 
         $file_to_restore = $_FILES['file_to_restore'];
 
         //var_dump($file_to_restore); exit;
         $zip_name = $file_to_restore["name"];
+//        return $zip_name; exit;
         $tmp_name = $file_to_restore["tmp_name"];
 
         $file_name_arr = explode("+", $file_name . ".zip");
@@ -198,10 +207,10 @@ class BackupRestoreController extends BaseController
         var_dump($file_name_arr);
         exit;*/
         //echo count($file_name_arr);
-        for ($i = 0; $i < count($file_name_arr); $i++) {
-            if ($i === 1) {
-                continue;
-            }
+        for ($i = 0; $i < (count($file_name_arr)-1); $i++) {
+//            if ($i === 1) {
+//                continue;
+//            }
             if (trim($file_name_arr[$i]) != trim($zip_name_arr[$i])) {
                 return Redirect::back()->with('error',$err);
             }
@@ -253,9 +262,9 @@ class BackupRestoreController extends BaseController
         return Redirect::back()->with('success','Restored OK !');
     }
 
-    public function getBackupScript($value, $table,$opt)
+    public function getBackupScript($value, $table, $opt)
     {
-        $return = "\n\n--\n-- Backup Table: " . $table . "\n--;";
+        $return = "\n\n--\n-- Backup Table: " . $table . "\n--";
         // create table
         $query = DB::select("SHOW CREATE TABLE " . $table);
         $result = $query;
@@ -277,7 +286,7 @@ class BackupRestoreController extends BaseController
             if (isset($this->tableNames[\UserSession::read()->package][$opt][$table][2])) {
                 $where = " WHERE " . str_replace('[office]', $office, $this->tableNames[\UserSession::read()->package][$opt][$table][2]);
             }
-            $delete = "\n\n DELETE FROM " . $table . " " . $where . ";";
+            $delete = "\n\n DELETE FROM " . $table . " " . $where . ";\n";
             $return .= $delete;
             // insert data
 
@@ -337,7 +346,7 @@ class BackupRestoreController extends BaseController
             $this->databaseType[$db_type];
             $tmp = array();
             $tmp = $this->databaseType[$db_type];
-            if (in_array(\Auth::user()->cp_group_id, array('1',2))) {
+            if (in_array(\Auth::user()->cp_group_id, array(1,2))) {
                 $tmp = $this->databaseType[$db_type];
             }
             $table = array();
