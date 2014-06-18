@@ -49,18 +49,6 @@ return array(
         'author' => 'loan',
         'url' => URL::to('loan'),
         'menu' => array(
-            'staff' => array(
-                'loan.staff.index' => 'list',
-                'loan.staff.create' => 'create',
-                'loan.staff.edit' => 'edit',
-                'loan.staff.destroy' => 'delete',
-            ),
-            'center' => array(
-                'loan.center.index' => 'list',
-                'loan.center.create' => 'create',
-                'loan.center.edit' => 'edit',
-                'loan.center.destroy' => 'delete',
-            ),
             'fund' => array(
                 'loan.fund.index' => 'list',
                 'loan.fund.create' => 'create',
@@ -139,6 +127,18 @@ return array(
                 'loan.exchange.create' => 'create',
                 'loan.exchange.edit' => 'edit',
                 'loan.exchange.destroy' => 'delete',
+            ),
+            'staff' => array(
+                'loan.staff.index' => 'list',
+                'loan.staff.create' => 'create',
+                'loan.staff.edit' => 'edit',
+                'loan.staff.destroy' => 'delete',
+            ),
+            'center' => array(
+                'loan.center.index' => 'list',
+                'loan.center.create' => 'create',
+                'loan.center.edit' => 'edit',
+                'loan.center.destroy' => 'delete',
             ),
             'default report' => array(
                 'loan.rpt_schedule.index' => 'loan repayment schedule',

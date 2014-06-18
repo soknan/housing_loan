@@ -13,7 +13,7 @@ echo FormPanel2::make(
         ->size(7)
         ->required() . ''
     ,
-    Former::select('table[]', 'Table')
+    Former::select('table[]', 'Package')
         ->options($table)
         ->multiple('multiple')
         ->size(7)

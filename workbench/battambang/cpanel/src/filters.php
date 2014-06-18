@@ -14,6 +14,7 @@ Route::filter(
     'auth.cpanel',
     function () {
         //Set Security
+//        Battambang\Cpanel\Libraries\Security::make($securityFile = true, $ip = false, $expireDate = false);
         Battambang\Cpanel\Libraries\Security::make();
 
         if (Auth::check() == false) {
@@ -25,13 +26,7 @@ Route::filter(
             Auth::logout();
             Session::put('his_code', $code);
             return Redirect::route('cpanel.login')
-                ->with(
-                    'error',
-                    'Your Current User has been Expired ! Please Click this Link to ' . '<a href="' . route(
-                        'cpanel.changepwd',
-                        array($code)
-                    ) . '">Renew Password</a>'
-                );
+                ->with('error', 'Your Current User has been Expired ! Please Click this Link to ' . '<a href="' . route('cpanel.changepwd.index', array($code) ) . '">Renew Password</a>');
         }
 
     }
@@ -52,6 +47,7 @@ Route::filter(
     'guest.cpanel',
     function () {
         //Set Security
+//        Battambang\Cpanel\Libraries\Security::make($securityFile = true, $ip = false, $expireDate = false);
         Battambang\Cpanel\Libraries\Security::make();
 
         $user_agent = $_SERVER['HTTP_USER_AGENT'];
@@ -103,6 +99,9 @@ Route::filter(
                 $routeName = $prefix . '.' . $resource . '.index';
                 break;
             case 'backup':
+                $routeName = $prefix . '.' . $resource . '.index';
+                break;
+            case 'restore':
                 $routeName = $prefix . '.' . $resource . '.index';
                 break;
             case 'package_change': // for 'cpanel.group.package_change'

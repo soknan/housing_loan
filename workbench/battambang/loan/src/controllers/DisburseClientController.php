@@ -408,7 +408,7 @@ class DisburseClientController extends BaseController
 
     public  function _getClientList($more='')
     {
-        $data = DB::select("select * from ln_client where 1=1 $more");
+        $data = DB::select('select * from ln_client where 1=1 and id like "'.UserSession::read()->sub_branch.'%"'. $more);
         $arr = array();
         if (count($data) > 0) {
             foreach ($data as $row) {
