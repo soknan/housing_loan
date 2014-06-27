@@ -136,7 +136,7 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
             $v2 = strtotime($a2->_due['date']);
             return $v1 - $v2; // $v2 - $v1 to reverse direction
         });
-        var_dump($tmp); exit;
+        //var_dump($tmp); exit;
 
         $data['result']= $tmp;
 
