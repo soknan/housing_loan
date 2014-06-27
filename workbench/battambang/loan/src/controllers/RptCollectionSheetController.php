@@ -114,26 +114,31 @@ INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
 where $condition
-and p.ln_disburse_client_id not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='closing')
+and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perform p1 WHERE p1.balance_principal=0)
         GROUP by ln_disburse_client.id
         ");
 
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
-            $loanPerform->_last_perform_date = $data['date_from'];
+            //$loanPerform->_last_perform_date = $data['date_from'];
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to']);
         }
 
         foreach ($perform as $row) {
-            if(!isset($tmp[$row->_activated_at])){
-                $tmp[$row->_due['date']] = array();
+            if($row->_due['date'] <= $data['date_to']){
+                $tmp[] = $row;
             }
-            $tmp[$row->_due['date']][] = $row;
         }
+        // sort array by date
+        usort($tmp, function($a1, $a2) {
+            $v1 = strtotime($a1->_due['date']);
+            $v2 = strtotime($a2->_due['date']);
+            return $v1 - $v2; // $v2 - $v1 to reverse direction
+        });
+        var_dump($tmp); exit;
 
-        $data['sub_result'] = $tmp;
-        $data['result']= $perform;
+        $data['result']= $tmp;
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
