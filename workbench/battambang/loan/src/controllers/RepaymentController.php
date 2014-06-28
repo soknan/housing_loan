@@ -340,10 +340,7 @@ class RepaymentController extends BaseController
                 $tmp_repay = $data->_repayment['cur']['type'];
                 $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
                 $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
-                $pri_closing ='';
-                $int_closing ='';
-                //$pri_closing = ' ( Late : '.(($data->_new_due['principal']-$data->_due['principal'])+$data->_arrears['last']['principal']).', Cur Pri : '.$data->_due['principal'].' )';
-                //$int_closing = ' ( Late : '.(($data->_new_due['interest']-$data->_due['interest'])+$data->_arrears['last']['interest']).', Cur Int : '.$data->_due['interest'].' )';
+
                 $pri_closing = ' ( Late : '.($data->_arrears['cur']['principal'] - $data->_due['principal']).', Cur Pri : '.$data->_due['principal'].' )';
                 $int_closing = ' ( Late : '.(($data->_arrears['cur']['interest'] - $data->_due['interest'])).', Cur Int : '.$data->_due['interest'].' )';
                 if($status == 'closing'){

@@ -121,7 +121,7 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
-            //$loanPerform->_last_perform_date = $data['date_from'];
+            $loanPerform->_last_perform_date = $data['date_from'];
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to']);
         }
 

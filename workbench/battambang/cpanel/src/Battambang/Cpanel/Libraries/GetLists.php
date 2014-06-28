@@ -229,8 +229,21 @@ class GetLists
 
     public function getBranchOfficeBy($code)
     {
-        $data = Office::where('id', '=', $code)->first();
-        return $data->en_name;
+        $tmp='';
+        $d = Office::where('id', '=', $code)->limit(1)->get();
+        foreach ($d as $key=>$row) {
+            $tmp = $row->en_name;
+        }
+        return $tmp;
+    }
+
+    public function getProvinceName($code){
+        $tmp='';
+        $d = \DB::table('cp_location')->where('id', '=', $code)->limit(1)->get();
+        foreach ($d as $key=>$row) {
+            $tmp = $row->en_name;
+        }
+        return $tmp;
     }
 
     public function getMainSubBranch(&$branch_list, &$branch_rel_sub_list, &$branch_rel_list)

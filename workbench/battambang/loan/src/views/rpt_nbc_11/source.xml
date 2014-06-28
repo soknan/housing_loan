@@ -446,8 +446,12 @@
               $total_vil=0;
               $showBranch = new Battambang\Cpanel\Libraries\GetLists();
               foreach($result as $pro=>$gender){
-               $con_acc_m=$con_acc[$pro][67]->total;
-               $con_acc_f=$con_acc[$pro][68]->total;
+                if(isset($con_acc[$pro][67])){
+                    $con_acc_m=$con_acc[$pro][67]->total;
+                }else{
+                $con_acc_f=$con_acc[$pro][68]->total;
+                }
+
                $bal_pri =$con_bal[$pro]->total;
 
               $total_gender_by_pro = $con_acc_m + $con_acc_f;
@@ -472,7 +476,7 @@
               $total_vil+=count($c_vil);
               ?>
    <Row>
-    <Cell ss:StyleID="s75"><Data ss:Type="String"><?php echo $showBranch->getBranchOfficeBy($pro);?></Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String"><?php echo $showBranch->getProvinceName($pro);?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo count($c_dis);?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo count($c_com);?></Data></Cell>
     <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo count($c_vil);?></Data></Cell>

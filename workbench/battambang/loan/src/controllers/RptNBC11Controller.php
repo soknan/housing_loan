@@ -18,6 +18,7 @@ use Battambang\Loan\Facades\LookupValueList;
 use DB;
 use Input;
 use Battambang\Loan\Libraries\LoanPerformance;
+use stdClass;
 
 class RptNBC11Controller extends BaseController
 {
@@ -61,7 +62,7 @@ class RptNBC11Controller extends BaseController
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','", $data['cp_office']) . "')";
             $tmp_office = '';
             foreach ($data['cp_office'] as $office) {
-                $tmp_office .= $office . ' ' . GetLists::getBranchOfficeBy($office) . ', ';
+                $tmp_office .= $office . ' ' . \GetLists::getBranchOfficeBy($office) . ', ';
             }
 
             $data['cp_office'] = $tmp_office;
@@ -162,7 +163,7 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='
         $data['con_acc'] = $con_acc;
         $data['result'] = $tmp;
         $data['con_dis'] = $con_dis;
-
+        //var_dump($data); exit;
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
