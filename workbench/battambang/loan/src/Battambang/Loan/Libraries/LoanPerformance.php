@@ -483,9 +483,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         if($this->_disburse->ln_lv_repay_frequency == 3){
             if($this->_disburse->installment_frequency != 1){
                 $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
-                if( $difWeek != $this->_disburse->installment_frequency){
-                    $first->endOfWeek();
-                    $second->endOfWeek();
+                if( $difWeek != $this->_disburse->installment_frequency-1){
+                    $first=$first->endOfWeek();
+                    $second=$second->endOfWeek();
                 }else{
                     $first = $first->addWeek($this->_disburse->installment_frequency)->endOfWeek();
                     $second = $second->endOfWeek();
@@ -494,12 +494,13 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $first = $first->endOfWeek();
                 $second = $second->endOfWeek();
             }
+
         }else{
             if($this->_disburse->installment_frequency != 1){
-                $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 28);
-                if( $difWeek != $this->_disburse->installment_frequency){
-                    $first->endOfMonth();
-                    $second->endOfMonth();
+                $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 30);
+                if( $difWeek != $this->_disburse->installment_frequency-1){
+                    $first= $first->endOfMonth();
+                    $second = $second->endOfMonth();
                 }else{
                     $first = $first->addMonth($this->_disburse->installment_frequency)->endOfMonth();
                     $second = $second->endOfMonth();
@@ -571,6 +572,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $data = $this->_getSchedule($this->_endOfDate($this->_last_perform_date), $this->_endOfDate($this->_activated_at));
         //$dataPen = Penalty::where('id', '=', $this->_disburse->ln_penalty_id)->limit(1)->orderBy('id','desc')->first();
         $lnumDay=0;
+        //var_dump($data->all()); exit;
         $pen = $this->_getLastArreasPen();
         if ($data->count() > 0) {
             foreach ($data as $key => $row) {
@@ -604,7 +606,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
             $this->_new_due['principal'] = $prin;
             $this->_new_due['interest'] = $int;
-            //$this->_new_due['num_day'] = $num;
+            //$this->_new_due['num_day'] = 0;
             $this->_new_due['num_day'] = $this->_countDate($this->_new_due['date'],$this->_activated_at);
             $this->_new_due['penalty'] = $pen;
             if($this->_new_due['num_day']>0){
