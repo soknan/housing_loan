@@ -717,7 +717,7 @@
     <Cell ss:StyleID="s64"/>
    </Row>
    <Row>
-    <Cell ss:StyleID="s65"><Data ss:Type="String">- Resign Contract: 12-Jan-2011</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String"><?php //echo '- Resign Contract: 12-Jan-2011';?></Data></Cell>
     <Cell ss:StyleID="s65"/>
     <Cell ss:StyleID="s65"/>
     <Cell ss:StyleID="s64"/>
@@ -728,10 +728,10 @@
     <Cell ss:StyleID="s64"/>
    </Row>
    <Row>
-    <Cell ss:StyleID="s65"><Data ss:Type="String">- Waive Penalty: 12-Jan-2011</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String"><?php //echo '- Waive Penalty: 12-Jan-2011';?></Data></Cell>
     <Cell ss:Index="3" ss:StyleID="s65"/>
     <Cell ss:StyleID="s64"/>
-    <Cell ss:StyleID="s65"><Data ss:Type="String">Waive Penalty Amount: 1,200.00</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String"><?php //echo 'Waive Penalty Amount: 1,200.00';?></Data></Cell>
     <Cell ss:StyleID="s64"/>
     <Cell ss:StyleID="s64"/>
     <Cell ss:StyleID="s64"/>
