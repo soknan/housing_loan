@@ -125,17 +125,20 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to']);
         }
 
+        $tmp = array();
         foreach ($perform as $row) {
             if($row->_due['date'] <= $data['date_to']){
                 $tmp[] = $row;
             }
         }
         // sort array by date
-        usort($tmp, function($a1, $a2) {
-            $v1 = strtotime($a1->_due['date']);
-            $v2 = strtotime($a2->_due['date']);
-            return $v1 - $v2; // $v2 - $v1 to reverse direction
-        });
+        if(count($tmp)>0){
+            usort($tmp, function($a1, $a2) {
+                $v1 = strtotime($a1->_due['date']);
+                $v2 = strtotime($a2->_due['date']);
+                return $v1 - $v2; // $v2 - $v1 to reverse direction
+            });
+        }
         //var_dump($tmp); exit;
 
         $data['result']= $tmp;
