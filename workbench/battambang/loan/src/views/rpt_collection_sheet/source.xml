@@ -422,7 +422,7 @@
               $col_pen_thb=0;
 
               foreach($result as $key=>$row){
-                if($row->error==''){
+
               $due_date = '';
               $due_pri = 0;
               $due_int = 0;
@@ -480,7 +480,7 @@
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_pen;?></Data></Cell>
     <Cell ss:StyleID="s69"/>
    </Row>
-      <?php }}
+      <?php }
               $con_cur = new Battambang\Cpanel\Libraries\Currency();
 
               $total_col_khr = $col_pri_khr + $col_int_khr;

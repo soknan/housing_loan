@@ -542,9 +542,9 @@
    </Row>
    <Row ss:Height="12" ss:StyleID="s68">
     <Cell ss:StyleID="s74"><Data ss:Type="String">INTEREST RATE CHARGED</Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="m33264552"><Data ss:Type="Number"><?php echo ($total_g_acc == 0 ? $total_g_int :  $total_g_int / $total_g_acc);?></Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s72"><Data ss:Type="Number"><?php echo ($total_s_int / $total_s_acc);?></Data></Cell>
-    <Cell ss:MergeAcross="1" ss:StyleID="s70"><Data ss:Type="Number"><?php echo ($all_total_int / $all_total_acc);?></Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="m33264552"><Data ss:Type="Number"><?php echo ($total_g_acc == 0 ? number_format($total_g_int,2) :  number_format($total_g_int / $total_g_acc,2));?></Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s72"><Data ss:Type="Number"><?php echo ($total_s_acc==0? number_format($total_s_int,2): number_format($total_s_int / $total_s_acc,2));?></Data></Cell>
+    <Cell ss:MergeAcross="1" ss:StyleID="s70"><Data ss:Type="Number"><?php echo number_format($all_total_int / $all_total_acc,2);?></Data></Cell>
     <Cell ss:StyleID="s69"/>
     <Cell ss:StyleID="s69"/>
    </Row>
