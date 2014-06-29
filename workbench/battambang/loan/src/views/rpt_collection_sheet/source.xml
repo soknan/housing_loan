@@ -428,11 +428,15 @@
               $due_int = 0;
               $due_pen = 0;
               $total_due=0;
-              if($row->_new_due['date']!= '0000-00-00'){
-                  $due_date = $row->_new_due['date'];
-                  $due_pri = $row->_new_due['principal']+ $row->_arrears['last']['principal'];
-                  $due_int = $row->_new_due['interest']+ $row->_arrears['last']['interest'];
-                  $due_pen = $row->_new_due['penalty']+ $row->_arrears['last']['penalty'];
+              if($row->_arrears['cur']['date']!= '0000-00-00'){
+                  //$due_date = $row->_new_due['date'];
+                  //$due_pri = $row->_new_due['principal']+ $row->_arrears['last']['principal'];
+                  //$due_int = $row->_new_due['interest']+ $row->_arrears['last']['interest'];
+                  //$due_pen = $row->_new_due['penalty']+ $row->_arrears['last']['penalty'];
+              $due_date = $row->_arrears['cur']['date'];
+              $due_pri = $row->_arrears['cur']['principal'];
+              $due_int = $row->_arrears['cur']['interest'];
+              $due_pen = $row->_arrears['cur']['penalty'];
                   $total_due = $due_pri + $due_int;
               }
 
@@ -480,7 +484,7 @@
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_pen;?></Data></Cell>
     <Cell ss:StyleID="s69"/>
    </Row>
-      <?php }
+      <?php }//}
               $con_cur = new Battambang\Cpanel\Libraries\Currency();
 
               $total_col_khr = $col_pri_khr + $col_int_khr;
