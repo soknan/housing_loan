@@ -405,7 +405,7 @@
     <Cell ss:StyleID="s78"><Data ss:Type="String">Sum Due Prin</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">Sum Due Int</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">Total Sum Due</Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="String">Due Penalty</Data></Cell>
+   <!-- <Cell ss:StyleID="s78"><Data ss:Type="String">Due Penalty</Data></Cell>-->
     <Cell ss:StyleID="s77"><Data ss:Type="String">Note</Data></Cell>
    </Row>
       <?php
@@ -428,7 +428,10 @@
               $due_int = 0;
               $due_pen = 0;
               $total_due=0;
-              if($row->_arrears['cur']['date']!= '0000-00-00'){
+              if($row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest']==0){
+                continue;
+              }
+              //if($row->_arrears['cur']['date']!='0000-00-00'){
                   //$due_date = $row->_new_due['date'];
                   //$due_pri = $row->_new_due['principal']+ $row->_arrears['last']['principal'];
                   //$due_int = $row->_new_due['interest']+ $row->_arrears['last']['interest'];
@@ -438,7 +441,7 @@
               $due_int = $row->_arrears['cur']['interest'];
               $due_pen = $row->_arrears['cur']['penalty'];
                   $total_due = $due_pri + $due_int;
-              }
+                    //}
 
                   $type ='DateTime';
                   if($data['date_to'] > $row->_maturity_date){
@@ -481,7 +484,7 @@
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_pri;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_int;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $total_due;?></Data></Cell>
-    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_pen;?></Data></Cell>
+    <!--<Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_pen;?></Data></Cell>-->
     <Cell ss:StyleID="s69"/>
    </Row>
       <?php }//}
@@ -512,7 +515,7 @@
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pri_khr;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_int_khr;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_col_khr;?></Data></Cell>
-    <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pen_khr;?></Data></Cell>
+   <!-- <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pen_khr;?></Data></Cell>-->
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
@@ -520,7 +523,7 @@
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pri_usd;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_int_usd;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_col_usd;?></Data></Cell>
-    <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pen_usd;?></Data></Cell>
+    <!--<Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pen_usd;?></Data></Cell>-->
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
@@ -528,7 +531,7 @@
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pri_thb;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_int_thb;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_col_thb;?></Data></Cell>
-    <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pen_thb;?></Data></Cell>
+    <!--<Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pen_thb;?></Data></Cell>-->
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
@@ -536,11 +539,11 @@
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $pri_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $int_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_to_USD;?></Data></Cell>
-    <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $pen_to_USD;?></Data></Cell>
+    <!--<Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $pen_to_USD;?></Data></Cell>-->
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
-    <Cell ss:MergeAcross="13" ss:StyleID="s68"/>
+    <Cell ss:MergeAcross="13"/>
    </Row>
    <Row>
     <Cell ss:MergeAcross="13" ss:StyleID="s65"><Data ss:Type="String">                              Seen By                                                                                                     Verified By                                                                                                 Prepared By                           </Data></Cell>
