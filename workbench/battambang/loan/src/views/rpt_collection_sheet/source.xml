@@ -428,9 +428,9 @@
               $due_int = 0;
               $due_pen = 0;
               $total_due=0;
-              if($row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest']==0){
-                continue;
-              }
+              //if($row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest']==0){
+              //  continue;
+              //}
               //if($row->_arrears['cur']['date']!='0000-00-00'){
                   //$due_date = $row->_new_due['date'];
                   //$due_pri = $row->_new_due['principal']+ $row->_arrears['last']['principal'];
