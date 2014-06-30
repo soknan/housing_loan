@@ -127,7 +127,7 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
 
         $tmp = array();
         foreach ($perform as $row) {
-            if($row->_due['date'] <= $data['date_to']){
+            if($row->_due['date'] <= $data['date_to'] and $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest']!=0){
                 $tmp[] = $row;
             }
         }
@@ -139,7 +139,7 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
                 return $v1 - $v2; // $v2 - $v1 to reverse direction
             });
         }
-        //var_dump($tmp); exit;
+        //var_dump($tmp[0]->_arrears['cur']['principal']); exit;
 
         $data['result']= $tmp;
 
