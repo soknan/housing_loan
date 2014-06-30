@@ -485,7 +485,9 @@
               $total_acc = 0;
               $total_bal = 0;
               $total_int = 0;
-              foreach($product_status_list as $classify){
+              $total_req=0;
+              $require = array(0.01,0.1,0.3,1);
+              foreach($product_status_list as $k=> $classify){
               if(!isset($result[$classify->id])){
                   $result[$classify->id] = array();
                   }
@@ -500,15 +502,16 @@
               $total_int+=$int;
               $total_acc+= $acc;
               $total_bal+= $bal;
+              $total_req+= $bal * $require[$k];
               ?>
    <Row ss:Height="12" ss:StyleID="s67">
     <Cell ss:StyleID="s75"><Data ss:Type="String"><?php echo $classify->name;?></Data></Cell>
     <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $acc;?></Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="Number"><?php echo $bal;?></Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="Number"><?php echo $int;?></Data></Cell>
-    <Cell ss:StyleID="s74"><Data ss:Type="Number">0.01</Data></Cell>
-    <Cell ss:StyleID="s76"><Data ss:Type="Number">2351.5700000000002</Data></Cell>
-    <Cell ss:StyleID="s76"><Data ss:Type="Number">2351.5700000000002</Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $require[$k];?></Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="Number"><?php echo $bal * $require[$k]; ?></Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="Number"><?php echo $bal * $require[$k]; ?></Data></Cell>
    </Row>
     <?php }?>
    <Row ss:Height="12" ss:StyleID="s67">
@@ -517,18 +520,18 @@
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_bal;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_int;?></Data></Cell>
     <Cell ss:StyleID="s71"/>
-    <Cell ss:StyleID="s70"><Data ss:Type="Number">7838.32</Data></Cell>
-    <Cell ss:StyleID="s70"><Data ss:Type="Number">7838.32</Data></Cell>
+    <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_req;?></Data></Cell>
+    <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_req;?></Data></Cell>
    </Row>
    <Row ss:Height="12" ss:StyleID="s67">
     <Cell ss:MergeAcross="6" ss:StyleID="s69"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="30" ss:StyleID="s67">
-    <Cell ss:MergeAcross="6" ss:StyleID="s68"><Data ss:Type="String">DELINQUENCY RATIO = (ALL LOANS PAST DUE &gt; 30 DAYS) / (TOTAL LOANS OUTSTANDING) = 5,020.64 / 505,442.12 = 0.99 %</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s68"><Data ss:Type="String">DELINQUENCY RATIO = (ALL LOANS PAST DUE &gt; 30 DAYS) / (TOTAL LOANS OUTSTANDING) = <?php echo ($total_req / $total_bal * 100);?>%</Data></Cell>
    </Row>
-   <Row ss:AutoFitHeight="0" ss:Height="45" ss:StyleID="s67">
+   <!--<Row ss:AutoFitHeight="0" ss:Height="45" ss:StyleID="s67">
     <Cell ss:MergeAcross="6" ss:StyleID="s68"><Data ss:Type="String">LOAN WRITE-OFFS :&#160;&#160;&#160;&#160;&#160;CURRENT PERIOD = 0.00&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;YEAR TO DATE = 18,720.33&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;WRITE-OFF RATE = YEAR TO DATE / TOTAL LOANS OUTSTANDING = 3.70 %</Data></Cell>
-   </Row>
+   </Row>-->
    <Row>
     <Cell ss:MergeAcross="6" ss:StyleID="s66"/>
    </Row>
