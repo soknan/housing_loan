@@ -499,6 +499,7 @@
                       $bal = $con_bal[$classify->id]->total;
                       $int= $con_int[$classify->id]->total;
                   }
+
               $total_int+=$int;
               $total_acc+= $acc;
               $total_bal+= $bal;
