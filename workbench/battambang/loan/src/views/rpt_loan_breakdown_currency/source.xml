@@ -383,7 +383,7 @@
     <Cell ss:MergeDown="1" ss:StyleID="m31459864"><Data ss:Type="String"># OF LOANS</Data></Cell>
     <Cell ss:MergeDown="1" ss:StyleID="m31459884"><Data ss:Type="String">AMOUNT OUTSTANDING</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">AMOUNT OUTSTANDING</Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="String">INTEREST RATE CHARGED</Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="String">INTEREST RATE CHARGED (%)</Data></Cell>
     <Cell ss:MergeDown="1" ss:StyleID="m31459904"><Data ss:Type="String">REMARKS</Data></Cell>
    </Row>
    <Row ss:Height="12" ss:StyleID="s67">
