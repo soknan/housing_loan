@@ -121,12 +121,19 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
-            $loanPerform->_last_perform_date = $data['date_from'];
+            //$loanPerform->_last_perform_date = $data['date_from'];
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to']);
         }
 
         $tmp = array();
         foreach ($perform as $row) {
+            if($row->_due['date'] > $data['date_to'] and $row->_arrears['last']['principal'] + $row->_arrears['last']['interest']!=0){
+                $row->_due['date']= $row->_arrears['cur']['date'];
+                $row->_arrears['cur']['date'] = $row->_arrears['last']['date'];
+                $row->_arrears['cur']['principal'] = $row->_arrears['last']['principal'];
+                $row->_arrears['cur']['interest'] = $row->_arrears['last']['interest'];
+                $tmp[]= $row;
+            }
             if($row->_due['date'] <= $data['date_to'] and $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest']!=0){
                 $tmp[] = $row;
             }
