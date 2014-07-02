@@ -129,14 +129,17 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         foreach ($perform as $row) {
             if($row->_due['date'] > $data['date_to'] and $row->_arrears['last']['principal'] + $row->_arrears['last']['interest']!=0){
                 $row->_due['date']= $row->_arrears['cur']['date'];
-                $row->_arrears['cur']['date'] = $row->_arrears['last']['date'];
+                $row->_arrears['cur']['date'] =  $row->_arrears['last']['date'];
                 $row->_arrears['cur']['principal'] = $row->_arrears['last']['principal'];
                 $row->_arrears['cur']['interest'] = $row->_arrears['last']['interest'];
+
                 $tmp[]= $row;
+                continue;
             }
             if($row->_due['date'] <= $data['date_to'] and $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest']!=0){
                 $tmp[] = $row;
             }
+
         }
         // sort array by date
         if(count($tmp)>0){
