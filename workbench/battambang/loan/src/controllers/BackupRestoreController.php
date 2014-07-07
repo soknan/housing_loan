@@ -163,8 +163,13 @@ class BackupRestoreController extends BaseController
         //$this->load->helper("file");
 
         $file_name = ucwords($values["package"]);
-        $file_name .= " + " . ucwords(implode(", ", $values['table'])) . " + " . implode(", ", $values["branch"])." + " . date("Y-m-d His");
-//        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values['table']);
+        //get Table package
+        $tablePackage=array();
+        foreach($values['table'] as $value){
+            $tablePackage[]=$this->table[$values["package"]][$value];
+        }
+        $file_name .= "-" . ucwords(implode(",", $tablePackage)) . "-" . implode(",", $values["branch"])."-" . date("YmdHis");
+//        $file_name .= " + " . ucwords(implode(", ", $values['table'])) . " + " . implode(", ", $values["branch"])." + " . date("Y-m-d His");
 
         \File::put($file_name . '.sql', $return);
 
@@ -189,8 +194,13 @@ class BackupRestoreController extends BaseController
             $table_type[] = $this->getTableCode($table);
         }*/
         $file_name = ucwords($values["package"]);
-        $file_name .= " + " . ucwords(implode(", ", $values['table'])) . " + " . implode(", ", $values["branch"])." + " . date("Y-m-d His");
-//        $file_name .= " + " . date("Y-m-d His") . " + " . implode(",", $values["branch"]) . " + " . implode(",", $values["table"]);
+        //get Table package
+        $tablePackage=array();
+        foreach($values['table'] as $value){
+            $tablePackage[]=$this->table[$values["package"]][$value];
+        }
+        $file_name .= "-" . ucwords(implode(",", $tablePackage)) . "-" . implode(",", $values["branch"])."-" . date("YmdHis");
+//        $file_name .= " + " . ucwords(implode(", ", $values['table'])) . " + " . implode(", ", $values["branch"])." + " . date("Y-m-d His");
 
 //        return $file_name; exit;
 
@@ -201,8 +211,8 @@ class BackupRestoreController extends BaseController
 //        return $zip_name; exit;
         $tmp_name = $file_to_restore["tmp_name"];
 
-        $file_name_arr = explode("+", $file_name . ".zip");
-        $zip_name_arr = explode("+", $zip_name);
+        $file_name_arr = explode("-", $file_name . ".zip");
+        $zip_name_arr = explode("-", $zip_name);
         /*var_dump($zip_name_arr);
         var_dump($file_name_arr);
         exit;*/
