@@ -14,7 +14,7 @@ use Battambang\Cpanel\Company;
 use Battambang\Cpanel\Office;
 use DB;
 
-class RptScheduleController extends BaseController{
+class KraRptScheduleController extends BaseController{
     public function index(){
         $data['disburseClient'] = $this->_getLoanAccount();
         //$data['reportHistory'] = $this->_reportHistory();
@@ -66,28 +66,30 @@ class RptScheduleController extends BaseController{
 
         // Header
         $objWorkSheet->getCell('A1')->setValue($companyName);
-        $objWorkSheet->getCell('A2')->setValue('ការិយាល័យ៖ '.$office->kh_name.', '.'អាសយដ្ឋាន៖ '.$office->kh_address.', ទូរស័ព្ទ៖ '.$office->telephone);
+        $objWorkSheet->getCell('A2')->setValue('ការិយាល័យ៖ '.$office->kh_name);
+        $objWorkSheet->getCell('A3')->setValue('អាសយដ្ឋាន៖ '.$office->kh_address.', ទូរស័ព្ទ៖ '.$office->telephone);
 
         // Page filter
-        $objWorkSheet->getCell('A4')->setValue('លេខកូដ៖ '.$data['dis']->ln_disburse_client_id.' ('.$data['dis']->account_type_code.')');
-        $objWorkSheet->getCell('A5')->setValue('ឈ្មោះ៖ '.$data['dis']->ln_client_kh_name);
+        $objWorkSheet->getCell('A5')->setValue('លេខកូដ៖ '.$data['dis']->ln_disburse_client_id.' ('.$data['dis']->account_type_code.')');
+        $objWorkSheet->getCell('A6')->setValue('ឈ្មោះ៖ '.$data['dis']->ln_client_kh_name);
 
         $gender=($data['dis']->gender_code=='M'?'ប្រុស':'ស្រី');
-        $objWorkSheet->getCell('A6')->setValue('ភេទ៖ '.$gender);
+        $objWorkSheet->getCell('A7')->setValue('ភេទ៖ '.$gender);
 
         $frequency=($data['dis']->repayment_frequency_type_name=='Weekly'?'សប្តាហ៍':'ខែ');
-        $objWorkSheet->getCell('A7')->setValue('ប្រភេទការសង៖ '.$frequency);
+        $objWorkSheet->getCell('A8')->setValue('ប្រភេទការសង៖ '.$frequency);
 
-        $objWorkSheet->getCell('A8')->setValue('រយៈពេលខ្ចី៖ '.$data['dis']->num_installment.' '. $frequency);
+        $objWorkSheet->getCell('A9')->setValue('រយៈពេលខ្ចី៖ '.$data['dis']->num_installment.' '. $frequency);
+        $objWorkSheet->getCell('A10')->setValue('អាសយដ្ឋាន៖ '.$data['dis']->address);
 
-        $objWorkSheet->getCell('D4')->setValue('រំលស់ការ៖ '.$data['dis']->installment_frequency.' '.$frequency.'ម្តង');
-        $objWorkSheet->getCell('D5')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_frequency.' វគ្គម្តង');
-        $objWorkSheet->getCell('D6')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_percentage.' %');
-        $objWorkSheet->getCell('D7')->setValue('អត្រាការប្រាក់៖ '.$data['dis']->interest_rate.' %');
-        $objWorkSheet->getCell('D8')->setValue('ចំនួនលើកនៃការខ្ចី៖ '.$data['dis']->cycle);
+        $objWorkSheet->getCell('D5')->setValue('រំលស់ការ៖ '.$data['dis']->installment_frequency.' '.$frequency.'ម្តង');
+        $objWorkSheet->getCell('D6')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_frequency.' វគ្គម្តង');
+        $objWorkSheet->getCell('D7')->setValue('រំលស់ដើម៖ '.$data['dis']->installment_principal_percentage.' %');
+        $objWorkSheet->getCell('D8')->setValue('អត្រាការប្រាក់៖ '.$data['dis']->interest_rate.' %');
+        $objWorkSheet->getCell('D9')->setValue('ចំនួនលើកនៃការខ្ចី៖ '.$data['dis']->cycle);
 
-        $objWorkSheet->getCell('F4')->setValue('កាលបរិច្ឆេទខ្ចី៖ '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
-        $objWorkSheet->getCell('F5')->setValue('លេខប័ណ្ណបើកប្រាក់៖ '.substr($data['dis']->voucher_id,-6));
+        $objWorkSheet->getCell('F5')->setValue('កាលបរិច្ឆេទខ្ចី៖ '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+        $objWorkSheet->getCell('F6')->setValue('លេខប័ណ្ណបើកប្រាក់៖ '.substr($data['dis']->voucher_id,-6));
         if($data['dis']->cp_currency_code=='KHR'){
             $currency='រៀល';
         }elseif($data['dis']->cp_currency_code=='USD'){
@@ -95,17 +97,16 @@ class RptScheduleController extends BaseController{
         }else{// THB
             $currency='បាត';
         }
-        $objWorkSheet->getCell('F6')->setValue('ចំនួនទឹកប្រាក់៖ '.number_format($data['dis']->amount,2,'.',',').' '.$currency);
+        $objWorkSheet->getCell('F7')->setValue('ចំនួនទឹកប្រាក់៖ '.number_format($data['dis']->amount,2,'.',',').' '.$currency);
 //        $objWorkSheet->getCell('F8')->setValue('សោហ៊ុយសេវា៖ ');
-        $objWorkSheet->getCell('F7')->setValue('មន្រ្តីឥណទាន៖ '.$data['dis']->ln_staff_id.' | '.$data['dis']->ln_staff_kh_name);
-        $objWorkSheet->getCell('F8')->setValue('អាសយដ្ឋាន៖ '.$data['dis']->address);
+        $objWorkSheet->getCell('F8')->setValue('មន្រ្តីឥណទាន៖ '.$data['dis']->ln_staff_id.' | '.$data['dis']->ln_staff_kh_name);
 
         // Content
         $count=count($data['result']);
-        $objWorkSheet->insertNewRowBefore(11, $count);
-        $objWorkSheet->removeRow(10, 2);
+        $objWorkSheet->insertNewRowBefore(14, $count);
+        $objWorkSheet->removeRow(13, 2);
         foreach($data['result'] as $key=>$value){
-            $rowNum=10+$key;
+            $rowNum=13+$key;
             $dueDate=\LookupValueList::getKhmerDay($value->due_date).' '.date('d-m-Y', strtotime($value->due_date));
             if($data['dis']->ln_perform_num_installment_can_closing == $key){
                 $styleArray=array(
@@ -128,9 +129,9 @@ class RptScheduleController extends BaseController{
         }
 
         // Add client name and disburse date to sign
-        $objWorkSheet->getCell('F'.(16-2+$count))->setValue($data['dis']->ln_client_kh_name);
-        $objWorkSheet->getCell('B'.(18-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
-        $objWorkSheet->getCell('F'.(18-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+        $objWorkSheet->getCell('F'.(19-2+$count))->setValue($data['dis']->ln_client_kh_name);
+        $objWorkSheet->getCell('B'.(21-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+        $objWorkSheet->getCell('F'.(21-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
 
         // redirect output to client browser
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet; charset=UTF-8');
