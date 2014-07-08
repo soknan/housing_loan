@@ -127,11 +127,13 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
 
         $tmp = array();
         foreach ($perform as $row) {
-            if($row->_due['date'] > $data['date_to'] and $row->_arrears['last']['principal'] + $row->_arrears['last']['interest']!=0){
-                $row->_due['date']= $row->_arrears['cur']['date'];
-                $row->_arrears['cur']['date'] =  $row->_arrears['last']['date'];
-                $row->_arrears['cur']['principal'] = $row->_arrears['last']['principal'];
-                $row->_arrears['cur']['interest'] = $row->_arrears['last']['interest'];
+            $cur_prin = $row->_arrears['cur']['principal'] - $row->_due['principal'];
+            $cur_int = $row->_arrears['cur']['interest'] - $row->_due['interest'];
+            if($row->_due['date'] > $data['date_to']  and $cur_prin + $cur_int!=0 ){
+                //$row->_due['date']= $row->_arrears['cur']['date'];
+                $row->_arrears['cur']['date'] =  $row->_new_due['date'];
+                $row->_arrears['cur']['principal'] = $row->_arrears['cur']['principal'] - $row->_due['principal'];
+                $row->_arrears['cur']['interest'] = $row->_arrears['cur']['interest'] - $row->_due['interest'];
 
                 $tmp[]= $row;
                 continue;
@@ -144,10 +146,10 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         // sort array by date
         if(count($tmp)>0){
             usort($tmp, function($a1, $a2) {
-                $v1 = strtotime($a1->_due['date']);
-                $v2 = strtotime($a2->_due['date']);
-                return $v1 - $v2; // $v2 - $v1 to reverse direction
-            });
+                    $v1 = strtotime($a1->_due['date']);
+                    $v2 = strtotime($a2->_due['date']);
+                    return $v1 - $v2; // $v2 - $v1 to reverse direction
+                });
         }
         //var_dump($tmp[0]->_arrears['cur']['principal']); exit;
 
@@ -157,12 +159,12 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
         //var_dump($data['sub_result']['2014-05-28']);
-       //var_dump($data['result'][3]->_arrears);
-       //exit;
+        //var_dump($data['result'][3]->_arrears);
+        //exit;
 
         \Report::setReportName('Collection_Sheet')
             ->setDateFrom($data['date_from'])
-        ->setDateTo($data['date_to']);
+            ->setDateTo($data['date_to']);
         return \Report::make('rpt_collection_sheet/source', $data,'collection_sheet');
 
     }
@@ -182,4 +184,4 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         }
         return $st .= '</ul>';
     }*/
-} 
+}
