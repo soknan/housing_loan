@@ -91,6 +91,18 @@ return array(
                 'loan.product.edit' => 'edit',
                 'loan.product.destroy' => 'delete',
             ),
+            'staff' => array(
+                'loan.staff.index' => 'list',
+                'loan.staff.create' => 'create',
+                'loan.staff.edit' => 'edit',
+                'loan.staff.destroy' => 'delete',
+            ),
+            'center' => array(
+                'loan.center.index' => 'list',
+                'loan.center.create' => 'create',
+                'loan.center.edit' => 'edit',
+                'loan.center.destroy' => 'delete',
+            ),
             'client' => array(
                 'loan.client.index' => 'list',
                 'loan.client.create' => 'create',
@@ -127,18 +139,6 @@ return array(
                 'loan.exchange.create' => 'create',
                 'loan.exchange.edit' => 'edit',
                 'loan.exchange.destroy' => 'delete',
-            ),
-            'staff' => array(
-                'loan.staff.index' => 'list',
-                'loan.staff.create' => 'create',
-                'loan.staff.edit' => 'edit',
-                'loan.staff.destroy' => 'delete',
-            ),
-            'center' => array(
-                'loan.center.index' => 'list',
-                'loan.center.create' => 'create',
-                'loan.center.edit' => 'edit',
-                'loan.center.destroy' => 'delete',
             ),
             'default report' => array(
                 'loan.rpt_schedule.index' => 'loan repayment schedule',

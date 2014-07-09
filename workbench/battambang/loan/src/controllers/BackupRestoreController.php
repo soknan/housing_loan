@@ -43,9 +43,9 @@ class BackupRestoreController extends BaseController
                 'ln_product_status'=>array('PRS','Product Status'),
                 'ln_category'=>array('PCG','Product Category'),
                 'ln_product'=>array('PRO','Product'),
+                'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
             ),
             'default'=>array(
-                'ln_staff'=>array('STF','Staff',"cp_office_id LIKE '[office]%'"),
                 'ln_center'=>array('CET','Center',"id LIKE '[office]%'"),
                 'ln_client'=>array('CLN','Client',"id LIKE '[office]%'"),
                 'ln_disburse'=>array('DIS','Disbursement',"id LIKE '[office]%'"),
@@ -89,9 +89,9 @@ class BackupRestoreController extends BaseController
                 'ln_product_status',
                 'ln_category',
                 'ln_product',
+                'ln_staff',
             ),
             'default'=>array(
-                'ln_staff',
                 'ln_center',
                 'ln_client',
                 'ln_disburse',

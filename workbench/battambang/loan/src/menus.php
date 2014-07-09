@@ -12,7 +12,6 @@ Menu::make(
                 $dropdown->add('Loan Write-Off', route('loan.write_off.index'));
                 $dropdown->divider();
                 $dropdown->add('Exchange', route('loan.exchange.index'));
-                $dropdown->add('Staff', route('loan.staff.index'));
                 $dropdown->add('Centers', route('loan.center.index'));
             }
         );
@@ -33,6 +32,7 @@ Menu::make(
                         $dropdown->add('Type', route('loan.product.index'));
                     }
                 );
+                $dropdown->add('Staff', route('loan.staff.index'));
             }
         );
 
