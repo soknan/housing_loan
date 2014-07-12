@@ -16,10 +16,8 @@ use DB;
 
 class RptScheduleController extends BaseController{
     public function index(){
-        $data['disburseClient'] = $this->_getLoanAccount();
-        //$data['reportHistory'] = $this->_reportHistory();
         return $this->renderLayout(
-            \View::make('battambang/loan::rpt_schedule.index',$data)
+            \View::make('battambang/loan::rpt_schedule.index')
         );
     }
 
@@ -147,30 +145,4 @@ class RptScheduleController extends BaseController{
 
     }
 
-    private function _getLoanAccount(){
-        $perform = array('');
-        foreach (Perform::all() as $row) {
-            $perform[] = $row->ln_disburse_client_id;
-        }
-        $data = DB::table('view_disburse_client')
-            ->whereIn('id',$perform)->where('id','like',\UserSession::read()->sub_branch.'%')
-            ->orderBy('id', 'desc')->get();
-        $arr = array();
-        foreach ($data as $row) {
-            $arr[$row->id] = $row->id . ' || ' . $row->client_kh_name . ' || ' . date('d-M-Y', strtotime($row->disburse_date));
-        }
-        return $arr;
-    }
-
-    /*private function _reportHistory(){
-        $dir    = public_path('reports/loan');
-        $files2 = scandir($dir, 1);
-        $st='<ul>';
-        for ($i=0;$i<count($files2)-2;$i++) {
-            if($i >= 5) return $st.='</ul>';
-             $st.='<li><a href="'.\URL::to('reports/loan'.$files2[$i]).'">'.$files2[$i].'</a></li>';
-
-        }
-         return $st.='</ul>';
-    }*/
-} 
+}
