@@ -124,10 +124,17 @@ order by ln_disburse.disburse_date DESC
             $loanPerform = new LoanPerformance();
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
         }
+        $tmp = array();
+        //var_dump($perform); exit;
+        foreach($perform as $row){
+            if($row->_disburse->disburse_date <= $data["as_date"]){
+                $tmp[] = $row;
+            }
+        }
 
         //var_dump($perform);
         //exit;
-        $data['result']= $perform;
+        $data['result']= $tmp;
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');

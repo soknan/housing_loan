@@ -396,7 +396,7 @@
               $total_bal = 0;
               $total_int = 0;
               $convert = new \Battambang\Cpanel\Libraries\Currency();
-              foreach($currency_list as $cur){
+              foreach($currency_list as $k=> $cur){
                   if(!isset($result[$cur->id])){
                   $result[$cur->id] = array();
                   }
@@ -420,7 +420,10 @@
 
                   }
               $total_int+=$sub_int;
+              if($k>0){
               $total_acc+= $acc;
+              }
+
               $total_bal+= $usd_bal;
               ?>
    <Row ss:Height="12" ss:StyleID="s67">
@@ -428,7 +431,7 @@
     <Cell ss:StyleID="s72"><Data ss:Type="Number"><?php echo $acc;?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $bal;?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $usd_bal;?></Data></Cell>
-    <Cell ss:StyleID="s72"><Data ss:Type="Number"><?php echo number_format($sub_int,2);?></Data></Cell>
+    <Cell ss:StyleID="s72"><Data ss:Type="String"><?php echo number_format($sub_int,2)."%";?></Data></Cell>
     <Cell ss:StyleID="s72"><Data ss:Type="String"><?php echo $exchange_rate;?></Data></Cell>
    </Row>
    <?php }
@@ -439,7 +442,7 @@
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $total_acc;?></Data></Cell>
     <Cell ss:StyleID="s68"/>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_bal;?></Data></Cell>
-    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo number_format($total_int/$total_acc,2);?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo ($total_acc==0? number_format($total_int,2)."%":number_format($total_int/$total_acc,2)."%");?></Data></Cell>
     <Cell ss:StyleID="s68"/>
    </Row>
    <Row>

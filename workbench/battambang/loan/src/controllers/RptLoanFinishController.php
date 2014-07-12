@@ -125,10 +125,10 @@ INNER join ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.i
        //var_dump($data['result']);
        //exit;
 
-        \Report::setReportName('Loan_Repay')
+        \Report::setReportName('Loan_Closing')
             ->setDateFrom($data['date_from'])
         ->setDateTo($data['date_to']);
-        return \Report::make('rpt_loan_finish/source', $data,'loan_finish');
+        return \Report::make('rpt_loan_finish/source', $data,'loan_closing');
 
     }
 

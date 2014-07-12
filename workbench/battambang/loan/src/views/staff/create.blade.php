@@ -7,10 +7,10 @@
 <?php
 echo FormPanel2::make(
     'General',
-    Former::text('en_first_name', 'En First Name')->required() . ''
-    . Former::text('en_last_name', 'En Last Name')->required()
-    . Former::text('kh_first_name', 'Kh First Name')->required()
+     Former::text('kh_first_name', 'Kh First Name')->required()
     . Former::text('kh_last_name', 'Kh Last Name')->required()
+     .Former::text('en_first_name', 'En First Name')->required() . ''
+     . Former::text('en_last_name', 'En Last Name')->required()
     . Former::text('dob', 'DOB')->required()->append('dd-mm-yyyy')
     . Former::select('ln_lv_gender', 'Gender', \LookupValueList::getBy('gender'))->required()->placeholder('- Select One -')
     ,

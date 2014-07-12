@@ -14,9 +14,9 @@ echo FormPanel2::make(
         ->required()
     .Former::textarea('address', 'Address',$row->address)->required()
     ,
-    Former::text('telephone', 'Telephone',$row->telephone)->required() . ''
-    .Former::text('email', 'Email',$row->email)->required()
-    .Former::text('website', 'Website',$row->website)->required()
+    Former::text('telephone', 'Telephone',$row->telephone) . ''
+    .Former::text('email', 'Email',$row->email)
+    .Former::text('website', 'Website',$row->website)
 
 );
 ?>

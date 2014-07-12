@@ -7,12 +7,12 @@
 <?php
 echo FormPanel2::make(
     'General',
-    Former::text('en_first_name', 'En First Name', $row->en_first_name)->required() . ''
-    . Former::text('en_last_name', 'En Last Name', $row->en_last_name)->required()
-    . Former::text('en_nick_name', 'En Nick Name', $row->en_nick_name)
-    . Former::text('kh_first_name', 'Kh First Name', $row->kh_first_name)->required()
+    Former::text('kh_first_name', 'Kh First Name', $row->kh_first_name)->required()
     . Former::text('kh_last_name', 'Kh Last Name', $row->kh_last_name)->required()
     . Former::text('kh_nick_name', 'Kh Nick Name', $row->kh_nick_name)
+    .Former::text('en_first_name', 'En First Name', $row->en_first_name)->required() . ''
+    . Former::text('en_last_name', 'En Last Name', $row->en_last_name)->required()
+    . Former::text('en_nick_name', 'En Nick Name', $row->en_nick_name)
     ,
     Former::select('ln_lv_gender', 'Gender', \LookupValueList::getBy('gender'), $row->ln_lv_gender)->required()->placeholder('- Select One -') . ''
     . Former::text('dob', 'DOB', \Carbon::createFromFormat('Y-m-d',$row->dob)->format('d-m-Y'))->required()->append('dd-mm-yyyy')
