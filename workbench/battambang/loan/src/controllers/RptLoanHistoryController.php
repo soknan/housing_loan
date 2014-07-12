@@ -44,7 +44,7 @@ select *,ln_disburse_client.id as id FROM ln_disburse_client INNER JOIN ln_disbu
 on ln_disburse_client.ln_disburse_id = ln_disburse.id
 INNER JOIN ln_client
 on ln_disburse_client.ln_client_id = ln_client.id where ln_client.id = "'.$data['ln_client_id'].'" ');
-        /*foreach($data['disburse'] as $row){
+       /* foreach($data['disburse'] as $row){
             $data['schedule'] = Schedule::where('ln_disburse_client_id','=',$row->id)
                 ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->get();
             $data['perform'][] = Perform::where('ln_disburse_client_id','=',$row->id)->get();

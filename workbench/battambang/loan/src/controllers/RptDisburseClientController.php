@@ -57,6 +57,7 @@ class RptDisburseClientController extends BaseController
         $condition.= " AND ln_disburse.disburse_date BETWEEN
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
+
         if($data['cycle']!=''){
             $condition.=" AND cycle = '".$data['cycle']."'";
         }else{
@@ -124,6 +125,7 @@ class RptDisburseClientController extends BaseController
         INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
         INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
         inner join ln_staff on ln_staff.id = ln_disburse.ln_staff_id
+        INNEr JOIN ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.id
         WHERE $condition
         group by `ln_disburse_client`.`id` ORDER by ln_disburse.disburse_date DESC"
         );

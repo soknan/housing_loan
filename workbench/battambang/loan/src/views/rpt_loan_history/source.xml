@@ -675,9 +675,9 @@
               $pen_total = 0;
               $all_total = 0;
               foreach($perform as $p=>$per){
-                    $total = $per->principal + $per->interest;
-                    $pri_total += $per->principal;
-                    $int_total += $per->interest;
+                    $total = $per->repayment_principal + $per->repayment_interest;
+                    $pri_total += $per->repayment_principal;
+                    $int_total += $per->repayment_interest;
               $all_total = $pri_total + $int_total + $pen_total;
               ?>
    <Row>
