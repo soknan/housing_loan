@@ -420,8 +420,8 @@
 
                   }
               $total_int+=$sub_int;
-              if($k>0){
-              $total_acc+= $acc;
+              if($acc>0){
+              $total_acc++;
               }
 
               $total_bal+= $usd_bal;
@@ -442,7 +442,7 @@
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $total_acc;?></Data></Cell>
     <Cell ss:StyleID="s68"/>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_bal;?></Data></Cell>
-    <Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo ($total_acc==0? number_format($total_int,2)."%":number_format($total_int/$total_acc,2)."%");?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo ($total_acc==1? number_format($total_int,2)."%":number_format($total_int/$total_acc,2)."%");?></Data></Cell>
     <Cell ss:StyleID="s68"/>
    </Row>
    <Row>
