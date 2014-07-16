@@ -114,7 +114,7 @@ class RptDisburseClientController extends BaseController
         `ln_disburse_client`.`cycle` AS `cycle`,
         `ln_disburse_client`.`amount` AS `amount`,
         `ln_schedule_dt`.`fee` AS `fee`,
-        sum(`ln_schedule_dt`.`interest`) AS `project_interest`,
+        ln_perform.project_interest AS `project_interest`,
         `account_type`.`code` AS `account_type`,
         ((`ln_disburse_client`.`amount` + `ln_schedule_dt`.`fee`) + sum(`ln_schedule_dt`.`interest`)) AS `total_due`
         from (((((`ln_disburse_client` join `ln_disburse` on((`ln_disburse_client`.`ln_disburse_id` = `ln_disburse`.`id`)))
