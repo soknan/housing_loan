@@ -373,6 +373,7 @@
     <Cell ss:StyleID="s74"><Data ss:Type="String">No</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">LA Code</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Kh Client Name</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Tel</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">CRC</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">LP</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Dis Date</Data></Cell>
@@ -427,6 +428,7 @@
     <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->ln_disburse_client_id;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $row->client_name;?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $row->contact_num;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $row->cp_currency_id;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->account_type;?></Data></Cell>
     <Cell ss:StyleID="s79"><Data ss:Type="DateTime"><?php echo $row->disburse_date;?></Data></Cell>
