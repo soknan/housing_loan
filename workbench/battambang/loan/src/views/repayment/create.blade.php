@@ -34,7 +34,8 @@ echo FormPanel2::make(
         ->placeholder('- Select One -')
         ->class('select2')
         ->required()
-    .Former::text('repayment_date', 'Date',$activated_at)->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
+//    .Former::text('repayment_date', 'Date',$activated_at)->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
+    .Former::text('repayment_date', 'Date', date('d-m-Y'))->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
 
     .Former::select('repayment_status', 'Type')
         ->options($status,$option)
