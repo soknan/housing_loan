@@ -24,13 +24,6 @@ class RptScheduleController extends BaseController{
     public function report(){
         $data = array();
 
-        /*if($id!='{id}'){
-            $id = $id;
-            $data['view_at'] = date('d-m-Y');
-        }else{
-            $id = \Input::get('ln_disburse_client_id');
-            $data['view_at'] = date('d-m-Y',strtotime(\Input::get('view_at')));
-        }*/
         $id = \Input::get('ln_disburse_client_id');
         $data['view_at'] = date('d-m-Y',strtotime(\Input::get('view_at')));
         //return $id;
@@ -41,16 +34,6 @@ class RptScheduleController extends BaseController{
         $data['result'] = Schedule::where('ln_disburse_client_id','=',$id)
             ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->get();
 
-        //$khDay[] = explode('-',date('D-d-M-Y',$data['result'][0]->due_date));
-
-        //echo date('D-d-M-Y',strtotime($data['result'][0]->due_date));
-        //exit;
-        //return \Excel::loadView('battambang/loan::rpt_schedule.pdf', $data)->export('xls');
-
-        //if(count($data)>0){
-//            \Report::setReportName('Schedule')->setDateFrom($data['view_at']);;
-//            return \Report::make('rpt_schedule/source',$data,'repayment_schedules');
-        //}
 
         $rptName='Repayment Schedule';
         $rptExtension='.xlsx';
