@@ -407,7 +407,7 @@
     <Cell ss:StyleID="s78"><Data ss:Type="String">Sum Due Int</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">Total Sum Due</Data></Cell>
    <!-- <Cell ss:StyleID="s78"><Data ss:Type="String">Due Penalty</Data></Cell>-->
-    <Cell ss:StyleID="s77"><Data ss:Type="String">Note</Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="String">Tel</Data></Cell>
    </Row>
       <?php
               $col_pri_khr=0;
@@ -487,7 +487,8 @@
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_int;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $total_due;?></Data></Cell>
     <!--<Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $due_pen;?></Data></Cell>-->
-    <Cell ss:StyleID="s69"/>
+    <!--<Cell ss:StyleID="s69"/>-->
+    <Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo $row->_disburse->contact_num;?></Data></Cell>
    </Row>
       <?php }//}
               $con_cur = new Battambang\Cpanel\Libraries\Currency();
