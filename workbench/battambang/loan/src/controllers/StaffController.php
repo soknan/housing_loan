@@ -98,7 +98,7 @@ class StaffController extends BaseController
         try {
             $validation = $this->getValidationService('staff');
             if ($validation->passes()) {
-                $data = Staff::findOrFail($id);
+                $data = Staff::where('id','=',$id);
                 $photo = Input::file('attach_photo');
                 $photoPath = \URL::to('/') . '/packages/battambang/cpanel/img/cp_noimage.jpg';
                 if (!empty($photo)) {
