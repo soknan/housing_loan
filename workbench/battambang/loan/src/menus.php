@@ -38,12 +38,12 @@ Menu::make(
 
         // Report
         $menu->add(
-            'Report',
+            'Repors',
             function ($dropdown) {
-                $dropdown->add('Repayment Schedules', route('loan.rpt_schedule.index'));
+                $dropdown->add('Repayment Schedule', route('loan.rpt_schedule.index'));
                 $dropdown->add('Loan Disbursement', route('loan.rpt_disburse_client.index'));
                 $dropdown->add('Loan Outstanding', route('loan.rpt_loan_out.index'));
-                $dropdown->add('Loan Repay', route('loan.rpt_loan_repay.index'));
+                $dropdown->add('Loan Repayment', route('loan.rpt_loan_repay.index'));
                 $dropdown->add('Loan Closing', route('loan.rpt_loan_finish.index'));
                 $dropdown->add('Collection Sheet', route('loan.rpt_collection_sheet.index'));
                 $dropdown->add('Loan History', route('loan.rpt_loan_history.index'));
