@@ -421,7 +421,7 @@ class RepaymentController extends BaseController
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error',$data->error);
                 }
-                if($data->_repayment['cur']['type'] == 'closing'){
+                if($data->_repayment['cur']['type'] == 'closing' and $status=='closing'){
                     if($principal != $totalArrears){
                         $data->error = 'Your Repay amount not equal with Principal amount. Your current status in Closing !.';
                         $data->_repayment['cur']['type'] = $status;
