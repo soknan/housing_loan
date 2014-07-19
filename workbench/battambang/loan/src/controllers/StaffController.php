@@ -79,7 +79,7 @@ class StaffController extends BaseController
             if (!empty($photo)) {
                 $destinationPath = public_path() . '/packages/battambang/loan/staff_photo/';
                 $filename = \UserSession::read()->sub_branch . '-' .
-                    $data->en_last_name.$data->en_first_name.'-'.$data->dob.'.'. $photo->getClientOriginalExtension();
+                    Input::get('en_last_name').Input::get('en_first_name').'-'.Input::get('dob').'.'. $photo->getClientOriginalExtension();
                 $photo->move($destinationPath, $filename);
                 $photoPath = \URL::to('/') . '/packages/battambang/loan/staff_photo/' . $filename;
             }
@@ -98,13 +98,13 @@ class StaffController extends BaseController
         try {
             $validation = $this->getValidationService('staff');
             if ($validation->passes()) {
-                $data = Staff::where('id','=',$id);
+                $data = Staff::where('id','=',$id)->first();
                 $photo = Input::file('attach_photo');
-                $photoPath = \URL::to('/') . '/packages/battambang/cpanel/img/cp_noimage.jpg';
+                $photoPath = $data->attach_photo;
                 if (!empty($photo)) {
-                    $destinationPath = public_path() . '/packages/battambang/loan/staff_photo/';
+                    $destinationPath = public_path(). '/packages/battambang/loan/staff_photo/';
                     $filename = \UserSession::read()->sub_branch . '-' .
-                        $data->en_last_name.$data->en_first_name.'-'.$data->dob.'.'. $photo->getClientOriginalExtension();
+                        Input::get('en_last_name').Input::get('en_first_name').'-'.Input::get('dob').'.'. $photo->getClientOriginalExtension();
                     $photo->move($destinationPath, $filename);
                     $photoPath = \URL::to('/') . '/packages/battambang/loan/staff_photo/' . $filename;
                 }
@@ -117,7 +117,7 @@ class StaffController extends BaseController
             return Redirect::back()->withInput()->withErrors($validation->getErrors());
         } catch (\Exception $e) {
             return Redirect::route('loan.staff.index')->with('error', trans('battambang/cpanel::db_error.fail'));
-        }
+       }
     }
 
     public function destroy($id)
@@ -132,10 +132,11 @@ class StaffController extends BaseController
 
     private function saveData($data, $photoPath, $store = true)
     {
-        if ($store) {
+        if ($store==true) {
             $data->id = \AutoCode::make('ln_staff', 'id', '', 4);
-            $data->attach_photo = $photoPath;
+
         }
+        $data->attach_photo = $photoPath;
         $data->en_first_name = Input::get('en_first_name');
         $data->en_last_name = Input::get('en_last_name');
         $data->kh_first_name = Input::get('kh_first_name');
