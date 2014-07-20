@@ -925,6 +925,21 @@ Route::group(
         | Report Routes
         |--------------------------------------------------------------------------
         */
+        // Repay Fee
+        Route::get(
+            'rpt_loan_fee',
+            array(
+                'as' => 'loan.rpt_loan_fee.index',
+                'uses' => 'Battambang\Loan\RptLoanRepayFeeController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_fee',
+            array(
+                'as' => 'loan.rpt_loan_fee.report',
+                'uses' => 'Battambang\Loan\RptLoanRepayFeeController@report'
+            )
+        );
         // NBC 5 Loan Break Down By Purpose
         Route::get(
             'rpt_breakdown_purpose',

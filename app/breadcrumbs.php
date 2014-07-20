@@ -540,6 +540,14 @@ Breadcrumbs::register(
         $bc->push('Loan Repayment Report', URL::route('loan.rpt_loan_repay.index'));
     }
 );
+// Loan Repay Fee
+Breadcrumbs::register(
+    'loan.rpt_loan_fee.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Loan Repay Fee', URL::route('loan.rpt_loan_fee.index'));
+    }
+);
 // Loan Closing Report
 Breadcrumbs::register(
     'loan.rpt_loan_finish.index',

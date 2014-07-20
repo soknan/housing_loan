@@ -354,6 +354,13 @@ PageHeader::make(
 |--------------------------------------------------------------------------
 */
 PageHeader::make(
+    'loan.rpt_loan_fee.index',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('Repay Fee Report');
+    }
+);
+PageHeader::make(
     'loan.rpt_schedule.index',
     function (PageHeardItem $header) {
         $header->iconFloppyDisk();
