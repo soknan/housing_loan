@@ -298,7 +298,7 @@
     <Cell ss:StyleID="s65"><Data ss:Type="String">Branch Office : <?php echo $cp_office;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s64">
-    <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Outstanding Report</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Late Report</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s64">
     <Cell ss:StyleID="s66"><Data ss:Type="String">Period : <?php echo date('d-M-Y',strtotime($as_date));?></Data></Cell>
@@ -337,8 +337,8 @@
     <Cell ss:StyleID="s71"/>
     <Cell ss:StyleID="s71"/>
     <Cell ss:Index="13" ss:StyleID="s70"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Classify :&#160;</Font></B><Font
-       html:Color="#000000"> <?php echo $classify;?></Font></ss:Data></Cell>
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Late :&#160;</Font></B><Font
+       html:Color="#000000"> <?php echo $late;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s71"/>
     <Cell ss:StyleID="s71"/>
    </Row>
@@ -372,7 +372,7 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Mat Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Amount</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Int</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Clas</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Late</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears Prin</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Total Arrears</Data></Cell>
@@ -439,7 +439,7 @@
     <Cell ss:StyleID="s81"><Data ss:Type="DateTime"><?php echo $row->_maturity_date;?></Data></Cell>
     <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $row->_disburse->amount;?></Data></Cell>
     <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $row->_project_interest;?></Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $classify;?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $row->_arrears['cur']['num_day'];?></Data></Cell>
     <Cell ss:StyleID="s101"><Data ss:Type="Number"><?php echo $row->_arrears['cur']['principal'];?></Data></Cell>
     <Cell ss:StyleID="s101"><Data ss:Type="Number"><?php echo $row->_arrears['cur']['interest'];?></Data></Cell>
     <Cell ss:StyleID="s101"><Data ss:Type="Number"><?php echo $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'];?></Data></Cell>

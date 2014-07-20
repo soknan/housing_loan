@@ -58,9 +58,7 @@ class RptLoanLateController extends BaseController
         $condition = ' 1=1 ';
         $date = " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
         //$condition.=" AND repayment_type != 'closing' or current_product_status!=5 ";
-        if($data['operator']!='all'){
-            $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';
@@ -127,13 +125,35 @@ order by ln_disburse.disburse_date DESC
         }
         $tmp = array();
         //var_dump($perform); exit;
+        $condi = '';
+
         foreach($perform as $row){
             if($row->_disburse->disburse_date <= $data["as_date"]){
-                $tmp[] = $row;
+                switch($data['operator']){
+                    case '>':
+                        $condi = $row->_arrears['cur']['num_day'] > $data['late'];
+                        break;
+                    case '>=':
+                        $condi = $row->_arrears['cur']['num_day'] >= $data['late'];
+                        break;
+                    case '<':
+                        $condi = $row->_arrears['cur']['num_day'] < $data['late'];
+                        break;
+                    case '<=':
+                        $condi = $row->_arrears['cur']['num_day'] <= $data['late'];
+                        break;
+                    case 'between':
+                        list($first,$second) = explode(',',$data['late']);
+                        $condi = $row->_arrears['cur']['num_day'] >= $first && $row->_arrears['cur']['num_day'] <= $second ;
+                        break;
+                }
+                if($condi){
+                    $tmp[] = $row;
+                }
             }
         }
 
-        //var_dump($perform);
+        //var_dump($tmp);
         //exit;
         $data['result']= $tmp;
 
@@ -143,9 +163,9 @@ order by ln_disburse.disburse_date DESC
 
 
 
-        \Report::setReportName('Loan_Outstanding')
+        \Report::setReportName('Loan_Late')
             ->setDateFrom($data['as_date']);
-        return \Report::make('rpt_loan_out/source', $data,'loan_out');
+        return \Report::make('rpt_loan_late/source', $data,'loan_late');
 
     }
 

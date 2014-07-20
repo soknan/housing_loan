@@ -376,11 +376,11 @@ class LookupValueList
 
     public function getOperator(){
         return array(
-            '<'=>'<',
-            '<='=>'<=',
-            '>'=>'>',
-            '>='=>'>=',
-            'between'=>'between'
+            "<"=>"<",
+            "<="=>"<=",
+            ">"=>">",
+            ">="=>">=",
+            "between"=>"between"
         );
     }
 
