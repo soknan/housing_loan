@@ -319,7 +319,7 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">Branch Office : <?php echo $cp_office; ?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s62">
-    <Cell ss:StyleID="s65"><Data ss:Type="String">Loan Repay Report</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">Loan Repay Fee Report</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s62">
     <Cell ss:StyleID="s65"><Data ss:Type="String">Period : <?php echo date('d-M-Y',strtotime($date_from));?> To <?php echo date('d-M-Y',strtotime($date_to));?></Data></Cell>
@@ -381,10 +381,10 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Intt</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Status</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Prin</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Int</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Fee</Data></Cell>
+    <!--<Cell ss:StyleID="s75"><Data ss:Type="String">Coll Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Total Coll</Data></Cell>
-    <Cell ss:StyleID="s76"><Data ss:Type="String">Coll Pen</Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="String">Coll Pen</Data></Cell>-->
    </Row>
       <?php
               $pri_khr=0;
@@ -405,20 +405,20 @@
               foreach($result as $key=>$row){
                   switch ($row->cp_currency_id){
                       case 1:
-                          $pri_khr+=$row->repayment_principal;
-                          $int_khr+=$row->repayment_interest;
-                          $pen_khr+=$row->repayment_penalty;
+                          $pri_khr+=$row->repayment_fee;
+                          //$int_khr+=$row->repayment_interest;
+                          //$pen_khr+=$row->repayment_penalty;
 
                       break;
                       case 2:
-                          $pri_usd+=$row->repayment_principal;
-                          $int_usd+=$row->repayment_interest;
-                          $pen_usd+=$row->repayment_penalty;
+                          $pri_usd+=$row->repayment_fee;
+                          //$int_usd+=$row->repayment_interest;
+                          //$pen_usd+=$row->repayment_penalty;
                       break;
                       case 3:
-                          $pri_thb+=$row->repayment_principal;
-                          $int_thb+=$row->repayment_interest;
-                          $pen_thb+=$row->repayment_penalty;
+                          $pri_thb+=$row->repayment_fee;
+                          //$int_thb+=$row->repayment_interest;
+                          //$pen_thb+=$row->repayment_penalty;
                       break;
                   }
 
@@ -435,61 +435,61 @@
     <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->project_interest;?></Data></Cell>
     <Cell ss:StyleID="s79"><Data ss:Type="DateTime"><?php echo $row->repayment_date;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->repayment_type;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_principal;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_interest;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_principal + $row->repayment_interest;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_penalty;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_fee;?></Data></Cell>
+    <!--<Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_interest;?></Data></Cell>-->
+    <!--<Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_fee;?></Data></Cell>-->
+    <!--<Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_penalty;?></Data></Cell>-->
    </Row>
   <?php }
           $con_cur = new Battambang\Cpanel\Libraries\Currency();
 
-          $total_repay_khr = $pri_khr + $int_khr;
-          $total_repay_usd = $pri_usd + $int_usd;
-          $total_repay_thb = $pri_thb + $int_thb;
+          $total_repay_khr = $pri_khr;
+          $total_repay_usd = $pri_usd;
+          $total_repay_thb = $pri_thb;
 
           $sub_pri_khr_usd = $con_cur->toUSD(1,$pri_khr,$exchange_rate_id);
-          $sub_int_khr_usd= $con_cur->toUSD(1,$int_khr,$exchange_rate_id);
-          $sub_pen_khr_usd= $con_cur->toUSD(1,$pen_khr,$exchange_rate_id);
-          $sub_total_khr_usd= $con_cur->toUSD(1,$total_repay_khr,$exchange_rate_id);
+          //$sub_int_khr_usd= $con_cur->toUSD(1,$int_khr,$exchange_rate_id);
+          //$sub_pen_khr_usd= $con_cur->toUSD(1,$pen_khr,$exchange_rate_id);
+          //$sub_total_khr_usd= $con_cur->toUSD(1,$total_repay_khr,$exchange_rate_id);
 
           $sub_pri_thb_usd = $con_cur->toUSD(3,$pri_thb,$exchange_rate_id);
-          $sub_int_thb_usd= $con_cur->toUSD(3,$int_thb,$exchange_rate_id);
-          $sub_pen_thb_usd= $con_cur->toUSD(3,$pen_thb,$exchange_rate_id);
-          $sub_total_thb_usd= $con_cur->toUSD(3,$total_repay_thb,$exchange_rate_id);
+          //$sub_int_thb_usd= $con_cur->toUSD(3,$int_thb,$exchange_rate_id);
+          //$sub_pen_thb_usd= $con_cur->toUSD(3,$pen_thb,$exchange_rate_id);
+          //$sub_total_thb_usd= $con_cur->toUSD(3,$total_repay_thb,$exchange_rate_id);
 
           $pri_to_USD = $sub_pri_khr_usd + $pri_usd + $sub_pri_thb_usd;
-          $int_to_USD = $sub_int_khr_usd + $int_usd + $sub_int_thb_usd;
-          $pen_to_USD = $sub_pen_khr_usd + $pen_usd + $sub_pen_thb_usd;
+          //$int_to_USD = $sub_int_khr_usd + $int_usd + $sub_int_thb_usd;
+          //$pen_to_USD = $sub_pen_khr_usd + $pen_usd + $sub_pen_thb_usd;
 
           $total_to_USD = $sub_total_khr_usd + $sub_total_thb_usd + $total_repay_usd;
           ?>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="10" ss:StyleID="m46670312"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_khr;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_khr;?></Data></Cell>
+    <!--<Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_khr;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_repay_khr;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_khr;?></Data></Cell>
+    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_khr;?></Data></Cell>-->
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="10" ss:StyleID="m46670332"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_usd;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_usd;?></Data></Cell>
+   <!-- <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_usd;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_repay_usd;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_usd;?></Data></Cell>
+    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_usd;?></Data></Cell>-->
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="10" ss:StyleID="m46670352"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_thb;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_thb;?></Data></Cell>
+    <!--<Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_thb;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_repay_thb;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_thb;?></Data></Cell>
+    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_thb;?></Data></Cell>-->
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="10" ss:StyleID="m46670372"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_to_USD;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_to_USD;?></Data></Cell>
+    <!--<Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_to_USD;?></Data></Cell>
-    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_to_USD;?></Data></Cell>
+    <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_to_USD;?></Data></Cell>-->
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="14" ss:StyleID="s96"/>

@@ -24,7 +24,7 @@ class RptLoanRepayFeeController extends BaseController
     {
         //$data['reportHistory'] = $this->_reportHistory();
         return $this->renderLayout(
-            \View::make('battambang/loan::rpt_loan_repay.index')
+            \View::make('battambang/loan::rpt_loan_fee.index')
         );
     }
 
@@ -58,7 +58,7 @@ class RptLoanRepayFeeController extends BaseController
         $condition.= " AND ln_perform.activated_at BETWEEN
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
-        $condition.=" And perform_type ='repayment' ";
+        $condition.=" And perform_type ='repayment' and repayment_type='fee'";
         if($data['status']!='all'){
             $condition.=" AND repayment_payment_status = '".$data['status']."'";
         }
@@ -130,10 +130,10 @@ INNER join ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.i
        //var_dump($data['result']);
        //exit;
 
-        \Report::setReportName('Loan_Repay')
+        \Report::setReportName('Loan_Repay_Fee')
             ->setDateFrom($data['date_from'])
         ->setDateTo($data['date_to']);
-        return \Report::make('rpt_loan_repay/source', $data,'loan_repay');
+        return \Report::make('rpt_loan_fee/source', $data,'loan_repay_fee');
 
     }
 

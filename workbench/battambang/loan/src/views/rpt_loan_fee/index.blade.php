@@ -1,7 +1,7 @@
 @extends(Config::get('battambang/cpanel::views.layout'))
 
 @section('content')
-{{Former::open( route('loan.rpt_loan_repay.report'))->method('POST')}}
+{{Former::open( route('loan.rpt_loan_fee.report'))->method('POST')}}
 <?php echo FormPanel2::make(
     'General',
     Former::select('cp_office_id[]','Branch Office')
