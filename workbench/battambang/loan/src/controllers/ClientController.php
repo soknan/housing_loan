@@ -92,7 +92,7 @@ class ClientController extends BaseController
             if (!empty($photo)) {
                 $destinationPath = public_path() . '/packages/battambang/loan/client_photo/';
                 $filename = UserSession::read()->sub_branch . '-' .
-                    $data->en_last_name.$data->en_first_name.'-'.$data->dob.'.'. $photo->getClientOriginalExtension();
+                    Input::get('en_last_name').Input::get('en_first_name').'-'.Input::get('dob').'.'. $photo->getClientOriginalExtension();
                 $photo->move($destinationPath, $filename);
                 $photoPath = \URL::to('/') . '/packages/battambang/loan/client_photo/' . $filename;
             }
@@ -123,11 +123,11 @@ class ClientController extends BaseController
 //                ClientModel::where('id', '=', $id)->update($data);
                 $data = ClientLoan::findOrFail($id);
                 $photo = Input::file('attach_photo');
-                $photoPath = \URL::to('/') . '/packages/battambang/cpanel/img/cp_noimage.jpg';
+                $photoPath = $data->attach_photo;
                 if (!empty($photo)) {
                     $destinationPath = public_path() . '/packages/battambang/loan/client_photo/';
                     $filename = UserSession::read()->sub_branch . '-' .
-                        $data->en_last_name.$data->en_first_name.'-'.$data->dob.'.'. $photo->getClientOriginalExtension();
+                        Input::get('en_last_name').Input::get('en_first_name').'-'.Input::get('dob').'.'. $photo->getClientOriginalExtension();
                     $photo->move($destinationPath, $filename);
                     $photoPath = \URL::to('/') . '/packages/battambang/loan/client_photo/' . $filename;
                 }
