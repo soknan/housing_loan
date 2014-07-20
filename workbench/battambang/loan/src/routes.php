@@ -940,6 +940,21 @@ Route::group(
                 'uses' => 'Battambang\Loan\RptLoanRepayFeeController@report'
             )
         );
+        // Loan Late
+        Route::get(
+            'rpt_loan_late',
+            array(
+                'as' => 'loan.rpt_loan_late.index',
+                'uses' => 'Battambang\Loan\RptLoanLateController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_late',
+            array(
+                'as' => 'loan.rpt_loan_late.report',
+                'uses' => 'Battambang\Loan\RptLoanLateController@report'
+            )
+        );
         // NBC 5 Loan Break Down By Purpose
         Route::get(
             'rpt_breakdown_purpose',

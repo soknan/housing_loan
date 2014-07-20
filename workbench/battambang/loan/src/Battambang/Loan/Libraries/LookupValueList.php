@@ -374,6 +374,16 @@ class LookupValueList
         );
     }
 
+    public function getOperator(){
+        return array(
+            '<'=>'<',
+            '<='=>'<=',
+            '>'=>'>',
+            '>='=>'>=',
+            'between'=>'between'
+        );
+    }
+
     public function getLoanAccount()
     {
 //        $perform = array('');

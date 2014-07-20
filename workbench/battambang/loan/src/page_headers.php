@@ -354,6 +354,13 @@ PageHeader::make(
 |--------------------------------------------------------------------------
 */
 PageHeader::make(
+    'loan.rpt_loan_late.index',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('Loan Late Report');
+    }
+);
+PageHeader::make(
     'loan.rpt_loan_fee.index',
     function (PageHeardItem $header) {
         $header->iconFloppyDisk();
