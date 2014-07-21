@@ -45,7 +45,7 @@ Menu::make(
                 $dropdown->add('Loan Outstanding', route('loan.rpt_loan_out.index'));
                 $dropdown->add('Loan Late', route('loan.rpt_loan_late.index'));
                 $dropdown->add('Loan Repayment', route('loan.rpt_loan_repay.index'));
-                $dropdown->add('Loan Repay Fee', route('loan.rpt_loan_fee.index'));
+                $dropdown->add('Fee Repayment', route('loan.rpt_loan_fee.index'));
                 $dropdown->add('Loan Closing', route('loan.rpt_loan_finish.index'));
                 $dropdown->add('Collection Sheet', route('loan.rpt_collection_sheet.index'));
                 $dropdown->add('Loan History', route('loan.rpt_loan_history.index'));
