@@ -376,10 +376,12 @@ class LookupValueList
 
     public function getOperator(){
         return array(
-            "<"=>"<",
-            "<="=>"<=",
-            ">"=>">",
-            ">="=>">=",
+            "=="=>"Equal",
+            "!="=>"Not Equal",
+            "<"=>"Less Than",
+            "<="=>"Less Than or Equal",
+            ">"=>"Bigger Than",
+            ">="=>"Bigger Than or Equal",
             "between"=>"between"
         );
     }

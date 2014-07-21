@@ -15,6 +15,7 @@ use Battambang\Cpanel\Facades\GetLists;
 use Battambang\Cpanel\Facades\UserSession;
 use Battambang\Cpanel\Libraries\Report;
 use DB;
+use Illuminate\Support\Facades\Redirect;
 use Input;
 use Battambang\Loan\Libraries\LoanPerformance;
 
@@ -128,8 +129,16 @@ order by ln_disburse.disburse_date DESC
         $condi = '';
 
         foreach($perform as $row){
-            if($row->_disburse->disburse_date <= $data["as_date"]){
+            if($row->_disburse->disburse_date <= $data["as_date"] and $row->_arrears['cur']['date']!='0000-00-00'){
+                if($data['operator']!='all'){
+                try{
                 switch($data['operator']){
+                    case '==':
+                        $condi = $row->_arrears['cur']['num_day'] == $data['late'];
+                        break;
+                    case '!=':
+                        $condi = $row->_arrears['cur']['num_day'] != $data['late'];
+                        break;
                     case '>':
                         $condi = $row->_arrears['cur']['num_day'] > $data['late'];
                         break;
@@ -147,12 +156,23 @@ order by ln_disburse.disburse_date DESC
                         $condi = $row->_arrears['cur']['num_day'] >= $first && $row->_arrears['cur']['num_day'] <= $second ;
                         break;
                 }
+                }catch (\Exception $e){
+                    return \Redirect::back()->with('error','Please Input correctly!');
+                }
                 if($condi){
+                    $tmp[] = $row;
+                }
+                }else{
                     $tmp[] = $row;
                 }
             }
         }
 
+        if($data['operator']!='all'){
+            $data['late'] = $data['operator'].' '.$data['late'];
+        }else{
+            $data['late'] = 'all';
+        }
         //var_dump($tmp);
         //exit;
         $data['result']= $tmp;
