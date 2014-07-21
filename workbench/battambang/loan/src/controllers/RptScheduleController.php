@@ -35,7 +35,7 @@ class RptScheduleController extends BaseController{
             ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->get();
 
 
-        $rptFormat='Nikom'; // Kra, Nikom
+        $rptFormat='Kra'; // Kra, Nikom
 
         if($rptFormat=='Kra'){
             $rptName='Repayment Schedule Kra';

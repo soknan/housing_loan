@@ -319,7 +319,7 @@
     <Cell ss:StyleID="s64"><Data ss:Type="String">Branch Office : <?php echo $cp_office; ?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s62">
-    <Cell ss:StyleID="s65"><Data ss:Type="String">Loan Repay Report</Data></Cell>
+    <Cell ss:StyleID="s65"><Data ss:Type="String">Loan Repayment Report</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s62">
     <Cell ss:StyleID="s65"><Data ss:Type="String">Period : <?php echo date('d-M-Y',strtotime($date_from));?> To <?php echo date('d-M-Y',strtotime($date_to));?></Data></Cell>
