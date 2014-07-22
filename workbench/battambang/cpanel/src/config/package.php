@@ -144,6 +144,8 @@ return array(
                 'loan.rpt_schedule.index' => 'loan repayment schedule',
                 'loan.rpt_disburse_client.index' => 'loan disbursement',
                 'loan.rpt_loan_out.index' => 'loan out standing',
+                'loan.rpt_loan_late.index' => 'loan late',
+                'loan.rpt_loan_fee.index' => 'Fee repayment',
                 'loan.rpt_loan_repay.index' => 'loan repayment',
                 'loan.rpt_loan_finish.index' => 'loan closing',
                 'loan.rpt_collection_sheet.index' => 'loan collection sheet',
