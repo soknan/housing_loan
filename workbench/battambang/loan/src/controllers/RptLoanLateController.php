@@ -129,7 +129,7 @@ order by ln_disburse.disburse_date DESC
         $condi = '';
 
         foreach($perform as $row){
-            if($row->_disburse->disburse_date <= $data["as_date"] and $row->_arrears['cur']['date']!='0000-00-00'){
+            if($row->_disburse->disburse_date <= $data["as_date"] and $row->_arrears['cur']['num_day']>0){
                 if($data['operator']!='all'){
                 try{
                 switch($data['operator']){
