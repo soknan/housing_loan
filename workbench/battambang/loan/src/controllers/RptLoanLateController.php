@@ -152,7 +152,7 @@ order by ln_disburse.disburse_date DESC
                         $condi = $row->_arrears['cur']['num_day'] <= $data['late'];
                         break;
                     case 'between':
-                        list($first,$second) = explode(',',$data['late']);
+                        list($first,$second) = explode('-',$data['late']);
                         $condi = $row->_arrears['cur']['num_day'] >= $first && $row->_arrears['cur']['num_day'] <= $second ;
                         break;
                 }
