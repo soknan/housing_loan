@@ -38,7 +38,7 @@ Menu::make(
 
         // Report
         $menu->add(
-            'Repors',
+            'Reports',
             function ($dropdown) {
                 $dropdown->add('Repayment Schedule', route('loan.rpt_schedule.index'));
                 $dropdown->add('Loan Disbursement', route('loan.rpt_disburse_client.index'));
