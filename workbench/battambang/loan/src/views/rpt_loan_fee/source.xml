@@ -294,7 +294,7 @@
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
   </Style>
  </Styles>
- <Worksheet ss:Name="Loan Repay">
+ <Worksheet ss:Name="Fee Repayment">
   <Table x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="15">
    <Column ss:AutoFitWidth="0" ss:Width="21"/>
@@ -378,7 +378,7 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Dis Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Mat Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Amount</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Intt</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Status</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Fee</Data></Cell>
