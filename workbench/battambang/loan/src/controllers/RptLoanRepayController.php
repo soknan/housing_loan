@@ -58,7 +58,7 @@ class RptLoanRepayController extends BaseController
         $condition.= " AND ln_perform.activated_at BETWEEN
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
-        $condition.=" And perform_type ='repayment' ";
+        $condition.=" And perform_type ='repayment' and repayment_type!='fee' ";
         if($data['status']!='all'){
             $condition.=" AND repayment_payment_status = '".$data['status']."'";
         }
