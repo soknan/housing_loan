@@ -384,13 +384,15 @@ class RepaymentController extends BaseController
 
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
+
                     Perform::insert($curData);
                     return Redirect::back()
                         ->with('data', $data)
                         ->with('info', $msg);
                 }
-
-
+                unset($curData['created_at']);
+                unset($curData['updated_at']);
+                Perform::insert($curData);
                 $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
 
                 if ($penalty != 0) {
@@ -398,7 +400,7 @@ class RepaymentController extends BaseController
                         //$data->__construct();
                         $data->error = 'Please Repay Principal and Interest Before Repay Penalty!';
                         $data->_repayment['cur']['type'] = $status;
-                        return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                        return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
                 }
 
@@ -406,25 +408,25 @@ class RepaymentController extends BaseController
                     //$data->__construct();
                     $data->error = 'Your Repay Amount > Arrears Principal. Please Confirm before save.';
                     $data->_repayment['cur']['type'] = $status;
-                    return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                    return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
 
                 if (bccomp($penalty, $data->_arrears['cur']['penalty'], 4) == 1) {
                     //$data->__construct();
                     $data->error = 'Your Penalty Amount > Arrears Penalty.';
                     $data->_repayment['cur']['type'] = $status;
-                    return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                    return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
                 if (empty($voucher_id)) {
                     $data->error = 'Your Voucher ID is null.';
                     $data->_repayment['cur']['type'] = $status;
-                    return Redirect::route('loan.repayment.edit', $data->_id)->with('data', $data)->with('error', $data->error);
+                    return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
                 if ($data->_repayment['cur']['type'] == 'closing' and $status == 'closing') {
                     if ($principal != $totalArrears) {
                         $data->error = 'Your Repay amount not equal with Principal amount. Your current status in Closing !.';
                         $data->_repayment['cur']['type'] = $status;
-                        return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                        return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
                 }
                 if ($status == 'penalty') {
@@ -435,26 +437,26 @@ class RepaymentController extends BaseController
                     } elseif ($data->_arrears['cur']['penalty'] > 0 and $totalArrears > 0) {
                         $data->error = 'You can not choose Penalty. Please Confirm before save.';
                         $data->_repayment['cur']['type'] = $status;
-                        return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                        return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
                 }
 
                 if ($data->_arrears['cur']['penalty'] > 0 and $totalArrears <= 0 and $status != 'penalty') {
                     $data->error = 'Your Current Type is Penalty. Please Confirm before save !.';
                     $data->_repayment['cur']['type'] = 'penalty';
-                    return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                    return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
 
                 if ($principal == 0 and $data->_arrears['cur']['penalty'] == 0) {
                     $data->error = 'Your Current Repay is 0. Please Confirm before save !.';
                     $data->_repayment['cur']['type'] = $status;
-                    return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                    return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
 
                 if ($data->_disburse->cp_currency_id != 2) {
                     if (strpos($principal, '.')) {
                         $data->error = 'Your Currency is not USD, So do not type "."';
-                        return Redirect::route('loan.repayment.edit', $data->_id)->withInput()->with('data', $data)->with('error', $data->error);
+                        return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
                 }
 
@@ -473,16 +475,16 @@ class RepaymentController extends BaseController
                     . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) . $currency->code . '</strong>, '
                     . 'Repay Penalty Amount = <strong>' . $data->_repayment['cur']['penalty'] . '</strong>'
                     . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
-
+                $perform->delete($id);
                 $perform->save();
 
-                return Redirect::route('loan.repayment.edit', $data->_id)
+                return Redirect::route('loan.repayment.edit',$data->_id)->withInput()
                     ->with('info', $msg)
                     ->with('success', trans('battambang/loan::repayment.update_success'));
             }
-            return Redirect::route('loan.repayment.edit', $id)->withInput()->withErrors($validation->getErrors());
+            return Redirect::back()->withInput()->withErrors($validation->getErrors());
         } catch (\Exception $e) {
-            return Redirect::route('loan.repayment.edit', $id)->with('error', trans('battambang/cpanel::db_error.fail'));
+            return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
         }
     }
 
