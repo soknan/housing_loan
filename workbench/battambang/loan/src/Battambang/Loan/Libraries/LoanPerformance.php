@@ -142,10 +142,14 @@ class LoanPerformance
         //$this->_current_product_status = 1;
     }
 
-    public function save()
+    public function save($save=true)
     {
         $perform = new Perform();
-        $perform->id = \AutoCode::make('ln_perform', 'id', \UserSession::read()->sub_branch . '-', 10);
+        $perform->id = $this->_id;
+        if($save){
+            $perform->id = \AutoCode::make('ln_perform', 'id', \UserSession::read()->sub_branch . '-', 10);
+        }
+
         $perform->ln_disburse_client_id = $this->_disburse_client_id;
         $perform->activated_at = $this->_activated_at;
         $perform->activated_num_installment = $this->_activated_num_installment;
@@ -882,8 +886,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     if($j >= 1){
                         $cPrin += $value->principal;
                         $cInt += $value->interest;
-                    }
 
+                    }
                 }
 
                 $tmpPrin =0;
@@ -912,12 +916,12 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $tmpInt = $principal - $row->interest;
                         $tmpPrin =  $tmpInt - $row->principal;
 
-                        if($this->_disburse->cp_currency_id ==2){
+                        if($this->_disburse->cp_currency_id == 2){
                             $tmpInt = number_format($principal,2) - $row->interest;
                             $tmpPrin =  number_format($tmpInt,2) - $row->principal;
                         }
 
-                        if($tmpInt >= 0){
+                        if($tmpInt > 0){
                             $int += $row->interest;
                             if($tmpPrin >= 0){
                                 $prin += $row->principal;
@@ -942,7 +946,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     }
                     else{
                         if(count($sch) != $i){
-                            if($ldate){ $arrearsDate = $row->due_date; $ldate=false;}
+                            if($ldate){  $ldate=false;}
                             $arrearsPrin += $row->principal;
                             $arrearsInt += $row->interest;
 
@@ -975,7 +979,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
                     . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
                 //$this->_repayment['cur']['status'] = $this->_arrears['cur']['num_day'] + $this->_repayment['last']['status'];
-                $this->_repayment['cur']['principal'] = abs($prin);
+                $this->_repayment['cur']['principal'] = $prin;
                 $this->_repayment['cur']['interest'] = $int;
                 $this->_repayment['cur']['penalty'] = $penalty;
                 $this->_repayment['cur']['type'] = $option;
