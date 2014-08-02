@@ -122,18 +122,18 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
             //$loanPerform->_last_perform_date = $data['date_from'];
-            $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to']);
+            $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to'],true);
         }
 
         $tmp = array();
         foreach ($perform as $row) {
             $cur_prin = $row->_arrears['cur']['principal'] - $row->_due['principal'];
             $cur_int = $row->_arrears['cur']['interest'] - $row->_due['interest'];
-            if($row->_due['date'] > $data['date_to']  and $cur_prin + $cur_int!=0 ){
+            if($row->_due['date'] >= $data['date_to'] and $cur_prin + $cur_int !=0){
                 //$row->_due['date']= $row->_arrears['cur']['date'];
                 $row->_arrears['cur']['date'] =  $row->_new_due['date'];
-                $row->_arrears['cur']['principal'] = $row->_arrears['cur']['principal'] - $row->_due['principal'];
-                $row->_arrears['cur']['interest'] = $row->_arrears['cur']['interest'] - $row->_due['interest'];
+                $row->_arrears['cur']['principal'] = abs($row->_arrears['cur']['principal'] - $row->_due['principal']);
+                $row->_arrears['cur']['interest'] = abs($row->_arrears['cur']['interest'] - $row->_due['interest']);
 
                 $tmp[]= $row;
                 continue;

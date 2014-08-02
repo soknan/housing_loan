@@ -231,7 +231,7 @@ class LoanPerformance
         $perform->save();
     }
 
-    public function get($disClient, $activatedAt)
+    public function get($disClient, $activatedAt,$collect = false)
     {
         $this->_disburse_client_id = $disClient;
         $this->_activated_at = $activatedAt;
@@ -383,7 +383,6 @@ class LoanPerformance
 
                 if ($this->_isEqualDate($this->_activated_at, $row->activated_at)) {
                     if($this->_isDate($this->_arrears['cur']['date'])){
-
                         $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
                         if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
                             $this->_due['principal'] = $this->_arrears['cur']['principal'];
@@ -406,6 +405,16 @@ class LoanPerformance
                         }
                         $this->_new_due['penalty'] = $this->_getLastArreasPen();
                         $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
+                        return $this;
+                    }
+                    if($collect == true){
+                        $this->_last_perform_date= $row->activated_at;
+                        $this->_new_due['principal'] = 0;
+                        $this->_new_due['interest'] = 0;
+                        $this->_new_due['penalty'] = 0;
+                        $this->_new_due['num_day']=0;
+                        $this->_new_due['num_installment']=0;
+                        $this->getPerform();
                         return $this;
                     }
 
@@ -437,7 +446,6 @@ class LoanPerformance
                     $this->_arrears['last']['interest'] = 0;
                     $this->_arrears['last']['fee'] = 0;
                     $this->_arrears['last']['penalty'] = 0;
-
                     return $this;
                 }
 
