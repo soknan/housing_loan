@@ -386,9 +386,11 @@ class LoanPerformance
                         $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
                         if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
                             $this->_due['principal'] = $this->_arrears['cur']['principal'];
+                            $this->_new_due['principal'] = $this->_arrears['cur']['principal'];
                         }
                         if($this->_due['interest'] > $this->_arrears['cur']['interest'] ){
                             $this->_due['interest'] = $this->_arrears['cur']['interest'];
+                            $this->_new_due['interest'] = $this->_arrears['cur']['interest'];
                         }
                         $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_new_due['interest']);
                         $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_new_due['principal'];
