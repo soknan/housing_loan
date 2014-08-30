@@ -810,7 +810,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
     public function _getPenaltyClosing($interest)
     {
         $data = PenaltyClosing::where('id', '=', $this->_disburse->ln_penalty_closing_id)->first();
-        $amt = $interest;
+        $amt = 0;
         if ($this->_can_closing > $this->_activated_num_installment) {
             $amt = \Currency::round($this->_disburse->cp_currency_id,($interest * $data->percentage_interest_remainder) / 100);
         }
