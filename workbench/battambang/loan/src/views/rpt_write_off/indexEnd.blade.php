@@ -1,7 +1,7 @@
 @extends(Config::get('battambang/cpanel::views.layout'))
 
 @section('content')
-{{Former::open( route('loan.rpt_loan_out.report'))->method('POST')}}
+{{Former::open( route('loan.rpt_write_off_end.report'))->method('POST')}}
 <?php echo FormPanel2::make('General',
     Former::select('cp_office_id[]','Branch Office')
         ->options(\GetLists::getSubBranchList(json_decode(\UserSession::read()->branch_arr, true)))

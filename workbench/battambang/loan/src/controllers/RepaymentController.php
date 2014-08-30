@@ -140,8 +140,8 @@ class RepaymentController extends BaseController
             if ($status == 'closing') {
                 if ($data->_repayment['cur']['type'] != 'closing') {
                     if ($totalArrears != 0) {
-                        $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
-                        $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
+                        $data->_arrears['cur']['principal'] = $data->_new_due['principal'] + $data->_due_closing['principal_closing'];
+                        $data->_arrears['cur']['interest'] = $data->_new_due['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
                         $data->_repayment['cur']['type'] = 'closing';
                         $data->error = 'Closing normal !.';
                         $pri_closing = ' ( Late : ' . ($data->_new_due['principal'] - $data->_due['principal'])
@@ -168,7 +168,7 @@ class RepaymentController extends BaseController
             } else {
                 $data->_repayment['cur']['type'] = 'normal';
             }
-
+            //var_dump($data); exit;
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
                     . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] . '</strong>' . $pri_closing . ' , '

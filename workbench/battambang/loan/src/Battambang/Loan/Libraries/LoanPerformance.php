@@ -403,7 +403,9 @@ class LoanPerformance
                             $this->_arrears['last']['fee'] = $this->_arrears['cur']['fee'];
                             $this->_arrears['last']['penalty'] = $this->_arrears['cur']['penalty'];
                         }
+                        $this->_new_due['num_day'] = $this->_countDate($this->_last_perform_date,$this->_activated_at);
                         $this->_new_due['penalty'] = $this->_getLastArreasPen();
+                        $this->_arrears['cur']['num_day'] = $this->_new_due['num_day'] + $this->_arrears['last']['num_day'];
                         $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
                         return $this;
                     }
