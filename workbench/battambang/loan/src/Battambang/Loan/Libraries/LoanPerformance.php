@@ -392,8 +392,8 @@ class LoanPerformance
                             $this->_due['interest'] = $this->_arrears['cur']['interest'];
                             $this->_new_due['interest'] = $this->_arrears['cur']['interest'];
                         }
-                        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_new_due['interest']);
-                        $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_new_due['principal'];
+                        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['principal']);
+                        $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
                         //Accrued interest
                         $this->_getAccrueInt();
                         //Penalty
@@ -648,9 +648,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
 
             $this->getNext();
-            $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_new_due['interest']);
+            $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['interest']);
             //$this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest);
-            $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_new_due['principal'];
+            $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
             //Accrued interest
             $this->_getAccrueInt();
 
