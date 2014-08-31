@@ -420,10 +420,10 @@
 
                    break;
                    case 2:
-                       $pri_usd+=$row->_arrears['cur']['principal'];
-                       $int_usd+=$row->_arrears['cur']['interest'];
-                       $bal_pri_usd+=$row->_balance_principal;
-                       $bal_int_usd+=$row->_balance_interest;
+           $pri_usd+=$con_cur->toUSD(2,$row->_arrears['cur']['principal'],$exchange_rate_id);
+           $int_usd+=$con_cur->toUSD(2,$row->_arrears['cur']['interest'],$exchange_rate_id);
+           $bal_pri_usd+=$con_cur->toUSD(2,$row->_balance_principal,$exchange_rate_id);
+           $bal_int_usd+=$con_cur->toUSD(2,$row->_balance_interest,$exchange_rate_id);
 
            $pri=$con_cur->toUSD(2,$row->_arrears['cur']['principal'],$exchange_rate_id);
            $int=$con_cur->toUSD(2,$row->_arrears['cur']['interest'],$exchange_rate_id);
@@ -432,10 +432,10 @@
 
                    break;
                    case 3:
-                       $pri_thb+=$row->_arrears['cur']['principal'];
-                       $int_thb+=$row->_arrears['cur']['interest'];
-                       $bal_pri_thb+=$row->_balance_principal;
-                       $bal_int_thb+=$row->_balance_interest;
+                       $pri_thb+=$con_cur->toTHB(3,$row->_arrears['cur']['principal'],$exchange_rate_id);
+                       $int_thb+=$con_cur->toTHB(3,$row->_arrears['cur']['interest'],$exchange_rate_id);
+                       $bal_pri_thb+=$con_cur->toTHB(3,$row->_balance_principal,$exchange_rate_id);
+                       $bal_int_thb+=$con_cur->toTHB(3,$row->_balance_interest,$exchange_rate_id);
            $pri=$con_cur->toTHB(3,$row->_arrears['cur']['principal'],$exchange_rate_id);
            $int=$con_cur->toTHB(3,$row->_arrears['cur']['interest'],$exchange_rate_id);
            $bal_pri=$con_cur->toTHB(3,$row->_balance_principal,$exchange_rate_id);

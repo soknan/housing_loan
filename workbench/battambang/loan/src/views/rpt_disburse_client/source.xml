@@ -400,25 +400,25 @@
               $fee_to_USD =0;
               $pro_int_to_USD = 0;
               $total_due_to_USD =0;
-
+              $con_cur = new Battambang\Cpanel\Libraries\Currency();
               foreach($result as $key=> $row){
 
 
               switch ($row->cp_currency_id){
                   case 1:
-                      $amount_khr+=$row->amount;
-                      $fee_khr+=$row->fee;
-                      $pro_int_khr+= $row->project_interest;
+                      $amount_khr+=$con_cur->toKHR(1,$row->amount,$exchange_rate_id);
+                      $fee_khr+=$con_cur->toKHR(1,$row->fee,$exchange_rate_id);
+                      $pro_int_khr+= $con_cur->toKHR(1,$row->project_interest,$exchange_rate_id);
                   break;
                   case 2:
-                      $amount_usd+=$row->amount;
-                      $fee_usd+=$row->fee;
-                      $pro_int_usd+= $row->project_interest;
+                      $amount_usd+=$con_cur->toUSD(2,$row->amount,$exchange_rate_id);
+                      $fee_usd+=$con_cur->toUSD(2,$row->fee,$exchange_rate_id);
+                      $pro_int_usd+= $con_cur->toUSD(2,$row->project_interest,$exchange_rate_id);
                   break;
                   case 3:
-                      $amount_thb+=$row->amount;
-                      $fee_thb+=$row->fee;
-                      $pro_int_thb+= $row->project_interest;
+                      $amount_thb+=$con_cur->toTHB(3,$row->amount,$exchange_rate_id);
+                      $fee_thb+=$con_cur->toTHB(3,$row->fee,$exchange_rate_id);
+                      $pro_int_thb+= $con_cur->toTHB(3,$row->project_interest,$exchange_rate_id);
                   break;
               }
               ?>
@@ -440,7 +440,7 @@
     <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $row->total_due;?></Data></Cell>
    </Row>
       <?php }
-              $con_cur = new Battambang\Cpanel\Libraries\Currency();
+
               $total_due_khr=$amount_khr + $fee_khr + $pro_int_khr;
               $total_due_usd=$amount_usd + $fee_usd + $pro_int_usd;
               $total_due_thb=$amount_thb + $fee_thb + $pro_int_thb;

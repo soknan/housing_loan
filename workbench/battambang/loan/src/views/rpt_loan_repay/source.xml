@@ -402,23 +402,35 @@
               $pen_thb=0;
               $total_repay_thb=0;
 
+              $pri = 0;
+              $int =0;
+              $pen = 0;
+              $con_cur = new Battambang\Cpanel\Libraries\Currency();
               foreach($result as $key=>$row){
                   switch ($row->cp_currency_id){
                       case 1:
-                          $pri_khr+=$row->repayment_principal;
-                          $int_khr+=$row->repayment_interest;
-                          $pen_khr+=$row->repayment_penalty;
-
+                          $pri_khr+=$con_cur->toKHR(1,$row->repayment_principal,$exchange_rate_id);
+                          $int_khr+=$con_cur->toKHR(1,$row->repayment_interest,$exchange_rate_id);
+                          $pen_khr+=$con_cur->toKHR(1,$row->repayment_penalty,$exchange_rate_id);
+              $pri=$con_cur->toKHR(1,$row->repayment_principal,$exchange_rate_id);
+              $int=$con_cur->toKHR(1,$row->repayment_interest,$exchange_rate_id);
+              $pen=$con_cur->toKHR(1,$row->repayment_penalty,$exchange_rate_id);
                       break;
                       case 2:
-                          $pri_usd+=$row->repayment_principal;
-                          $int_usd+=$row->repayment_interest;
-                          $pen_usd+=$row->repayment_penalty;
+                          $pri_usd+=$con_cur->toUSD(2,$row->repayment_principal,$exchange_rate_id);
+                          $int_usd+=$con_cur->toUSD(2,$row->repayment_interest,$exchange_rate_id);
+                          $pen_usd+=$con_cur->toUSD(2,$row->repayment_penalty,$exchange_rate_id);
+              $pri=$con_cur->toUSD(2,$row->repayment_principal,$exchange_rate_id);
+              $int=$con_cur->toUSD(2,$row->repayment_interest,$exchange_rate_id);
+              $pen=$con_cur->toUSD(1,$row->repayment_penalty,$exchange_rate_id);
                       break;
                       case 3:
-                          $pri_thb+=$row->repayment_principal;
-                          $int_thb+=$row->repayment_interest;
-                          $pen_thb+=$row->repayment_penalty;
+                          $pri_thb+=$con_cur->toTHB(3,$row->repayment_principal,$exchange_rate_id);
+                          $int_thb+=$con_cur->toTHB(3,$row->repayment_interest,$exchange_rate_id);
+                          $pen_thb+=$con_cur->toTHB(3,$row->repayment_penalty,$exchange_rate_id);
+              $pri=$con_cur->toTHB(3,$row->repayment_principal,$exchange_rate_id);
+              $int=$con_cur->toTHB(3,$row->repayment_interest,$exchange_rate_id);
+              $pen=$con_cur->toTHB(1,$row->repayment_penalty,$exchange_rate_id);
                       break;
                   }
 
@@ -435,13 +447,12 @@
     <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->project_interest;?></Data></Cell>
     <Cell ss:StyleID="s79"><Data ss:Type="DateTime"><?php echo $row->repayment_date;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->repayment_type;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_principal;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_interest;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_principal + $row->repayment_interest;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_penalty;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $pri;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $int;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $pri + $int;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $pen;?></Data></Cell>
    </Row>
   <?php }
-          $con_cur = new Battambang\Cpanel\Libraries\Currency();
 
           $total_repay_khr = $pri_khr + $int_khr;
           $total_repay_usd = $pri_usd + $int_usd;

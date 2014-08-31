@@ -140,14 +140,15 @@ class RepaymentController extends BaseController
             if ($status == 'closing') {
                 if ($data->_repayment['cur']['type'] != 'closing') {
                     if ($totalArrears != 0) {
-                        $data->_arrears['cur']['principal'] = $data->_new_due['principal'] + $data->_due_closing['principal_closing'];
-                        $data->_arrears['cur']['interest'] = $data->_new_due['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
+                        $pri_closing = ' ( Late : ' . ($data->_arrears['cur']['principal'] - $data->_due['principal'])
+                            . ', Cur Pri : ' . $data->_due['principal'] . ', Closing : ' . $data->_due_closing['principal_closing'] . ' )';
+                        $int_closing = ' ( Late : ' . ($data->_arrears['cur']['interest'] - $data->_due['interest'])
+                            . ', Cur Int : ' . $data->_due['interest'] . ', Closing : ' . $data->_due_closing['interest_closing'] . ', Accrued Int : ' . $data->_accru_int . ' )';
+                        $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
+                        $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
                         $data->_repayment['cur']['type'] = 'closing';
                         $data->error = 'Closing normal !.';
-                        $pri_closing = ' ( Late : ' . ($data->_new_due['principal'] - $data->_due['principal'])
-                            . ', Cur Pri : ' . $data->_due['principal'] . ', Closing : ' . $data->_due_closing['principal_closing'] . ' )';
-                        $int_closing = ' ( Late : ' . ($data->_new_due['interest'] - $data->_due['interest'])
-                            . ', Cur Int : ' . $data->_due['interest'] . ', Closing : ' . $data->_due_closing['interest_closing'] . ', Accrued Int : ' . $data->_accru_int . ' )';
+
                     } else {
                         //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                         $data->_arrears['cur']['principal'] = $data->_balance_principal;

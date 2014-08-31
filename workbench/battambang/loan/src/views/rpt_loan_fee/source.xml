@@ -401,24 +401,23 @@
               $int_thb=0;
               $pen_thb=0;
               $total_repay_thb=0;
-
+              $con_cur = new Battambang\Cpanel\Libraries\Currency();
+              $pri = 0;
               foreach($result as $key=>$row){
                   switch ($row->cp_currency_id){
                       case 1:
-                          $pri_khr+=$row->repayment_fee;
-                          //$int_khr+=$row->repayment_interest;
-                          //$pen_khr+=$row->repayment_penalty;
+                          $pri_khr+=$con_cur->toKHR(1,$row->repayment_fee,$exchange_rate_id);
+              $pri=$con_cur->toKHR(1,$row->repayment_fee,$exchange_rate_id);
+
 
                       break;
                       case 2:
-                          $pri_usd+=$row->repayment_fee;
-                          //$int_usd+=$row->repayment_interest;
-                          //$pen_usd+=$row->repayment_penalty;
+                          $pri_usd+=$con_cur->toUSD(2,$row->repayment_fee,$exchange_rate_id);
+              $pri=$con_cur->toUSD(2,$row->repayment_fee,$exchange_rate_id);
                       break;
                       case 3:
-                          $pri_thb+=$row->repayment_fee;
-                          //$int_thb+=$row->repayment_interest;
-                          //$pen_thb+=$row->repayment_penalty;
+                          $pri_thb+=$con_cur->toTHB(3,$row->repayment_fee,$exchange_rate_id);
+              $pri=$con_cur->toTHB(3,$row->repayment_fee,$exchange_rate_id);
                       break;
                   }
 
@@ -435,13 +434,13 @@
     <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->project_interest;?></Data></Cell>
     <Cell ss:StyleID="s79"><Data ss:Type="DateTime"><?php echo $row->repayment_date;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->repayment_type;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $row->repayment_fee;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="Number"><?php echo $pri;?></Data></Cell>
     <Cell ss:StyleID="s99"></Cell>
     <Cell ss:StyleID="s99"></Cell>
     <Cell ss:StyleID="s99"></Cell>
    </Row>
   <?php }
-          $con_cur = new Battambang\Cpanel\Libraries\Currency();
+
 
           $total_repay_khr = $pri_khr;
           $total_repay_usd = $pri_usd;
