@@ -29,10 +29,10 @@ class UserController extends BaseController
             'Last Name',
             'Email',
             'Username',
-            'Group',
             'Expire Day',
             'Activated',
-            'activated_at'
+            'activated_at',
+            'Group',
         );
 //        $data['btnAction'] = array('Add New' => route('cpanel.user.create'));
         $data['table'] = \Datatable::table()
@@ -152,7 +152,6 @@ class UserController extends BaseController
             'last_name',
             'email',
             'username',
-            'cp_group_id_arr',
             'expire_day',
             'activated',
             'activated_at'
@@ -180,6 +179,13 @@ class UserController extends BaseController
                 }
             )
             ->showColumns($item)
+            ->addColumn('cp_group_id_arr',function($model){
+                foreach(json_decode($model->cp_group_id_arr) as $key=> $row){
+                    $tmp[] = $this->getGroupNameBy($row);
+                }
+                return implode(', ',$tmp);
+            })
+
             ->searchColumns(array('id', 'first_name', 'last_name', 'email', 'username'))
             ->orderColumns($item)
             ->make();
@@ -223,5 +229,14 @@ class UserController extends BaseController
         (\Exception $e) {
             return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
         }
+    }
+
+    public function getGroupNameBy($code){
+        $tmp='';
+        $d = Group::where('id', '=', $code)->limit(1)->get();
+        foreach ($d as $key=>$row) {
+            $tmp = $row->name;
+        }
+        return $tmp;
     }
 } 

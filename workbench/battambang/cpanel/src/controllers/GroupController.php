@@ -154,6 +154,12 @@ class GroupController extends BaseController
                 }
             )
             ->showColumns($item)
+            ->addColumn('branch_arr',function($model){
+                foreach(json_decode($model->branch_arr) as $key=> $row){
+                    $tmp[] = \GetLists::getBranchOfficeBy($row);
+                }
+                return implode(', ',$tmp);
+            })
             ->addColumn('permission_arr', function($model){
                     return implode(', ', json_decode($model->permission_arr, true));
                 })
