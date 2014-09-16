@@ -272,27 +272,35 @@ class DisburseClientController extends BaseController
         try {
             $validation = $this->getValidationService('disburse_client');
             if ($validation->passes()) {
-                $disburseClient = DisburseClient::findOrFail($id);
-                $this->saveData($disburseClient, false);
+                //Delete relation
+                DisburseClient::find($id)->delete();
+                Perform::where('ln_disburse_client_id','=',$id)->delete();
+                $tmp= Schedule::where('ln_disburse_client_id','=',$id)->get();
+                foreach($tmp as $key=>$val){
+                    ScheduleDt::where('ln_schedule_id','=',$val->id)->delete();
+                }
+                Schedule::where('ln_disburse_client_id','=',$id)->delete();
+                //end delete
+                $disburseClient = new DisburseClient();
+                $disburseClient->id = Input::get('ln_disburse_id'). '-'.substr(Input::get('ln_client_id'), 5, 4);
+                $id = $disburseClient->id;
+                $this->saveData($disburseClient);
 
                 $disburseDate = Disburse::where('id', '=', $disburseClient->ln_disburse_id)->first();
-                $schedule = \ScheduleGenerate::make($disburseClient->id, $disburseDate->disburse_date);
+                $schedule = \ScheduleGenerate::make($id, $disburseDate->disburse_date);
 
-                //echo $schedule; exit;
                 $repay = new RepaymentSchedule();
                 $perform = new LoanPerformance();
 
                 $repay->save($schedule, $id, $disburseDate->disburse_date);
 
-                $perform->deleteDisburse($id);
-
                 $perform->_disburse_client_id = $id;
                 $perform->_activated_at = $repay->_activated_at;
-                $perform->_due['date'] = $repay->_activated_at;
                 $perform->_maturity_date = $repay->_maturity_date;
                 $perform->_activated_num_installment = $repay->_activated_num_installment;
                 $perform->_project_interest = $repay->_project_interest;
                 $perform->_num_borrow_day = $repay->_num_borrow_day;
+                $perform->_due['date'] = $repay->_activated_at;
                 $perform->_can_closing = $repay->_can_closing;
 
                 $perform->_arrears['cur']['fee']= $repay->_fee;
@@ -301,18 +309,20 @@ class DisburseClientController extends BaseController
                 $perform->_current_product_status = 1;
                 $perform->_current_product_status_date = $repay->_activated_at;
                 $perform->_current_product_status_principal = $repay->_balance_principal;
+
                 $perform->_balance_principal = $repay->_balance_principal;
                 $perform->_balance_interest = $repay->_project_interest;
-                $perform->_perform_type = 'disburse';
 
                 $perform->getNext();
+                $perform->_perform_type = 'disburse';
+
                 $perform->save();
 
-                return Redirect::route('loan.disburse_client.edit', array($disburseClient->id, $disburseClient->ln_disburse_id))
+                return Redirect::route('loan.disburse_client.edit', array($id, $disburseClient->ln_disburse_id))
                     ->with('success',
                         trans('battambang/loan::disburse_client.update_success')
                         . \Former::open(route('loan.rpt_schedule.report'))
-                        . \Former::text_hidden('ln_disburse_client_id',$disburseClient->id)
+                        . \Former::text_hidden('ln_disburse_client_id',$id)
                         . \Former::text_hidden('view_at',date('d-m-Y'))
                         . \Former::primary_submit('Print Schedule') . \Former::close()
                     );
