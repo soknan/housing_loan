@@ -327,10 +327,16 @@ class DisburseClientController extends BaseController
     {
         try {
             DisburseClient::find($id)->delete();
+            Perform::where('ln_disburse_client_id','=',$id)->delete();
+            $tmp= Schedule::where('ln_disburse_client_id','=',$id)->get();
+            foreach($tmp as $key=>$val){
+                ScheduleDt::where('ln_schedule_id','=',$val->id)->delete();
+            }
+            Schedule::where('ln_disburse_client_id','=',$id)->delete();
             return Redirect::back()->with('success', trans('battambang/loan::disburse_client.delete_success'));
         } catch (\Exception $e) {
-            return Redirect::route('loan.disburse_client.index')->with('error', trans('battambang/cpanel::db_error.fail'));
-        }
+           return Redirect::route('loan.disburse_client.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+       }
     }
 
     private function saveData($data, $store = true)
