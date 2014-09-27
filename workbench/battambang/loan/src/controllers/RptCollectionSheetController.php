@@ -129,7 +129,7 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         foreach ($perform as $row) {
             $cur_prin = $row->_arrears['cur']['principal'] - $row->_due['principal'];
             $cur_int = $row->_arrears['cur']['interest'] - $row->_due['interest'];
-            if($row->_due['date'] >= $data['date_to'] and $cur_prin + $cur_int !=0){
+            if($row->_due['date'] > $data['date_to'] and $cur_prin + $cur_int !=0){
                 //$row->_due['date']= $row->_arrears['cur']['date'];
                 $row->_arrears['cur']['date'] =  $row->_new_due['date'];
                 $row->_arrears['cur']['principal'] = abs($row->_arrears['cur']['principal'] - $row->_due['principal']);
