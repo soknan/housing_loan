@@ -32,7 +32,7 @@ class RptScheduleController extends BaseController{
         ($data['dis']->repayment_frequency_type_code == 'W')? $data['dis']->repayment_frequency_type_code = 'សប្ដាហ៍': $data['dis']->repayment_frequency_type_code ='ខែ';
 
         $data['result'] = Schedule::where('ln_disburse_client_id','=',$id)
-            ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->get();
+            ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->orderBy('index')->get();
 
 
         $rptFormat='Nikom'; // Kra, Nikom

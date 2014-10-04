@@ -607,9 +607,10 @@
     <Cell ss:StyleID="s64"/>
    </Row>
       <?php
+              $lookup = new \Battambang\Loan\Libraries\LookupValueList();
                $schedule = array();
               $schedule = Battambang\Loan\Schedule::where('ln_disburse_client_id','=',$dis_data->id)
-              ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->get();
+              ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->orderBy('index')->get();
 
               $num_total = 0;
               $pri_total = 0;
@@ -623,10 +624,12 @@
               $int_total+=$sch->interest;
               $fee_total+=$sch->fee;
               $all_total+=$total;
+              //$tmp = $lookup->getKhmerDay($sch->due_date);
+              //$sch->due_date = $tmp.'-'.date('d-m-Y',strtotime($sch->due_date));
               ?>
    <Row>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $sch->index;?></Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="DateTime"><?php echo $sch->due_date;?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="String"><?php echo $sch->due_date;?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $sch->num_day;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $sch->principal;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $sch->interest;?></Data></Cell>
