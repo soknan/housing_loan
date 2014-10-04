@@ -117,7 +117,11 @@ class RepaymentController extends BaseController
                     $data->error = 'Repayment Principal not equal with Fee !';
                     return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
-
+                if (empty($voucher_id)) {
+                    $data->error = 'Your Voucher ID is null.';
+                    $data->_repayment['cur']['type'] = $status;
+                    return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
+                }
                 $perform->repay($principal, $penalty, $status, $voucher_id);
                 $msg = 'Due Date = <strong>' . $data->_repayment['cur']['date'] . '</strong> ,</br> '
                     . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] . '</strong>
@@ -213,7 +217,7 @@ class RepaymentController extends BaseController
                 return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
             }
             if ($data->_repayment['cur']['type'] == 'closing' and $status == 'closing') {
-                if ($principal != $totalArrears) {
+                if (round($principal,2) != round($totalArrears,2)) {
                     $data->error = 'Your Repay amount not equal with Principal amount. Your current status in Closing !.';
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
@@ -325,6 +329,12 @@ class RepaymentController extends BaseController
                         return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
 
+                    if (empty($voucher_id)) {
+                        $data->error = 'Your Voucher ID is null.';
+                        $data->_repayment['cur']['type'] = $status;
+                        return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
+                    }
+
                     $perform->repay($principal, $penalty, $status, $voucher_id);
                     $msg = 'Due Date = <strong>' . $data->_repayment['cur']['date'] . '</strong> ,</br> '
                         . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] . '</strong>
@@ -424,7 +434,7 @@ class RepaymentController extends BaseController
                     return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
                 if ($data->_repayment['cur']['type'] == 'closing' and $status == 'closing') {
-                    if ($principal != $totalArrears) {
+                    if (round($principal,2) != round($totalArrears,2)) {
                         $data->error = 'Your Repay amount not equal with Principal amount. Your current status in Closing !.';
                         $data->_repayment['cur']['type'] = $status;
                         return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
