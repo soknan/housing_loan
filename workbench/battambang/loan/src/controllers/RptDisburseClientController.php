@@ -21,7 +21,6 @@ class RptDisburseClientController extends BaseController
 {
     public function index()
     {
-        //$data['reportHistory'] = $this->_reportHistory();
         return $this->renderLayout(
             \View::make('battambang/loan::rpt_disburse_client.index')
         );
@@ -54,7 +53,7 @@ class RptDisburseClientController extends BaseController
         $data['exchange_rate'] = '1.00 $ = '.$ex->khr_usd .' ៛ , 1.00 B = '.$ex->khr_thb .'៛';
 
         $condition = ' 1=1 ';
-        $condition.= " AND ln_disburse.disburse_date BETWEEN
+        $condition.= " AND d.disburse_date BETWEEN
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
 
@@ -64,7 +63,7 @@ class RptDisburseClientController extends BaseController
             $data['cycle'] = 'all';
         }
         if ($data['cp_office'] != 'all') {
-            $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
+            $condition .= " AND c.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';
             foreach ($data['cp_office'] as $office) {
                 $tmp_office .=$office.' '.GetLists::getBranchOfficeBy($office).', ';
@@ -73,35 +72,35 @@ class RptDisburseClientController extends BaseController
             $data['cp_office'] = $tmp_office;
         }
         if($data['ln_staff'] !='all'){
-            $condition.=" AND  ln_disburse.ln_staff_id = '".$data['ln_staff']."' ";
+            $condition.=" AND  d.ln_staff_id = '".$data['ln_staff']."' ";
             $staff = Staff::where('id','=',$data['ln_staff'])->first();
             $data['ln_staff'] = $staff->id.' '.$staff->kh_last_name .' '. $staff->kh_first_name;
         }
         if($data['cp_currency'] !='all'){
-            $condition.=" AND cp_currency_id = '".$data['cp_currency']." '";
+            $condition.=" AND d.cp_currency_id = '".$data['cp_currency']." '";
             $data['cp_currency'] = Currency::where('id','=',$data['cp_currency'])->first()->code;
         }
         if($data['ln_fund'] !='all'){
-            $condition.=" AND ln_fund_id = '".$data['ln_fund']."'";
+            $condition.=" AND d.ln_fund_id = '".$data['ln_fund']."'";
             $data['ln_fund'] = Fund::where('id','=',$data['ln_fund'])->first()->name;
         }
         if($data['ln_product'] !='all'){
-            $condition.=" AND ln_product_id = '".$data['ln_product']."'";
+            $condition.=" AND d.ln_product_id = '".$data['ln_product']."'";
             $data['ln_product'] = Product::where('id','=',$data['ln_product'])->first()->name;
         }
         if($data['repay_frequency'] !='all'){
-            $condition.=" AND  ln_lv_repay_frequency = '".$data['repay_frequency']."'";
+            $condition.=" AND  d.ln_lv_repay_frequency = '".$data['repay_frequency']."'";
             $data['repay_frequency'] = LookupValue::where('id','=',$data['repay_frequency'])->first()->name;
         }
         if ($data['location_cat'] != 0) {
             $subLocation = substr($data['cp_location'], 0, ($data['location_cat'] * 2));
-            $condition .= " AND cp_location_id like '" . $subLocation . "%'";
+            $condition .= " AND d.cp_location_id like '" . $subLocation . "%'";
             $data['cp_location'] = array_get(\LookupValueList::getLocation($data['location_cat'], array($subLocation)), $subLocation);
         }else{
             $data['cp_location'] = 'All';
         }
 
-        $data['result'] = DB::select("select ln_disburse_client.*,ln_disburse.*,
+        /*$data['result'] = DB::select("select ln_disburse_client.*,ln_disburse.*,
         `ln_disburse_client`.`id` AS `id`,
         `ln_disburse_client`.`voucher_id` AS `voucher_id`,
         `ln_disburse_client`.`ln_disburse_id` AS `ln_disburse_id`,
@@ -128,8 +127,27 @@ class RptDisburseClientController extends BaseController
         INNEr JOIN ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.id
         WHERE $condition
         group by `ln_disburse_client`.`id` ORDER by ln_disburse.disburse_date DESC"
-        );
-
+        );*/
+        $data['result'] = DB::select("select d.*,dc.*,dc.id as id,
+dc.voucher_id as voucher_id,
+dc.ln_disburse_id as ln_disburse_id,
+concat(c.`kh_last_name`,' ',c.`kh_first_name`) AS `client_name`,
+d.cp_currency_id AS `cp_currency_id`,
+d.`disburse_date` AS `disburse_date`,
+p.maturity_date as maturity_date,
+d.num_installment as num_installment,
+dc.cycle as cycle,
+dc.amount as amount,
+p.project_interest as project_interest,
+account_type.`code` AS `account_type`,
+(dc.`amount` + sum(p.repayment_fee) + p.project_interest) AS `total_due`,
+sum(p.repayment_fee) as fee from ln_disburse_client dc
+LEFT JOIN ln_disburse d on dc.ln_disburse_id = d.id
+LEFT JOIN ln_client c on c.id = dc.ln_client_id
+left join ln_perform p on p.ln_disburse_client_id = dc.id
+left join ln_lookup_value  account_type on account_type.id  = d.ln_lv_account_type
+where $condition
+GROUP BY dc.id ORDER BY d.disburse_date desc");
 
         if(count($data['result']) <=0){
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error','No Data Found !.');
