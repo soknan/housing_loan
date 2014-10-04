@@ -458,6 +458,7 @@ class LoanPerformance
                 }
 
                 if(!$this->_isEqualDate($this->_activated_at, $row->activated_at)){
+                    $this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
                     $this->_last_perform_date = $row->activated_at;
                     $this->_new_due['principal'] = 0;
                     $this->_new_due['interest'] = 0;
@@ -465,6 +466,7 @@ class LoanPerformance
                     $this->_new_due['num_day']=0;
                     $this->_new_due['num_installment']=0;
                     $this->getPerform();
+                    //return $this;
                 }
             }
 
@@ -637,9 +639,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
             $this->_arrears['cur']['date'] = $this->_new_due['date'];
             $this->_arrears['cur']['num_day'] = $this->_new_due['num_day'] + $this->_arrears['last']['num_day'];
-            /*if ($this->_isDate($this->_arrears['cur']['date'])) {
-                $this->_arrears['cur']['num_day'] = $this->_new_due['num_day'];
-            }*/
             $this->_arrears['cur']['num_installment'] = $this->_new_due['num_installment'];
             $this->_arrears['cur']['principal'] = $this->_new_due['principal'] + $this->_arrears['last']['principal'];
             $this->_arrears['cur']['interest'] = $this->_new_due['interest'] + $this->_arrears['last']['interest'];
@@ -683,6 +682,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             }
 
         }
+
+
     }
 
     private function _getLastArreasPen(){
