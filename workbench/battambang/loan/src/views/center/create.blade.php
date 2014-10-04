@@ -46,8 +46,8 @@ echo FormPanel2::make(
 //        ->options(\GetLists::getSubBranchList())
 //        ->required()
 //        ->placeholder('- Select One -') . ''
-    . Former::textarea('address', 'Address')
-        ->required() . ''
+    /*. Former::textarea('address', 'Address')
+        ->required()*/ . ''
 );
 ?>
 

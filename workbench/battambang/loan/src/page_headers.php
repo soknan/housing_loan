@@ -73,7 +73,7 @@ PageHeader::make(
     'loan.fee.index',
     function (PageHeardItem $header) {
         $header->iconList();
-        $header->add('Free');
+        $header->add('Fee');
     }
 );
 PageHeader::make(
@@ -122,7 +122,7 @@ PageHeader::make(
     'loan.penalty_closing.create',
     function (PageHeardItem $header) {
         $header->iconPlus();
-        $header->add('Penalty Closin');
+        $header->add('Penalty Closing');
     }
 );
 PageHeader::make(
