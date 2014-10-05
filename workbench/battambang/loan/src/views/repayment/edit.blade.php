@@ -35,7 +35,7 @@ echo FormPanel2::make(
 //        ->options($disburseClient,$client_id)
         ->options(LookupValueList::getLoanAccount(), $client_id)
         ->required()
-        //->readonly('readonly')
+        ->readonly('readonly')
         ->class('select2')
     .Former::text('repayment_date', 'Date',\Carbon::createFromFormat('Y-m-d',$activated_at)->format('d-m-Y'))->readonly($onlyFee)->required() . ''
 
