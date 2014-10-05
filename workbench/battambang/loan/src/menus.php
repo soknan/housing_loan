@@ -43,7 +43,7 @@ Menu::make(
                 $dropdown->add('Repayment Schedule', route('loan.rpt_schedule.index'));
                 $dropdown->add('Loan Disbursement', route('loan.rpt_disburse_client.index'));
                 $dropdown->add('Loan Outstanding', route('loan.rpt_loan_out.index'));
-                $dropdown->add('Loan Late', route('loan.rpt_loan_late.index'));
+                $dropdown->add('Loan Arrears', route('loan.rpt_loan_late.index'));
                 $dropdown->add('Fee Repayment', route('loan.rpt_loan_fee.index'));
                 $dropdown->add('Loan Repayment', route('loan.rpt_loan_repay.index'));
                 $dropdown->add('Loan Closing', route('loan.rpt_loan_finish.index'));

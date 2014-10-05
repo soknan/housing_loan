@@ -273,7 +273,7 @@
     ss:Bold="1"/>
   </Style>
  </Styles>
- <Worksheet ss:Name="Loan Late">
+ <Worksheet ss:Name="Loan Arrears">
   <Table x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="15">
    <Column ss:AutoFitWidth="0" ss:Width="27"/>
@@ -298,7 +298,7 @@
     <Cell ss:StyleID="s65"><Data ss:Type="String">Branch Office : <?php echo $cp_office;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s64">
-    <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Late Report</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Arrears Report</Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:StyleID="s64">
     <Cell ss:StyleID="s66"><Data ss:Type="String">Period : <?php echo date('d-M-Y',strtotime($as_date));?></Data></Cell>
@@ -337,7 +337,7 @@
     <Cell ss:StyleID="s71"/>
     <Cell ss:StyleID="s71"/>
     <Cell ss:Index="13" ss:StyleID="s70"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Late :&#160;</Font></B><Font
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Arrears :&#160;</Font></B><Font
        html:Color="#000000"> <?php echo $late;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s71"/>
     <Cell ss:StyleID="s71"/>
@@ -372,7 +372,7 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Mat Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Amount</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Int</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Late</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears Prin</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Total Arrears</Data></Cell>

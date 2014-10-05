@@ -373,9 +373,9 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Amount</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Classify</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears Prin</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Arrears Int</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Total Arrears</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Due Prin</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Due Int</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Total Due</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Out Prin</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Loan Out Int</Data></Cell>
    </Row>
