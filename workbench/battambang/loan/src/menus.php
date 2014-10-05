@@ -18,7 +18,7 @@ Menu::make(
 
         // Setting
         $menu->add(
-            'Setting',
+            'Settings',
             function ($dropdown) {
                 $dropdown->add('Fund', route('loan.fund.index'));
                 $dropdown->add('Fee', route('loan.fee.index'));
@@ -73,7 +73,7 @@ Menu::make(
     'tool',
     function ($menu) {
         $menu->add(
-            'Tool',
+            'Tools',
             function ($dropdown) {
                 $dropdown->add('Backup', route('loan.backup.index'));
                 $dropdown->add('Restore', route('loan.restore.index'));
