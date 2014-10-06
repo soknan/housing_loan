@@ -458,7 +458,7 @@ class LoanPerformance
                 }
 
                 if(!$this->_isEqualDate($this->_activated_at, $row->activated_at)){
-                    $this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
+                    //$this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
                     $this->_last_perform_date = $row->activated_at;
                     $this->_new_due['principal'] = 0;
                     $this->_new_due['interest'] = 0;
@@ -644,43 +644,47 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             $this->_arrears['cur']['interest'] = $this->_new_due['interest'] + $this->_arrears['last']['interest'];
             $this->_arrears['cur']['fee'] = $this->_new_due['fee'] + $this->_arrears['last']['fee'];
             $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
+        }
 
 
-            $this->getNext();
-            $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['interest']);
-            //$this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest);
-            $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
-            //Accrued interest
-            $this->_getAccrueInt();
+        if($this->_isDate($this->_arrears['cur']['date'])){
+            $this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
+        }
 
-            //Maturity Date is over
-            if ($this->_endOfDate($this->_activated_at) > $this->_endOfDate($this->_maturity_date)) {
-                //$this->_due['date'] = '';
-                $this->_due['principal'] = 0;
-                $this->_due['interest'] = 0;
-                $this->_due['fee'] = 0;
 
-                $this->_next_due['date'] = '';
-                $this->_next_due['principal'] = 0;
-                $this->_next_due['interest'] = 0;
-                $this->_next_due['fee'] = 0;
+        $this->getNext();
+        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['interest']);
+        //$this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest);
+        $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
+        //Accrued interest
+        $this->_getAccrueInt();
 
-                $this->_repayment['cur']['type'] = 'closing';
-                $this->error = 'Now you are over maturity date '.$this->_maturity_date.'';
-                return $this;
-            }
-            //On Maturity Date
-            if ($this->_isEqualDate($this->_activated_at, $this->_maturity_date)) {
-                $this->_next_due['date'] = '';
-                $this->_next_due['principal'] = 0;
-                $this->_next_due['interest'] = 0;
-                $this->_next_due['fee'] = 0;
+        //Maturity Date is over
+        if ($this->_endOfDate($this->_activated_at) > $this->_endOfDate($this->_maturity_date)) {
+            //$this->_due['date'] = '';
+            $this->_due['principal'] = 0;
+            $this->_due['interest'] = 0;
+            $this->_due['fee'] = 0;
 
-                $this->_repayment['cur']['type'] = 'closing';
-                $this->error = 'Now you are on maturity date '.$this->_maturity_date.'';
-                return $this;
-            }
+            $this->_next_due['date'] = '';
+            $this->_next_due['principal'] = 0;
+            $this->_next_due['interest'] = 0;
+            $this->_next_due['fee'] = 0;
 
+            $this->_repayment['cur']['type'] = 'closing';
+            $this->error = 'Now you are over maturity date '.$this->_maturity_date.'';
+            return $this;
+        }
+        //On Maturity Date
+        if ($this->_isEqualDate($this->_activated_at, $this->_maturity_date)) {
+            $this->_next_due['date'] = '';
+            $this->_next_due['principal'] = 0;
+            $this->_next_due['interest'] = 0;
+            $this->_next_due['fee'] = 0;
+
+            $this->_repayment['cur']['type'] = 'closing';
+            $this->error = 'Now you are on maturity date '.$this->_maturity_date.'';
+            return $this;
         }
 
 
