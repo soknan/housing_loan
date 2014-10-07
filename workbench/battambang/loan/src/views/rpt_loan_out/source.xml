@@ -468,9 +468,9 @@
       <?php }
 
 
-              $total_arrears_khr = $con_cur->toKHR(1,$pri_khr + $int_khr,$exchange_rate_id);
+              $total_arrears_khr = $pri_khr + $int_khr;
               $total_arrears_usd = $pri_usd + $int_usd;
-              $total_arrears_thb = $con_cur->toTHB($pri_thb + $int_thb,$exchange_rate_id);
+              $total_arrears_thb = $pri_thb + $int_thb;
 
               $sub_pri_khr_usd = $con_cur->toUSD(1,$pri_khr,$exchange_rate_id);
               $sub_int_khr_usd= $con_cur->toUSD(1,$int_khr,$exchange_rate_id);
