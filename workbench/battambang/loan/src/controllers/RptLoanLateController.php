@@ -122,6 +122,7 @@ order by ln_disburse.disburse_date DESC
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
+            $loanPerform->late=true;
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
         }
         $tmp = array();
@@ -130,7 +131,7 @@ order by ln_disburse.disburse_date DESC
 
         foreach($perform as $row){
             $total = $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'];
-            if($row->_disburse->disburse_date <= $data["as_date"] and $row->_arrears['cur']['num_day']>0 and $total >0){
+            if($row->_disburse->disburse_date < $data["as_date"] and $row->_arrears['cur']['num_day']>0 and $total >0){
                 if($data['operator']!='all'){
                 try{
                 switch($data['operator']){
@@ -163,9 +164,9 @@ order by ln_disburse.disburse_date DESC
                 if($condi){
                     $tmp[] = $row;
                 }
-                }else{
-                    $tmp[] = $row;
-                }
+            }else{
+                $tmp[] = $row;
+            }
             }
         }
 
