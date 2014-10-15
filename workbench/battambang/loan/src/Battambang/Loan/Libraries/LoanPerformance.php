@@ -651,7 +651,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
             // Use for report loan arrears
             if($this->late==true){
-                if($tmp_total_arrears <=0 and $this->_due['date'] >= $this->_activated_at and $tmp_total_due == $tmp_total_new){
+                if(round($tmp_total_arrears,2) <=0 and $this->_due['date'] >= $this->_activated_at and round($tmp_total_due,2) == round($tmp_total_new,2)){
                     $this->_arrears['cur']['date'] = '';
                     $this->_arrears['cur']['num_day']=0;
                     $this->_arrears['cur']['principal'] = 0;
@@ -660,7 +660,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     $tmp_new = $this->_last_perform_date;
                     if(!$this->_isDate($this->_arrears['cur']['date']) and $this->_perform_type=='disburse'){
                         $tmp_new = $this->_new_due['date'];
-                    }else if($this->_isDate($this->_arrears['cur']['date']) and $tmp_total_arrears>0){
+                    }else if($this->_isDate($this->_arrears['cur']['date']) and round($tmp_total_arrears,2)>0){
                         $tmp_new=$this->_arrears['cur']['date'];
                     }
                     $this->_arrears['cur']['num_day']=$this->_countDate($tmp_new,$this->_activated_at);
