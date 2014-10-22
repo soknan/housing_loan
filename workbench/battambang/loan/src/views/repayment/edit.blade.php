@@ -31,10 +31,12 @@ if(Session::has('data')){
 
 echo FormPanel2::make(
     'General',
-        Former::select('ln_disburse_client_id', 'Acc#')
+        Former::select('loan', 'Acc#')
         ->options(LookupValueList::getLoanAccount(), $client_id)
         ->required()
         ->class('select2')
+        ->readonly('readonly')
+     .Former::hidden('ln_disburse_client_id',$client_id)
     .Former::text('repayment_date', 'Date',\Carbon::createFromFormat('Y-m-d',$activated_at)->format('d-m-Y'))->readonly($onlyFee)->required() . ''
 
     .Former::select('repayment_status', 'Type')
