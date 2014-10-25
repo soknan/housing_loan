@@ -48,9 +48,9 @@ class RptCollectionSheetController extends BaseController
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
 
-        /*if(strlen($data['cp_location'])!=8 and $data['cp_location']!='all'){
-            return \Redirect::back()->withInput()->with('error','Please choose Village on Location !');
-        }*/
+        if($data['date_from'] > $data['date_to']){
+            return \Redirect::back()->withInput()->with('error', 'Date From > Date to');
+        }
         $ex = Exchange::where('id', '=', $data['exchange_rate_id'])->first();
         $data['exchange_rate'] = '1.00 $ = ' . $ex->khr_usd . ' ៛ , 1.00 B = ' . $ex->khr_thb . '៛';
 

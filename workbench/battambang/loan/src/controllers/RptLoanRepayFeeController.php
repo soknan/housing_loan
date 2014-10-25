@@ -48,6 +48,10 @@ class RptLoanRepayFeeController extends BaseController
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
 
+        if($data['date_from'] > $data['date_to']){
+            return \Redirect::back()->withInput()->with('error', 'Date From > Date to');
+        }
+
         /*if(strlen($data['cp_location'])!=8 and $data['cp_location']!='all'){
             return \Redirect::back()->withInput()->with('error','Please choose Village on Location !');
         }*/
