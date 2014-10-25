@@ -126,8 +126,7 @@ INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_a
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 where $condition
-and ln_disburse_client.id
-in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.current_product_status=5 $date)
+and ln_disburse_client.id in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.current_product_status=5 $date)
         ");
 
         if (count($sql) <= 0) {
@@ -136,7 +135,7 @@ in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.current_product_stat
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
-            $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
+            $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['to']);
 
         }
         $data['result']= $perform;
@@ -148,7 +147,7 @@ in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.current_product_stat
        //var_dump($sql);
        //exit;
 
-        \Report::setReportName('Loan_Outstanding')
+        \Report::setReportName('Loan_Write-off')
             ->setDateFrom($data['from'])->setDateTo($data['to']);
         return \Report::make('rpt_write_off/source_in', $data,'loan_Write-off');
 

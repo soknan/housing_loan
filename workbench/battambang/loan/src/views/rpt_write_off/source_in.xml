@@ -274,16 +274,16 @@
    <Column ss:AutoFitWidth="0" ss:Width="75.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="69.75"/>
    <Row ss:Height="15.75" ss:StyleID="s90">
-    <Cell ss:StyleID="s93"><Data ss:Type="String">CBIRD Micro Finance Co., Ltd</Data></Cell>
+    <Cell ss:StyleID="s93"><Data ss:Type="String"><?php echo $company_name;?></Data></Cell>
    </Row>
    <Row ss:StyleID="s90">
-    <Cell ss:StyleID="s92"><Data ss:Type="String">Branch Office : 02 - Banteay Meanchey</Data></Cell>
+    <Cell ss:StyleID="s92"><Data ss:Type="String">Branch Office : <?php echo $cp_office;?></Data></Cell>
    </Row>
    <Row ss:StyleID="s90">
     <Cell ss:StyleID="s91"><Data ss:Type="String">Loan Write-Off ( In Period ) Report</Data></Cell>
    </Row>
    <Row ss:StyleID="s90">
-    <Cell ss:StyleID="s91"><Data ss:Type="String">Period : 01-Mar-2014 To 31-Mar-2014</Data></Cell>
+    <Cell ss:StyleID="s91"><Data ss:Type="String">Period : <?php echo date('d-M-Y',strtotime($from));?> To <?php echo date('d-M-Y',strtotime($to));?></Data></Cell>
    </Row>
    <Row>
     <Cell ss:MergeAcross="11" ss:StyleID="s63"/>
@@ -291,14 +291,14 @@
    <Row>
     <Cell ss:StyleID="s88"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Staff Code :&#160;</Font></B><Font
-       html:Color="#000000"> All</Font></ss:Data></Cell>
+       html:Color="#000000"> <?php echo $ln_staff;?></Font></ss:Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s88"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Currency :&#160;</Font></B><Font
-       html:Color="#000000"> All</Font></ss:Data></Cell>
+       html:Color="#000000"> <?php echo $cp_currency;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s62"/>
     <Cell ss:Index="7" ss:StyleID="s88"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Donor :&#160;</Font></B><Font
-       html:Color="#000000"> All</Font></ss:Data></Cell>
+       html:Color="#000000"> <?php echo $ln_fund;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s62"/>
     <Cell ss:StyleID="s62"/>
     <Cell ss:StyleID="s62"/>
@@ -307,15 +307,15 @@
    </Row>
    <Row>
     <Cell ss:StyleID="s88"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Term :&#160;</Font></B><Font
-       html:Color="#000000"> All</Font></ss:Data></Cell>
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Repay Frequency :&#160;</Font></B><Font
+       html:Color="#000000"> <?php echo $repay_frequency;?></Font></ss:Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s88"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Product :&#160;</Font></B><Font
-       html:Color="#000000"> All</Font></ss:Data></Cell>
+       html:Color="#000000"> <?php echo $ln_product;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s62"/>
     <Cell ss:Index="7" ss:StyleID="s88"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Exchange Rate :&#160;</Font></B><Font
-       html:Color="#000000">1.00 $=4,000.00 ៛, 1.00 B=130.00 ៛</Font></ss:Data></Cell>
+       html:Color="#000000"><?php echo $exchange_rate;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s62"/>
     <Cell ss:StyleID="s62"/>
     <Cell ss:StyleID="s62"/>
@@ -325,7 +325,7 @@
    <Row>
     <Cell ss:MergeAcross="2" ss:StyleID="s87"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Location :&#160;</Font></B><Font
-       html:Color="#000000"> All</Font></ss:Data></Cell>
+       html:Color="#000000"> <?php echo $cp_location;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s62"/>
     <Cell ss:StyleID="s62"/>
     <Cell ss:StyleID="s62"/>
@@ -354,11 +354,11 @@
     <Cell ss:StyleID="s85"><Data ss:Type="String">Write-Off Pen</Data></Cell>
    </Row>
       <?php
-              foreach($resutl as $key=>$row){
+              foreach($result as $key=>$row){
               ?>
    <Row ss:StyleID="s82">
     <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_disburse->ln_disburse_client_id;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_id;?></Data></Cell>
     <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_disburse->cp_currency_id;?></Data></Cell>
     <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_disburse->account_type;?></Data></Cell>
     <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_disburse->client_name;?></Data></Cell>
