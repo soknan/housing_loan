@@ -211,7 +211,7 @@
    </Borders>
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9"/>
    <Interior/>
-   <NumberFormat ss:Format="Short Date"/>
+      <NumberFormat ss:Format="Medium Date"/>
   </Style>
   <Style ss:ID="s85">
    <Alignment ss:Horizontal="Center" ss:Vertical="Center"/>
@@ -354,50 +354,107 @@
     <Cell ss:StyleID="s85"><Data ss:Type="String">Write-Off Pen</Data></Cell>
    </Row>
       <?php
+              $pri_khr=0;
+              $int_khr=0;
+              $pen_khr=0;
+              $total_repay_khr=0;
+
+              $pri_usd=0;
+              $int_usd=0;
+              $pen_usd=0;
+              $total_repay_usd=0;
+
+              $pri_thb=0;
+              $int_thb=0;
+              $pen_thb=0;
+              $total_repay_thb=0;
+
+              $con_cur = new Battambang\Cpanel\Libraries\Currency();
               foreach($result as $key=>$row){
+              switch ($row->cp_currency_id){
+              case 1:
+                  $pri_khr+=$con_cur->toKHR(1,$row->balance_principal,$exchange_rate_id);
+                  $int_khr+=$con_cur->toKHR(1,$row->balance_interest,$exchange_rate_id);
+                  $pen_khr+=$con_cur->toKHR(1,$row->arrears_penalty,$exchange_rate_id);
+
+              break;
+              case 2:
+                  $pri_usd+=$con_cur->toUSD(2,$row->balance_principal,$exchange_rate_id);
+                  $int_usd+=$con_cur->toUSD(2,$row->balance_interest,$exchange_rate_id);
+                  $pen_usd+=$con_cur->toUSD(2,$row->arrears_penalty,$exchange_rate_id);
+
+              break;
+              case 3:
+                  $pri_thb+=$con_cur->toTHB(3,$row->balance_principal,$exchange_rate_id);
+                  $int_thb+=$con_cur->toTHB(3,$row->balance_interest,$exchange_rate_id);
+                  $pen_thb+=$con_cur->toTHB(3,$row->arrears_penalty,$exchange_rate_id);
+
+              break;
+              }
               ?>
    <Row ss:StyleID="s82">
     <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_id;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_disburse->cp_currency_id;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_disburse->account_type;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->_disburse->client_name;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_arrears['cur']['num_day'];?></Data></Cell>
-    <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->_current_product_status_date;?></Data></Cell>
-    <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->_current_product_status_date;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_balance_principal;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_balance_interest;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_balance_principal + $row->_balance_interest;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->_arrears['cur']['penalty'];?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->ln_disburse_client_id;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->cp_currency_id;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->ln_lv_account_type;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->client_name;?></Data></Cell>
+    <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->arrears_date;?></Data></Cell>
+    <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->current_product_status_date;?></Data></Cell>
+    <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->activated_at;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->balance_principal;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->balance_interest;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->balance_principal + $row->balance_interest;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->arrears_penalty;?></Data></Cell>
    </Row>
-   <?php } ?>
+   <?php }
+
+           $total_repay_khr = $pri_khr + $int_khr;
+           $total_repay_usd = $pri_usd + $int_usd;
+           $total_repay_thb = $pri_thb + $int_thb;
+
+           $sub_pri_khr_usd = $con_cur->toUSD(1,$pri_khr,$exchange_rate_id);
+           $sub_int_khr_usd= $con_cur->toUSD(1,$int_khr,$exchange_rate_id);
+           $sub_pen_khr_usd= $con_cur->toUSD(1,$pen_khr,$exchange_rate_id);
+           $sub_total_khr_usd= $con_cur->toUSD(1,$total_repay_khr,$exchange_rate_id);
+
+           $sub_pri_thb_usd = $con_cur->toUSD(3,$pri_thb,$exchange_rate_id);
+           $sub_int_thb_usd= $con_cur->toUSD(3,$int_thb,$exchange_rate_id);
+           $sub_pen_thb_usd= $con_cur->toUSD(3,$pen_thb,$exchange_rate_id);
+           $sub_total_thb_usd= $con_cur->toUSD(3,$total_repay_thb,$exchange_rate_id);
+
+           $pri_to_USD = $sub_pri_khr_usd + $pri_usd + $sub_pri_thb_usd;
+           $int_to_USD = $sub_int_khr_usd + $int_usd + $sub_int_thb_usd;
+           $pen_to_USD = $sub_pen_khr_usd + $pen_usd + $sub_pen_thb_usd;
+
+           $total_to_USD = $sub_total_khr_usd + $sub_total_thb_usd + $total_repay_usd;
+           ?>
    <Row>
     <Cell ss:MergeAcross="7" ss:StyleID="m28812200"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s78"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $pri_khr; ?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $int_khr; ?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $total_repay_khr; ?></Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $pen_khr; ?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="7" ss:StyleID="m28812220"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $pri_usd; ?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $int_usd; ?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $total_repay_usd; ?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $pen_usd; ?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="7" ss:StyleID="m28812240"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s77"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $pri_thb; ?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $int_thb; ?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $total_repay_thb; ?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $pen_thb; ?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="7" ss:StyleID="m28812260"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s73"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s72"><Data ss:Type="Number">0</Data></Cell>
-    <Cell ss:StyleID="s71"><Data ss:Type="Number">0</Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $pri_to_USD; ?></Data></Cell>
+    <Cell ss:StyleID="s73"><Data ss:Type="Number"><?php echo $int_to_USD; ?></Data></Cell>
+    <Cell ss:StyleID="s72"><Data ss:Type="Number"><?php echo $total_to_USD; ?></Data></Cell>
+    <Cell ss:StyleID="s71"><Data ss:Type="Number"><?php echo $pen_to_USD; ?></Data></Cell>
     <Cell ss:StyleID="s70"/>
     <Cell ss:StyleID="s70"/>
    </Row>

@@ -125,20 +125,20 @@ INNER JOIN ln_client ON ln_client.id = ln_disburse_client.ln_client_id
 INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
-where $condition
-and ln_disburse_client.id in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.current_product_status=5 $date)
+INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
+where $condition and p.perform_type = 'writeoff' and p.repayment_type= '' $date
         ");
 
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
-        $perform = array();
+        /*$perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['to']);
 
-        }
-        $data['result']= $perform;
+        }*/
+        $data['result']= $sql;
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
@@ -223,8 +223,10 @@ and ln_disburse_client.id in(SELECT p.ln_disburse_client_id FROM ln_perform p WH
         }
 
         $sql = DB::select("
-        SELECT *,
-        ln_disburse_client.id as ln_disburse_client_id,
+        SELECT *,sum(p.repayment_principal) repayment_principal,
+sum(p.repayment_interest) repayment_interest,
+sum(p.repayment_penalty) repayment_penalty,p.arrears_principal,p.arrears_interest,
+ln_disburse_client.id as ln_disburse_client_id,
 concat(`ln_client`.`kh_last_name`,' ',`ln_client`.`kh_first_name`) AS `client_name`,
 account_type.`code` as account_type
 FROM
@@ -234,21 +236,20 @@ INNER JOIN ln_client ON ln_client.id = ln_disburse_client.ln_client_id
 INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
-where $condition
-and ln_disburse_client.id
-in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.current_product_status=5 $date)
+INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
+where $condition and p.perform_type = 'writeoff' and p.repayment_type!='' $date
+GROUP BY ln_disburse_client.id
         ");
 
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
-        $perform = array();
+        /*$perform = array();
         foreach ($sql as $row) {
-            $loanPerform = new LoanPerformance();
-            $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
+            $perform[]= $row;
 
-        }
-        $data['result']= $perform;
+        }*/
+        $data['result']= $sql;
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');

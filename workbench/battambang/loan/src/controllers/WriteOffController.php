@@ -92,10 +92,10 @@ class WriteOffController extends BaseController
                 $error = 'Your Perform Date must bigger than maturity date! '.\Carbon::createFromFormat('Y-m-d',$data->_maturity_date)->format('d-M-Y');
                 return Redirect::back()->withInput()->with('error',$error);
             }
-            if( $data->_new_due['product_status']!=5){
+            /*if( $data->_new_due['product_status']!=5){
                 $error = 'Not much with number of days';
                 return Redirect::back()->withInput()->with('error',$error);
-            }
+            }*/
 
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
@@ -124,6 +124,15 @@ class WriteOffController extends BaseController
             $data->_new_due['product_status_date']=$perform_date;
             $data->_current_product_status=5;
             $data->_current_product_status_date= $perform_date;
+
+            $data->_repayment['cur']['date'] = '';
+            $data->_repayment['cur']['voucher_id'] = '';
+            $data->_repayment['cur']['status'] = '';
+            $data->_repayment['cur']['principal'] = '';
+            $data->_repayment['cur']['interest'] = '';
+            $data->_repayment['cur']['fee'] = '';
+            $data->_repayment['cur']['penalty'] = '';
+            $data->_repayment['cur']['type'] = '';
             $perform->save();
 
             return Redirect::back()
@@ -220,7 +229,7 @@ class WriteOffController extends BaseController
         $item = array('ln_disburse_client_id','new_due_product_status_date','arrears_principal','arrears_interest','arrears_penalty','arrears_date');
         $arr = DB::table('ln_perform')
             ->where('id','like',\UserSession::read()->sub_branch.'%')
-            ->where('perform_type','=','writeoff');
+            ->where('perform_type','=','writeoff')->where('repayment_type','=','');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
