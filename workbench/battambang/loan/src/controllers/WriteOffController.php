@@ -92,10 +92,10 @@ class WriteOffController extends BaseController
                 $error = 'Your Perform Date must bigger than maturity date! '.\Carbon::createFromFormat('Y-m-d',$data->_maturity_date)->format('d-M-Y');
                 return Redirect::back()->withInput()->with('error',$error);
             }
-            /*if( $data->_new_due['product_status']!=5){
-                $error = 'Not much with number of days';
+            if( $data->_new_due['product_status']!=5){
+                $error = 'Not much with number of days to write-off (365 days affter loss)';
                 return Redirect::back()->withInput()->with('error',$error);
-            }*/
+            }
 
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
@@ -208,7 +208,7 @@ class WriteOffController extends BaseController
     public function destroy($id)
     {
         try {
-            $data = WriteOffRule::findOrFail($id);
+            $data = Perform::where('ln_disburse_client_id','=',$id)->where('perform_type','=','writeoff');
             $data->delete();
             return Redirect::back()->with('success', trans('battambang/loan::write_off.delete_success'));
         } catch (\Exception $e) {
@@ -216,13 +216,13 @@ class WriteOffController extends BaseController
         }
     }
 
-    private function saveData($data)
+    /*private function saveData($data)
     {
         $data->num_day = Input::get('num_day');
         $data->activated_at = Input::get('activated_at');
 
         $data->save();
-    }
+    }*/
 
     public function getDatatable()
     {
@@ -234,8 +234,8 @@ class WriteOffController extends BaseController
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
                 return \Action::make()
-                    ->edit(route('loan.write_off.edit', $model->id))
-                    ->delete(route('loan.write_off.destroy', $model->id))
+                    /*->edit(route('loan.write_off.edit', $model->ln_disburse_client_id))*/
+                    ->delete(route('loan.write_off.destroy', $model->ln_disburse_client_id))
                     ->get();
             })
             ->showColumns($item)

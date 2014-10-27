@@ -919,7 +919,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $wof_pri = $wof_int - $this->_arrears['cur']['principal'];
                         $wof_int = 0;
                     }else{
-                        $re_int = abs($wof_int);
+                        $re_int = $principal;
                         $re_pri = 0;
                         $wof_pri = $this->_arrears['cur']['principal'];
                         $this->_arrears['cur']['date'] = $this->_activated_at;

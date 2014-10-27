@@ -396,7 +396,7 @@
     <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
     <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->ln_disburse_client_id;?></Data></Cell>
     <Cell ss:StyleID="s83"><Data ss:Type="Number"><?php echo $row->cp_currency_id;?></Data></Cell>
-    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->ln_lv_account_type;?></Data></Cell>
+    <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->account_type;?></Data></Cell>
     <Cell ss:StyleID="s83"><Data ss:Type="String"><?php echo $row->client_name;?></Data></Cell>
     <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->arrears_date;?></Data></Cell>
     <Cell ss:StyleID="s84"><Data ss:Type="DateTime"><?php echo $row->current_product_status_date;?></Data></Cell>
@@ -459,7 +459,7 @@
     <Cell ss:StyleID="s70"/>
    </Row>
    <Row>
-    <Cell ss:MergeAcross="13" ss:StyleID="s69"/>
+    <Cell ss:MergeAcross="11" ss:StyleID="s69"/>
    </Row>
    <Row>
     <Cell ss:MergeAcross="11" ss:StyleID="s65"><Data ss:Type="String">                              Seen By                                                                                                     Verified By                                                                                                 Prepared By                           </Data></Cell>

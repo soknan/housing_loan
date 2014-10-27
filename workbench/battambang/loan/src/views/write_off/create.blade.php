@@ -23,7 +23,7 @@ if(Session::has('data')){
 
 echo FormPanel2::make(
     'General',
-    Former::text('writeoff_date', 'Date')
+    Former::text('writeoff_date', 'Date',date('d-m-Y'))
         ->append('dd-mm-yyyy')
         ->required() . ''
     .Former::select('ln_disburse_client_id', 'Loan Account')
