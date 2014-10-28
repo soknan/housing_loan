@@ -641,6 +641,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $tmp_new = $this->_last_perform_date;
             }else if($this->_isDate($this->_arrears['cur']['date']) and $tmp_total_arrears>0){
                  $tmp_new=$this->_arrears['cur']['date'];
+            }else if($tmp_total_arrears<=0){
+                $tmp_new = $this->_new_due['date'];
             }
             $this->_new_due['num_day'] = $this->_countDate($tmp_new,$this->_activated_at);
             $this->_new_due['penalty'] = $pen;
@@ -662,6 +664,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $tmp_new = $this->_new_due['date'];
                     }else if($this->_isDate($this->_arrears['cur']['date']) and round($tmp_total_arrears,2)>0){
                         $tmp_new=$this->_arrears['cur']['date'];
+                    }else if($tmp_total_arrears<=0){
+                        $tmp_new = $this->_new_due['date'];;
                     }
                     $this->_arrears['cur']['num_day']=$this->_countDate($tmp_new,$this->_activated_at);
                     $this->_arrears['cur']['num_installment'] = $this->_new_due['num_installment'];
