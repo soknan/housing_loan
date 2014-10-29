@@ -1000,8 +1000,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $tmpPrin =  $tmpInt - $row->principal;
 
                         if($this->_disburse->cp_currency_id == 2){
-                            $tmpInt = number_format($principal,2) - $row->interest;
-                            $tmpPrin =  number_format($tmpInt,2) - $row->principal;
+                            $tmpInt = round($principal,2) - $row->interest;
+                            $tmpPrin =  round($tmpInt,2) - $row->principal;
                         }
 
                         if($tmpInt > 0){
