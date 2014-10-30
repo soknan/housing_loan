@@ -237,7 +237,7 @@ INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_a
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
-where $condition and p.perform_type = 'writeoff' and p.repayment_type!='' $date
+where $condition and p.perform_type = 'writeoff'  $date
 GROUP BY ln_disburse_client.id
         ");
 
