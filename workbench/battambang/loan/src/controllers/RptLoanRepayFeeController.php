@@ -42,8 +42,8 @@ class RptLoanRepayFeeController extends BaseController
         $data['cp_currency'] = \Input::get('cp_currency_id');
         $data['ln_fund'] = \Input::get('ln_fund_id');
         $data['ln_product'] = \Input::get('ln_product_id');
-        $data['repay_frequency'] = \Input::get('ln_lv_repay_frequency');
-        $data['classify'] = \Input::get('classify');
+        //$data['repay_frequency'] = \Input::get('ln_lv_repay_frequency');
+        //$data['classify'] = \Input::get('classify');
         $data['location_cat'] = Input::get('location_cat');
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
@@ -63,12 +63,12 @@ class RptLoanRepayFeeController extends BaseController
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
         $condition.=" And perform_type ='repayment' and repayment_type='fee'";
-        if($data['status']!='all'){
+        /*if($data['status']!='all'){
             $condition.=" AND repayment_payment_status = '".$data['status']."'";
         }
         if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+        }*/
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';

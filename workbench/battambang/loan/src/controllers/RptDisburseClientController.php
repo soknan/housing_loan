@@ -93,7 +93,7 @@ class RptDisburseClientController extends BaseController
             $data['ln_product'] = Product::where('id','=',$data['ln_product'])->first()->name;
         }
         if($data['repay_frequency'] !='all'){
-            $condition.=" AND  d.ln_lv_repay_frequency = '".$data['repay_frequency']."'";
+            $condition.=" AND  p.ln_lv_repay_frequency = '".$data['repay_frequency']."'";
             $data['repay_frequency'] = LookupValue::where('id','=',$data['repay_frequency'])->first()->name;
         }
         if ($data['location_cat'] != 0) {

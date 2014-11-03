@@ -57,9 +57,9 @@ class RptLoanOutController extends BaseController
         $condition = ' 1=1 ';
         $date = " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
         //$condition.=" AND repayment_type != 'closing' or current_product_status!=5 ";
-        if($data['classify']!='all'){
-            $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+        /*if($data['classify']!='all'){
+            $condition.=" AND ln_perform.current_product_status = '".$data['classify']."'";
+        }*/
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';
@@ -125,11 +125,18 @@ order by ln_disburse.disburse_date DESC
             $loanPerform = new LoanPerformance();
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
         }
+
         $tmp = array();
         //var_dump($perform); exit;
         foreach($perform as $row){
             if($row->_disburse->disburse_date <= $data["as_date"]){
-                $tmp[] = $row;
+                if($data['classify']=='all'){
+                    $tmp[] = $row;
+                }else{
+                    if($row->_current_product_status = $data['classify']){
+                        $tmp[] = $row;
+                    }
+                }
             }
         }
 

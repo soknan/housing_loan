@@ -23,7 +23,7 @@ class WriteOffController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'ACC Code','WOL Date','Principal','Interest','Penalty','Date');
+        $item = array('Action', 'ACC Code','WOL Date','WOL Pri','WOL int');
 
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -92,10 +92,10 @@ class WriteOffController extends BaseController
                 $error = 'Your Perform Date must bigger than maturity date! '.\Carbon::createFromFormat('Y-m-d',$data->_maturity_date)->format('d-M-Y');
                 return Redirect::back()->withInput()->with('error',$error);
             }
-            if( $data->_new_due['product_status']!=5){
-                $error = 'Not much with number of days to write-off (365 days affter loss)';
+            /*if( $data->_new_due['product_status']!=5){
+                $error = 'Not much with number of days to write-off (365 days after loss)';
                 return Redirect::back()->withInput()->with('error',$error);
-            }
+            }*/
 
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
@@ -226,7 +226,7 @@ class WriteOffController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('ln_disburse_client_id','new_due_product_status_date','arrears_principal','arrears_interest','arrears_penalty','arrears_date');
+        $item = array('ln_disburse_client_id','new_due_product_status_date','arrears_principal','arrears_interest');
         $arr = DB::table('ln_perform')
             ->where('id','like',\UserSession::read()->sub_branch.'%')
             ->where('perform_type','=','writeoff')->where('repayment_type','=','');

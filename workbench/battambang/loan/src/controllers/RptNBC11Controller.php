@@ -171,7 +171,7 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='
         //var_dump($data['con_dis']);
         //exit;
 
-        \Report::setReportName('LOAN CLASSIFICATION, PROVISIONING AND DELINQUENCY RATIO')
+        \Report::setReportName('Network Information')
             ->setDateFrom($data['as_date']);
         return \Report::make('rpt_nbc_11/source', $data, 'loan_classification');
     }

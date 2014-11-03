@@ -349,14 +349,14 @@
        html:Color="#000000"> <?php echo $ln_product;?></Font></ss:Data></Cell>
     <Cell ss:Index="8" ss:StyleID="s69"/>
     <Cell ss:Index="13" ss:StyleID="s69"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Status :&#160;</Font></B><Font
-       html:Color="#000000"><?php echo $status;?></Font></ss:Data></Cell>
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">&#160;</Font></B><Font
+       html:Color="#000000"></Font></ss:Data></Cell>
     <Cell ss:Index="15" ss:StyleID="s70"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="12.75" ss:StyleID="s68">
     <Cell ss:StyleID="s69"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Classify :&#160;</Font></B><Font
-       html:Color="#000000"> <?php echo $classify;?></Font></ss:Data></Cell>
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">&#160;</Font></B><Font
+       html:Color="#000000"> </Font></ss:Data></Cell>
     <Cell ss:Index="6" ss:StyleID="s69"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Exchange Rate :&#160;</Font></B><Font
        html:Color="#000000"><?php echo $exchange_rate;?></Font></ss:Data></Cell>
