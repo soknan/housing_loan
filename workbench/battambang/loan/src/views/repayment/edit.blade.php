@@ -47,6 +47,7 @@ echo FormPanel2::make(
         ->step('0.01')->min(0)->required()->readonly($onlyFee)
     .Former::number('repayment_penalty', 'penalty',$penalty)->step(0.01)->min(0)->required()->readonly($onlyFee).''
     .Former::text('repayment_voucher_id',' Voucher',$voucher_id)->maxlength(6)
+    .Former::hidden('hidden_voucher_id',$row->repayment_voucher_id)
 );
 ?>
 <div class="text-center">

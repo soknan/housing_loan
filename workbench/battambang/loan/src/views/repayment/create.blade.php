@@ -64,5 +64,8 @@ echo FormPanel2::make(
 if($onlyFee==false) echo DatePicker::make('repayment_date');
 
 ?>
+<script>
+
+</script>
 @stop
 

@@ -123,7 +123,7 @@ class RepaymentController extends BaseController
                     return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
                 $perform->repay($principal, $penalty, $status, $voucher_id);
-                $msg = 'Due Date = <strong>' . $data->_repayment['cur']['date'] . '</strong> ,</br> '
+                $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
                     . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] . '</strong>
                         <P>Successful !</P>';
                 $perform->save();
@@ -175,12 +175,16 @@ class RepaymentController extends BaseController
             }
             //var_dump($data); exit;
             if (Input::has('confirm')) {
-                $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
+                $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_due['date'])) . '</strong> ,</br> '
                     . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] . '</strong>' . $pri_closing . ' , '
                     . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] . '</strong>' . $int_closing . ' , '
                     . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) . ' ' . $currency->code . '</strong> ,</br> '
                     . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong> ( Cur : ' . $data->_new_due['penalty'] . ', Late : ' . $data->_arrears['last']['penalty'] . ').
-                <P>Note : ' . $data->error . '</P>';
+                <P>Note : ' . $data->error . '</P>'
+                   /* . \Former::open( route('loan.rpt_loan_history.report'))->method('POST')
+                    . \Former::text_hidden('ln_client_id',$data->_disburse->ln_client_id)
+                    . \Former::text_hidden('view_at',date('d-m-Y'))
+                    . \Former::primary_submit('History') . \Former::close()*/;
 
                 return Redirect::back()
                     ->with('data', $data)
@@ -261,10 +265,16 @@ class RepaymentController extends BaseController
                 Input::get('repayment_voucher_id')
             );
 
+            $tmp_voucher = Perform::where('repayment_voucher_id','=',$perform->_repayment['cur']['voucher_id'])->count();
+            if($tmp_voucher>0){
+                $data->error = 'Duplicate Voucher ID';
+                return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
+            }
+
             //var_dump($data); exit;
             $classify = ProductStatus::where('id', '=', $data->_current_product_status)->first();
 
-            $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_repayment['cur']['date'])->format('d-m-Y') . '</strong>, '
+            $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_repayment['cur']['date'])->format('d-M-Y') . '</strong>, '
                 . 'Repay Principal Amount = <strong>' . $data->_repayment['cur']['principal'] . '</strong>, '
                 . 'Repay Interest Amount = <strong>' . $data->_repayment['cur']['interest'] . '</strong>, '
                 . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) . $currency->code . '</strong>, '
@@ -290,17 +300,19 @@ class RepaymentController extends BaseController
             $penalty = Input::get('repayment_penalty');
             $status = Input::get('repayment_status');
             $voucher_id = Input::get('repayment_voucher_id');
+            $loan_acc = Input::get('ln_disburse_client_id');
 
-
+            //echo Input::get('loan_acc'); exit;
             if ($validation->passes()) {
                 $curData = Perform::where('id', '=', $id)->get()->toArray();
                 $perform->delete($id);
 
                 $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
-                if ($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at) {
+                if ($perform_date < $perform->_getLastPerform($loan_acc)->activated_at) {
                     $data->_arrears['cur']['principal'] = 0;
                     $data->_arrears['cur']['interest'] = 0;
-                    $error = 'Your Perform Date < Last Perform Date (' . $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at . ') ! ';
+                    $error = 'Your Perform Date < Last Perform Date (' . $perform->_getLastPerform($loan_acc)->activated_at . ') ! ';
+
                     return Redirect::back()->with('error', $error)->with('data', $data);
                 }
 
@@ -312,13 +324,14 @@ class RepaymentController extends BaseController
                     $perform->_activated_at = $data->_due['date'];
                     $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                     if (Input::has('confirm')) {
-                        $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
+                        $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-M-Y') . '</strong> ,</br> '
                             . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] . '</strong>
                         <P>Note : ' . $data->error . '</P>';
 
                         unset($curData['created_at']);
                         unset($curData['updated_at']);
                         Perform::insert($curData);
+
                         return Redirect::back()
                             ->with('data', $data)
                             ->with('info', $msg);
@@ -336,11 +349,10 @@ class RepaymentController extends BaseController
                     }
 
                     $perform->repay($principal, $penalty, $status, $voucher_id);
-                    $msg = 'Due Date = <strong>' . $data->_repayment['cur']['date'] . '</strong> ,</br> '
+                    $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
                         . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] . '</strong>
                         <P>Successful !</P>';
                     $perform->save();
-
                     return Redirect::back()
                         ->with('info', $msg)
                         ->with('success', trans('battambang/loan::repayment.create_success'));
@@ -386,7 +398,7 @@ class RepaymentController extends BaseController
                 }
 
                 if (Input::has('confirm')) {
-                    $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
+                    $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-M-Y') . '</strong> ,</br> '
                         . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] . '</strong>' . $pri_closing . ' , '
                         . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] . '</strong>' . $int_closing . ' , '
                         . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) . ' ' . $currency->code . '</strong> ,</br> '
@@ -477,10 +489,18 @@ class RepaymentController extends BaseController
                     Input::get('repayment_status'),
                     Input::get('repayment_voucher_id')
                 );
+
+                if(Input::get('hidden_voucher_id') != $perform->_repayment['cur']['voucher_id']){
+                    $tmp_voucher = Perform::where('repayment_voucher_id','=',$perform->_repayment['cur']['voucher_id'])->count();
+                    if($tmp_voucher>0){
+                        $data->error = 'Duplicate Voucher ID';
+                        return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
+                    }
+                }
                 //var_dump($data); exit;
                 $classify = ProductStatus::where('id', '=', $data->_current_product_status)->first();
 
-                $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_repayment['cur']['date'])->format('d-m-Y') . '</strong>, '
+                $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_repayment['cur']['date'])->format('d-M-Y') . '</strong>, '
                     . 'Repay Principal Amount = <strong>' . $data->_repayment['cur']['principal'] . '</strong>, '
                     . 'Repay Interest Amount = <strong>' . $data->_repayment['cur']['interest'] . '</strong>, '
                     . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) . $currency->code . '</strong>, '
@@ -522,7 +542,8 @@ class RepaymentController extends BaseController
     {
         $item = array('ln_disburse_client_id','repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty');
         $arr = DB::table('ln_perform')
-            ->where('perform_type', '=', 'repayment')
+            ->where('perform_type', '!=', 'disburse')
+            ->where('repayment_type', '!=', '')
             ->where('id', 'like', \UserSession::read()->sub_branch . '%')
             ->orderBy('activated_at', 'DESC');
 
