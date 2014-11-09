@@ -93,12 +93,12 @@ class RptDisburseClientController extends BaseController
             $data['ln_product'] = Product::where('id','=',$data['ln_product'])->first()->name;
         }
         if($data['repay_frequency'] !='all'){
-            $condition.=" AND  p.ln_lv_repay_frequency = '".$data['repay_frequency']."'";
+            $condition.=" AND  pr.ln_lv_repay_frequency = '".$data['repay_frequency']."'";
             $data['repay_frequency'] = LookupValue::where('id','=',$data['repay_frequency'])->first()->name;
         }
         if ($data['location_cat'] != 0) {
             $subLocation = substr($data['cp_location'], 0, ($data['location_cat'] * 2));
-            $condition .= " AND d.cp_location_id like '" . $subLocation . "%'";
+            $condition .= " AND cn.cp_location_id like '" . $subLocation . "%'";
             $data['cp_location'] = array_get(\LookupValueList::getLocation($data['location_cat'], array($subLocation)), $subLocation);
         }else{
             $data['cp_location'] = 'All';
@@ -150,6 +150,8 @@ LEFT JOIN ln_disburse d on dc.ln_disburse_id = d.id
 LEFT JOIN ln_client c on c.id = dc.ln_client_id
 left join ln_perform p on p.ln_disburse_client_id = dc.id
 left join ln_lookup_value  account_type on account_type.id  = d.ln_lv_account_type
+left join ln_product pr on pr.id = d.ln_product_id
+left join ln_center cn on cn.id = d.ln_center_id
 where $condition
 GROUP BY dc.id ORDER BY d.disburse_date desc");
 

@@ -34,7 +34,7 @@ class RptLoanRepayFeeController extends BaseController
         $com = Company::all()->first();
         $data['company_name'] = $com->en_name;
 
-        $data['status'] = Input::get('status');
+        //$data['status'] = Input::get('status');
         $data['date_from'] = \Carbon::createFromFormat('d-m-Y',Input::get('date_from'))->toDateString();
         $data['date_to'] = \Carbon::createFromFormat('d-m-Y',\Input::get('date_to'))->toDateString();
         $data['cp_office']= \Input::get('cp_office_id');
@@ -42,7 +42,7 @@ class RptLoanRepayFeeController extends BaseController
         $data['cp_currency'] = \Input::get('cp_currency_id');
         $data['ln_fund'] = \Input::get('ln_fund_id');
         $data['ln_product'] = \Input::get('ln_product_id');
-        //$data['repay_frequency'] = \Input::get('ln_lv_repay_frequency');
+        $data['repay_frequency'] = \Input::get('ln_lv_repay_frequency');
         //$data['classify'] = \Input::get('classify');
         $data['location_cat'] = Input::get('location_cat');
         $data['cp_location'] = \Input::get('cp_location_id');
@@ -96,7 +96,7 @@ class RptLoanRepayFeeController extends BaseController
             $data['ln_product'] = Product::where('id', '=', $data['ln_product'])->first()->name;
         }
         if ($data['repay_frequency'] != 'all') {
-            $condition .= " AND  ln_lv_repay_frequency = '" . $data['repay_frequency'] . "'";
+            $condition .= " AND  ln_product.ln_lv_repay_frequency = '" . $data['repay_frequency'] . "'";
             $data['repay_frequency'] = LookupValue::where('id', '=', $data['repay_frequency'])->first()->name;
         }
         if ($data['location_cat'] != 0) {
