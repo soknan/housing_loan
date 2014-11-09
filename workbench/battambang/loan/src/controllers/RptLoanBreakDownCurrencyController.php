@@ -60,9 +60,9 @@ class RptLoanBreakDownCurrencyController extends BaseController
         $condition = ' 1=1 ';
         $date= " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
         //$condition.=" AND repayment_type != 'closing' or current_product_status!=5 ";
-        if($data['classify']!='all'){
+        /*if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+        }*/
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';
@@ -153,21 +153,42 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='
         $arr = array();
         $con_pur = array();
         foreach ($perform as $row) {
-            if (!isset($tmp[$row->_disburse->cp_currency_id])) {
-                $tmp[$row->_disburse->cp_currency_id]=array();
-                $con_bal[$row->_disburse->cp_currency_id]=array();
-                $con_bal[$row->_disburse->cp_currency_id] = new \stdClass();
+            if($data['classify']!='all'){
+                if($row->_current_product_status == $data['classify']){
+                    if (!isset($tmp[$row->_disburse->cp_currency_id])) {
+                        $tmp[$row->_disburse->cp_currency_id]=array();
+                        $con_bal[$row->_disburse->cp_currency_id]=array();
+                        $con_bal[$row->_disburse->cp_currency_id] = new \stdClass();
 
-                $con_int[$row->_disburse->cp_currency_id]=array();
-                $con_int[$row->_disburse->cp_currency_id] = new \stdClass();
+                        $con_int[$row->_disburse->cp_currency_id]=array();
+                        $con_int[$row->_disburse->cp_currency_id] = new \stdClass();
 
-                $con_acc[$row->_disburse->cp_currency_id]=array();
-                $con_acc[$row->_disburse->cp_currency_id] = new \stdClass();
+                        $con_acc[$row->_disburse->cp_currency_id]=array();
+                        $con_acc[$row->_disburse->cp_currency_id] = new \stdClass();
+                    }
+                    $tmp[$row->_disburse->cp_currency_id] = $row;
+                    $con_bal[$row->_disburse->cp_currency_id]->total+=$row->_balance_principal;
+                    $con_int[$row->_disburse->cp_currency_id]->total+=$row->_disburse->interest_rate;
+                    $con_acc[$row->_disburse->cp_currency_id]->total+=$row->_disburse->num_account;
+                }
+            }else{
+                if (!isset($tmp[$row->_disburse->cp_currency_id])) {
+                    $tmp[$row->_disburse->cp_currency_id]=array();
+                    $con_bal[$row->_disburse->cp_currency_id]=array();
+                    $con_bal[$row->_disburse->cp_currency_id] = new \stdClass();
+
+                    $con_int[$row->_disburse->cp_currency_id]=array();
+                    $con_int[$row->_disburse->cp_currency_id] = new \stdClass();
+
+                    $con_acc[$row->_disburse->cp_currency_id]=array();
+                    $con_acc[$row->_disburse->cp_currency_id] = new \stdClass();
+                }
+                $tmp[$row->_disburse->cp_currency_id] = $row;
+                $con_bal[$row->_disburse->cp_currency_id]->total+=$row->_balance_principal;
+                $con_int[$row->_disburse->cp_currency_id]->total+=$row->_disburse->interest_rate;
+                $con_acc[$row->_disburse->cp_currency_id]->total+=$row->_disburse->num_account;
             }
-            $tmp[$row->_disburse->cp_currency_id] = $row;
-            $con_bal[$row->_disburse->cp_currency_id]->total+=$row->_balance_principal;
-            $con_int[$row->_disburse->cp_currency_id]->total+=$row->_disburse->interest_rate;
-            $con_acc[$row->_disburse->cp_currency_id]->total+=$row->_disburse->num_account;
+
         }
         $data['con_bal'] = $con_bal;
         $data['con_int'] = $con_int;

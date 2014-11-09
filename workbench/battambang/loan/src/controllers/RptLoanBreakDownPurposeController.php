@@ -60,9 +60,9 @@ class RptLoanBreakDownPurposeController extends BaseController
         $condition = ' 1=1 ';
         $date= " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
         //$condition.=" AND repayment_type != 'closing' or current_product_status!=5 ";
-        if($data['classify']!='all'){
+        /*if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+        }*/
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';
@@ -154,27 +154,55 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='
         $arr = array();
         $con_pur = array();
         foreach ($perform as $key=>$row) {
-            if (!isset($tmp[$row->_disburse->ln_lv_purpose])) {
-                $tmp[$row->_disburse->ln_lv_purpose] = array();
-                $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
-                $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
-                $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
-            }
-            if(!isset($tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type])){
-                $tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = array();
-                $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
-                $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+            if($data['classify']!='All'){
+                if($row->_current_product_status == $data['classify']){
+                    if (!isset($tmp[$row->_disburse->ln_lv_purpose])) {
+                        $tmp[$row->_disburse->ln_lv_purpose] = array();
+                        $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
+                        $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
+                        $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
+                    }
+                    if(!isset($tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type])){
+                        $tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = array();
+                        $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
+                        $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
 
-                $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
-                $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+                        $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
+                        $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
 
-                $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
-                $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+                        $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
+                        $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+                    }
+                    $tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = $row;
+                    $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= \Currency::toUSD($row->_disburse->cp_currency_id,$row->_balance_principal,$data['exchange_rate_id']);
+                    $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= $row->_disburse->num_account_type;
+                    $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= $row->_disburse->interest_rate;
+                }
+            }else{
+                if (!isset($tmp[$row->_disburse->ln_lv_purpose])) {
+                    $tmp[$row->_disburse->ln_lv_purpose] = array();
+                    $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
+                    $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
+                    $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]=array();
+                }
+                if(!isset($tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type])){
+                    $tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = array();
+                    $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
+                    $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+
+                    $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
+                    $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+
+                    $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = new \stdClass();
+                    $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total = 0;
+                }
+                $tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = $row;
+                $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= \Currency::toUSD($row->_disburse->cp_currency_id,$row->_balance_principal,$data['exchange_rate_id']);
+                $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= $row->_disburse->num_account_type;
+                $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= $row->_disburse->interest_rate;
             }
-            $tmp[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type] = $row;
-            $con_bal[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= \Currency::toUSD($row->_disburse->cp_currency_id,$row->_balance_principal,$data['exchange_rate_id']);
-            $con_acc[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= $row->_disburse->num_account_type;
-            $con_int[$row->_disburse->ln_lv_purpose][$row->_disburse->ln_lv_account_type]->total+= $row->_disburse->interest_rate;
+
+
         }
 
         $sum_pri =0;
