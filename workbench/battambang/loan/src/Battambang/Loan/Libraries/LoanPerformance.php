@@ -385,7 +385,7 @@ class LoanPerformance
                         return $this;
                 }
 
-                if ($this->_isEqualDate($this->_activated_at, $row->activated_at)) {
+                if ($this->_isEqualDate($row->activated_at, $this->_activated_at)) {
                     if($this->_isDate($this->_arrears['cur']['date'])){
                         $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
                         if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
@@ -513,7 +513,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     $first=$first->endOfWeek();
                     $second=$second->endOfWeek();
                 }else{
-                    $first = $first->addWeek($this->_disburse->installment_frequency)->endOfWeek();
+                    $first = $first->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                     $second = $second->endOfWeek();
                 }
             }else{
@@ -528,7 +528,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     $first= $first->endOfMonth();
                     $second = $second->endOfMonth();
                 }else{
-                    $first = $first->addMonth($this->_disburse->installment_frequency)->endOfMonth();
+                    $first = $first->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
                     $second = $second->endOfMonth();
                 }
             }else{
@@ -596,7 +596,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         }
 
         $data = $this->_getSchedule($this->_endOfDate($this->_last_perform_date), $this->_endOfDate($this->_activated_at));
-        //$dataPen = Penalty::where('id', '=', $this->_disburse->ln_penalty_id)->limit(1)->orderBy('id','desc')->first();
+
         $lnumDay=0;
         //var_dump($data->all()); exit;
         $pen = $this->_getLastArreasPen();
