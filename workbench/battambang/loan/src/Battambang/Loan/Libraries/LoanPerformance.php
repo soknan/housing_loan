@@ -459,9 +459,7 @@ class LoanPerformance
                     $this->_arrears['last']['fee'] = 0;
                     $this->_arrears['last']['penalty'] = 0;
                     return $this;
-                }
-
-                if(!$this->_isEqualDate($this->_activated_at, $row->activated_at)){
+                }else{
                     //$this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
                     $this->_last_perform_date = $row->activated_at;
                     $this->_new_due['principal'] = 0;
@@ -513,8 +511,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     $first=$first->endOfWeek();
                     $second=$second->endOfWeek();
                 }else{
-                    $first = $first->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
-                    $second = $second->endOfWeek();
+                    $first = $first->endOfWeek();
+                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                 }
             }else{
                 $first = $first->endOfWeek();
@@ -528,8 +526,8 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     $first= $first->endOfMonth();
                     $second = $second->endOfMonth();
                 }else{
-                    $first = $first->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
-                    $second = $second->endOfMonth();
+                    $first = $first->endOfMonth();
+                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
                 }
             }else{
                 $first = $first->endOfMonth();
@@ -595,7 +593,40 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             $this->_last_due['interest'] = $this->_due['interest'];
         }
 
-        $data = $this->_getSchedule($this->_endOfDate($this->_last_perform_date), $this->_endOfDate($this->_activated_at));
+        $date = new Carbon();
+        $first = $date->createFromFormat('Y-m-d',$this->_last_perform_date);
+        $second = $date->createFromFormat('Y-m-d',$this->_activated_at);
+        if($this->_disburse->ln_lv_repay_frequency == 3){
+            if($this->_disburse->installment_frequency != 1){
+                $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
+                if( $difWeek != $this->_disburse->installment_frequency-1){
+                    $first=$first->endOfWeek();
+                    $second=$second->endOfWeek();
+                }else{
+                    $first = $first->endOfWeek();
+                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
+                }
+            }else{
+                $first = $first->endOfWeek();
+                $second = $second->endOfWeek();
+            }
+
+        }else{
+            if($this->_disburse->installment_frequency != 1){
+                $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 30);
+                if( $difWeek != $this->_disburse->installment_frequency-1){
+                    $first= $first->endOfMonth();
+                    $second = $second->endOfMonth();
+                }else{
+                    $first = $first->endOfMonth();
+                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
+                }
+            }else{
+                $first = $first->endOfMonth();
+                $second = $second->endOfMonth();
+            }
+        }
+        $data = $this->_getSchedule($first, $second);
 
         $lnumDay=0;
         //var_dump($data->all()); exit;
