@@ -122,6 +122,8 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='
         $arr = array();
         $con_pur = array();
         foreach ($perform as $row) {
+            if($data['classify']!='All'){
+                if($row->_current_product_status == $data['classify']){
             $pro = substr($row->_disburse->cp_location_id, 0, 2);
             $dis = substr($row->_disburse->cp_location_id, 0, 4);
             $com = substr($row->_disburse->cp_location_id, 0, 6);
@@ -157,6 +159,44 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='
             $con_bal[$pro]->total += \Currency::toUSD($row->_disburse->cp_currency_id, $row->_balance_principal, $data['exchange_rate_id']);
 
             $con_acc[$pro][$row->_disburse->ln_lv_gender]->total += $row->_disburse->num_gender;
+                }
+            }else{
+                $pro = substr($row->_disburse->cp_location_id, 0, 2);
+                $dis = substr($row->_disburse->cp_location_id, 0, 4);
+                $com = substr($row->_disburse->cp_location_id, 0, 6);
+                $vil = substr($row->_disburse->cp_location_id, 0, 8);
+                if (!isset($tmp[$pro])) {
+                    $tmp[$pro] = array();
+                    $con_bal[$pro] = array();
+                    $con_bal[$pro] = new \stdClass();
+                    $con_bal[$pro]->total = 0;
+
+                    $con_dis[$pro][$dis] = array();
+
+                }
+                if(!isset($con_dis[$pro][$dis][$com])){
+                    $con_dis[$pro][$dis][$com] = array();
+                }
+
+                if(!isset($con_dis[$pro][$dis][$com][$vil])){
+                    $con_dis[$pro][$dis][$com][$vil] = array();
+                }
+
+                if (!isset($tmp[$pro][$row->_disburse->ln_lv_gender])) {
+                    $tmp[$pro][$row->_disburse->ln_lv_gender] = array();
+                    $con_acc[$pro][$row->_disburse->ln_lv_gender] = array();
+
+                    $con_acc[$pro][$row->_disburse->ln_lv_gender] = new \stdClass();
+                    $con_acc[$pro][$row->_disburse->ln_lv_gender]->total = 0;
+                }
+                /*$con_dis[$pro][$dis]= $dis;
+                $con_dis[$pro][$dis][$com] = $com;
+                $con_dis[$pro][$dis][$com][$vil] = $vil;*/
+                $tmp[$pro][$row->_disburse->ln_lv_gender] = $row;
+                $con_bal[$pro]->total += \Currency::toUSD($row->_disburse->cp_currency_id, $row->_balance_principal, $data['exchange_rate_id']);
+
+                $con_acc[$pro][$row->_disburse->ln_lv_gender]->total += $row->_disburse->num_gender;
+            }
         }
 
         $data['con_bal'] = $con_bal;
