@@ -52,7 +52,7 @@ class RptWriteOffController extends BaseController
         $data['ln_fund'] = \Input::get('ln_fund_id');
         $data['ln_product'] = \Input::get('ln_product_id');
         $data['repay_frequency'] = \Input::get('ln_lv_repay_frequency');
-        $data['classify'] = \Input::get('classify');
+        //$data['classify'] = \Input::get('classify');
         $data['location_cat'] = Input::get('location_cat');
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
@@ -72,9 +72,9 @@ class RptWriteOffController extends BaseController
                         STR_TO_DATE('".$data['from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
 
-        if($data['classify']!='all'){
+        /*if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+        }*/
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';
@@ -167,7 +167,7 @@ where $condition and p.perform_type = 'writeoff' and p.repayment_type= '' $date
         $data['ln_fund'] = \Input::get('ln_fund_id');
         $data['ln_product'] = \Input::get('ln_product_id');
         $data['repay_frequency'] = \Input::get('ln_lv_repay_frequency');
-        $data['classify'] = \Input::get('classify');
+        //$data['classify'] = \Input::get('classify');
         $data['location_cat'] = Input::get('location_cat');
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
@@ -181,9 +181,9 @@ where $condition and p.perform_type = 'writeoff' and p.repayment_type= '' $date
         $condition = ' 1=1 ';
         $date= " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
 
-        if($data['classify']!='all'){
+        /*if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
-        }
+        }*/
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
             $tmp_office='';

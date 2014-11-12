@@ -33,12 +33,12 @@
         ->options(array('3'=>'Weekly','4'=>'Monthly'))
         ->class('select2').''
     ,
-    Former::select('classify','Classify')
+    /*Former::select('classify','Classify')
         ->options(array('all'=>'All'))
         ->options(LookupValueList::getProductStatus(' and code !="WOL" '))
         ->class('select2')
-    .''
-    .Former::select('location_cat','Location Category')
+    .''*/
+    Former::select('location_cat','Location Category')
         ->options(LookupValueList::getLocationCategory())
         ->class('select2').''
     .Former::select('cp_location_id','Location')
