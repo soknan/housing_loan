@@ -54,6 +54,8 @@ on ln_disburse_client.ln_client_id = ln_client.id where ln_client.id = "'.$data[
         //var_dump($data['schedule']);
         //var_dump($data['result'][3]->_arrears);
         //exit;
+        // User action
+        \Event::fire('user_action.report', array('rpt_loan_history'));
         if (count($data) <= 0) {
             return \Redirect::back()->withInput()->with('error', 'No Data Found !.');
         }

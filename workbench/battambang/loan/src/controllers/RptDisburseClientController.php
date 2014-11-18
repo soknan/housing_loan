@@ -154,7 +154,8 @@ left join ln_product pr on pr.id = d.ln_product_id
 left join ln_center cn on cn.id = d.ln_center_id
 where $condition
 GROUP BY dc.id ORDER BY d.disburse_date desc");
-
+        // User action
+        \Event::fire('user_action.report', array('rpt_disburse_client'));
         if(count($data['result']) <=0){
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error','No Data Found !.');
         }

@@ -122,7 +122,8 @@ INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 INNER join ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.id
         where $condition
         ");
-
+// User action
+        \Event::fire('user_action.report', array('rpt_repay_fee'));
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }

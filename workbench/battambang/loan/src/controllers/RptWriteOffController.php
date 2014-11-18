@@ -128,7 +128,8 @@ INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
 where $condition and p.perform_type = 'writeoff' and p.repayment_type= '' $date
         ");
-
+// User action
+        \Event::fire('user_action.report', array('rpt_loan_writeoff_in'));
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
@@ -240,7 +241,8 @@ INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
 where $condition and p.perform_type = 'writeoff'  $date
 GROUP BY ln_disburse_client.id
         ");
-
+// User action
+        \Event::fire('user_action.report', array('rpt_loan_writeoff_end'));
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }

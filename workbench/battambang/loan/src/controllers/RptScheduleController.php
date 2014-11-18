@@ -34,7 +34,8 @@ class RptScheduleController extends BaseController{
         $data['result'] = Schedule::where('ln_disburse_client_id','=',$id)
             ->join('ln_schedule_dt', 'ln_schedule.id', '=', 'ln_schedule_dt.ln_schedule_id')->orderBy('index')->get();
 
-
+// User action
+        \Event::fire('user_action.report', array('rpt_schedule'));
         $rptFormat='Nikom'; // Kra, Nikom
 
         if($rptFormat=='Kra'){

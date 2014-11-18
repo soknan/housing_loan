@@ -117,7 +117,8 @@ where $condition
 and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perform p1 WHERE p1.balance_principal=0)
         GROUP by ln_disburse_client.id
         ");
-
+// User action
+        \Event::fire('user_action.report', array('rpt_collection_sheet'));
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
