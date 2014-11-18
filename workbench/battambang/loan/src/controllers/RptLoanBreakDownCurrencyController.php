@@ -137,7 +137,7 @@ INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 where $condition
 and ln_disburse_client.id
-not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type='closing' or p.current_product_status=5) $date)
+not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type='closing' or p.perform_type='writeoff') $date)
 
         ");
 
