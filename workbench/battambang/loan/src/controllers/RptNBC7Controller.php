@@ -116,7 +116,8 @@ and ln_disburse_client.id
 not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type='closing' or p.perform_type='writeoff') $date)
         ");
 
-
+// User action
+        \Event::fire('user_action.report', array('rpt_loan_classify'));
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
@@ -127,6 +128,8 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type=
         }
         $arr = array();
         $con_pur = array();
+        $con_acc =array();
+        $con_int =array();
         foreach ($perform as $row) {
             if (!isset($tmp[$row->_current_product_status])) {
                 $tmp[$row->_current_product_status] = array();

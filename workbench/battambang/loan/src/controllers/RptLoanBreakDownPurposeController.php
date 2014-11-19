@@ -144,18 +144,18 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type=
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
-
+//var_dump($sql); exit;
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
         }
 //var_dump($perform);
- //       exit;
+//        exit;
         $arr = array();
         $con_pur = array();
         foreach ($perform as $key=>$row) {
-            if($data['classify']!='All'){
+            if($data['classify']!='all'){
                 if($row->_current_product_status == $data['classify']){
                     if (!isset($tmp[$row->_disburse->ln_lv_purpose])) {
                         $tmp[$row->_disburse->ln_lv_purpose] = array();

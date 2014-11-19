@@ -106,10 +106,10 @@ INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_a
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 where $condition
-and ln_disburse_client.id
-not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type='closing' or p.perform_type='writeoff') $date)
+and ln_disburse_client.id not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type='closing') $date )
         ");
-
+// User action
+        \Event::fire('user_action.report', array('rpt_network_info'));
 
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
@@ -121,8 +121,12 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type=
         }
         $arr = array();
         $con_pur = array();
+        $con_bal = array();
+        $con_acc = array();
+        $con_dis = array();
+        $tmp = array();
         foreach ($perform as $row) {
-            if($data['classify']!='All'){
+            if($data['classify']!='all'){
                 if($row->_current_product_status == $data['classify']){
             $pro = substr($row->_disburse->cp_location_id, 0, 2);
             $dis = substr($row->_disburse->cp_location_id, 0, 4);
