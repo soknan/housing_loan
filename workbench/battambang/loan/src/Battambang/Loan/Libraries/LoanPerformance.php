@@ -933,11 +933,11 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $arrearsInt =0;
                 $arrearsIndex =1;
                 $arrearsDate ='';
-                if(round($principal,2) == round($total,2)){
+                /*if(round($principal,2) == round($total,2)){
                     if($this->_isEqualDate($this->_activated_at,$this->_maturity_date) or $this->_activated_at >= $this->_maturity_date){
                         $option = 'closing';
                     }
-                }
+                }*/
                 if($this->_new_due['product_status'] == 5){
                     $this->_perform_type = 'writeoff';
                     $wof_pri=0;
@@ -1100,6 +1100,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
                 $this->_balance_principal = $this->_balance_principal - $this->_repayment['cur']['principal'];
                 $this->_balance_interest = $this->_balance_interest - $this->_repayment['cur']['interest'];
+                if($this->_balance_principal==0){
+                    $this->_repayment['cur']['type'] = 'closing';
+                }
                 if($this->_arrears['cur']['num_day'] >0){
                     $this->_repayment['cur']['status'] = $this->_getRepaymentStatus($this->_arrears['cur']['num_day'])->id;
 
