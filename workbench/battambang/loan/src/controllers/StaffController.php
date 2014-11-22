@@ -85,7 +85,8 @@ class StaffController extends BaseController
             }
 
             $this->saveData($data, $photoPath);
-
+            // User action
+            \Event::fire('user_action.add', array('staff'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::staff.create_success'));
 
@@ -110,7 +111,8 @@ class StaffController extends BaseController
                 }
 
                 $this->saveData($data, $photoPath, false);
-
+                // User action
+                \Event::fire('user_action.edit', array('staff'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::staff.update_success'));
             }
@@ -124,6 +126,8 @@ class StaffController extends BaseController
     {
         try {
             Staff::find($id)->delete();
+            // User action
+            \Event::fire('user_action.delete', array('staff'));
             return Redirect::back()->with('success', trans('battambang/loan::staff.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.staff.index')->with('error', trans('battambang/cpanel::db_error.fail'));

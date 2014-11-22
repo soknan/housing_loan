@@ -134,7 +134,8 @@ class WriteOffController extends BaseController
             $data->_repayment['cur']['penalty'] = '';
             $data->_repayment['cur']['type'] = '';
             $perform->save();
-
+            // User action
+            \Event::fire('user_action.add', array('writeoff'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::write_off.create_success'));
         }
@@ -195,7 +196,8 @@ class WriteOffController extends BaseController
                 $data->_current_product_status=5;
                 $data->_current_product_status_date= $perform_date;
                 $perform->save();
-
+                // User action
+                \Event::fire('user_action.edit', array('writeoff'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::write_off.update_success'));
             }
@@ -210,6 +212,8 @@ class WriteOffController extends BaseController
         try {
             $data = Perform::where('ln_disburse_client_id','=',$id)->where('perform_type','=','writeoff');
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('writeoff'));
             return Redirect::back()->with('success', trans('battambang/loan::write_off.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.write_off.index')->with('error', trans('battambang/cpanel::db_error.fail'));

@@ -75,7 +75,8 @@ class PenaltyController extends BaseController
         if ($validation->passes()) {
             $data = new Penalty();
             $this->saveData($data);
-
+// User action
+            \Event::fire('user_action.add', array('penalty'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::penalty.create_success'));
 
@@ -90,7 +91,8 @@ class PenaltyController extends BaseController
             if ($validation->passes()) {
                 $data = Penalty::findOrFail($id);
                 $this->saveData($data);
-
+// User action
+                \Event::fire('user_action.edit', array('penalty'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::penalty.update_success'));
             }
@@ -105,6 +107,8 @@ class PenaltyController extends BaseController
         try {
             $data = Penalty::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('penalty'));
             return Redirect::back()->with('success', trans('battambang/loan::penalty.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.penalty.index')->with('error', trans('battambang/cpanel::db_error.fail'));

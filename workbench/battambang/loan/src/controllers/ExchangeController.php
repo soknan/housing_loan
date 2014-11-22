@@ -75,7 +75,8 @@ class ExchangeController extends BaseController
         if ($validation->passes()) {
             $data = new Exchange();
             $this->saveData($data);
-
+// User action
+            \Event::fire('user_action.add', array('exchange'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::exchange.create_success'));
 
@@ -90,7 +91,8 @@ class ExchangeController extends BaseController
             if ($validation->passes()) {
                 $data = Exchange::findOrFail($id);
                 $this->saveData($data);
-
+// User action
+                \Event::fire('user_action.edit', array('exchange'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::exchange.update_success'));
             }
@@ -105,6 +107,8 @@ class ExchangeController extends BaseController
         try {
             $data = Exchange::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('exchange'));
             return Redirect::back()->with('success', trans('battambang/loan::exchange.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.exchange.index')->with('error', trans('battambang/cpanel::db_error.fail'));

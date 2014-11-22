@@ -75,7 +75,8 @@ class FeeController extends BaseController
         if ($validation->passes()) {
             $data = new Fee();
             $this->saveData($data);
-
+// User action
+            \Event::fire('user_action.add', array('fee'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::fee.create_success'));
 
@@ -90,7 +91,8 @@ class FeeController extends BaseController
             if ($validation->passes()) {
                 $data = Fee::findOrFail($id);
                 $this->saveData($data);
-
+// User action
+                \Event::fire('user_action.edit', array('fee'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::fee.update_success'));
             }
@@ -105,6 +107,8 @@ class FeeController extends BaseController
         try {
             $data = Fee::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('fee'));
             return Redirect::back()->with('success', trans('battambang/loan::fee.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.fee.index')->with('error', trans('battambang/cpanel::db_error.fail'));

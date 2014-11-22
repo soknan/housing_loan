@@ -92,7 +92,7 @@ class RepaymentController extends BaseController
             if ($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at) {
                 $data->_arrears['cur']['principal'] = 0;
                 $data->_arrears['cur']['interest'] = 0;
-                $error = 'Your Perform Date < Last Perform Date (' . $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at . ') ! ';
+                $error = 'Your Perform Date must be bigger than your last Perform Date (' . $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at . ') ! ';
                 return Redirect::back()->with('error', $error)->with('data', $data);
             }
 
@@ -261,7 +261,7 @@ class RepaymentController extends BaseController
             $perform->repay(
                 Input::get('repayment_principal'),
                 $penalty,
-                Input::get('repayment_status'),
+                $status,
                 Input::get('repayment_voucher_id')
             );
 
@@ -281,7 +281,8 @@ class RepaymentController extends BaseController
                 . 'Repay Penalty Amount = <strong>' . $data->_repayment['cur']['penalty'] . '</strong>'
                 . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
             $perform->save();
-
+            // User action
+            \Event::fire('user_action.add', array('repayment'));
             return Redirect::back()
                 ->with('info', $msg)
                 ->with('success', trans('battambang/loan::repayment.create_success'));
@@ -508,7 +509,8 @@ class RepaymentController extends BaseController
                     . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
                 $perform->delete($id);
                 $perform->save();
-
+                // User action
+                \Event::fire('user_action.edit', array('repayment'));
                 return Redirect::route('loan.repayment.edit',$data->_id)->withInput()
                     ->with('info', $msg)
                     ->with('success', trans('battambang/loan::repayment.update_success'));
@@ -524,6 +526,8 @@ class RepaymentController extends BaseController
         try {
             $data = Perform::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('repayment'));
             return Redirect::back()->with('success', trans('battambang/loan::repayment.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.repayment.index')->with('error', trans('battambang/cpanel::db_error.fail'));

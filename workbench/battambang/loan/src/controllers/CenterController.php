@@ -99,7 +99,8 @@ class CenterController extends BaseController
 
             $data = new Center();
             $this->saveData($data);
-
+// User action
+            \Event::fire('user_action.add', array('center'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::center.create_success'));
 
@@ -117,7 +118,8 @@ class CenterController extends BaseController
 
                 $data = Center::findOrFail($id);
                 $this->saveData($data, false);
-
+// User action
+                \Event::fire('user_action.edit', array('center'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::center.update_success'));
             }
@@ -134,7 +136,8 @@ class CenterController extends BaseController
 
             $data = Center::findOrFail($id);
             $data->delete();
-
+// User action
+            \Event::fire('user_action.delete', array('center'));
             return Redirect::back()->with('success', trans('battambang/loan::center.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.center.index')->with('error', trans('battambang/cpanel::db_error.fail'));

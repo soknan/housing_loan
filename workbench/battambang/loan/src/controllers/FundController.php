@@ -75,7 +75,8 @@ class FundController extends BaseController
         if ($validation->passes()) {
             $data = new Fund();
             $this->saveData($data);
-
+// User action
+            \Event::fire('user_action.add', array('fund'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::fund.create_success'));
 
@@ -90,7 +91,8 @@ class FundController extends BaseController
             if ($validation->passes()) {
                 $data = Fund::findOrFail($id);
                 $this->saveData($data);
-
+// User action
+                \Event::fire('user_action.edit', array('fund'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::fund.update_success'));
             }
@@ -105,6 +107,8 @@ class FundController extends BaseController
         try {
             $data = Fund::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('fund'));
             return Redirect::back()->with('success', trans('battambang/loan::fund.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.fund.index')->with('error', trans('battambang/cpanel::db_error.fail'));

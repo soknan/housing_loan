@@ -77,6 +77,8 @@ class HolidayController extends BaseController
 
             $data = new Holiday();
             $this->saveData($data);
+            // User action
+            \Event::fire('user_action.add', array('holiday'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::holiday.create_success'));
 
@@ -91,7 +93,8 @@ class HolidayController extends BaseController
             if ($validation->passes()) {
                 $data = Holiday::findOrFail($id);
                 $this->saveData($data);
-
+                // User action
+                \Event::fire('user_action.edit', array('holiday'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::holiday.update_success'));
             }
@@ -106,6 +109,8 @@ class HolidayController extends BaseController
         try {
             $data = Holiday::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('holiday'));
             return Redirect::back()->with('success', trans('battambang/loan::holiday.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.holiday.index')->with('error', trans('battambang/cpanel::db_error.fail'));

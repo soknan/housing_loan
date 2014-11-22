@@ -81,7 +81,8 @@ class ProductController extends BaseController
 
             $data = new Product();
             $this->saveData($data);
-
+            // User action
+            \Event::fire('user_action.add', array('product'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::product.create_success'));
         }
@@ -98,7 +99,8 @@ class ProductController extends BaseController
             if ($validation->passes()) {
                 $data = Product::findOrFail($id);
                 $this->saveData($data);
-
+                // User action
+                \Event::fire('user_action.edit', array('product'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::product.update_success'));
             }
@@ -115,7 +117,8 @@ class ProductController extends BaseController
 
             $data = Product::findOrFail($id);
             $data->delete();
-
+            // User action
+            \Event::fire('user_action.delete', array('product'));
             return Redirect::back()->with('success', trans('battambang/loan::product.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.product.index')->with('error', trans('battambang/cpanel::db_error.fail'));
