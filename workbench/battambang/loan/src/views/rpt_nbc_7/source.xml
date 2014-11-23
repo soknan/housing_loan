@@ -532,7 +532,7 @@
     <Cell ss:MergeAcross="6" ss:StyleID="s69"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="30" ss:StyleID="s67">
-    <Cell ss:MergeAcross="6" ss:StyleID="s68"><Data ss:Type="String">DELINQUENCY RATIO = (ALL LOANS PAST DUE &gt; 30 DAYS) / (TOTAL LOANS OUTSTANDING) = <?php echo number_format($total_req / $total_bal,2)*100;?>%</Data></Cell>
+    <Cell ss:MergeAcross="6" ss:StyleID="s68"><Data ss:Type="String">DELINQUENCY RATIO = (ALL LOANS PAST DUE &gt; 30 DAYS) / (TOTAL LOANS OUTSTANDING) = <?php echo number_format($total_req / $total_bal*100,2);?>%</Data></Cell>
    </Row>
    <!--<Row ss:AutoFitHeight="0" ss:Height="45" ss:StyleID="s67">
     <Cell ss:MergeAcross="6" ss:StyleID="s68"><Data ss:Type="String">LOAN WRITE-OFFS :&#160;&#160;&#160;&#160;&#160;CURRENT PERIOD = 0.00&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;YEAR TO DATE = 18,720.33&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;WRITE-OFF RATE = YEAR TO DATE / TOTAL LOANS OUTSTANDING = 3.70 %</Data></Cell>

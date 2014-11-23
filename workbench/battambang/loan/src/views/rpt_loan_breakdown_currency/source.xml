@@ -421,7 +421,7 @@
                   }
               $total_int+=$sub_int;
               if($acc>0){
-              $total_acc++;
+              $total_acc+=$acc;
               }
 
               $total_bal+= $usd_bal;
