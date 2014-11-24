@@ -604,6 +604,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $date = new Carbon();
         $first = $date->createFromFormat('Y-m-d',$this->_last_perform_date);
         $second = $date->createFromFormat('Y-m-d',$this->_activated_at);
+        if($second >= $this->_maturity_date){
+            $second = $date->createFromFormat('Y-m-d',$this->_maturity_date);
+        }
         if($this->_disburse->ln_lv_repay_frequency == 3){
             if($this->_disburse->installment_frequency != 1){
                 $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
@@ -626,10 +629,10 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 30);
                 if( $difWeek != $this->_disburse->installment_frequency-1){
                     $first= $first->endOfMonth();
-                    $second = $second->endOfMonth();
+                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
                 }else{
                     $first = $first->endOfMonth();
-                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
+                    $second = $second->endOfMonth();
                 }
             }else{
                 $first = $first->endOfMonth();
