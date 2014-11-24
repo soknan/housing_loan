@@ -501,9 +501,16 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
     public  function _isEqualDate($date1, $date2)
     {
+        if($date1>=$this->_maturity_date){
+            $date1 = $this->_maturity_date;
+        }
+        if($date2>=$this->_maturity_date){
+            $date2 = $this->_maturity_date;
+        }
         $date = new Carbon();
         $first = $date->createFromFormat('Y-m-d',$date1);
         $second = $date->createFromFormat('Y-m-d',$date2);
+
         if($this->_disburse->ln_lv_repay_frequency == 3){
             if($this->_disburse->installment_frequency != 1){
                 $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
@@ -534,6 +541,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $second = $second->endOfMonth();
             }
         }
+        //echo $second; exit;
         return $second->eq($first);
     }
 
@@ -601,10 +609,12 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
                 if( $difWeek != $this->_disburse->installment_frequency-1){
                     $first=$first->endOfWeek();
-                    $second=$second->endOfWeek();
+                    //$second=$second->endOfWeek();
+                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                 }else{
                     $first = $first->endOfWeek();
-                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
+                    //$second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
+                    $second=$second->endOfWeek();
                 }
             }else{
                 $first = $first->endOfWeek();
@@ -626,6 +636,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $second = $second->endOfMonth();
             }
         }
+        //echo $first.'  '.$second; exit;
         $data = $this->_getSchedule($first, $second);
 
         $lnumDay=0;
@@ -737,10 +748,10 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
         //Maturity Date is over
         if ($this->_endOfDate($this->_activated_at) > $this->_endOfDate($this->_maturity_date)) {
-            //$this->_due['date'] = '';
+            /*$this->_due['date'] = $this->_maturity_date;
             $this->_due['principal'] = 0;
             $this->_due['interest'] = 0;
-            $this->_due['fee'] = 0;
+            $this->_due['fee'] = 0;*/
 
             $this->_next_due['date'] = '';
             $this->_next_due['principal'] = 0;
