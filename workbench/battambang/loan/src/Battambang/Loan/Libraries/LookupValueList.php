@@ -388,10 +388,6 @@ class LookupValueList
 
     public function getLoanAccount()
     {
-//        $perform = array('');
-//        foreach (Perform::all() as $row) {
-//            $perform[] = $row->ln_disburse_client_id;
-//        }
             $data = \DB::select("select dc.id as id,CONCAT(c.kh_last_name,' ',c.kh_first_name) as client_kh_name,d.disburse_date as disburse_date
 from ln_disburse_client dc
 LEFT JOIN ln_disburse d
@@ -399,16 +395,35 @@ on dc.ln_disburse_id = d.id
 LEFT JOIN ln_client c
 on c.id = dc.ln_client_id
 WHERE SUBSTR(dc.id,1,4) = '".\UserSession::read()->sub_branch."'
-and dc.id not in (select p.ln_disburse_client_id from ln_perform p where p.repayment_type = 'closing' and (p.balance_principal <=0 or p.balance_interest <=0))
+and dc.id not in (select p.ln_disburse_client_id from ln_perform p where p.repayment_type = 'closing'
+and (p.balance_principal <=0 or p.balance_interest <=0))
 GROUP BY dc.id
 ORDER BY d.disburse_date");
 
         $arr = array();
         $status = '';
         foreach ($data as $row) {
-            //$status = Perform::where('ln_disburse_client_id','=',$row->id)->orderBy('activated_at','desc')->limit(1)->first();
+            $arr[$row->id] = $row->id . ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));
+        }
 
-            //if($status->repayment_type == 'closing') continue;
+        return $arr;
+    }
+
+    public function getLoanAccountAll()
+    {
+        $data = \DB::select("select dc.id as id,CONCAT(c.kh_last_name,' ',c.kh_first_name) as client_kh_name,d.disburse_date as disburse_date
+from ln_disburse_client dc
+LEFT JOIN ln_disburse d
+on dc.ln_disburse_id = d.id
+LEFT JOIN ln_client c
+on c.id = dc.ln_client_id
+WHERE SUBSTR(dc.id,1,4) = '".\UserSession::read()->sub_branch."'
+GROUP BY dc.id
+ORDER BY d.disburse_date");
+
+        $arr = array();
+        $status = '';
+        foreach ($data as $row) {
             $arr[$row->id] = $row->id . ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));
         }
 

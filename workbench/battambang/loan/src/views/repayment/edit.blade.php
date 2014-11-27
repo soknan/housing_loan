@@ -32,7 +32,7 @@ if(Session::has('data')){
 echo FormPanel2::make(
     'General',
         Former::select('loan', 'Acc#')
-        ->options(LookupValueList::getLoanAccount(), $client_id)
+        ->options(LookupValueList::getLoanAccountAll(),$client_id)
         ->required()
         ->class('select2')
         ->readonly('readonly')
