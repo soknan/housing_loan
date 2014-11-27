@@ -76,7 +76,7 @@ Route::filter(
 |
 */
 
-/*Route::filter(
+Route::filter(
     'package.cpanel',
     function () {
 
@@ -121,4 +121,4 @@ Route::filter(
                 ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
         }
     }
-);*/
+);
