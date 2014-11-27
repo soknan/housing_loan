@@ -35,4 +35,20 @@ return array(
     'workday_index'=>'battambang/cpanel::workday.index',
     'workday_create'=>'battambang/cpanel::workday.create',
     'workday_edit'=>'battambang/cpanel::workday.edit',
+
+    'province_index'=>'battambang/cpanel::province.index',
+    'province_create'=>'battambang/cpanel::province.create',
+    'province_edit'=>'battambang/cpanel::province.edit',
+
+    'district_index'=>'battambang/cpanel::district.index',
+    'district_create'=>'battambang/cpanel::district.create',
+    'district_edit'=>'battambang/cpanel::district.edit',
+
+    'commune_index'=>'battambang/cpanel::commune.index',
+    'commune_create'=>'battambang/cpanel::commune.create',
+    'commune_edit'=>'battambang/cpanel::commune.edit',
+
+    'village_index'=>'battambang/cpanel::village.index',
+    'village_create'=>'battambang/cpanel::village.create',
+    'village_edit'=>'battambang/cpanel::village.edit',
 );

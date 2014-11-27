@@ -9,6 +9,7 @@
 namespace Battambang\Cpanel\Libraries;
 
 use Battambang\Cpanel\Group;
+use Battambang\Cpanel\Location;
 use Battambang\Cpanel\Lookup;
 use Battambang\Cpanel\Office;
 use DB;
@@ -467,6 +468,57 @@ class GetLists
         }
 
         return $data;
+    }
+
+    public function getProvinceList()
+    {
+        $data = Location::where('cp_location_id','=','')->get();
+        $arr = array();
+        if ($data) {
+            foreach ($data as $row) {
+                $arr[$row->id] = $row->id.' | '.$row->kh_name;
+            }
+        }
+        return $arr;
+    }
+
+    public function getDistrictList($pro)
+    {
+        $data = Location::where('cp_location_id','=',$pro)->get();
+        $arr = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
+        if ($data) {
+            foreach ($data as $row) {
+                $arr .= '<option value="' . $row->id . '">' .$row->id." | ". $row->kh_name . '</option>';
+            }
+            return $arr;
+        }
+        return $arr;
+    }
+
+    public function getCommuneList($dis)
+    {
+        $data = Location::where('cp_location_id','=',$dis)->get();
+        $arr = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
+        if ($data) {
+            foreach ($data as $row) {
+                $arr .= '<option value="' . $row->id . '">' .$row->id." | ". $row->kh_name . '</option>';
+            }
+            return $arr;
+        }
+        return $arr;
+    }
+
+    public function getVillageList($com)
+    {
+        $data = Location::where('cp_location_id','=',$com)->get();
+        $arr = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
+        if ($data) {
+            foreach ($data as $row) {
+                $arr .= '<option value="' . $row->id . '">' .$row->id." | ". $row->kh_name . '</option>';
+            }
+            return $arr;
+        }
+        return $arr;
     }
 
 }

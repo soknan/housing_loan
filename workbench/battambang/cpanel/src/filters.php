@@ -9,7 +9,11 @@
 | session is logged into this application.
 |
 */
-
+Route::filter('csrf', function() {
+    $token = Request::ajax() ? Request::header('X-CSRF-Token') : Input::get('_token');
+    if (Session::token() != $token)
+        throw new Illuminate\Session\TokenMismatchException;
+});
 Route::filter(
     'auth.cpanel',
     function () {
@@ -72,7 +76,7 @@ Route::filter(
 |
 */
 
-Route::filter(
+/*Route::filter(
     'package.cpanel',
     function () {
 
@@ -117,4 +121,4 @@ Route::filter(
                 ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
         }
     }
-);
+);*/

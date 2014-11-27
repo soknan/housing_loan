@@ -36,6 +36,8 @@ class GroupController extends BaseController
                     array('10', '25', '50', '100', 'All')
                 )
             )
+            ->setOptions("scrollY","300")
+            ->setOptions("scrollX",true)
             ->setOptions("iDisplayLength", '10')// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(

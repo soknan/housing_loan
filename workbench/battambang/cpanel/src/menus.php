@@ -27,6 +27,14 @@ Menu::make(
                 $dropdown->add('Office', route('cpanel.office.index'));
                 $dropdown->add('Work Day', route('cpanel.workday.index'));
                 $dropdown->add('Decode Text', route('cpanel.decode.index'));
+                $dropdown->add(
+                    'Location',
+                    function ($dropdown) {
+                $dropdown->add('Province', route('cpanel.province.index'));
+                $dropdown->add('District', route('cpanel.district.index'));
+                $dropdown->add('Commune', route('cpanel.commune.index'));
+                $dropdown->add('Village', route('cpanel.village.index'));
+                    });
             }
         );
     }

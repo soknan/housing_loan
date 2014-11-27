@@ -144,11 +144,143 @@ Breadcrumbs::register(
     }
 );
 
+Breadcrumbs::register(
+    'cpanel.province.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Province', URL::route('cpanel.province.index'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.province.create',
+    function ($bc) {
+        $bc->parent('cpanel.province.index');
+        $bc->push('Add New', URL::route('cpanel.province.create'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.province.edit',
+    function ($bc) {
+        $bc->parent('cpanel.province.index');
+        $bc->push('Edit', URL::route('cpanel.province.edit'));
+    }
+);
+
+Breadcrumbs::register(
+    'cpanel.district.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('District', URL::route('cpanel.district.index'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.district.create',
+    function ($bc) {
+        $bc->parent('cpanel.district.index');
+        $bc->push('Add New', URL::route('cpanel.district.create'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.district.edit',
+    function ($bc) {
+        $bc->parent('cpanel.district.index');
+        $bc->push('Edit', URL::route('cpanel.district.edit'));
+    }
+);
+
+Breadcrumbs::register(
+    'cpanel.commune.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Commune', URL::route('cpanel.commune.index'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.commune.create',
+    function ($bc) {
+        $bc->parent('cpanel.commune.index');
+        $bc->push('Add New', URL::route('cpanel.commune.create'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.commune.edit',
+    function ($bc) {
+        $bc->parent('cpanel.commune.index');
+        $bc->push('Edit', URL::route('cpanel.commune.edit'));
+    }
+);
+
+Breadcrumbs::register(
+    'cpanel.village.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Village', URL::route('cpanel.village.index'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.village.create',
+    function ($bc) {
+        $bc->parent('cpanel.village.index');
+        $bc->push('Add New', URL::route('cpanel.village.create'));
+    }
+);
+Breadcrumbs::register(
+    'cpanel.village.edit',
+    function ($bc) {
+        $bc->parent('cpanel.village.index');
+        $bc->push('Edit', URL::route('cpanel.village.edit'));
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Loan Breadcrumbs
 |--------------------------------------------------------------------------
 */
+// lookup
+Breadcrumbs::register(
+    'loan.lookup.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Lookup', URL::route('loan.lookup.index'));
+    }
+);
+Breadcrumbs::register(
+    'loan.lookup.create',
+    function ($bc) {
+        $bc->parent('loan.lookup.index');
+        $bc->push('Add New', URL::route('loan.lookup.create'));
+    }
+);
+Breadcrumbs::register(
+    'loan.lookup.edit',
+    function ($bc) {
+        $bc->parent('loan.lookup.index');
+        $bc->push('Edit', URL::route('loan.lookup.edit'));
+    }
+);
+// lookup Value
+Breadcrumbs::register(
+    'loan.lookup_value.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Lookup Value', URL::route('loan.lookup_value.index'));
+    }
+);
+Breadcrumbs::register(
+    'loan.lookup_value.create',
+    function ($bc) {
+        $bc->parent('loan.lookup_value.index');
+        $bc->push('Add New', URL::route('loan.lookup_value.create'));
+    }
+);
+Breadcrumbs::register(
+    'loan.lookup_value.edit',
+    function ($bc) {
+        $bc->parent('loan.lookup_value.index');
+        $bc->push('Edit', URL::route('loan.lookup_value.edit'));
+    }
+);
 // Client
 Breadcrumbs::register(
     'loan.client.index',

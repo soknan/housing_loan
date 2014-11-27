@@ -72,6 +72,94 @@ PageHeader::make(
     }
 );
 PageHeader::make(
+    'cpanel.province.index',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Provinces');
+    }
+);
+PageHeader::make(
+    'cpanel.province.create',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('Province');
+    }
+);
+PageHeader::make(
+    'cpanel.province.edit',
+    function (PageHeardItem $header) {
+        $header->iconEdit();
+        $header->add('Province');
+    }
+);
+
+PageHeader::make(
+    'cpanel.district.index',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('District');
+    }
+);
+PageHeader::make(
+    'cpanel.district.create',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('District');
+    }
+);
+PageHeader::make(
+    'cpanel.district.edit',
+    function (PageHeardItem $header) {
+        $header->iconEdit();
+        $header->add('District');
+    }
+);
+
+PageHeader::make(
+    'cpanel.commune.index',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Commune');
+    }
+);
+PageHeader::make(
+    'cpanel.commune.create',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('Commune');
+    }
+);
+PageHeader::make(
+    'cpanel.commune.edit',
+    function (PageHeardItem $header) {
+        $header->iconEdit();
+        $header->add('Commune');
+    }
+);
+
+PageHeader::make(
+    'cpanel.village.index',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Village');
+    }
+);
+PageHeader::make(
+    'cpanel.village.create',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('Village');
+    }
+);
+PageHeader::make(
+    'cpanel.village.edit',
+    function (PageHeardItem $header) {
+        $header->iconEdit();
+        $header->add('Village');
+    }
+);
+
+PageHeader::make(
     'cpanel.decode.index',
     function (PageHeardItem $header) {
         $header->iconBarcode();

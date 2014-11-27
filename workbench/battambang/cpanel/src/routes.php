@@ -193,6 +193,127 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
         'uses'=>'Battambang\Cpanel\WorkDayController@store',
     ));
 
+    /*
+ * Work Day
+ */
+    Route::get('province',array(
+        'as' => 'cpanel.province.index',
+        'uses'=>'Battambang\Cpanel\ProvinceController@index',
+    ));
+    Route::get('province/create',array(
+        'as' => 'cpanel.province.create',
+        'uses'=>'Battambang\Cpanel\ProvinceController@create',
+    ));
+    Route::get('province/{id}/edit',array(
+        'as' => 'cpanel.province.edit',
+        'uses'=>'Battambang\Cpanel\ProvinceController@edit',
+    ));
+    Route::put('province/update/{id}',array(
+        'as' => 'cpanel.province.update',
+        'uses'=>'Battambang\Cpanel\ProvinceController@update',
+    ));
+    Route::delete('province/destroy/{id}',array(
+        'as' => 'cpanel.province.destroy',
+        'uses'=>'Battambang\Cpanel\ProvinceController@destroy',
+    ));
+    Route::post('province',array(
+        'as' => 'cpanel.province.store',
+        'uses'=>'Battambang\Cpanel\ProvinceController@store',
+    ));
+
+    /*
+ * Work Day
+ */
+    Route::get('district',array(
+        'as' => 'cpanel.district.index',
+        'uses'=>'Battambang\Cpanel\DistrictController@index',
+    ));
+    Route::get('district/create',array(
+        'as' => 'cpanel.district.create',
+        'uses'=>'Battambang\Cpanel\DistrictController@create',
+    ));
+    Route::get('district/{id}/edit',array(
+        'as' => 'cpanel.district.edit',
+        'uses'=>'Battambang\Cpanel\DistrictController@edit',
+    ));
+    Route::put('district/update/{id}',array(
+        'as' => 'cpanel.district.update',
+        'uses'=>'Battambang\Cpanel\DistrictController@update',
+    ));
+    Route::delete('district/destroy/{id}',array(
+        'as' => 'cpanel.district.destroy',
+        'uses'=>'Battambang\Cpanel\DistrictController@destroy',
+    ));
+    Route::post('district',array(
+        'as' => 'cpanel.district.store',
+        'uses'=>'Battambang\Cpanel\DistrictController@store',
+    ));
+
+
+    /*
+ * Work Day
+ */
+    Route::get('commune',array(
+        'as' => 'cpanel.commune.index',
+        'uses'=>'Battambang\Cpanel\CommuneController@index',
+    ));
+    Route::get('commune/create',array(
+        'as' => 'cpanel.commune.create',
+        'uses'=>'Battambang\Cpanel\CommuneController@create',
+    ));
+    Route::get('commune/{id}/edit',array(
+        'as' => 'cpanel.commune.edit',
+        'uses'=>'Battambang\Cpanel\CommuneController@edit',
+    ));
+    Route::put('commune/update/{id}',array(
+        'as' => 'cpanel.commune.update',
+        'uses'=>'Battambang\Cpanel\CommuneController@update',
+    ));
+    Route::delete('commune/destroy/{id}',array(
+        'as' => 'cpanel.commune.destroy',
+        'uses'=>'Battambang\Cpanel\CommuneController@destroy',
+    ));
+    Route::post('commune',array(
+        'as' => 'cpanel.commune.store',
+        'uses'=>'Battambang\Cpanel\CommuneController@store',
+    ));
+
+    /*
+ * Work Day
+ */
+    Route::get('village',array(
+        'as' => 'cpanel.village.index',
+        'uses'=>'Battambang\Cpanel\VillageController@index',
+    ));
+    Route::get('village/create',array(
+        'as' => 'cpanel.village.create',
+        'uses'=>'Battambang\Cpanel\VillageController@create',
+    ));
+    Route::get('village/{id}/edit',array(
+        'as' => 'cpanel.village.edit',
+        'uses'=>'Battambang\Cpanel\VillageController@edit',
+    ));
+    Route::put('village/update/{id}',array(
+        'as' => 'cpanel.village.update',
+        'uses'=>'Battambang\Cpanel\VillageController@update',
+    ));
+    Route::delete('village/destroy/{id}',array(
+        'as' => 'cpanel.village.destroy',
+        'uses'=>'Battambang\Cpanel\VillageController@destroy',
+    ));
+    Route::post('village',array(
+        'as' => 'cpanel.village.store',
+        'uses'=>'Battambang\Cpanel\VillageController@store',
+    ));
+
+
+    Route::any('pro_change', 'Battambang\Cpanel\CommuneController@postProChange');
+
+    Route::any('pro_change_vil', 'Battambang\Cpanel\VillageController@proChange');
+    Route::any('dis_change', 'Battambang\Cpanel\VillageController@disChange');
+    Route::any('com_change', 'Battambang\Cpanel\VillageController@comChange');
+
+
 });
 
 /*
@@ -213,6 +334,22 @@ Route::get('api/office',array(
 Route::get('api/workday',array(
     'as'=>'api.workday',
     'uses'=>'Battambang\Cpanel\WorkDayController@getDatatable'
+));
+Route::get('api/province',array(
+    'as'=>'api.province',
+    'uses'=>'Battambang\Cpanel\ProvinceController@getDatatable'
+));
+Route::get('api/district',array(
+    'as'=>'api.district',
+    'uses'=>'Battambang\Cpanel\DistrictController@getDatatable'
+));
+Route::get('api/commune',array(
+    'as'=>'api.commune',
+    'uses'=>'Battambang\Cpanel\CommuneController@getDatatable'
+));
+Route::get('api/village',array(
+    'as'=>'api.village',
+    'uses'=>'Battambang\Cpanel\VillageController@getDatatable'
 ));
 
 /*
