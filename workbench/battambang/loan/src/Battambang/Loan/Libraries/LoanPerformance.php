@@ -417,24 +417,12 @@ class LoanPerformance
                         $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
                         return $this;
                     }
-                    /*if($collect == true){
-                        $this->_last_perform_date= $row->activated_at;
-                        $this->_new_due['principal'] = 0;
-                        $this->_new_due['interest'] = 0;
-                        $this->_new_due['penalty'] = 0;
-                        $this->_new_due['num_day']=0;
-                        $this->_new_due['num_installment']=0;
-                        $this->getPerform();
-                        return $this;
-                    }*/
 
                     $this->error = 'You are already Perform It on
                     '.date('d-M-Y',strtotime($row->activated_at)).'
                     . Your Next Perform is on
                     '.date('d-M-Y',strtotime($this->_next_due['date']));
-                    //$this->_due_closing['interest_closing'] = $this->_balance_interest - $this->_new_due['interest'];
-                    //$this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_new_due['principal'];
-                    //Accrued interest
+
                     $this->_getAccrueInt();
 
                     $this->_due['num_day'] = 0;
@@ -460,7 +448,6 @@ class LoanPerformance
                     $this->_arrears['last']['penalty'] = 0;
                     return $this;
                 }else{
-                    //$this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
                     $this->_last_perform_date = $row->activated_at;
                     $this->_new_due['principal'] = 0;
                     $this->_new_due['interest'] = 0;
@@ -541,7 +528,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $second = $second->endOfMonth();
             }
         }
-        //echo $second; exit;
+
         return $second->eq($first);
     }
 
@@ -612,11 +599,9 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
                 if( $difWeek != $this->_disburse->installment_frequency-1){
                     $first=$first->endOfWeek();
-                    //$second=$second->endOfWeek();
                     $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                 }else{
                     $first = $first->endOfWeek();
-                    //$second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                     $second=$second->endOfWeek();
                 }
             }else{
@@ -629,21 +614,23 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 30);
                 if( $difWeek != $this->_disburse->installment_frequency-1){
                     $first= $first->endOfMonth();
-                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
+                    $second = $second->endOfMonth();
+                    //$second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
                 }else{
                     $first = $first->endOfMonth();
-                    $second = $second->endOfMonth();
+                    //$second = $second->endOfMonth();
+                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
                 }
             }else{
                 $first = $first->endOfMonth();
                 $second = $second->endOfMonth();
             }
         }
-        //echo $first.'  '.$second; exit;
+
         $data = $this->_getSchedule($first, $second);
 
         $lnumDay=0;
-        //var_dump($data->all()); exit;
+
         $pen = $this->_getLastArreasPen();
         if ($data->count() > 0) {
             foreach ($data as $key => $row) {
@@ -671,9 +658,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $int += $row->interest;
             }
 
-            /*if($this->_last_due['num_day'] < 0){
-                $pen = $pen - $this->_getPenalty(abs($this->_last_due['num_day']),$this->_last_due['principal'] + $this->_last_due['interest']);
-            }*/
             $this->_new_due['principal'] = $prin;
             $this->_new_due['interest'] = $int;
 
@@ -722,10 +706,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 }
              //end use
             }else{
-                /*if(!$this->_isDate($this->_arrears['cur']['date']) and $this->_perform_type=='disburse'){
-                    $this->_arrears['cur']['date'] = $this->_last_perform_date;
-                }*/
-                //$this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
+
                 $this->_arrears['cur']['num_day'] = $this->_new_due['num_day'];
                 $this->_arrears['cur']['num_installment'] = $this->_new_due['num_installment'];
                 $this->_arrears['cur']['principal'] = $this->_new_due['principal'] + $this->_arrears['last']['principal'];
@@ -735,12 +716,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_arrears['cur']['date'] = $this->_new_due['date'];
             }
 
-        }/*else{
-            if($this->_isDate($this->_arrears['cur']['date'])){
-            $this->_arrears['cur']['num_day']=$this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
-            }
-
-        }*/
+        }
 
         $this->getNext();
         $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['interest']);
@@ -751,10 +727,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
         //Maturity Date is over
         if ($this->_endOfDate($this->_activated_at) > $this->_endOfDate($this->_maturity_date)) {
-            /*$this->_due['date'] = $this->_maturity_date;
-            $this->_due['principal'] = 0;
-            $this->_due['interest'] = 0;
-            $this->_due['fee'] = 0;*/
 
             $this->_next_due['date'] = '';
             $this->_next_due['principal'] = 0;
@@ -947,11 +919,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $arrearsInt =0;
                 $arrearsIndex =1;
                 $arrearsDate ='';
-                /*if(round($principal,2) == round($total,2)){
-                    if($this->_isEqualDate($this->_activated_at,$this->_maturity_date) or $this->_activated_at >= $this->_maturity_date){
-                        $option = 'closing';
-                    }
-                }*/
+
                 if($this->_new_due['product_status'] == 5){
                     $this->_perform_type = 'writeoff';
                     $wof_pri=0;
