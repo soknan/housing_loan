@@ -596,13 +596,15 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         }
         if($this->_disburse->ln_lv_repay_frequency == 3){
             if($this->_disburse->installment_frequency != 1){
-                $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
+                $difWeek = ceil($first->endOfWeek()->diffInDays($second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek()) / 7);
                 if( $difWeek != $this->_disburse->installment_frequency-1){
                     $first=$first->endOfWeek();
-                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
+                    $second=$second->endOfWeek();
+                    //$second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                 }else{
                     $first = $first->endOfWeek();
-                    $second=$second->endOfWeek();
+                    //$second=$second->endOfWeek();
+                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
                 }
             }else{
                 $first = $first->endOfWeek();
@@ -611,7 +613,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
         }else{
             if($this->_disburse->installment_frequency != 1){
-                $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 30);
+                $difWeek = ceil($first->endOfMonth()->diffInDays($second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek()) / 30);
                 if( $difWeek != $this->_disburse->installment_frequency-1){
                     $first= $first->endOfMonth();
                     $second = $second->endOfMonth();
