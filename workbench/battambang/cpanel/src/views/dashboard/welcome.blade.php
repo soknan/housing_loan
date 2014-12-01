@@ -2,7 +2,7 @@
 
 @section('content')
 <dl class="dl-horizontal">
-    <dt>Usr Gruop</dt>
+    <dt>User Gruop</dt>
     <dd>
         <?php
         echo UserSession::read()->group_name;

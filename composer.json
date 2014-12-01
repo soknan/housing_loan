@@ -4,7 +4,7 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "laravel/framework": "4.1.*",
+        "laravel/framework": "4.2.*",
         "barryvdh/laravel-ide-helper": "dev-master",
         "barryvdh/laravel-debugbar": "1.*",
         "anahkiasen/former": "dev-develop",

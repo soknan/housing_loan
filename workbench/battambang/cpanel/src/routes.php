@@ -193,8 +193,8 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
         'uses'=>'Battambang\Cpanel\WorkDayController@store',
     ));
 
-    /*
- * Work Day
+/*
+ * Province
  */
     Route::get('province',array(
         'as' => 'cpanel.province.index',
@@ -221,8 +221,8 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
         'uses'=>'Battambang\Cpanel\ProvinceController@store',
     ));
 
-    /*
- * Work Day
+/*
+ * District
  */
     Route::get('district',array(
         'as' => 'cpanel.district.index',
@@ -250,8 +250,8 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
     ));
 
 
-    /*
- * Work Day
+/*
+ * Commune
  */
     Route::get('commune',array(
         'as' => 'cpanel.commune.index',
@@ -278,8 +278,8 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
         'uses'=>'Battambang\Cpanel\CommuneController@store',
     ));
 
-    /*
- * Work Day
+/*
+ * Village
  */
     Route::get('village',array(
         'as' => 'cpanel.village.index',

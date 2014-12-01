@@ -37,6 +37,30 @@ return array(
                 'cpanel.user.edit' => 'edit',
                 'cpanel.user.destroy' => 'delete',
             ),
+            'province' => array(
+                'cpanel.province.index' => 'list',
+                'cpanel.province.create' => 'create',
+                'cpanel.province.edit' => 'edit',
+                'cpanel.province.destroy' => 'delete',
+            ),
+            'district' => array(
+                'cpanel.district.index' => 'list',
+                'cpanel.district.create' => 'create',
+                'cpanel.district.edit' => 'edit',
+                'cpanel.district.destroy' => 'delete',
+            ),
+            'commune' => array(
+                'cpanel.commune.index' => 'list',
+                'cpanel.commune.create' => 'create',
+                'cpanel.commune.edit' => 'edit',
+                'cpanel.commune.destroy' => 'delete',
+            ),
+            'village' => array(
+                'cpanel.village.index' => 'list',
+                'cpanel.village.create' => 'create',
+                'cpanel.village.edit' => 'edit',
+                'cpanel.village.destroy' => 'delete',
+            ),
             'Tool' => array(
                 'loan.backup.index' => 'backup',
                 'loan.restore.index' => 'restore',
