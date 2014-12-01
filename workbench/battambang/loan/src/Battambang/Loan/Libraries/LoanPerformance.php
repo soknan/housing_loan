@@ -465,19 +465,19 @@ class LoanPerformance
 
     private function _getDisburse()
     {
-        $data = \DB::select('SELECT *,
+        $data = \DB::select('SELECT *,ln_disburse.ln_staff_id,ln_center.cp_location_id,
 CONCAT(ln_client.kh_last_name," ",ln_client.kh_first_name) as client_name,
 account_type.`code` as account_type,
 COUNT(ln_disburse_client.id) as num_account,
 COUNT(ln_lv_account_type) as num_account_type,
 COUNT(ln_lv_gender) as num_gender,
 COUNT(cp_location_id) as num_location
-FROM ln_disburse_client INNER JOIN
+FROM ln_disburse_client left JOIN
 ln_disburse on ln_disburse_client.ln_disburse_id = ln_disburse.id
-INNER JOIN ln_product on ln_product.id = ln_disburse.ln_product_id
-INNER JOIN ln_client on ln_client.id = ln_disburse_client.ln_client_id
-INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
-INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
+left JOIN ln_product on ln_product.id = ln_disburse.ln_product_id
+left JOIN ln_client on ln_client.id = ln_disburse_client.ln_client_id
+left JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
+left JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         $arr = new \stdClass();
         foreach ($data as $row) {
