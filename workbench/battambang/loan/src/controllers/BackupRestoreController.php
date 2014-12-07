@@ -218,9 +218,9 @@ class BackupRestoreController extends BaseController
         exit;*/
         //echo count($file_name_arr);
         for ($i = 0; $i < (count($file_name_arr)-1); $i++) {
-//            if ($i === 1) {
-//                continue;
-//            }
+            if ($i === 1) {
+                continue;
+            }
             if (trim($file_name_arr[$i]) != trim($zip_name_arr[$i])) {
                 return Redirect::back()->with('error',$err);
             }
@@ -248,13 +248,13 @@ class BackupRestoreController extends BaseController
             $query = "";
             //var_dump($file_content); exit;
             foreach ($file_content as $sql_line) {
-                //if(trim($sql_line) != "" && strpos($sql_line, "--") === false){
+                if(trim($sql_line) != "" && strpos($sql_line, "--") === false){
                 $query.= $sql_line;
                 if (substr(rtrim($query), -1) == ';') {
-                    DB::unprepared($query);
+                    DB::statement($query);
                     $query = "";
                 }
-                //}
+                }
             }
 
         } else {
@@ -305,7 +305,9 @@ class BackupRestoreController extends BaseController
                 //var_dump($query); exit();
                 foreach ($query as $result) {
                     $result = (array)$result;
-                    $return .= "\n INSERT INTO " . $table . " VALUES('" . implode("','", $result) . "');";
+                    $result = str_replace('"','\"',$result );
+                    $result = str_replace("'","\'",$result );
+                    $return .= "\n INSERT INTO " . $table . " VALUES('" . implode("','", $result ) . "');";
                 }
             }
 
