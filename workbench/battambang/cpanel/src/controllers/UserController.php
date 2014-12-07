@@ -25,13 +25,13 @@ class UserController extends BaseController
         $item = array(
             'Action',
             'ID',
-            'First Name',
-            'Last Name',
+            'First_Name',
+            'Last_Name',
             'Email',
             'Username',
-            'Expire Day',
+            'Expire_Day',
             'Activated',
-            'activated_at',
+            'Activated_at',
             'Group',
         );
 //        $data['btnAction'] = array('Add New' => route('cpanel.user.create'));
@@ -159,10 +159,10 @@ class UserController extends BaseController
 
         // Check user is 'superadmin'
         if(\Auth::user()->id == 1){
-            $arr = DB::table('cp_user')
+            $arr = DB::table('view_user')
                 ->orderBy('id');
         }else{
-            $arr = DB::table('cp_user')
+            $arr = DB::table('view_user')
                 ->where('id', '!=', 1)
                 ->orderBy('id');
         }

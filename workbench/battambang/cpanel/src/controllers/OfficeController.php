@@ -131,7 +131,7 @@ class OfficeController extends BaseController
     public function getDatatable()
     {
         $item = array('id', 'kh_name', 'kh_short_name', 'en_name', 'en_short_name', 'register_at', 'cp_office_id', 'telephone');
-        $arr = DB::table('cp_office')->orderBy('id');
+        $arr = DB::table('view_office')->orderBy('id');
 
         return \Datatable::query($arr)
             ->addColumn(

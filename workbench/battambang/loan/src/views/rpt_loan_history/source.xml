@@ -624,8 +624,8 @@
               $int_total+=$sch->interest;
               $fee_total+=$sch->fee;
               $all_total+=$total;
-              //$tmp = $lookup->getKhmerDay($sch->due_date);
-              //$sch->due_date = $tmp.'-'.date('d-m-Y',strtotime($sch->due_date));
+              $tmp = $lookup->getKhmerDay($sch->due_date);
+              $sch->due_date = $tmp.'-'.date('d-m-Y',strtotime($sch->due_date));
               ?>
    <Row>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $sch->index;?></Data></Cell>

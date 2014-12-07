@@ -231,9 +231,9 @@ class WriteOffController extends BaseController
     public function getDatatable()
     {
         $item = array('ln_disburse_client_id','new_due_product_status_date','arrears_principal','arrears_interest');
-        $arr = DB::table('ln_perform')
-            ->where('id','like',\UserSession::read()->sub_branch.'%')
-            ->where('perform_type','=','writeoff')->where('repayment_type','=','');
+        $arr = DB::table('view_writeoff')
+            ->where('id','like',\UserSession::read()->sub_branch.'%');
+            /*->where('perform_type','=','writeoff')->where('repayment_type','=','');*/
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

@@ -108,11 +108,11 @@ class DisburseClientController extends BaseController
         $data = array();
         $dis = Disburse::where('id','=',$disburse)->first();
         $disClient = DisburseClient::where('ln_disburse_id','=',$disburse)->count();
-        if($disClient >= 1){
+        /*if($disClient >= 1){
             if($dis->ln_lv_account_type == 1){
                 return Redirect::back()->with('error','Your Current Account Type is Single.');
             }
-        }
+        }*/
         $data['disburse_id'] = $disburse;
 
         //var_dump($this->_getClientGroup($disburse));exit;
@@ -239,6 +239,8 @@ class DisburseClientController extends BaseController
             $perform->_perform_type = 'disburse';
 
             $perform->save();
+            // User action
+            \Event::fire('user_action.add', array('disburse_client'));
             if($disburseDate->ln_lv_account_type == 1){
                 return Redirect::route('loan.disburse_client.index', $disburseClient->ln_disburse_id)
                     ->with('info','Now your currency account type is single, so can not add more client !')
@@ -317,7 +319,8 @@ class DisburseClientController extends BaseController
                 $perform->_perform_type = 'disburse';
 
                 $perform->save();
-
+// User action
+                \Event::fire('user_action.edit', array('disburse_client'));
                 return Redirect::route('loan.disburse_client.edit', array($id, $disburseClient->ln_disburse_id))
                     ->with('success',
                         trans('battambang/loan::disburse_client.update_success')
@@ -343,6 +346,8 @@ class DisburseClientController extends BaseController
                 ScheduleDt::where('ln_schedule_id','=',$val->id)->delete();
             }
             Schedule::where('ln_disburse_client_id','=',$id)->delete();
+            // User action
+            \Event::fire('user_action.delete', array('disburse_client'));
             return Redirect::back()->with('success', trans('battambang/loan::disburse_client.delete_success'));
         } catch (\Exception $e) {
            return Redirect::route('loan.disburse_client.index')->with('error', trans('battambang/cpanel::db_error.fail'));

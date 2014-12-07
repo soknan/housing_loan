@@ -11,13 +11,14 @@ use Input,
     Config;
 use Battambang\Cpanel\BaseController;
 use UserSession;
+use Whoops\Example\Exception;
 
 class DisburseController extends BaseController
 {
 
     public function index()
     {
-        $item = array('Action', 'Disburse #','Disburse Date', 'Center', 'Staff Name', 'Product', 'Acc Type','Currency','Client #');
+        $item = array('Action', 'Disburse #','Disburse Date', 'Center', 'Staff Name', 'Product', 'Acc Type','Currency','Client #','Files');
         /*$data['btnAction'] = array('Add New' => route('loan.disburse.add'));*/
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -194,6 +195,8 @@ class DisburseController extends BaseController
             $disburse->id = \AutoCode::make('ln_disburse', 'id', UserSession::read()->sub_branch . '-', 6);
             $disburse_id = $disburse->id;
             $this->saveData($disburse);
+            // User action
+            \Event::fire('user_action.add', array('disburse'));
             return Redirect::route('loan.disburse.add')
                 ->with('success', trans('battambang/loan::disburse.create_success')
                     .' '.\HTML::link(route('loan.disburse_client.add',$disburse_id),'Add Disburse Client')
@@ -210,6 +213,8 @@ class DisburseController extends BaseController
             if ($validation->passes()) {
                 $disburse = Disburse::findOrFail($id);
                 $this->saveData($disburse,false);
+                // User action
+                \Event::fire('user_action.edit', array('disburse'));
                 return Redirect::route('loan.disburse.edit',$disburse->id)
                     ->with('success', trans('battambang/loan::disburse.update_success'));
             }
@@ -223,6 +228,8 @@ class DisburseController extends BaseController
     {
         try {
             Disburse::find($id)->delete();
+            // User action
+            \Event::fire('user_action.delete', array('disburse'));
             return Redirect::back()->with('success', trans('battambang/loan::disburse.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.disburse.index')->with('error', trans('battambang/cpanel::db_error.fail'));
@@ -271,25 +278,31 @@ class DisburseController extends BaseController
     }
 
     public function updateAttachFile($id){
-        $attach_file = Input::file('attach_file');
-        $o_attach_file = Disburse::where('id',$id)->first()->attach_file;
-        if (!empty($attach_file)) {
-            $ext = $attach_file->getClientOriginalExtension();
-            //$size = Input::file('attach_file')->getClientSize();
-            if (!empty($attach_file) and !in_array($ext, array('zip','rar','pdf','doc'))) {
-                return Redirect::back()->withInput()->with('error','Your files extension must be zip, rar,pdf,doc.');
-            }
-            $destinationPath = public_path() . '/packages/battambang/loan/disburse_files/';
-            $filename = $id .'.'.$attach_file->getClientOriginalExtension();
-            $attach_file->move($destinationPath, $filename);
-            $path = \URL::to('/') . '/packages/battambang/loan/disburse_files/' . $filename;
-            $attach_file = $path;
-        } else {
-            $attach_file = $o_attach_file;
-        }
+        try{
+            $attach_file = Input::file('attach_file');
+            $o_attach_file = Disburse::where('id',$id)->first()->attach_file;
+            if (!empty($attach_file)) {
+                $ext = $attach_file->getClientOriginalExtension();
+                $size = $attach_file->getClientSize();
 
-        DB::select("UPDATE ln_disburse SET attach_file = '".$attach_file."' WHERE id = '".$id."'");
-        return Redirect::back()->with('success', trans('battambang/loan::disburse.update_success'));
+                if($size == 0) return Redirect::back()->withInput()->with('error','Your files size > 2MB');
+                if (!empty($attach_file) and !in_array($ext, array('zip','rar','pdf','doc'))) {
+                    return Redirect::back()->withInput()->with('error','Your files extension must be zip, rar,pdf,doc.');
+                }
+                $destinationPath = public_path() . '/packages/battambang/loan/disburse_files/';
+                $filename = $id .'.'.$attach_file->getClientOriginalExtension();
+                $attach_file->move($destinationPath, $filename);
+                $path = \URL::to('/') . '/packages/battambang/loan/disburse_files/' . $filename;
+                $attach_file = $path;
+            } else {
+                $attach_file = $o_attach_file;
+            }
+
+            DB::select("UPDATE ln_disburse SET attach_file = '".$attach_file."' WHERE id = '".$id."'");
+            return Redirect::back()->with('success', trans('battambang/loan::disburse.update_success'));
+        }catch (Exception $e){
+            return Redirect::route('loan.disburse.index')->with('error', $e->getMessage());
+        }
     }
 
     public function getDatatable()
@@ -322,8 +335,8 @@ class DisburseController extends BaseController
                         $class='success';
                     }else{
                         if($client>1){
-                            $title='OK';
-                            $class='ok-sign';
+                            $title='ok-sign';
+                            $class='success';
                         }else{
                             $title='exclamation-sign';
                             $class='warning';
@@ -331,6 +344,12 @@ class DisburseController extends BaseController
                     }
                 }
                 return '<a class="btn btn-'.$class.' btn-xs" href="#" role="button"><span class="glyphicon glyphicon-'.$title.'"></span> '.$client.'</a>';
+            })
+            ->addColumn('Files',function($model){
+                if(empty($model->attach_file) or is_null($model->attach_file)){
+                    return;
+                }
+                return '<a href='.$model->attach_file.' onClick="window.open(this);return false;">Link</a>';
             })
             ->make();
     }

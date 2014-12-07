@@ -127,7 +127,7 @@ class HolidayController extends BaseController
     public function getDatatable()
     {
         $item = array('id', 'name', 'holiday_date');
-        $arr = DB::table('ln_holiday');
+        $arr = DB::table('view_holiday');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

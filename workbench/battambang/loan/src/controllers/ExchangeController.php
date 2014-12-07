@@ -128,8 +128,8 @@ class ExchangeController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('exchange_at','khr_usd','usd','khr_thb','thb', 'des');
-        $arr = DB::table('ln_exchange');
+        $item = array("exchange_at",'khr_usd','usd','khr_thb','thb', 'des');
+        $arr = DB::table('view_exchange');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

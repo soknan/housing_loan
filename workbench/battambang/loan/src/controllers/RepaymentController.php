@@ -105,7 +105,7 @@ class RepaymentController extends BaseController
                 $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                 if (Input::has('confirm')) {
                     $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-m-Y') . '</strong> ,</br> '
-                        . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] . '</strong>
+                        . 'Fee Amount = <strong>' . number_format($data->_arrears['cur']['fee'],2) . '</strong>
                         <P>Note : ' . $data->error . '</P>';
 
                     return Redirect::back()
@@ -124,7 +124,7 @@ class RepaymentController extends BaseController
                 }
                 $perform->repay($principal, $penalty, $status, $voucher_id);
                 $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
-                    . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] . '</strong>
+                    . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
                 $perform->save();
 
@@ -137,17 +137,17 @@ class RepaymentController extends BaseController
             $tmp_repay = $data->_repayment['cur']['type'];
             $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
             $currency = Currency::where('id', '=', $data->_disburse->cp_currency_id)->first();
-            $pri_closing = ' ( Late : ' . ($data->_arrears['cur']['principal'] - $data->_due['principal']) . ', Cur Pri : ' . $data->_due['principal'] . ' )';
-            $int_closing = ' ( Late : ' . (($data->_arrears['cur']['interest'] - $data->_due['interest'])) . ', Cur Int : ' . $data->_due['interest'] . ' )';
+            $pri_closing = ' ( Late : ' . number_format($data->_arrears['cur']['principal'] - $data->_due['principal'],2) . ', Cur Pri : ' . number_format($data->_due['principal'],2) . ' )';
+            $int_closing = ' ( Late : ' . number_format($data->_arrears['cur']['interest'] - $data->_due['interest'],2) . ', Cur Int : ' . number_format($data->_due['interest'],2) . ' )';
 
 
             if ($status == 'closing') {
                 if ($data->_repayment['cur']['type'] != 'closing') {
                     if ($totalArrears != 0) {
-                        $pri_closing = ' ( Late : ' . ($data->_arrears['cur']['principal'] - $data->_due['principal'])
-                            . ', Cur Pri : ' . $data->_due['principal'] . ', Closing : ' . $data->_due_closing['principal_closing'] . ' )';
-                        $int_closing = ' ( Late : ' . ($data->_arrears['cur']['interest'] - $data->_due['interest'])
-                            . ', Cur Int : ' . $data->_due['interest'] . ', Closing : ' . $data->_due_closing['interest_closing'] . ', Accrued Int : ' . $data->_accru_int . ' )';
+                        $pri_closing = ' ( Late : ' . number_format($data->_arrears['cur']['principal'] - $data->_due['principal'],2)
+                            . ', Cur Pri : ' . number_format($data->_due['principal'],2) . ', Closing : ' . number_format($data->_due_closing['principal_closing'],2) . ' )';
+                        $int_closing = ' ( Late : ' . number_format($data->_arrears['cur']['interest'] - $data->_due['interest'],2)
+                            . ', Cur Int : ' . number_format($data->_due['interest'],2) . ', Closing : ' . number_format($data->_due_closing['interest_closing'],2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
                         $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal']  + $data->_due_closing['principal_closing'];
                         $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
                         $data->_repayment['cur']['type'] = 'closing';
@@ -160,8 +160,8 @@ class RepaymentController extends BaseController
                         $data->_repayment['cur']['type'] = 'closing';
                         $data->error = 'Closing after disburse date or after repay !.';
 
-                        $pri_closing = ' ( Late : 0 , Closing : ' . $data->_balance_principal . ' )';
-                        $int_closing = ' ( Late : 0 , Closing : ' . $perform->_getPenaltyClosing($data->_balance_interest) . ', Accrued Int : ' . $data->_accru_int . ' )';
+                        $pri_closing = ' ( Late : 0 , Closing : ' . number_format($data->_balance_principal,2) . ' )';
+                        $int_closing = ' ( Late : 0 , Closing : ' . number_format($perform->_getPenaltyClosing($data->_balance_interest),2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
                         //}
                     }
                 }
@@ -176,16 +176,44 @@ class RepaymentController extends BaseController
             //var_dump($data); exit;
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_due['date'])) . '</strong> ,</br> '
-                    . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] . '</strong>' . $pri_closing . ' , '
-                    . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] . '</strong>' . $int_closing . ' , '
-                    . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) . ' ' . $currency->code . '</strong> ,</br> '
-                    . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong> ( Cur : ' . $data->_new_due['penalty'] . ', Late : ' . $data->_arrears['last']['penalty'] . ').
-                <P>Note : ' . $data->error . '</P>'
+                    . 'Pri Amount = <strong>' . number_format($data->_arrears['cur']['principal'],2) . '</strong>' . $pri_closing . ' , '
+                    . 'Int Amount = <strong>' . number_format($data->_arrears['cur']['interest'],2) . '</strong>' . $int_closing . ' , '
+                    . 'Total Amount = <strong>' . number_format($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'],2) . ' ' . $currency->code . '</strong> ,</br> '
+                    . 'Penalty Amount = <strong>' . number_format($data->_arrears['cur']['penalty'],2) . '</strong> ( Cur : ' . number_format($data->_new_due['penalty'],2) . ', Late : ' . number_format($data->_arrears['last']['penalty'],2) . ').
+                <P>Note : ' . $data->error . '</P>';
                    /* . \Former::open( route('loan.rpt_loan_history.report'))->method('POST')
                     . \Former::text_hidden('ln_client_id',$data->_disburse->ln_client_id)
                     . \Former::text_hidden('view_at',date('d-m-Y'))
                     . \Former::primary_submit('History') . \Former::close()*/;
-
+                /*$msg = '<table width="100%" border="1">
+                            <tr>
+                                <td colspan="4">Due Date : '. date('d-M-Y',strtotime($data->_due['date'])).'</td>
+                            </tr>
+                            <tr align="left">
+                                <td></td>
+                                <td>Principal</td>
+                                <td>Interest</td>
+                                <td>Penalty</td>
+                            </tr>
+                            <tr>
+                                <td>Due</td>
+                                <td>' . $data->_due['principal'] . '</td>
+                                <td>' . $data->_due['interest'] . '</td>
+                                <td>' . $data->_new_due['penalty'] . '</td>
+                            </tr>
+                            <tr>
+                                <td>Late</td>
+                                <td>' . ($data->_arrears['cur']['principal'] - $data->_due['principal']) . '</td>
+                                <td>' . (($data->_arrears['cur']['interest'] - $data->_due['interest'])) . '</td>
+                                <td>' . $data->_arrears['last']['penalty']. '</td>
+                            </tr>
+                            <tr>
+                                <td align="right">Total</td>
+                                <td>' . $data->_arrears['cur']['principal'] . '</td>
+                                <td>' . $data->_arrears['cur']['interest'] . '</td>
+                                <td>' . $data->_arrears['cur']['penalty'] . '</td>
+                            </tr>
+                        </table>';*/
                 return Redirect::back()
                     ->with('data', $data)
                     ->with('info', $msg);
@@ -275,10 +303,10 @@ class RepaymentController extends BaseController
             $classify = ProductStatus::where('id', '=', $data->_current_product_status)->first();
 
             $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_repayment['cur']['date'])->format('d-M-Y') . '</strong>, '
-                . 'Repay Principal Amount = <strong>' . $data->_repayment['cur']['principal'] . '</strong>, '
-                . 'Repay Interest Amount = <strong>' . $data->_repayment['cur']['interest'] . '</strong>, '
-                . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) . $currency->code . '</strong>, '
-                . 'Repay Penalty Amount = <strong>' . $data->_repayment['cur']['penalty'] . '</strong>'
+                . 'Repay Principal Amount = <strong>' . number_format($data->_repayment['cur']['principal'],2) . '</strong>, '
+                . 'Repay Interest Amount = <strong>' . number_format($data->_repayment['cur']['interest'],2) . '</strong>, '
+                . 'Repay Total Amount = <strong>' . number_format($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest'],2) . $currency->code . '</strong>, '
+                . 'Repay Penalty Amount = <strong>' . number_format($data->_repayment['cur']['penalty'],2) . '</strong>'
                 . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
             $perform->save();
             // User action
@@ -326,7 +354,7 @@ class RepaymentController extends BaseController
                     $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                     if (Input::has('confirm')) {
                         $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-M-Y') . '</strong> ,</br> '
-                            . 'Fee Amount = <strong>' . $data->_arrears['cur']['fee'] . '</strong>
+                            . 'Fee Amount = <strong>' . number_format($data->_arrears['cur']['fee'],2) . '</strong>
                         <P>Note : ' . $data->error . '</P>';
 
                         unset($curData['created_at']);
@@ -351,7 +379,7 @@ class RepaymentController extends BaseController
 
                     $perform->repay($principal, $penalty, $status, $voucher_id);
                     $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
-                        . 'Fee Amount = <strong>' . $data->_repayment['cur']['fee'] . '</strong>
+                        . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
                     $perform->save();
                     return Redirect::back()
@@ -364,8 +392,8 @@ class RepaymentController extends BaseController
                 $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
                 $currency = Currency::where('id', '=', $data->_disburse->cp_currency_id)->first();
 
-                $pri_closing = ' ( Late : ' . ($data->_arrears['cur']['principal'] - $data->_due['principal']) . ', Cur Pri : ' . $data->_due['principal'] . ' )';
-                $int_closing = ' ( Late : ' . (($data->_arrears['cur']['interest'] - $data->_due['interest'])) . ', Cur Int : ' . $data->_due['interest'] . ' )';
+                $pri_closing = ' ( Late : ' . number_format($data->_arrears['cur']['principal'] - $data->_due['principal'],2) . ', Cur Pri : ' . number_format($data->_due['principal'],2) . ' )';
+                $int_closing = ' ( Late : ' . number_format($data->_arrears['cur']['interest'] - $data->_due['interest'],2) . ', Cur Int : ' . number_format($data->_due['interest'],2) . ' )';
                 if ($status == 'closing') {
                     if ($data->_repayment['cur']['type'] != 'closing') {
                         if ($totalArrears != 0) {
@@ -373,10 +401,10 @@ class RepaymentController extends BaseController
                             $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
                             $data->_repayment['cur']['type'] = $status;
                             $data->error = 'Closing normal !.';
-                            $pri_closing = ' ( Late : ' . ($data->_new_due['principal'] - $data->_due['principal'])
-                                . ', Cur Pri : ' . $data->_due['principal'] . ', Closing : ' . $data->_due_closing['principal_closing'] . ' )';
-                            $int_closing = ' ( Late : ' . ($data->_new_due['interest'] - $data->_due['interest'])
-                                . ', Cur Int : ' . $data->_due['interest'] . ', Closing : ' . $data->_due_closing['interest_closing'] . ', Accrued Int : ' . $data->_accru_int . ' )';
+                            $pri_closing = ' ( Late : ' . number_format($data->_new_due['principal'] - $data->_due['principal'],2)
+                                . ', Cur Pri : ' . number_format($data->_due['principal'] . ', Closing : ' . $data->_due_closing['principal_closing'],2) . ' )';
+                            $int_closing = ' ( Late : ' . number_format($data->_new_due['interest'] - $data->_due['interest'],2)
+                                . ', Cur Int : ' . number_format($data->_due['interest'],2) . ', Closing : ' . number_format($data->_due_closing['interest_closing'],2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
                         } else {
                             //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;
@@ -384,8 +412,8 @@ class RepaymentController extends BaseController
                             $data->_repayment['cur']['type'] = $status;
                             $data->error = 'Closing after disburse date or after repay !.';
 
-                            $pri_closing = ' ( Late : 0 , Closing : ' . $data->_balance_principal . ' )';
-                            $int_closing = ' ( Late : 0 , Closing : ' . $perform->_getPenaltyClosing($data->_balance_interest) . ', Accrued Int : ' . $data->_accru_int . ' )';
+                            $pri_closing = ' ( Late : 0 , Closing : ' . number_format($data->_balance_principal,2) . ' )';
+                            $int_closing = ' ( Late : 0 , Closing : ' . number_format($perform->_getPenaltyClosing($data->_balance_interest),2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
                             //}
                         }
                     }
@@ -400,10 +428,10 @@ class RepaymentController extends BaseController
 
                 if (Input::has('confirm')) {
                     $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-M-Y') . '</strong> ,</br> '
-                        . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] . '</strong>' . $pri_closing . ' , '
-                        . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] . '</strong>' . $int_closing . ' , '
-                        . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) . ' ' . $currency->code . '</strong> ,</br> '
-                        . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong> ( Cur : ' . $data->_new_due['penalty'] . ', Late : ' . $data->_arrears['last']['penalty'] . ').
+                        . 'Pri Amount = <strong>' . number_format($data->_arrears['cur']['principal'],2) . '</strong>' . $pri_closing . ' , '
+                        . 'Int Amount = <strong>' . number_format($data->_arrears['cur']['interest'],2) . '</strong>' . $int_closing . ' , '
+                        . 'Total Amount = <strong>' . number_format($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'],2) . ' ' . $currency->code . '</strong> ,</br> '
+                        . 'Penalty Amount = <strong>' . number_format($data->_arrears['cur']['penalty'],2) . '</strong> ( Cur : ' . number_format($data->_new_due['penalty'],2) . ', Late : ' . number_format($data->_arrears['last']['penalty'],2) . ').
                 <P>Note : ' . $data->error . '</P>';
 
                     unset($curData['created_at']);
@@ -502,10 +530,10 @@ class RepaymentController extends BaseController
                 $classify = ProductStatus::where('id', '=', $data->_current_product_status)->first();
 
                 $msg = 'Repay Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_repayment['cur']['date'])->format('d-M-Y') . '</strong>, '
-                    . 'Repay Principal Amount = <strong>' . $data->_repayment['cur']['principal'] . '</strong>, '
-                    . 'Repay Interest Amount = <strong>' . $data->_repayment['cur']['interest'] . '</strong>, '
-                    . 'Repay Total Amount = <strong>' . ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']) . $currency->code . '</strong>, '
-                    . 'Repay Penalty Amount = <strong>' . $data->_repayment['cur']['penalty'] . '</strong>'
+                    . 'Repay Principal Amount = <strong>' . number_format($data->_repayment['cur']['principal'],2) . '</strong>, '
+                    . 'Repay Interest Amount = <strong>' . number_format($data->_repayment['cur']['interest'],2) . '</strong>, '
+                    . 'Repay Total Amount = <strong>' . number_format($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest'],2) . $currency->code . '</strong>, '
+                    . 'Repay Penalty Amount = <strong>' . number_format($data->_repayment['cur']['penalty'],2) . '</strong>'
                     . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
                 $perform->delete($id);
                 $perform->save();
@@ -544,12 +572,13 @@ class RepaymentController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('ln_disburse_client_id','repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty');
-        $arr = DB::table('ln_perform')
+        $item = array('ln_disburse_client_id','client_name','repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty','total');
+        /*$arr = DB::table('ln_perform')
             ->where('perform_type', '!=', 'disburse')
             ->where('repayment_type', '!=', '')
             ->where('id', 'like', \UserSession::read()->sub_branch . '%')
-            ->orderBy('activated_at', 'DESC');
+            ->orderBy('activated_at', 'DESC');*/
+        $arr = DB::table("view_repayment")->where('id','like',\UserSession::read()->sub_branch . '%');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
@@ -559,36 +588,22 @@ class RepaymentController extends BaseController
                     ->delete(route('loan.repayment.destroy', $model->id), '', $this->_checkAction($model->id, $model->ln_disburse_client_id))
                     ->get();
             })
-            ->addColumn('ln_disburse_client_id', function ($model) {
+            /*->addColumn('ln_disburse_client_id', function ($model) {
                 return ($model->ln_disburse_client_id);
             })
             ->addColumn('client_name', function ($model) {
                 $client = ClientLoan::find(substr($model->ln_disburse_client_id, 0, 5) . substr($model->ln_disburse_client_id, 12, 4));
                 $clientName = $client->kh_last_name . ' ' . $client->kh_first_name;
                 return ($clientName);
-            })
+            })*/
             ->showColumns($item)
-            ->addColumn('total', function ($model) {
+            /*->addColumn('total', function ($model) {
                 return number_format(($model->repayment_principal + $model->repayment_interest + $model->repayment_fee + $model->repayment_penalty), 2);
-            })
+            })*/
             ->searchColumns($item)
             ->orderColumns($item)
             ->make();
     }
-
-//    private function _getLoanAccount()
-//    {
-//        $perform = array('');
-//        foreach (Perform::all() as $row) {
-//            $perform[] = $row->ln_disburse_client_id;
-//        }
-//        $data = DB::table('view_disburse_client')->whereIn('id',$perform)->orderBy('id', 'desc')->get();
-//        $arr = array();
-//        foreach ($data as $row) {
-//            $arr[$row->id] = $row->id . ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));
-//        }
-//        return $arr;
-//    }
 
     private function _checkAction($id, $disburse)
     {

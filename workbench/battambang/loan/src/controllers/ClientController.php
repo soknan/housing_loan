@@ -98,7 +98,8 @@ class ClientController extends BaseController
             }
 
             $this->saveData($data, $photoPath);
-
+// User action
+            \Event::fire('user_action.add', array('client'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::client.create_success'));
 
@@ -133,7 +134,8 @@ class ClientController extends BaseController
                 }
 
                 $this->saveData($data, $photoPath, false);
-
+// User action
+                \Event::fire('user_action.edit', array('client'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::client.update_success'));
             }
@@ -150,6 +152,8 @@ class ClientController extends BaseController
 
             $data = ClientLoan::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('client'));
             return Redirect::back()->with('success', trans('battambang/loan::client.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.client.index')->with('error', trans('battambang/cpanel::db_error.fail'));
@@ -205,5 +209,7 @@ class ClientController extends BaseController
         return true;
     }
 
-
+    public function showModal(){
+        return \Response::json(array('success' => true, 'payload' => \View::make('battambang/loan::client.client_modal')));
+    }
 }
