@@ -88,6 +88,13 @@ class Report {
 
         ob_clean();
 
+        // Delete source backup
+        $file_name = $path.$xls;
+        \App::finish(function($request, $response) use ($file_name)
+        {
+            unlink($file_name);
+        });
+
         return \Response::download($path.$xls);
     }
 
