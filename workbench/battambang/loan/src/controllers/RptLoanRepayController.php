@@ -64,7 +64,7 @@ class RptLoanRepayController extends BaseController
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ";
         $condition.=" And perform_type ='repayment' and repayment_type!='fee' ";
         if($data['status']!='all'){
-            $condition.=" AND repayment_status = '".$data['status']."'";
+            $condition.=" AND repayment_type = '".$data['status']."'";
         }
         if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
