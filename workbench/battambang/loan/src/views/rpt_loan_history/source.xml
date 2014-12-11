@@ -666,6 +666,7 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Col Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Col Principal</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Col Interest</Data></Cell>
+       <Cell ss:StyleID="s75"><Data ss:Type="String">Col Fee</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Col Penalty</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Total Collected</Data></Cell>
    </Row>
@@ -676,11 +677,13 @@
               $pri_total = 0;
               $int_total = 0;
               $pen_total = 0;
+              $fee_total = 0;
               $all_total = 0;
               foreach($perform as $p=>$per){
                     $total = $per->repayment_principal + $per->repayment_interest;
                     $pri_total += $per->repayment_principal;
                     $int_total += $per->repayment_interest;
+                    $fee_total+= $per->repayment_fee;
               $all_total = $pri_total + $int_total + $pen_total;
               ?>
    <Row>
@@ -691,6 +694,7 @@
     <Cell ss:StyleID="s73"><Data ss:Type="DateTime"><?php echo $per->repayment_date;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_principal;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_interest;?></Data></Cell>
+       <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_fee;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $per->repayemnt_penalty;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $total;?></Data></Cell>
    </Row>
@@ -699,6 +703,7 @@
     <Cell ss:MergeAcross="4" ss:StyleID="m115185916"><Data ss:Type="String">Total</Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $pri_total;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $int_total;?></Data></Cell>
+       <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $fee_total;?></Data></Cell>
     <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $pen_total;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $all_total;?></Data></Cell>
    </Row>
