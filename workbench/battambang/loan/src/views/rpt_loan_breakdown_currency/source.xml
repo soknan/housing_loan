@@ -404,6 +404,7 @@
                 $bal =0;
                 $int = 0;
               $usd_bal=0;
+              $sub_int = 0;
 
                 foreach($result[$cur->id] as $row){
                     $acc = $con_acc[$cur->id]->total;
@@ -411,20 +412,19 @@
                     $int= $con_int[$cur->id]->total;
                 }
               $usd_bal = $convert->toUSD($cur->id,$bal,$exchange_rate_id);
-                  $sub_int = 0;
 
                   if($int==0){
                   $sub_int =0;
                   }else{
                   $sub_int = $int / $acc;
-
                   }
-              $total_int+=$sub_int;
+
               if($acc>0){
               $total_acc+=$acc;
               }
 
               $total_bal+= $usd_bal;
+              $total_int+=$sub_int;
               ?>
    <Row ss:Height="12" ss:StyleID="s67">
     <Cell ss:StyleID="s71"><Data ss:Type="String"><?php echo $cur->name;?></Data></Cell>
@@ -442,7 +442,7 @@
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $total_acc;?></Data></Cell>
     <Cell ss:StyleID="s68"/>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_bal;?></Data></Cell>
-    <Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo ($total_acc==1? number_format($total_int,2)."%":number_format($total_int/$total_acc,2)."%");?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo number_format($total_int,2)."%";?></Data></Cell>
     <Cell ss:StyleID="s68"/>
    </Row>
    <Row>
