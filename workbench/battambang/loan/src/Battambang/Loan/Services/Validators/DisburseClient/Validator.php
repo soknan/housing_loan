@@ -48,7 +48,7 @@ class Validator extends ValidatorService
             'id_num'  => 'required_if:ln_lv_id_type,58|chk_id_num',
             'expire_date'  => 'required_if:ln_lv_id_type,58',
 //            'expire_date'  => 'chk_expire_date|required_if:ln_lv_id_type,58',
-            'amount'  => 'required',
+            'amount'  => 'required|chk_amount',
             'voucher_id'  => 'required|chk_voucher:'.\UserSession::read()->sub_branch
                 . '-' . date('Y') . '-' . \Input::get('currency_id'). '-' . sprintf('%06d', \Input::get('voucher_id')),
             'ln_lv_history'  => 'required',
@@ -61,9 +61,21 @@ class Validator extends ValidatorService
             'chk_id_num'=>'You must have 9 digit in number only',
             'id_num.required_if'=>'The id number field is required when ID Type is National ID.',
             'expire_date.required_if'=>'The expire date field is required when ID Type is National ID.',
+            'chk_amount'=>'Invalid Amount!. Your Currency is not USD.'
         );
     }
 }
+
+\Validator::extend('chk_amount', function ($attribute, $value, $parameters){
+    $ccy = \Input::get('currency_id');
+    $amount = preg_replace('~\.0+$~','',\Input::get('amount'));
+    if ($ccy != 2) {
+        if (strpos($amount,'.')) {
+            return false;
+        }
+    }
+    return true;
+});
 
 \Validator::extend('chk_expire_date', function ($attribute, $value, $parameters){
     $idType = \Input::get('ln_lv_id_type');
