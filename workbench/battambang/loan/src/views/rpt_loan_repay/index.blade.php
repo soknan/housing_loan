@@ -33,7 +33,7 @@
         ->options(array('all'=>'All'))
         ->options(array('3'=>'Weekly','4'=>'Monthly'))
         ->class('select2').''
-    .Former::select('status','Status')
+    .Former::select('status','Type')
         ->options(array('all'=>'All'))
         ->options(LookupValueList::getRepayStatus())
         ->class('select2')
