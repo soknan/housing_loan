@@ -503,9 +503,9 @@
               $total_int+=$int;
               $total_acc+= $acc;
               $total_bal+= $bal;
-              if($k>0){
-                $total_req+= $bal;
-              }
+
+                $total_req+= $bal * $require[$k];
+
 
 
               ?>
