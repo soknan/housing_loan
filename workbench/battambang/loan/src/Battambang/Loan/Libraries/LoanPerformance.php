@@ -717,39 +717,16 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             $date2 = $this->_maturity_date;
         }
         $date = new Carbon();
-        $first = $date->createFromFormat('Y-m-d',$date1)->endOfWeek();
-        $second = $date->createFromFormat('Y-m-d',$date2)->endOfWeek();
+        $first = $date->createFromFormat('Y-m-d',$date1);
+        $second = $date->createFromFormat('Y-m-d',$date2);
 
-        /*if($this->_disburse->ln_lv_repay_frequency == 3){
-            if($this->_disburse->installment_frequency != 1){
-                $difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
-                if( $difWeek != $this->_disburse->installment_frequency-1){
-                    $first=$first->endOfWeek();
-                    $second=$second->endOfWeek();
-                }else{
-                    $first = $first->endOfWeek();
-                    $second = $second->addWeeks($this->_disburse->installment_frequency-1)->endOfWeek();
-                }
-            }else{
-                $first = $first->endOfWeek();
-                $second = $second->endOfWeek();
-            }
-
+        if($this->_disburse->ln_lv_repay_frequency == 3){
+            $first = $first->endOfWeek();
+            $second = $second->endOfWeek();
         }else{
-            if($this->_disburse->installment_frequency != 1){
-                $difWeek = ceil($first->endOfMonth()->diffInDays($second->endOfMonth()) / 30);
-                if( $difWeek != $this->_disburse->installment_frequency-1){
-                    $first= $first->endOfMonth();
-                    $second = $second->endOfMonth();
-                }else{
-                    $first = $first->endOfMonth();
-                    $second = $second->addMonths($this->_disburse->installment_frequency-1)->endOfMonth();
-                }
-            }else{
-                $first = $first->endOfMonth();
-                $second = $second->endOfMonth();
-            }
-        }*/
+            $first = $first->endOfMonth();
+            $second = $second->endOfMonth();
+        }
 
         return $second->eq($first);
     }
