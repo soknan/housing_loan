@@ -395,8 +395,11 @@
               $total_acc = 0;
               $total_bal = 0;
               $total_int = 0;
+              $tmp_int=0;
+              $tmp_acc= 0;
               $convert = new \Battambang\Cpanel\Libraries\Currency();
               foreach($currency_list as $k=> $cur){
+                $i=$k;
                   if(!isset($result[$cur->id])){
                   $result[$cur->id] = array();
                   }
@@ -424,7 +427,7 @@
               }
 
               $total_bal+= $usd_bal;
-              $total_int+=$sub_int;
+              $tmp_int+=$int;
               ?>
    <Row ss:Height="12" ss:StyleID="s67">
     <Cell ss:StyleID="s71"><Data ss:Type="String"><?php echo $cur->name;?></Data></Cell>
@@ -435,7 +438,7 @@
     <Cell ss:StyleID="s72"><Data ss:Type="String"><?php echo $exchange_rate;?></Data></Cell>
    </Row>
    <?php }
-
+            $total_int= $tmp_int/$total_acc;
            ?>
    <Row ss:Height="12" ss:StyleID="s67">
     <Cell ss:StyleID="s71"><Data ss:Type="String">5 - TOTAL LOANS</Data></Cell>
