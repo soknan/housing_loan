@@ -470,55 +470,81 @@ class GetLists
         return $data;
     }
 
-    public function getProvinceList()
+    public function getLocation($level, $whereLikeIn = array(), $lang = 'kh')
     {
-        $data = Location::where('cp_location_id','=','')->get();
-        $arr = array();
-        if ($data) {
-            foreach ($data as $row) {
-                $arr[$row->id] = $row->id.' | '.$row->kh_name;
-            }
-        }
-        return $arr;
-    }
+        $data = DB::table('cp_location')
+            ->orderBy('id', 'asc')
+            ->get();
 
-    public function getDistrictList($pro)
-    {
-        $data = Location::where('cp_location_id','=',$pro)->get();
-        $arr = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        if ($data) {
-            foreach ($data as $row) {
-                $arr .= '<option value="' . $row->id . '">' .$row->id." | ". $row->kh_name . '</option>';
-            }
-            return $arr;
+        $dataList = array();
+        foreach ($data as $list) {
+            $dataList[$list->id] = array(
+                'kh_name' => $list->kh_name,
+                'en_name' => $list->en_name,
+            );
         }
-        return $arr;
-    }
 
-    public function getCommuneList($dis)
-    {
-        $data = Location::where('cp_location_id','=',$dis)->get();
-        $arr = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        if ($data) {
-            foreach ($data as $row) {
-                $arr .= '<option value="' . $row->id . '">' .$row->id." | ". $row->kh_name . '</option>';
+        $locationWhere = array_where(
+            $dataList,
+            function ($key, $value) use ($level) {
+                return (strlen($key) == (2 * $level));
             }
-            return $arr;
-        }
-        return $arr;
-    }
+        );
 
-    public function getVillageList($com)
-    {
-        $data = Location::where('cp_location_id','=',$com)->get();
-        $arr = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        if ($data) {
-            foreach ($data as $row) {
-                $arr .= '<option value="' . $row->id . '">' .$row->id." | ". $row->kh_name . '</option>';
+        $locationListKh = array();
+        $locationListEn = array();
+        foreach ($locationWhere as $key => $val) {
+            // Get parent info
+            $parentKhName = $val['kh_name'];
+            $parentEnName = $val['en_name'];
+            $separator = ' | ';
+            $parentId = substr($key, 0, -2);
+            for ($i = 1; $i < $level; $i++) {
+                $getKhName = array_get($dataList, $parentId . '.kh_name');
+                $getEnName = array_get($dataList, $parentId . '.en_name');
+                $parentKhName = $getKhName . $separator . $parentKhName;
+                $parentEnName = $getEnName . $separator . $parentEnName;
+                $parentId = substr($parentId, 0, -2);
             }
-            return $arr;
+
+            $locationListKh[$key] = $key . ' | ' . $parentKhName;
+            $locationListEn[$key] = $key . ' | ' . $parentEnName;
+
+            array_set($locationWhere, $key . '.kh_name', $parentKhName);
+            array_set($locationWhere, $key . '.en_name', $parentEnName);
         }
-        return $arr;
+
+        // Check $where
+        if (count($whereLikeIn) > 0) {
+            $locationListKh = array_where(
+                $locationListKh,
+                function ($key, $value) use ($whereLikeIn) {
+                    foreach ($whereLikeIn as $whereLikeKey => $whereLikeValue) {
+                        if ($whereLikeKey == 0) {
+                            $compare = (starts_with($key, $whereLikeValue));
+                        } else {
+                            $compare = ($compare or (starts_with($key, $whereLikeValue)));
+                        }
+                    }
+                    return ($compare);
+                }
+            );
+            $locationListEn = array_where(
+                $locationListEn,
+                function ($key, $value) use ($whereLikeIn) {
+                    foreach ($whereLikeIn as $whereLikeKey => $whereLikeValue) {
+                        if ($whereLikeKey == 0) {
+                            $compare = (starts_with($key, $whereLikeValue));
+                        } else {
+                            $compare = ($compare or (starts_with($key, $whereLikeValue)));
+                        }
+                    }
+                    return ($compare);
+                }
+            );
+        }
+
+        return (($lang == 'kh') ? $locationListKh : $locationListEn);
     }
 
 }

@@ -145,32 +145,4 @@ class VillageController extends BaseController
             ->make();
     }
 
-    public function proChange()
-    {
-        $data = array();
-        $data['dis'] = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        $data['dis'] = \GetLists::getDistrictList(\Input::get('pro'));
-
-        return json_encode($data);
-    }
-
-    public function disChange()
-    {
-        $data = array();
-        $data['cp_location_id'] = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        $data['cp_location_id'] = \GetLists::getCommuneList(\Input::get('dis'));
-
-        return json_encode($data);
-    }
-
-    public function comChange()
-    {
-        $data = array();
-        $data['cp_location_id'] = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        $data['cp_location_id'] = \GetLists::getVillageList(\Input::get('com'));
-
-        return json_encode($data);
-    }
-
-
 }

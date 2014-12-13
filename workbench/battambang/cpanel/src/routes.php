@@ -307,13 +307,6 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
     ));
 
 
-    Route::any('pro_change', 'Battambang\Cpanel\CommuneController@postProChange');
-
-    Route::any('pro_change_vil', 'Battambang\Cpanel\VillageController@proChange');
-    Route::any('dis_change', 'Battambang\Cpanel\VillageController@disChange');
-    Route::any('com_change', 'Battambang\Cpanel\VillageController@comChange');
-
-
 });
 
 /*

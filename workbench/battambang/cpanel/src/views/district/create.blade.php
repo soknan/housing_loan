@@ -9,7 +9,7 @@ echo FormPanel2::make(
     Former::text('id', 'ID')->required() . ''
     .Former::text('kh_name', 'Kh Name')->required() . ''
     , Former::text('en_name', 'En Name')->required() . ''
-.Former::select('cp_office_id', 'Province', \GetLists::getProvinceList())->class('select2')->required() . ''
+.Former::select('cp_office_id', 'Province', \GetLists::getLocation(1))->class('select2')->required() . ''
 
 
 );

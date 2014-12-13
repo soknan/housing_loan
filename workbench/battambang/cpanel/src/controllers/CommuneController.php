@@ -145,13 +145,4 @@ class CommuneController extends BaseController
             ->make();
     }
 
-    public function postProChange()
-    {
-        $data = array();
-        $data['cp_location_id'] = '<option value="" disabled="disabled" selected="selected">- Select One -</option>';
-        $data['cp_location_id'] = \GetLists::getDistrictList(\Input::get('pro'));
-
-        return json_encode($data);
-    }
-
 }

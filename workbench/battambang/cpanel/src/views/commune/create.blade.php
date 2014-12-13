@@ -9,14 +9,14 @@ echo FormPanel2::make(
     Former::text('id', 'ID')->required() . ''
     .Former::text('kh_name', 'Kh Name')->required() . ''
     .Former::text('en_name', 'En Name')->required() . ''
-,Former::select('pro', 'Province', \GetLists::getProvinceList())
+,Former::select('cp_location_id', 'District', \GetLists::getLocation(2))
         ->placeholder('- Select One -')
 
         ->required() . ''
-.Former::select('cp_location_id', 'District')
+/*.Former::select('cp_location_id', 'District')
         ->placeholder('- Select One -')
 
-        ->required() . ''
+        ->required() . ''*/
 
 
 );
@@ -31,9 +31,4 @@ echo FormPanel2::make(
 
 @stop
 
-@section('js')
-<?php
-echo FormerAjax::make('my_form', 'pro', 'change', URL::to('cpanel/pro_change'))
-    ->getChange(array('cp_location_id' => 'html(data.cp_location_id)'));
-?>
-@stop
+
