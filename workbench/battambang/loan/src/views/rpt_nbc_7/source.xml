@@ -511,7 +511,7 @@
 
                   if($k>0){
                   $tmp_bal+=$bal;
-                  $tmp_req+=$bal * $require[$k];
+
                   }
 
 
@@ -526,7 +526,7 @@
     <Cell ss:StyleID="s76"><Data ss:Type="Number"><?php echo $bal * $require[$k]; ?></Data></Cell>
    </Row>
     <?php }
-            $tmp_total=$tmp_req/$tmp_bal*100;
+            $tmp_total=$tmp_bal/$total_bal*100;
             ?>
    <Row ss:Height="12" ss:StyleID="s67">
     <Cell ss:StyleID="s72"><Data ss:Type="String">TOTAL</Data></Cell>
