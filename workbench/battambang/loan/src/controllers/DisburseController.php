@@ -18,7 +18,7 @@ class DisburseController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'Disburse #','Disburse Date', 'Center', 'Staff Name', 'Product', 'Acc Type','Currency','Client #','Files');
+        $item = array('Action', 'Disburse #','Disburse_Date', 'Center', 'Staff_Name', 'Product', 'Acc_Type','Currency','Client #','Files');
         /*$data['btnAction'] = array('Add New' => route('loan.disburse.add'));*/
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -178,7 +178,56 @@ class DisburseController extends BaseController
     public function show($id)
     {
         try {
-            $arr['row'] = Disburse::findOrFail($id);
+            $arr = array();
+            $data = Disburse::where('id','=',$id)->get();
+            foreach ($data as $row) {
+                $arr['ln_staff_id'] = ' and ln_staff.id= "'.$row->ln_staff_id.'"';
+                $arr['ln_center_id'] = ' and ln_center.id= "'.$row->ln_center_id.'"';
+                $arr['ln_product_id'] = ' and ln_product.id= "'.$row->ln_product_id.'"';
+
+                for($i=1;$i <= $row->num_installment;$i++) {
+                    $int_fre[$i]= $i;
+                }
+                $arr['int_fre'] = $int_fre;
+
+                for($j=1;$j <= $row->num_payment;$j++) {
+                    $ins_pri_fre[$j]= $j;
+                }
+                $arr['ins_pri_fre'] = $ins_pri_fre;
+
+                $center = Center::where('id','=',$row->ln_center_id)->get();
+                $product = Product::where('id','=',$row->ln_product_id)->get();
+                foreach ($product as $row1) {
+                    $arr['currency_arr'] = $this->_getProCurrency(json_decode($row1->cp_currency_id_arr));
+                    $arr['fund_arr'] = $this->_getProFund(json_decode($row1->ln_fund_id_arr));
+                    $arr['account_type_arr'] = LookupValueList::jsonData(json_decode($row1->ln_lv_account_type_arr));
+
+                    for ($row1->min_installment; $row1->min_installment <= $row1->max_installment; $row1->min_installment++) {
+                        $tmp[$row1->min_installment] = $row1->min_installment;
+                    }
+                    $arr['installment'] = $tmp;
+                    $arr['default_installment'] = $row1->default_installment;
+
+                    $arr['min_interest'] = $row1->min_interest;
+                    $arr['max_interest'] = $row1->max_interest;
+                    $arr['default_interest'] = $row1->default_interest;
+
+                    $arr['ln_lv_repay_frequency'] = $row1->ln_lv_repay_frequency;
+                }
+
+                foreach ($center as $row2) {
+                    //$arr['ln_center_id'] = $row2->id;
+                    if($arr['ln_lv_repay_frequency']=='4'){
+                        $arr['ln_lv_meeting'] = array($row2->meeting_monthly);
+                    }else{
+                        $arr['ln_lv_meeting'] = array($row2->meeting_weekly);
+                    }
+                }
+                $arr['row']= $row;
+            }
+            //$arr['row'] = $tmpAll;
+            $arr['insPriPercentage'] = $this->_insPriPercentage();
+
             return $this->renderLayout(
                 View::make(Config::get('battambang/loan::views.disburse_show'), $arr)
             );
@@ -315,6 +364,7 @@ class DisburseController extends BaseController
                 return \Action::make()
                     ->edit(route('loan.disburse.edit', $model->id),$this->_checkStatus($model->id))
                     ->delete(route('loan.disburse.destroy', $model->id),'',$this->_checkStatus($model->id))
+                    ->show(route('loan.disburse.show', $model->id))
                     ->custom(route('loan.disburse_client.add',$model->id),'Add New Client',$this->_checkDisburse($model->id))
                     ->custom(route('loan.disburse_client.index',$model->id),'Client List')
                     ->custom(route('loan.disburse.attach_file',$model->id),'Add Attach File')

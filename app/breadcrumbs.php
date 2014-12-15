@@ -333,6 +333,13 @@ Breadcrumbs::register(
     }
 );
 Breadcrumbs::register(
+    'loan.disburse.show',
+    function ($bc) {
+        $bc->parent('loan.disburse.index');
+        $bc->push('Show', URL::route('loan.disburse.show'));
+    }
+);
+Breadcrumbs::register(
     'loan.disburse.attach_file',
     function ($bc) {
         $bc->parent('loan.disburse.index');

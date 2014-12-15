@@ -82,6 +82,7 @@ class Report {
 
         $xls = $fileName.".xls";
         //$zip = $fileName.".zip";
+        ob_start();
         include("/../../../../../../".Config::get('battambang/cpanel::package.'.Session::get('package').'.namespace')."/src/views/".$reportSource.".xml");
         //include($reportSource.'xml');
         File::put($path.$xls,ob_get_contents());

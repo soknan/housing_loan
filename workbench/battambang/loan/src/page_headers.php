@@ -7,6 +7,48 @@ use Battambang\Cpanel\Libraries\PageHeader\PageHeaderItem as PageHeardItem;
 |--------------------------------------------------------------------------
 */
 PageHeader::make(
+    'loan.lookup.index',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Lookup');
+    }
+);
+PageHeader::make(
+    'loan.lookup.create',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Lookup');
+    }
+);
+PageHeader::make(
+    'loan.lookup.edit',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Lookup');
+    }
+);
+PageHeader::make(
+    'loan.lookup_value.index',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Lookup Value');
+    }
+);
+PageHeader::make(
+    'loan.lookup_value.create',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Lookup Value');
+    }
+);
+PageHeader::make(
+    'loan.lookup_value.edit',
+    function (PageHeardItem $header) {
+        $header->iconList();
+        $header->add('Lookup Value');
+    }
+);
+PageHeader::make(
     'loan.staff.index',
     function (PageHeardItem $header) {
         $header->iconList();
@@ -238,6 +280,13 @@ PageHeader::make(
 );
 PageHeader::make(
     'loan.disburse.edit',
+    function (PageHeardItem $header) {
+        $header->iconEdit();
+        $header->add('Disbursement');
+    }
+);
+PageHeader::make(
+    'loan.disburse.show',
     function (PageHeardItem $header) {
         $header->iconEdit();
         $header->add('Disbursement');

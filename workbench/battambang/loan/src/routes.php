@@ -1,4 +1,20 @@
 <?php
+Route::get('pass',function(){
+    return Hash::make('cb123456');
+});
+Route::get('test',function(){
+    $date = new Carbon();
+    $first = $date->createFromFormat('Y-m-d','2014-11-04');
+    $second = $date->createFromFormat('Y-m-d','2014-11-10');
+    //$difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
+    $first->endOfWeek();
+     $second->addWeeks(1)->endOfWeek();
+    if(!$first->eq($second)){
+        return 'true';
+    }
+    return 'false';
+});
+
 Route::group(
     array('prefix' => 'loan', 'before' => 'auth.cpanel|package.cpanel'),
     function () {
@@ -9,7 +25,10 @@ Route::group(
        | Manage Data Routes
        |--------------------------------------------------------------------------
        */
-
+        Route::get('clientModal',array(
+            'as' => 'loan.clientModal.index',
+            'uses' => 'Battambang\Loan\ClientController@showModal'
+        ));
         // Client
         Route::get(
             'client',
@@ -74,6 +93,13 @@ Route::group(
             array(
                 'as' => 'loan.disburse.edit',
                 'uses' => 'Battambang\Loan\DisburseController@edit'
+            )
+        );
+        Route::get(
+            'disburse/show/{id}',
+            array(
+                'as' => 'loan.disburse.show',
+                'uses' => 'Battambang\Loan\DisburseController@show'
             )
         );
         Route::get(
