@@ -24,7 +24,7 @@ class RepaymentController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'Loan Acc #', 'Client Name', 'Date', 'Type', 'Principal', 'Interest', 'Fee', 'Penalty', 'Total');
+        $item = array('Action', 'Loan Acc #', 'Client Name','CCY', 'Date', 'Type', 'Principal', 'Interest', 'Fee', 'Penalty', 'Total');
 //        $data['btnAction'] = array('Add New' => route('loan.repayment.create'));
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -572,13 +572,14 @@ class RepaymentController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('ln_disburse_client_id','client_name','repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty','total');
+        $item = array('ln_disburse_client_id','client_name','ccy','repayment_date', 'repayment_type', 'repayment_principal', 'repayment_interest', 'repayment_fee', 'repayment_penalty','total');
         /*$arr = DB::table('ln_perform')
             ->where('perform_type', '!=', 'disburse')
             ->where('repayment_type', '!=', '')
             ->where('id', 'like', \UserSession::read()->sub_branch . '%')
             ->orderBy('activated_at', 'DESC');*/
-        $arr = DB::table("view_repayment")->where('id','like',\UserSession::read()->sub_branch . '%');
+        $arr = DB::table("view_repayment")
+            ->where('id','like',\UserSession::read()->sub_branch . '%');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

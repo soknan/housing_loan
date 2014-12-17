@@ -415,6 +415,15 @@ class LoanPerformance
                         $this->_new_due['penalty'] = $this->_getLastArreasPen();
                         $this->_arrears['cur']['num_day'] = $this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
                         $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
+
+                        if($this->_arrears['cur']['num_day'] >0){
+                            $this->_current_product_status = $this->_getProductStatus($this->_arrears['cur']['num_day'])->id;
+                            $this->_current_product_status_date = $this->_getProductStatusDate($this->_arrears['cur']['num_day']);
+                            if($this->_current_product_status ==5){
+                                $this->_current_product_status=4;
+                            }
+                        }
+                        $this->_current_product_status_principal = $this->_balance_principal;
                         return $this;
                     }else{
 
@@ -657,6 +666,15 @@ class LoanPerformance
         $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
         //Accrued interest
         $this->_getAccrueInt();
+
+        if($this->_arrears['cur']['num_day'] >0){
+            $this->_current_product_status = $this->_getProductStatus($this->_arrears['cur']['num_day'])->id;
+            $this->_current_product_status_date = $this->_getProductStatusDate($this->_arrears['cur']['num_day']);
+            if($this->_current_product_status ==5){
+                $this->_current_product_status=4;
+            }
+        }
+        $this->_current_product_status_principal = $this->_balance_principal;
 
         //Maturity Date is over
         if ($this->_endOfDate($this->_activated_at) > $this->_endOfDate($this->_maturity_date)) {
@@ -1086,7 +1104,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 if($this->_balance_principal==0){
                     $this->_repayment['cur']['type'] = 'closing';
                 }
-                if($this->_arrears['cur']['num_day'] >0){
+                /*if($this->_arrears['cur']['num_day'] >0){
                     $this->_repayment['cur']['status'] = $this->_getRepaymentStatus($this->_arrears['cur']['num_day'])->id;
 
                     $this->_current_product_status = $this->_getProductStatus($this->_arrears['cur']['num_day'])->id;
@@ -1095,7 +1113,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                         $this->_current_product_status=4;
                     }
                 }
-                $this->_current_product_status_principal = $this->_balance_principal;
+                $this->_current_product_status_principal = $this->_balance_principal;*/
 
                 if(($this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest'] + $this->_arrears['cur']['penalty']) == 0 ){
                     $this->_arrears['cur']['date'] = '';
@@ -1128,13 +1146,13 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_balance_principal = $this->_balance_principal - $this->_arrears['cur']['principal'];
                 $this->_balance_interest = $this->_balance_interest - $this->_arrears['cur']['interest'];
 
-                $this->_current_product_status = $this->_new_due['product_status'];
+                /*$this->_current_product_status = $this->_new_due['product_status'];
                 $this->_current_product_status_date = $this->_new_due['product_status_date'];
                 $this->_current_product_status_principal = $this->_balance_principal;
 
                 if($this->_current_product_status ==5){
                     $this->_current_product_status=4;
-                }
+                }*/
 
                 $this->_arrears['cur']['principal'] = 0;
                 $this->_arrears['cur']['interest'] = 0;
@@ -1188,6 +1206,12 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_arrears['cur']['fee']=0;
                 $this->_arrears['cur']['principal']=0;
         }
+
+        if($this->_arrears['cur']['num_day'] >0){
+            $this->_repayment['cur']['status'] = $this->_getRepaymentStatus($this->_arrears['cur']['num_day'])->id;
+        }
+        $this->_current_product_status_principal = $this->_balance_principal;
+
     }
 
     public function delete($id)
