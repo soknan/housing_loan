@@ -16,7 +16,7 @@
         echo '<div class="alert alert-warning">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <dl class="dl-horizontal">
-        Warning : Now your disburse Date ('.$dis->disburse_date.') not equal with Current Date ('.date('Y-m-d').') !.
+        Warning : Now your disburse Date ('.date('d-M-Y',strtotime($dis->disburse_date)).') not equal with Current Date ('.date('d-M-Y').') !.
     </dl>
 </div>';
     }
