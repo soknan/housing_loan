@@ -156,12 +156,12 @@ class RepaymentController extends BaseController
                     } else {
                         //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                         $data->_arrears['cur']['principal'] = $data->_balance_principal;
-                        $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest) + $data->_accru_int;
+                        $data->_arrears['cur']['interest'] = $data->_due_closing['interest_closing'] + $data->_accru_int;
                         $data->_repayment['cur']['type'] = 'closing';
                         $data->error = 'Closing after disburse date or after repay !.';
 
                         $pri_closing = ' ( Late : 0 , Closing : ' . number_format($data->_balance_principal,2) . ' )';
-                        $int_closing = ' ( Late : 0 , Closing : ' . number_format($perform->_getPenaltyClosing($data->_balance_interest),2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
+                        $int_closing = ' ( Late : 0 , Closing : ' . number_format($data->_due_closing['interest_closing'],2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
                         //}
                     }
                 }
@@ -408,12 +408,12 @@ class RepaymentController extends BaseController
                         } else {
                             //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;
-                            $data->_arrears['cur']['interest'] = $perform->_getPenaltyClosing($data->_balance_interest) + $data->_accru_int;
-                            $data->_repayment['cur']['type'] = $status;
+                            $data->_arrears['cur']['interest'] = $data->_due_closing['interest_closing'] + $data->_accru_int;
+                            $data->_repayment['cur']['type'] = 'closing';
                             $data->error = 'Closing after disburse date or after repay !.';
 
                             $pri_closing = ' ( Late : 0 , Closing : ' . number_format($data->_balance_principal,2) . ' )';
-                            $int_closing = ' ( Late : 0 , Closing : ' . number_format($perform->_getPenaltyClosing($data->_balance_interest),2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
+                            $int_closing = ' ( Late : 0 , Closing : ' . number_format($data->_due_closing['interest_closing'],2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
                             //}
                         }
                     }

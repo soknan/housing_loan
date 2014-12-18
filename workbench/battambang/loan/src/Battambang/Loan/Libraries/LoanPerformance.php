@@ -396,10 +396,11 @@ class LoanPerformance
                             $this->_due['interest'] = $this->_arrears['cur']['interest'];
                             $this->_new_due['interest'] = $this->_arrears['cur']['interest'];
                         }
-                        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['principal']);
+
                         $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
                         //Accrued interest
                         $this->_getAccrueInt();
+                        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['principal'] - $this->_accru_int);
                         //Penalty
                         $this->_last_perform_date = $row->activated_at;
                         if ($this->_isDate($this->_arrears['cur']['date'])) {
@@ -433,6 +434,7 @@ class LoanPerformance
                     '.date('d-M-Y',strtotime($this->_next_due['date']));
 
                     $this->_getAccrueInt();
+                    $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['principal'] - $this->_accru_int);
 
                     $this->_due['num_day'] = 0;
                     $this->_due['principal'] = 0;
@@ -661,11 +663,13 @@ class LoanPerformance
         }
 
         $this->getNext();
-        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['interest']);
+
         //$this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest);
         $this->_due_closing['principal_closing'] = $this->_balance_principal - $this->_arrears['cur']['principal'];
         //Accrued interest
         $this->_getAccrueInt();
+
+        $this->_due_closing['interest_closing'] = $this->_getPenaltyClosing($this->_balance_interest - $this->_arrears['cur']['interest'] - $this->_accru_int);
 
         if($this->_arrears['cur']['num_day'] >0){
             $this->_current_product_status = $this->_getProductStatus($this->_arrears['cur']['num_day'])->id;
@@ -801,7 +805,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
     private function _getAccrueInt(){
         $rate_type = 30;
-        $renum = 0;
+        $renum = 1;
         if($this->_disburse->ln_lv_repay_frequency == 3){
             $rate_type = 7;
         }
@@ -899,6 +903,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
     {
         $data = PenaltyClosing::where('id', '=', $this->_disburse->ln_penalty_closing_id)->first();
         $amt = 0;
+        //comment by bong kun too much penalty
         if ($this->_can_closing > $this->_activated_num_installment) {
             $amt = \Currency::round($this->_disburse->cp_currency_id,($interest * $data->percentage_interest_remainder) / 100);
         }

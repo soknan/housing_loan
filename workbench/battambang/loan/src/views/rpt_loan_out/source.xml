@@ -444,7 +444,7 @@
                    break;
                }
            if($row->_current_product_status!=''){
-           $classify = Battambang\Loan\ProductStatus::where('id',$row->_new_due['product_status'])->first()->code;
+           $classify = Battambang\Loan\ProductStatus::where('id',$row->_current_product_status)->first()->code;
            }
 
            ?>
