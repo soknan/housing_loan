@@ -2,14 +2,14 @@
 
 @section('content')
 
-{{Former::open( route('cpanel.province.update',$row->id))->method('PUT')}}
+{{Former::open( route('cpanel.district.update',$row->id))->method('PUT')}}
 <?php
 echo FormPanel2::make(
     'General',
     Former::text('id', 'ID',$row->id)->required() . ''
     .Former::text('kh_name', 'Kh Name',$row->kh_name)->required() . ''
     , Former::text('en_name', 'En Name',$row->en_name)->required() . ''
-.Former::select('cp_office_id', 'Province', \GetLists::getLocation(1),$row->cp_location_id)->class('select2')->required() . ''
+.Former::select('cp_location_id', 'Province', \GetLists::getLocation(1),$row->cp_location_id)->class('select2')->required() . ''
 
 
 );

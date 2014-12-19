@@ -67,11 +67,11 @@ class ProvinceController extends BaseController
 
     public function store()
     {
-        $validator = provinceValidator::make();
+        $validator = ProvinceValidator::make();
 
         if ($validator->passes()) {
 
-            $data = new province();
+            $data = new Location();
             $this->saveData($data);
 
             return Redirect::back()
@@ -118,6 +118,7 @@ class ProvinceController extends BaseController
         }
         $data->en_name = Input::get('en_name');
         $data->kh_name = Input::get('kh_name');
+        $data->cp_location_id = '';
         $data->save();
     }
 

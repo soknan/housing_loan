@@ -71,7 +71,7 @@ class CommuneController extends BaseController
 
         if ($validator->passes()) {
 
-            $data = new commune();
+            $data = new Location();
             $this->saveData($data);
 
             return Redirect::back()

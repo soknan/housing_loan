@@ -71,7 +71,7 @@ class DistrictController extends BaseController
 
         if ($validator->passes()) {
 
-            $data = new district();
+            $data = new Location();
             $this->saveData($data);
 
             return Redirect::back()

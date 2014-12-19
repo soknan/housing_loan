@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{Former::open( route('cpanel.office.store'))->method('POST')}}
+{{Former::open( route('cpanel.province.store'))->method('POST')}}
 <?php
 echo FormPanel2::make(
     'General',

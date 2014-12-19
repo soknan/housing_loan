@@ -71,7 +71,7 @@ class VillageController extends BaseController
 
         if ($validator->passes()) {
 
-            $data = new village();
+            $data = new Location();
             $this->saveData($data);
 
             return Redirect::back()
