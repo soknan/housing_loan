@@ -207,6 +207,11 @@ and ln_disburse_client.id not in(SELECT p.ln_disburse_client_id FROM ln_perform 
         $data['con_acc'] = $con_acc;
         $data['result'] = $tmp;
         $data['con_dis'] = $con_dis;
+
+        if($data['classify']!='all'){
+            $c = ProductStatus::where('id','=',$data['classify'])->first();
+            $data['classify'] = $c->code;
+        }
         //var_dump($data); exit;
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');

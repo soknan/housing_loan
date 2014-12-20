@@ -100,29 +100,7 @@ class RptLoanBreakDownPurposeController extends BaseController
         }else{
             $data['cp_location'] = 'All';
         }
-        /*$sql = DB::select("
-        SELECT *,
-        ln_disburse_client.id as ln_disburse_client_id,
-concat(`ln_client`.`kh_last_name`,' ',`ln_client`.`kh_first_name`) AS `client_name`,
-account_type.`code` as account_type,
-COUNT(ln_lv_purpose) as num_purpose,
-COUNT(ln_lv_account_type) as num_account_type,
-COUNT(cp_currency_id) as num_currency,
-sum(balance_principal) as total_pri,
-sum(interest_rate) as total_int
-FROM
-ln_disburse_client
-INNER JOIN ln_disburse ON ln_disburse_client.ln_disburse_id = ln_disburse.id
-INNER JOIN ln_client ON ln_client.id = ln_disburse_client.ln_client_id
-INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
-INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
-INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
-INNER JOIN ln_perform p on p.ln_disburse_client_id = ln_disburse_client.id
-where $condition
-and p.ln_disburse_client_id
-not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE p.repayment_type='closing' or p.current_product_status=5)
-GROUP BY ln_lv_purpose,ln_lv_account_type,cp_currency_id
-        ");*/
+
         $sql = DB::select("
         SELECT *,
         ln_disburse_client.id as ln_disburse_client_id,
@@ -206,29 +184,15 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE (p.repayment_type=
 
         }
 
-        $sum_pri =0;
-        $sum_acc =0;
-
-        /*foreach ($data['purpose_list'] as $list) {
-            if(!isset($tmp[$list->id])){
-                $tmp[$list->id] = array();
-            }
-            echo $list->name;
-            foreach ($tmp[$list->id] as $acc_type) {
-                    echo $acc_type->ln_lv_purpose.' : '.$acc_type->account_type.' : '.
-                        $con_bal[$acc_type->ln_lv_purpose][2]->total.' ; '.
-                        $con_acc[$acc_type->ln_lv_purpose][$acc_type->ln_lv_account_type]->total.
-                        '</br>';
-
-            }
-        }
-
-
-        exit;*/
         $data['con_bal'] = $con_bal;
         $data['con_int'] = $con_int;
         $data['con_acc'] = $con_acc;
         $data['result']= $tmp;
+
+        if($data['classify']!='all'){
+            $c = ProductStatus::where('id','=',$data['classify'])->first();
+            $data['classify'] = $c->code;
+        }
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');

@@ -38,10 +38,6 @@
     .'',
     Former::select('location_cat','Location Category')
         ->options(LookupValueList::getLocationCategory())
-        ->class('select2')
-    .''
-    .Former::select('location_cat','Location Category')
-        ->options(LookupValueList::getLocationCategory())
         ->class('select2').''
     .Former::select('cp_location_id','Location')
         ->options(array('all'=>'All'))

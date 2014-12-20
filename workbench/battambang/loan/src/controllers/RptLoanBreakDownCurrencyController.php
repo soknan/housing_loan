@@ -160,12 +160,15 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE ( p.repayment_type
                         $tmp[$row->_disburse->cp_currency_id]=array();
                         $con_bal[$row->_disburse->cp_currency_id]=array();
                         $con_bal[$row->_disburse->cp_currency_id] = new \stdClass();
+                        $con_bal[$row->_disburse->cp_currency_id]->total = 0;
 
                         $con_int[$row->_disburse->cp_currency_id]=array();
                         $con_int[$row->_disburse->cp_currency_id] = new \stdClass();
+                        $con_int[$row->_disburse->cp_currency_id]->total=0;
 
                         $con_acc[$row->_disburse->cp_currency_id]=array();
                         $con_acc[$row->_disburse->cp_currency_id] = new \stdClass();
+                        $con_acc[$row->_disburse->cp_currency_id]->total = 0;
                     }
                     $tmp[$row->_disburse->cp_currency_id] = $row;
                     $con_bal[$row->_disburse->cp_currency_id]->total+=$row->_balance_principal;
@@ -177,12 +180,15 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE ( p.repayment_type
                     $tmp[$row->_disburse->cp_currency_id]=array();
                     $con_bal[$row->_disburse->cp_currency_id]=array();
                     $con_bal[$row->_disburse->cp_currency_id] = new \stdClass();
+                    $con_bal[$row->_disburse->cp_currency_id]->total = 0;
 
                     $con_int[$row->_disburse->cp_currency_id]=array();
                     $con_int[$row->_disburse->cp_currency_id] = new \stdClass();
+                    $con_int[$row->_disburse->cp_currency_id]->total=0;
 
                     $con_acc[$row->_disburse->cp_currency_id]=array();
                     $con_acc[$row->_disburse->cp_currency_id] = new \stdClass();
+                    $con_acc[$row->_disburse->cp_currency_id]->total = 0;
                 }
                 $tmp[$row->_disburse->cp_currency_id] = $row;
                 $con_bal[$row->_disburse->cp_currency_id]->total+=$row->_balance_principal;
@@ -195,6 +201,11 @@ not in(SELECT p.ln_disburse_client_id FROM ln_perform p WHERE ( p.repayment_type
         $data['con_int'] = $con_int;
         $data['con_acc'] = $con_acc;
         $data['result']= $tmp;
+
+        if($data['classify']!='all'){
+            $c = ProductStatus::where('id','=',$data['classify'])->first();
+            $data['classify'] = $c->code;
+        }
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');

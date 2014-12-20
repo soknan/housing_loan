@@ -12,7 +12,7 @@
     </dl>
 </div>
 <?php
-    if($dis->disburse_date != date('Y-m-d')){
+    if(date('Y-m-d',strtotime($dis->disburse_date)) != date('Y-m-d')){
         echo '<div class="alert alert-warning">
     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <dl class="dl-horizontal">

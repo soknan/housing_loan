@@ -375,14 +375,14 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">LA Code</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Kh Client Name</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">CRC</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">LP</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Acc Type</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Dis Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Mat Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Amount</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Intt</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Status</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Prin</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Pri</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Total Coll</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Coll Pen</Data></Cell>

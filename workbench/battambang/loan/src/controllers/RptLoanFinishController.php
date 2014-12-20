@@ -68,6 +68,8 @@ class RptLoanFinishController extends BaseController
         }
         if($data['classify']!='all'){
             $condition.=" AND current_product_status = '".$data['classify']."'";
+            $c = ProductStatus::where('id','=',$data['classify'])->first();
+            $data['classify'] = $c->code;
         }
         if ($data['cp_office'] != 'all') {
             $condition .= " AND ln_client.cp_office_id  IN('" . implode("','",$data['cp_office']) . "')";
