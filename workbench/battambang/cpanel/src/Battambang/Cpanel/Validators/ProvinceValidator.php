@@ -6,7 +6,11 @@ class ProvinceValidator extends \ValidatorAssistant
 {
     protected function before()
     {
-        \Rule::add('id')->required();
+        \Rule::add('id')->required()->unique(
+        'cp_location',
+        'id',
+        \Request::segment(4)
+    );
         \Rule::add('kh_name')->required();
         \Rule::add('en_name')->required();
 

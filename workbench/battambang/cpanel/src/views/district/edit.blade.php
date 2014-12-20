@@ -6,10 +6,12 @@
 <?php
 echo FormPanel2::make(
     'General',
-    Former::text('id', 'ID',$row->id)->required() . ''
+    Former::text('id', 'ID',$row->id)->required()->readonly(). ''
     .Former::text('kh_name', 'Kh Name',$row->kh_name)->required() . ''
     , Former::text('en_name', 'En Name',$row->en_name)->required() . ''
-.Former::select('cp_location_id', 'Province', \GetLists::getLocation(1),$row->cp_location_id)->class('select2')->required() . ''
+.Former::select('t_location_id', 'Province', \GetLists::getLocation(1),$row->cp_location_id)
+        ->disabled()
+        ->required() .Former::hidden('cp_location_id',$row->cp_location_id). ''
 
 
 );

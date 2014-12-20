@@ -6,7 +6,7 @@
 <?php
 echo FormPanel2::make(
     'General',
-    Former::text('id', 'ID',$row->id)->required() . ''
+    Former::text('id', 'ID',$row->id)->required()->readonly(). ''
     .Former::text('kh_name', 'Kh Name',$row->kh_name)->required() . ''
     , Former::text('en_name', 'En Name',$row->en_name)->required() . ''
 

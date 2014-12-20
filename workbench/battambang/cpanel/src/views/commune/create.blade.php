@@ -6,12 +6,12 @@
 <?php
 echo FormPanel2::make(
     'General',
-    Former::text('id', 'ID')->required() . ''
+    Former::text('id', 'ID')->required()->placeholder('6 Digits and number only')->pattern('\d{6}') . ''
     .Former::text('kh_name', 'Kh Name')->required() . ''
     .Former::text('en_name', 'En Name')->required() . ''
 ,Former::select('cp_location_id', 'District', \GetLists::getLocation(2))
         ->placeholder('- Select One -')
-
+        ->class('select2')
         ->required() . ''
 /*.Former::select('cp_location_id', 'District')
         ->placeholder('- Select One -')
