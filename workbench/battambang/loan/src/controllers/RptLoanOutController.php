@@ -134,11 +134,15 @@ order by ln_disburse.disburse_date DESC
                 if($data['classify']=='all'){
                     $tmp[] = $row;
                 }else{
-                    if($row->_current_product_status = $data['classify']){
+                    if($row->_current_product_status == $data['classify']){
                         $tmp[] = $row;
                     }
                 }
             }
+        }
+        if($data['classify']!='all'){
+            $p = ProductStatus::where('id','=',$data['classify'])->first();
+            $data['classify']= $p->code;
         }
 
         //var_dump($perform);

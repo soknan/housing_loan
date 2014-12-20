@@ -537,7 +537,7 @@ class LoanPerformance
                     $this->_new_due['date'] = $row->due_date;
                     $this->_new_due['num_installment'] = $row->index;
                 }
-                // no Arrears Penalty
+
                 $lnumDay = $this->_countDate($row->due_date,$this->_activated_at);
                 $pen+= $this->_getPenalty($row->principal + $row->interest,$lnumDay);
 
@@ -563,69 +563,32 @@ class LoanPerformance
 
             $this->_new_due['principal'] = $prin;
             $this->_new_due['interest'] = $int;
+            $this->_new_due['penalty'] = $pen;
 
-            $tmp_total_new = $this->_new_due['principal'] + $this->_new_due['interest'];
-            $tmp_total_due = $this->_due['principal'] + $this->_due['interest'];
             $tmp_total_arrears = $this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest'];
 
             $tmp_new = $this->_last_perform_date;
             if(!$this->_isDate($this->_arrears['cur']['date']) and $this->_perform_type=='disburse'){
-                $tmp_new = $this->_last_perform_date;
-            }else if($this->_isDate($this->_arrears['cur']['date']) and $tmp_total_arrears>0){
+                $tmp_new = $this->_new_due['date'];
+            }else if($this->_isDate($this->_arrears['cur']['date']) and round($tmp_total_arrears,2)>0){
                 $tmp_new=$this->_arrears['cur']['date'];
             }else if($tmp_total_arrears<=0){
                 $tmp_new = $this->_new_due['date'];
             }
+
+            $this->_arrears['cur']['num_day']=$this->_countDate($tmp_new,$this->_activated_at);
+            $this->_arrears['cur']['num_installment'] = $this->_new_due['num_installment'];
+            $this->_arrears['cur']['principal'] = $this->_new_due['principal'] + $this->_arrears['last']['principal'];
+            $this->_arrears['cur']['interest'] = $this->_new_due['interest'] + $this->_arrears['last']['interest'];
+            $this->_arrears['cur']['fee'] = $this->_new_due['fee'] + $this->_arrears['last']['fee'];
+            $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
+            $this->_arrears['cur']['date'] = $this->_new_due['date'];
+
             $this->_new_due['num_day'] = $this->_countDate($tmp_new,$this->_activated_at);
-            $this->_new_due['penalty'] = $pen;
             if($this->_new_due['num_day']>0){
                 $this->_new_due['product_status'] = $this->_getProductStatus($this->_new_due['num_day'])->id;
                 $this->_new_due['product_status_date'] = $this->_getProductStatusDate($this->_new_due['num_day']);
             }
-
-            // Use for report loan arrears
-            /*if($this->late==true){
-                if(round($tmp_total_arrears,2) <=0 and $this->_due['date'] >= $this->_activated_at and round($tmp_total_due,2) == round($tmp_total_new,2)){
-                    $this->_arrears['cur']['date'] = '';
-                    $this->_arrears['cur']['num_day']=0;
-                    $this->_arrears['cur']['principal'] = 0;
-                    $this->_arrears['cur']['interest'] = 0;
-                }else{
-                    $tmp_new = $this->_last_perform_date;
-                    if(!$this->_isDate($this->_arrears['cur']['date']) and $this->_perform_type=='disburse'){
-                        $tmp_new = $this->_new_due['date'];
-                    }else if($this->_isDate($this->_arrears['cur']['date']) and round($tmp_total_arrears,2)>0){
-                        $tmp_new=$this->_arrears['cur']['date'];
-                    }else if($tmp_total_arrears<=0){
-                        $tmp_new = $this->_new_due['date'];
-                    }
-                    $this->_arrears['cur']['num_day']=$this->_countDate($tmp_new,$this->_activated_at);
-                    $this->_arrears['cur']['num_installment'] = $this->_new_due['num_installment'];
-                    $this->_arrears['cur']['principal'] = $this->_new_due['principal'] + $this->_arrears['last']['principal'];
-                    $this->_arrears['cur']['interest'] = $this->_new_due['interest'] + $this->_arrears['last']['interest'];
-                    $this->_arrears['cur']['fee'] = $this->_new_due['fee'] + $this->_arrears['last']['fee'];
-                    $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
-                    $this->_arrears['cur']['date'] = $this->_new_due['date'];
-                }
-                //end use
-            }else{*/
-
-                $tmp_new = $this->_last_perform_date;
-                if(!$this->_isDate($this->_arrears['cur']['date']) and $this->_perform_type=='disburse'){
-                    $tmp_new = $this->_new_due['date'];
-                }else if($this->_isDate($this->_arrears['cur']['date']) and round($tmp_total_arrears,2)>0){
-                    $tmp_new=$this->_arrears['cur']['date'];
-                }else if($tmp_total_arrears<=0){
-                    $tmp_new = $this->_new_due['date'];
-                }
-                $this->_arrears['cur']['num_day']=$this->_countDate($tmp_new,$this->_activated_at);
-                $this->_arrears['cur']['num_installment'] = $this->_new_due['num_installment'];
-                $this->_arrears['cur']['principal'] = $this->_new_due['principal'] + $this->_arrears['last']['principal'];
-                $this->_arrears['cur']['interest'] = $this->_new_due['interest'] + $this->_arrears['last']['interest'];
-                $this->_arrears['cur']['fee'] = $this->_new_due['fee'] + $this->_arrears['last']['fee'];
-                $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
-                $this->_arrears['cur']['date'] = $this->_new_due['date'];
-            //}
 
         }else{
             if($this->_arrears['cur']['principal']+$this->_arrears['cur']['interest']>0){
@@ -638,14 +601,16 @@ class LoanPerformance
                     $this->_due['interest'] = $this->_arrears['cur']['interest'];
                     $this->_new_due['interest'] = $this->_arrears['cur']['interest'];
                 }
+                $this->_new_due['num_day'] = $this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
+                $this->_new_due['penalty'] = $this->_getLastArreasPen();
+                $this->_arrears['cur']['num_day'] = $this->_countDate($this->_arrears['cur']['date'],$this->_activated_at);
+                $this->_arrears['cur']['penalty'] = $this->_new_due['penalty'] + $this->_arrears['last']['penalty'];
+
             }else{
                 $this->error = 'You are already Perform It on
                         '.date('d-M-Y',strtotime($this->_last_perform_date)).'
                         . Your Next Perform is on
                         '.date('d-M-Y',strtotime($this->_next_due['date']));
-
-                //$this->_getAccrueInt();
-
                 $this->_due['num_day'] = 0;
                 $this->_due['principal'] = 0;
                 $this->_due['interest'] = 0;
