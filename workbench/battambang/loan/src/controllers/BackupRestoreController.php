@@ -177,6 +177,7 @@ class BackupRestoreController extends BaseController
         $zipFile->zip($file_name.'.zip')->add($file_name . '.sql');
         $zipFile->close();
 
+
         // Delete source backup
         \App::finish(function($request, $response) use ($file_name)
         {

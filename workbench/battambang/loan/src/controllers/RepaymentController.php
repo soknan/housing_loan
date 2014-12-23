@@ -24,16 +24,16 @@ class RepaymentController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'Loan Acc #', 'Client Name','CCY', 'Date', 'Type', 'Principal', 'Interest', 'Fee', 'Penalty', 'Total');
+        $item = array('Action', 'Loan Acc #', 'Client Name','CRC', 'Date', 'Type', 'Principal', 'Interest', 'Fee', 'Penalty', 'Total');
 //        $data['btnAction'] = array('Add New' => route('loan.repayment.create'));
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.repayment')) // this is the route where data will be retrieved
             ->setOptions('aLengthMenu', array(
-                array('10', '25', '50', '100', '-1'),
-                array('10', '25', '50', '100', 'All')
+                array(10, 25, 50, 100, '-1'),
+                array(10, 25, 50, 100, 'All')
             ))
-            ->setOptions("iDisplayLength", '10')// default show entries
+            ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
             View::make(Config::get('battambang/loan::views.repayment_index'), $data)
@@ -579,7 +579,7 @@ class RepaymentController extends BaseController
             ->where('id', 'like', \UserSession::read()->sub_branch . '%')
             ->orderBy('activated_at', 'DESC');*/
         $arr = DB::table("view_repayment")
-            ->where('id','like',\UserSession::read()->sub_branch . '%');
+            ->whereRaw('SUBSTR(id,1,4) = "'.\UserSession::read()->sub_branch .'" ');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {

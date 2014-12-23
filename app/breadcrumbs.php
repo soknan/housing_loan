@@ -684,7 +684,7 @@ Breadcrumbs::register(
     'loan.rpt_loan_late.index',
     function ($bc) {
         $bc->parent('cpanel.package.home');
-        $bc->push('Loan Late Report', URL::route('loan.rpt_loan_late.index'));
+        $bc->push('Loan Arrears     Report', URL::route('loan.rpt_loan_late.index'));
     }
 );
 // Loan Repay Fee

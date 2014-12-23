@@ -16,9 +16,11 @@ class FormPanel2
 
     public function make($title, $column1 = array(), $column2 = array(), $state = 'default')
     {
-        $panel = '<div class="panel panel-' . $state . '">
-            <div class="panel-heading">' . $title . '</div>
-            <div class="panel-body">
+        $panel = '<div class="panel panel-' . $state . '">';
+        if($title!=''){
+            $panel.='<div class="panel-heading">' . $title . '</div>';
+        }
+            $panel.='<div class="panel-body">
             <div class="row">
             <div class="col-md-6">'
             . (is_array($column1) ? implode('', $column1) : $column1)

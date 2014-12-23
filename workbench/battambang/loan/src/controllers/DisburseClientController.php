@@ -26,10 +26,10 @@ class DisburseClientController extends BaseController
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.disburse_client', $disburse)) // this is the route where data will be retrieved
             ->setOptions('aLengthMenu', array(
-                array('10', '25', '50', '100', '-1'),
-                array('10', '25', '50', '100', 'All')
+                array(10, 25, 50, 100, '-1'),
+                array(10, 25, 50, 100, 'All')
             ))
-            ->setOptions("iDisplayLength", '10')// default show entries
+            ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
             View::make(Config::get('battambang/loan::views.disburse_client_index'), $data)

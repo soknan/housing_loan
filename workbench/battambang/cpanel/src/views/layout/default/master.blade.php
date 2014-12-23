@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta name="_token" content="{{ csrf_token() }}"/>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,11 +11,11 @@
 
     <title><?php echo isset($title) ? $title : ''; ?></title>
     <!-- jscal -->
-    {{ HTML::style('packages/battambang/cpanel/jscal/css/jscal2.css') }}
+    <!--{{ HTML::style('packages/battambang/cpanel/jscal/css/jscal2.css') }}
     {{ HTML::style('packages/battambang/cpanel/jscal/css/border-radius.css') }}
     {{ HTML::style('packages/battambang/cpanel/jscal/css/win2k/win2k.css') }}
     {{ HTML::script('packages/battambang/cpanel/jscal/js/jscal2.js')}}
-    {{ HTML::script('packages/battambang/cpanel/jscal/js/lang/en.js')}}
+    {{ HTML::script('packages/battambang/cpanel/jscal/js/lang/en.js')}}-->
     <!-- end jscal -->
 
     <!-- Bootstrap core CSS -->
@@ -23,11 +24,11 @@
     <!-- Custom styles for this template -->
     <?php echo HTML::style('packages/battambang/cpanel/theme/sticky-footer-navbar.css'); ?>
     <?php echo HTML::style('packages/battambang/cpanel/theme/theme.css'); ?>
-    <?php echo HTML::style('packages/battambang/cpanel/datatable/css/jquery.dataTables.css') ?>
-    <?php echo HTML::style('packages/battambang/cpanel/select2-3.3.1/select2.css'); ?>
-    <?php echo HTML::style('packages/battambang/cpanel/jcombo/jcombo.css'); ?>
-    <?php echo HTML::style('packages/battambang/cpanel/datepicker/css/datepicker.css'); ?>
 
+    <?php echo HTML::style('packages/battambang/cpanel/select2-3.3.1/select2.css'); ?>
+    <?php /*echo HTML::style('packages/battambang/cpanel/jcombo/jcombo.css'); */?>
+    <?php echo HTML::style('packages/battambang/cpanel/datepicker/css/datepicker.css'); ?>
+    <?php echo HTML::style('packages/battambang/cpanel/datatable/css/jquery.dataTables.css') ?>
 
     @yield('css')
 
@@ -38,13 +39,9 @@
     <![endif]-->
 
     <?php echo HTML::script('packages/battambang/cpanel/jquery/jquery-2.0.2.min.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/bootstrap3/js/bootstrap.min.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/bootbox/bootbox.min.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/bootbox/admin.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/select2-3.3.1/select2.min.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/jcombo/jcombo.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/datatable/js/jquery.dataTables.min.js'); ?>
-    <?php echo HTML::script('packages/battambang/cpanel/datepicker/js/bootstrap-datepicker.js'); ?>
+
+
+
 </head>
 
 <body>
@@ -90,9 +87,19 @@
 <!-- Bootstrap core JavaScript
 ================================================== -->
 <!-- Placed at the end of the document so the pages load faster -->
-
+<?php echo HTML::script('packages/battambang/cpanel/bootstrap3/js/bootstrap.min.js'); ?>
+<?php echo HTML::script('packages/battambang/cpanel/bootbox/bootbox.min.js'); ?>
+<?php echo HTML::script('packages/battambang/cpanel/bootbox/admin.js'); ?>
+<?php echo HTML::script('packages/battambang/cpanel/select2-3.3.1/select2.min.js'); ?>
+<?php /*echo HTML::script('packages/battambang/cpanel/jcombo/jcombo.js'); */?>
+<?php echo HTML::script('packages/battambang/cpanel/datepicker/js/bootstrap-datepicker.js'); ?>
+<?php echo HTML::script('packages/battambang/cpanel/datatable/jquery.dataTables.min.js'); ?>
 @yield('js')
-
+<script>
+    $.ajaxSetup({
+        headers: { 'X-CSRF-Token' : $('meta[name=_token]').attr('content') }
+    });
+</script>
 
 </body>
 </html>

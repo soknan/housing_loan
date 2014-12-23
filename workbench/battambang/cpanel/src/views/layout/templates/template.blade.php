@@ -1,6 +1,5 @@
 
-
-<table class="table table-striped table-bordered {{ $class = str_random(8) }}">
+<table class="table table-striped table-bordered {{ $class = str_random(8) }}" cellspacing="0" width="100%">
     <colgroup>
         @for ($i = 0; $i < count($columns); $i++)
         <col class="con{{ $i }}" />
@@ -31,10 +30,10 @@
     $(document).ready(function(){
         // dynamic table
         jQuery('.{{ $class }}').dataTable({
-            "sPaginationType": "full_numbers",
-            "bProcessing": true,
+            //"sPaginationType": "full_numbers",
+            //"bProcessing": true,
             "aaSorting": [[ 1, "desc" ]],
-            /*"bJQueryUI": true,*/
+            //"bJQueryUI": true,
 
         @foreach ($options as $k => $o)
         {{ json_encode($k) }}: {{ json_encode($o) }},
@@ -43,24 +42,9 @@
         {{ json_encode($k) }}: {{ $o }},
         @endforeach
 
-        /*"fnDrawCallback": function(oSettings) {
-            jQuery.uniform.update();
-        }*/
-
 
     });
-    /*@if (isset($values['table-url']))
-        $('.{{$class}}').hover(function() {
-            $(this).css('cursor', 'pointer');
 
-        });
-    $('.{{$class}}').on('click', 'tbody tr', function(e) {
-        $id = e.currentTarget.children[0].innerHTML;
-        $url = e.currentTarget.baseURI;
-        document.location.href = "{{ $values['table-url'] }}/" + $id;
-    });
-    @endif*/
-    // custom values are available via $values array
     });
 </script>
 <style>

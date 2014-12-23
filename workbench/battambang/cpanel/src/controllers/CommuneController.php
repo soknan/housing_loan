@@ -20,14 +20,11 @@ class CommuneController extends BaseController
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.commune')) // this is the route where data will be retrieved
-            ->setOptions(
-                'aLengthMenu',
-                array(
-                    array('10', '25', '50', '100', '-1'),
-                    array('10', '25', '50', '100', 'All')
-                )
-            )
-            ->setOptions("iDisplayLength", '10')// default show entries
+            ->setOptions('aLengthMenu', array(
+                array(10, 25, 50, 100, '-1'),
+                array(10, 25, 50, 100, 'All')
+            ))
+            ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
             View::make(Config::get('battambang/cpanel::views.commune_index'), $data)
@@ -75,7 +72,7 @@ class CommuneController extends BaseController
             $this->saveData($data);
 
             return Redirect::back()
-                ->with('success', trans('battambang/cpanel::commune.create_success'));
+                ->with('success', trans('battambang/cpanel::msg.create_success'));
         }
         return Redirect::back()->withInput()->withErrors($validator->errors());
     }
@@ -90,7 +87,7 @@ class CommuneController extends BaseController
                 $this->saveData($data, false);
 
                 return Redirect::back()
-                    ->with('success', trans('battambang/cpanel::commune.update_success'));
+                    ->with('success', trans('battambang/cpanel::msg.update_success'));
             }
             return Redirect::back()->withInput()->withErrors($validator->errors());
         } catch (\Exception $e) {
@@ -105,7 +102,7 @@ class CommuneController extends BaseController
             $data = Location::findOrFail($id);
             $data->delete();
 
-            return Redirect::back()->with('success', trans('battambang/cpanel::commune.delete_success'));
+            return Redirect::back()->with('success', trans('battambang/cpanel::msg.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('cpanel.commune.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }

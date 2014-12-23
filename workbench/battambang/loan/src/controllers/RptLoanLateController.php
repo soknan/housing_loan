@@ -134,40 +134,40 @@ order by ln_disburse.disburse_date DESC
             $total = $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'];
             if($row->_disburse->disburse_date <= $data["as_date"] and $row->_arrears['cur']['num_day']>0){
                 if($data['operator']!='all'){
-                try{
-                switch($data['operator']){
-                    case '==':
-                        $condi = $row->_arrears['cur']['num_day'] == $data['late'];
-                        break;
-                    case '!=':
-                        $condi = $row->_arrears['cur']['num_day'] != $data['late'];
-                        break;
-                    case '>':
-                        $condi = $row->_arrears['cur']['num_day'] > $data['late'];
-                        break;
-                    case '>=':
-                        $condi = $row->_arrears['cur']['num_day'] >= $data['late'];
-                        break;
-                    case '<':
-                        $condi = $row->_arrears['cur']['num_day'] < $data['late'];
-                        break;
-                    case '<=':
-                        $condi = $row->_arrears['cur']['num_day'] <= $data['late'];
-                        break;
-                    case 'between':
-                        list($first,$second) = explode('-',$data['late']);
-                        $condi = $row->_arrears['cur']['num_day'] >= $first && $row->_arrears['cur']['num_day'] <= $second ;
-                        break;
-                }
-                }catch (\Exception $e){
-                    return \Redirect::back()->with('error','Please Input correctly!');
-                }
-                if($condi){
+                    try{
+                        switch($data['operator']){
+                            case '==':
+                                $condi = $row->_arrears['cur']['num_day'] == $data['late'];
+                                break;
+                            case '!=':
+                                $condi = $row->_arrears['cur']['num_day'] != $data['late'];
+                                break;
+                            case '>':
+                                $condi = $row->_arrears['cur']['num_day'] > $data['late'];
+                                break;
+                            case '>=':
+                                $condi = $row->_arrears['cur']['num_day'] >= $data['late'];
+                                break;
+                            case '<':
+                                $condi = $row->_arrears['cur']['num_day'] < $data['late'];
+                                break;
+                            case '<=':
+                                $condi = $row->_arrears['cur']['num_day'] <= $data['late'];
+                                break;
+                            case 'between':
+                                list($first,$second) = explode('-',$data['late']);
+                                $condi = $row->_arrears['cur']['num_day'] >= $first && $row->_arrears['cur']['num_day'] <= $second ;
+                                break;
+                        }
+                    }catch (\Exception $e){
+                        return \Redirect::back()->with('error','Please Input correctly!');
+                    }
+                    if($condi){
+                        $tmp[] = $row;
+                    }
+                }else{
                     $tmp[] = $row;
                 }
-            }else{
-                $tmp[] = $row;
-            }
             }
         }
 

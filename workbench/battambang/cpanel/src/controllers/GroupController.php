@@ -29,16 +29,13 @@ class GroupController extends BaseController
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.group')) // this is the route where data will be retrieved
-            ->setOptions(
-                'aLengthMenu',
-                array(
-                    array('10', '25', '50', '100', '-1'),
-                    array('10', '25', '50', '100', 'All')
-                )
-            )
+            ->setOptions('aLengthMenu', array(
+                array(10, 25, 50, 100, '-1'),
+                array(10, 25, 50, 100, 'All')
+            ))
+            ->setOptions("iDisplayLength", 10)// default show entries
             ->setOptions("scrollY","300")
             ->setOptions("scrollX",true)
-            ->setOptions("iDisplayLength", '10')// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
             View::make(Config::get('battambang/cpanel::views.group_index'), $data)
