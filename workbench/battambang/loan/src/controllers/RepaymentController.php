@@ -100,7 +100,7 @@ class RepaymentController extends BaseController
             // Fee
             if ($data->_arrears['cur']['fee'] > 0) {
                 $data->error = 'Please repay fee !';
-                $data->_repayment['cur']['type'] = 'fee';
+                $status = 'fee';
                 $perform->_activated_at = $data->_due['date'];
                 $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                 if (Input::has('confirm')) {
@@ -349,7 +349,7 @@ class RepaymentController extends BaseController
                 // Fee
                 if ($data->_arrears['cur']['fee'] > 0) {
                     $data->error = 'Please repay fee !';
-                    $data->_repayment['cur']['type'] = 'fee';
+                    $status = 'fee';
                     $perform->_activated_at = $data->_due['date'];
                     $data->_arrears['cur']['principal'] = $data->_arrears['cur']['fee'];
                     if (Input::has('confirm')) {
@@ -539,7 +539,7 @@ class RepaymentController extends BaseController
                 $perform->save();
                 // User action
                 \Event::fire('user_action.edit', array('repayment'));
-                return Redirect::route('loan.repayment.edit',$data->_id)->withInput()
+                return Redirect::route('loan.repayment.edit',$id)->withInput()
                     ->with('info', $msg)
                     ->with('success', trans('battambang/loan::repayment.update_success'));
             }

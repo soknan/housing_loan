@@ -5,7 +5,7 @@
 {{Former::open( route('loan.repayment.update',$row->id))->method('PUT')}}
 
 <?php
-
+$onlyFee = false;
 $activated_at = $row->activated_at;
 $totalPrincipal = $row->repayment_principal + $row->repayment_interest;
 $penalty = $row->repayment_penalty;
@@ -14,8 +14,9 @@ $client_id = $row->ln_disburse_client_id;
 $voucher_id = substr($row->repayment_voucher_id,-6);
 if($row->repayment_type == 'fee'){
     $totalPrincipal = $row->repayment_fee;
+    $onlyFee = true;
 }
-$onlyFee = false;
+
 if(Session::has('data')){
     $perform = Session::get('data');
     $activated_at = $perform->_activated_at;
