@@ -93,7 +93,7 @@
 <?php echo HTML::script('packages/battambang/cpanel/select2-3.3.1/select2.min.js'); ?>
 <?php /*echo HTML::script('packages/battambang/cpanel/jcombo/jcombo.js'); */?>
 <?php echo HTML::script('packages/battambang/cpanel/datepicker/js/bootstrap-datepicker.js'); ?>
-<?php echo HTML::script('packages/battambang/cpanel/datatable/jquery.dataTables.min.js'); ?>
+<?php echo HTML::script('packages/battambang/cpanel/datatable/js/jquery.dataTables.min.js'); ?>
 @yield('js')
 <script>
     $.ajaxSetup({
