@@ -647,6 +647,14 @@ Breadcrumbs::register(
         $bc->push('Edit', URL::route('loan.product.edit'));
     }
 );
+// Product Activity Report
+Breadcrumbs::register(
+    'loan.rpt_product_activity.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Repayment Schedule Report', URL::route('loan.rpt_product_activity.index'));
+    }
+);
 // Repayment Schedule Report
 Breadcrumbs::register(
     'loan.rpt_schedule.index',

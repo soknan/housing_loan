@@ -2,18 +2,6 @@
 Route::get('pass',function(){
     return Hash::make('cb123456');
 });
-Route::get('test',function(){
-    $date = new Carbon();
-    $first = $date->createFromFormat('Y-m-d','2014-11-04');
-    $second = $date->createFromFormat('Y-m-d','2014-11-10');
-    //$difWeek = ceil($first->endOfWeek()->diffInDays($second->endOfWeek()) / 7);
-    $first->endOfWeek();
-     $second->addWeeks(1)->endOfWeek();
-    if(!$first->eq($second)){
-        return 'true';
-    }
-    return 'false';
-});
 
 Route::group(
     array('prefix' => 'loan', 'before' => 'auth.cpanel|package.cpanel'),
@@ -951,6 +939,21 @@ Route::group(
         | Report Routes
         |--------------------------------------------------------------------------
         */
+        //Product Activity
+        Route::get(
+            'rpt_product_activity',
+            array(
+                'as' => 'loan.rpt_product_activity.index',
+                'uses' => 'Battambang\Loan\RptProductActivityController@index'
+            )
+        );
+        Route::post(
+            'rpt_product_activity',
+            array(
+                'as' => 'loan.rpt_product_activity.report',
+                'uses' => 'Battambang\Loan\RptProductActivityController@report'
+            )
+        );
         // Repay Fee
         Route::get(
             'rpt_loan_fee',

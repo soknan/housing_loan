@@ -33,6 +33,8 @@ Menu::make(
                     }
                 );
                 $dropdown->add('Staff', route('loan.staff.index'));
+                $dropdown->add('Lookup', route('loan.lookup.index'));
+                $dropdown->add('Lookup Value', route('loan.lookup_value.index'));
             }
         );
 
@@ -51,6 +53,7 @@ Menu::make(
                 $dropdown->add('Loan History', route('loan.rpt_loan_history.index'));
                 $dropdown->add('Write-Off (In Period)', route('loan.rpt_write_off_in.index'));
                 $dropdown->add('Write-Off (End Period)', route('loan.rpt_write_off_end.index'));
+                $dropdown->add('Product Activity', route('loan.rpt_product_activity.index'));
                 $dropdown->add(
                     'Summary',
                     function ($dropdown) {
