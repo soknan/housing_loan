@@ -176,6 +176,7 @@ return array(
                 'loan.rpt_loan_history.index' => 'loan history',
                 'loan.rpt_write_off_in.index' => 'loan write off (in period)',
                 'loan.rpt_write_off_end.index' => 'loan write off (end period)',
+                'loan.rpt_product_activity.index' => 'Product Activity',
             ),
             'summary report' => array(
                 'loan.rpt_breakdown_purpose.index' => 'loan breakdown by purpose',
