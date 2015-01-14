@@ -49,7 +49,7 @@ echo FormPanel2::make(
    .Former::number('repayment_penalty', 'penalty',$penalty)
       ->step('0.01')->min(0)->required()->readonly($onlyFee). ''
     .Former::text('repayment_voucher_id',' Voucher')
-     //->pattern('\d')
+          ->maxlength(6)
 );
 ?>
 
