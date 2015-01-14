@@ -238,15 +238,15 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="12.75" ss:StyleID="s68">
     <Cell ss:StyleID="s69"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000"></Font></B><Font
-       html:Color="#000000"></Font></ss:Data></Cell>
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Location :&#160;</Font></B><Font
+       html:Color="#000000"><?php echo $cp_location;?></Font></ss:Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s69"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Exchange Rate :&#160;</Font></B><Font
        html:Color="#000000"><?php echo $exchange_rate;?></Font></ss:Data></Cell>
     <Cell ss:Index="9" ss:StyleID="s70"/>
     <Cell ss:StyleID="s69"><ss:Data ss:Type="String"
-      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Location :&#160;</Font></B><Font
-       html:Color="#000000"> <?php echo $cp_location;?></Font></ss:Data></Cell>
+      xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000"></Font></B><Font
+       html:Color="#000000"> </Font></ss:Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="8" ss:StyleID="s72"/>
@@ -263,6 +263,7 @@
     <Cell ss:StyleID="s76"><Data ss:Type="String">Coll Pen</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Loan Out</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Arrearse</Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="String">PAR(NBC)</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">PAR</Data></Cell>
    </Row>
    <?php
@@ -293,6 +294,7 @@
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_bal[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_arr[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
+    <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par_n[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
    </Row>
    <?php }?>
 
@@ -306,10 +308,11 @@
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_pen;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_bal;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_arr;?></Data></Cell>
-
+    <Cell ss:StyleID="s88"><Data ss:Type="String"></Data></Cell>
+    <Cell ss:StyleID="s88"><Data ss:Type="String"></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="9" ss:StyleID="s90"/>
+    <Cell ss:MergeAcross="10" ss:StyleID="s90"/>
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s95"><Data ss:Type="String">                                 Seen By                                                                                                     Verified By                                                                                                  Prepared By                           </Data></Cell>

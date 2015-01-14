@@ -499,7 +499,7 @@
 
               $pri_to_USD = $sub_pri_khr_usd + $sub_pri_usd_usd + $sub_pri_thb_usd;
               $int_to_USD = $sub_int_khr_usd + $sub_int_usd_usd + $sub_int_thb_usd;
-              $total_arrears_to_USD = $pri_to_USD + $sub_total_usd_usd + $sub_total_thb_usd;
+              $total_arrears_to_USD = $pri_to_USD + $int_to_USD;
               $bal_pri_to_USD = $sub_bal_pri_khr_usd + $sub_bal_pri_usd_usd + $sub_bal_pri_thb_usd;
               $bal_int_to_USD = $sub_bal_int_khr_usd + $sub_bal_int_usd_usd + $sub_bal_int_thb_usd;
               ?>

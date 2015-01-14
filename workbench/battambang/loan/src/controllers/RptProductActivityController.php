@@ -56,7 +56,7 @@ class RptProductActivityController extends BaseController
         $data['exchange_rate'] = '1.00 $ = ' . $ex->khr_usd . ' ៛ , 1.00 B = ' . $ex->khr_thb . '៛';
 
         $condition = ' 1=1 ';
-        $date = " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') AND p.activated_at >= STR_TO_DATE('".$data['first_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
+        $date = " AND p.activated_at <= STR_TO_DATE('".$data['as_date']." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ";
         //$condition.=" AND repayment_type != 'closing' or current_product_status!=5 ";
         /*if($data['classify']!='all'){
             $condition.=" AND ln_perform.current_product_status = '".$data['classify']."'";
@@ -102,18 +102,14 @@ class RptProductActivityController extends BaseController
         SELECT *,
         ln_disburse_client.id as ln_disburse_client_id,
 concat(`ln_client`.`kh_last_name`,' ',`ln_client`.`kh_first_name`) AS `client_name`,
-account_type.`code` as account_type
-FROM
-ln_disburse_client
+account_type.`code` as account_type from ln_perform p
+INNER JOIN ln_disburse_client on ln_disburse_client.id = p.ln_disburse_client_id
 INNER JOIN ln_disburse ON ln_disburse_client.ln_disburse_id = ln_disburse.id
 INNER JOIN ln_client ON ln_client.id = ln_disburse_client.ln_client_id
 INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
-where $condition
-and ln_disburse_client.id
-not in(SELECT p.ln_disburse_client_id FROM ln_perform p
-WHERE (p.repayment_type='closing' or p.perform_type='writeoff') $date)
+where $condition $date
 group by ln_disburse_client.id
 order by ln_disburse.disburse_date DESC
         ");
@@ -127,7 +123,7 @@ order by ln_disburse.disburse_date DESC
             $loanPerform = new LoanPerformance();
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['as_date']);
         }
-
+//var_dump($perform); exit;
         $tmp = array();
         $ccy = "";
         $con_bal = array();
@@ -139,8 +135,9 @@ order by ln_disburse.disburse_date DESC
         $con_arr = array();
         $con_par= array();
         $con_acc = array();
+        $con_par_n = array();
         foreach($perform as $row){
-            if($row->_disburse->disburse_date <= $data["as_date"] and $row->_disburse->disburse_date >= date('Y-m-d',strtotime($data['first_date'])) ) {
+            if($row->_disburse->disburse_date <= $data["as_date"]) {
                 if (!isset($tmp[$row->_disburse->ln_staff_id])) {
                     $tmp[$row->_disburse->ln_staff_id] = array();
 
@@ -176,6 +173,10 @@ order by ln_disburse.disburse_date DESC
                     $con_par[$row->_disburse->ln_staff_id] = new \stdClass();
                     $con_par[$row->_disburse->ln_staff_id]->total = 0;
 
+                    $con_par_n[$row->_disburse->ln_staff_id] = array();
+                    $con_par_n[$row->_disburse->ln_staff_id] = new \stdClass();
+                    $con_par_n[$row->_disburse->ln_staff_id]->total = 0;
+
                     $con_acc[$row->_disburse->ln_staff_id] = array();
                     $con_acc[$row->_disburse->ln_staff_id] = new \stdClass();
                     $con_acc[$row->_disburse->ln_staff_id]->total = 0;
@@ -195,18 +196,31 @@ order by ln_disburse.disburse_date DESC
                         break;
                 }
 
-                $con_dis[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_disburse->amount,$data['exchange_rate_id']);
-                $con_pri[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumColPri($row->_disburse_client_id), $data['exchange_rate_id']);
-                $con_int[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumColInt($row->_disburse_client_id), $data['exchange_rate_id']);
-                $con_pen[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumColPen($row->_disburse_client_id), $data['exchange_rate_id']);
-                $con_fee[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumFee($row->_disburse_client_id), $data['exchange_rate_id']);
-                $con_arr[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'], $data['exchange_rate_id']);
-                $con_bal[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_balance_principal, $data['exchange_rate_id']);
+
+                $con_dis[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumDis($row->_disburse_client_id,$data['first_date'],$data['as_date']),$data['exchange_rate_id']);
+                $con_pri[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumColPri($row->_disburse_client_id,$data['first_date'],$data['as_date']), $data['exchange_rate_id']);
+                $con_int[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumColInt($row->_disburse_client_id,$data['first_date'],$data['as_date']), $data['exchange_rate_id']);
+                $con_pen[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumColPen($row->_disburse_client_id,$data['first_date'],$data['as_date']), $data['exchange_rate_id']);
+                $con_fee[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumFee($row->_disburse_client_id,$data['first_date'],$data['as_date']), $data['exchange_rate_id']);
+
+
+                 if($row->_perform_type!='writeoff'){
+                    $con_bal[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_balance_principal, $data['exchange_rate_id']);
+                     if(!in_array($row->_current_product_status,array(1))){
+                         $con_par[$row->_disburse->ln_staff_id]->total += \Currency::$ccy($row->_disburse->cp_currency_id,$row->_balance_principal, $data['exchange_rate_id']);
+                     }
+
+                 }
+
+
+                $total = $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'];
+                if($row->_arrears['cur']['num_day']>0 and $total>0){
+                    $con_arr[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'], $data['exchange_rate_id']);
+                    $con_par_n[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_arrears['cur']['principal'], $data['exchange_rate_id']);
+                }
 
                 $con_acc[$row->_disburse->ln_staff_id]->total+= $row->_disburse->num_account;
-                if(!in_array($row->_current_product_status,array(1,5))){
-                    $con_par[$row->_disburse->ln_staff_id]->total += \Currency::$ccy($row->_balance_principal, $data['exchange_rate_id']);
-                }
+
             }
         }
 
@@ -220,6 +234,7 @@ order by ln_disburse.disburse_date DESC
         $data['con_fee'] = $con_fee;
         $data['con_arr'] = $con_arr;
         $data['con_par'] = $con_par;
+        $data['con_par_n'] = $con_par_n;
         $data['con_acc'] = $con_acc;
         $data['result']= $tmp;
         //var_dump($data['result']); exit;
@@ -233,30 +248,58 @@ order by ln_disburse.disburse_date DESC
 
     }
 
-    private function _sumFee($id){
+    private function _sumDis($id,$from,$to){
         $data = 0;
-        $data = Perform::where('ln_disburse_client_id', '=', $id)->selectRaw("sum(arrears_fee) as col_fee")
+        $data = DisburseClient::whereRaw(" ln_disburse_client.id = '".$id."'
+             and disburse_date BETWEEN
+                        STR_TO_DATE('".$from." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
+                        AND STR_TO_DATE('".$to." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ")
+            ->join('ln_disburse','ln_disburse.id','=','ln_disburse_client.ln_disburse_id')
+            ->selectRaw("sum(ln_disburse_client.amount) as dis")
+            ->first();
+        return $data->dis;
+    }
+
+    private function _sumFee($id,$from,$to){
+        $data = 0;
+        $data = Perform::whereRaw(" ln_disburse_client_id = '".$id."'
+            and perform_type='repayment' and repayment_type='fee'
+            and activated_at BETWEEN STR_TO_DATE('".$from." 00:00:00" . "','%Y-%m-%d %H:%i:%s')
+            AND STR_TO_DATE('".$to." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ")
+            ->selectRaw("sum(repayment_fee) as col_fee")
             ->orderBy('id', 'DESC')->limit(1)->first();
         return $data->col_fee;
     }
 
-    private function _sumColPri($id){
+    private function _sumColPri($id,$from,$to){
         $data = 0;
-        $data = Perform::where('ln_disburse_client_id', '=', $id)->selectRaw("sum(repayment_principal) as col_pri")
-            ->limit(1)->first();
+        $data = Perform::whereRaw(" ln_disburse_client_id = '".$id."'
+            and perform_type='repayment' and repayment_type!='fee'
+            and activated_at BETWEEN STR_TO_DATE('".$from." 00:00:00" . "','%Y-%m-%d %H:%i:%s')
+            AND STR_TO_DATE('".$to." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ")
+            ->selectRaw("sum(repayment_principal) as col_pri")
+            ->first();
         return $data->col_pri;
     }
 
-    private function _sumColInt($id){
+    private function _sumColInt($id,$from,$to){
         $data = 0;
-        $data = Perform::where('ln_disburse_client_id', '=', $id)->selectRaw("sum(repayment_interest) as col_int")
+        $data = Perform::whereRaw(" ln_disburse_client_id = '".$id."'
+            and perform_type='repayment' and repayment_type!='fee'
+            and activated_at BETWEEN STR_TO_DATE('".$from." 00:00:00" . "','%Y-%m-%d %H:%i:%s')
+            AND  STR_TO_DATE('".$to." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ")
+            ->selectRaw("sum(repayment_interest) as col_int")
             ->limit(1)->first();
         return $data->col_int;
     }
 
-    private function _sumColPen($id){
+    private function _sumColPen($id,$from,$to){
         $data = 0;
-        $data = Perform::where('ln_disburse_client_id', '=', $id)->selectRaw("sum(repayment_penalty) as col_pen")
+        $data = Perform::whereRaw(" ln_disburse_client_id = '".$id."'
+            and perform_type='repayment' and repayment_type='penalty'
+            and activated_at BETWEEN STR_TO_DATE('".$from." 00:00:00" . "','%Y-%m-%d %H:%i:%s')
+            AND STR_TO_DATE('".$to." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ")
+            ->selectRaw("sum(repayment_penalty) as col_pen")
             ->limit(1)->first();
         return $data->col_pen;
     }
