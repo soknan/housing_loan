@@ -262,9 +262,9 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Total Coll</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Coll Pen</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Loan Out</Data></Cell>
-    <Cell ss:StyleID="s76"><Data ss:Type="String">Arrearse</Data></Cell>
-    <Cell ss:StyleID="s76"><Data ss:Type="String">PAR(NBC)</Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="String">Arrears</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">PAR</Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="String">PAR(NBC)</Data></Cell>
    </Row>
    <?php
            $i=1;
@@ -293,8 +293,8 @@
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_pen[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_bal[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_arr[$staff]->total;?></Data></Cell>
-    <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par_n[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
+    <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
    </Row>
    <?php }?>
 

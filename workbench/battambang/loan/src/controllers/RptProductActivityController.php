@@ -204,18 +204,18 @@ order by ln_disburse.disburse_date DESC
                 $con_fee[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$this->_sumFee($row->_disburse_client_id,$data['first_date'],$data['as_date']), $data['exchange_rate_id']);
 
 
-                 if($row->_perform_type!='writeoff'){
+                 //if($row->_perform_type!='writeoff'){
                     $con_bal[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_balance_principal, $data['exchange_rate_id']);
                      if(!in_array($row->_current_product_status,array(1))){
                          $con_par[$row->_disburse->ln_staff_id]->total += \Currency::$ccy($row->_disburse->cp_currency_id,$row->_balance_principal, $data['exchange_rate_id']);
                      }
 
-                 }
+                 //}
 
 
                 $total = $row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'];
                 if($row->_arrears['cur']['num_day']>0 and $total>0){
-                    $con_arr[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_arrears['cur']['principal'] + $row->_arrears['cur']['interest'], $data['exchange_rate_id']);
+                    $con_arr[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_arrears['cur']['principal'], $data['exchange_rate_id']);
                     $con_par_n[$row->_disburse->ln_staff_id]->total+= \Currency::$ccy($row->_disburse->cp_currency_id,$row->_arrears['cur']['principal'], $data['exchange_rate_id']);
                 }
 
@@ -296,7 +296,7 @@ order by ln_disburse.disburse_date DESC
     private function _sumColPen($id,$from,$to){
         $data = 0;
         $data = Perform::whereRaw(" ln_disburse_client_id = '".$id."'
-            and perform_type='repayment' and repayment_type='penalty'
+            and perform_type='repayment' and repayment_type!='fee' or repayment_type='penalty'
             and activated_at BETWEEN STR_TO_DATE('".$from." 00:00:00" . "','%Y-%m-%d %H:%i:%s')
             AND STR_TO_DATE('".$to." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ")
             ->selectRaw("sum(repayment_penalty) as col_pen")
