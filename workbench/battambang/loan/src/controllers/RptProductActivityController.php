@@ -296,7 +296,7 @@ order by ln_disburse.disburse_date DESC
     private function _sumColPen($id,$from,$to){
         $data = 0;
         $data = Perform::whereRaw(" ln_disburse_client_id = '".$id."'
-            and perform_type='repayment' and repayment_type!='fee' or repayment_type='penalty'
+        and perform_type='repayment' and repayment_type!='fee'
             and activated_at BETWEEN STR_TO_DATE('".$from." 00:00:00" . "','%Y-%m-%d %H:%i:%s')
             AND STR_TO_DATE('".$to." 00:00:00" . "','%Y-%m-%d %H:%i:%s') ")
             ->selectRaw("sum(repayment_penalty) as col_pen")

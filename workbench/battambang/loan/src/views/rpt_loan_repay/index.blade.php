@@ -35,7 +35,7 @@
         ->class('select2').''
     .Former::select('status','Type')
         ->options(array('all'=>'All'))
-        ->options(LookupValueList::getRepayStatus())
+        ->options(array('normal'=>'Normal','closing'=>'Closing'))
         ->class('select2')
     .''
     ,
