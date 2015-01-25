@@ -185,7 +185,7 @@
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="9" ss:Color="#000000"/>
   </Style>
  </Styles>
- <Worksheet ss:Name="Product Activity">
+ <Worksheet ss:Name="Productivity">
   <Table  x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="15">
    <Column ss:AutoFitWidth="0" ss:Width="21"/>
@@ -256,42 +256,63 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Staff ID</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Kh Staff Name</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Disbursement</Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="String">N.Client</Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="String">O.Client</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Fee</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Prin</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Coll Int</Data></Cell>
-    <Cell ss:StyleID="s75"><Data ss:Type="String">Total Coll</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Coll Pen</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Total Coll</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Loan Out</Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="String">All.Client</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">Arrears</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">PAR</Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String">PAR(NBC)</Data></Cell>
    </Row>
    <?php
            $i=1;
+           $total_new_c=0;$total_old_c=0;$all_c=0;$total_all_c=0;
            $total_dis=0;$total_pri=0;$total_int=0;$total_pen=0;$total_fee=0;$total_amount=0;$total_bal=0;$total_arr=0;
            foreach($result as $staff=>$row){
-           $st = Battambang\Loan\Staff::where('id',$row->_disburse->ln_staff_id)->first();
 
+           $st = Battambang\Loan\Staff::where('id',$staff)->first();
            $total_dis+=$con_dis[$staff]->total;
            $total_pri+=$con_pri[$staff]->total;
            $total_int+=$con_int[$staff]->total;
            $total_fee+=$con_fee[$staff]->total;
            $total_pen+=$con_pen[$staff]->total;
-           $total_amount+=$con_pri[$staff]->total + $con_int[$staff]->total;
+           $total_amount+=$con_pri[$staff]->total + $con_int[$staff]->total + $con_pen[$staff]->total;
            $total_bal+=$con_bal[$staff]->total;
            $total_arr+=$con_arr[$staff]->total;
+
+           $client_dis =new Battambang\Loan\RptProductActivityController();
+           $new_c = $client_dis->_countNewClient($staff,$first_date,$as_date);
+           $old_c = $client_dis->_countOldClient($staff,$first_date,$as_date);
+           $total_new_c+=$new_c;
+           $total_old_c+=$old_c;
+
+           $all_c=0;$new_count=0;$old_count=0;
+           foreach($row as $c=>$r){
+              if($r->_repayment['cur']['type']!='closing'){
+                  $all_c+=count($all_cycle[$staff][$c]->total);
+              }
+           }
+           $total_all_c+=$all_c;
            ?>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $i++;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $staff;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $st->kh_last_name.' '.$st->kh_first_name;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_dis[$staff]->total;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $new_c;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $old_c;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_fee[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_pri[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_int[$staff]->total;?></Data></Cell>
-    <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo ($con_pri[$staff]->total + $con_int[$staff]->total);?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_pen[$staff]->total;?></Data></Cell>
+    <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo ($con_pri[$staff]->total + $con_int[$staff]->total + $con_pen[$staff]->total);?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_bal[$staff]->total;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $all_c;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="Number"><?php echo $con_arr[$staff]->total;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par_n[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo (number_format($con_par[$staff]->total/$con_bal[$staff]->total*100,2)).'%';?></Data></Cell>
@@ -301,12 +322,15 @@
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="2" ss:StyleID="s85"><Data ss:Type="String">Total&#160;</Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_dis;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $total_new_c;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $total_old_c;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_fee;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_pri;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_int;?></Data></Cell>
-    <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_amount;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_pen;?></Data></Cell>
+    <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_amount;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_bal;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $total_all_c;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="Number"><?php echo $total_arr;?></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="String"></Data></Cell>
     <Cell ss:StyleID="s88"><Data ss:Type="String"></Data></Cell>

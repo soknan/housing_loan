@@ -652,7 +652,7 @@ Breadcrumbs::register(
     'loan.rpt_product_activity.index',
     function ($bc) {
         $bc->parent('cpanel.package.home');
-        $bc->push('Repayment Schedule Report', URL::route('loan.rpt_product_activity.index'));
+        $bc->push('Productivity Report', URL::route('loan.rpt_product_activity.index'));
     }
 );
 // Repayment Schedule Report

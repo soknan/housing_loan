@@ -406,7 +406,7 @@ PageHeader::make(
     'loan.rpt_product_activity.index',
     function (PageHeardItem $header) {
         $header->iconFloppyDisk();
-        $header->add('Product Activity');
+        $header->add('Productivity');
     }
 );
 PageHeader::make(
