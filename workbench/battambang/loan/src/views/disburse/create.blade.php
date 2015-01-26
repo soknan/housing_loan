@@ -34,7 +34,8 @@ echo FormPanel2::make(
 
 echo FormPanel2::make(
     'Product',
-    Former::select('ln_product_id', 'Product', LookupValueList::getProduct($ln_product_id))
+    Former::hidden('ln_lv_interest_type',$ln_lv_interest_type).''
+    .Former::select('ln_product_id', 'Product', LookupValueList::getProduct($ln_product_id))
         ->required()
         ->readonly() . ''
     . Former::select('num_installment', 'Num Installment')
@@ -90,6 +91,13 @@ echo FormPanel2::make(
         $('[name="installment_frequency"]').change(changeIntFre).change(changeNumPay);
         $('[name="num_payment"]').ready(changeNumPay);
 
+        if($('[name="ln_lv_interest_type"]').val()==9){
+            $('[name="installment_principal_frequency"]').html('').append('<option value="' + 1 + '">' + 1 + '</option>');
+            $('[name="installment_principal_frequency"]').attr('readOnly', true);
+            $('[name="installment_principal_percentage"]').html('').append('<option value="' + 100 + '">' + 100 + '</option>');
+            $('[name="installment_principal_percentage"]').attr('readOnly', true);
+        }
+
         function changeNumInstall() {
             var num_installment = $('[name="num_installment"]');
             var int_fre = $('[name="installment_frequency"]');
@@ -122,6 +130,11 @@ echo FormPanel2::make(
             num_installment_fre.html('');
             for (var i = 1; i <= num_payment.val(); i++) {
                 num_installment_fre.append('<option value="' + i + '">' + i + '</option>');
+            }
+
+            if($('[name="ln_lv_interest_type"]').val()==9){
+                $('[name="installment_principal_frequency"]').html('').append('<option value="' + 1 + '">' + 1 + '</option>');
+                $('[name="installment_principal_frequency"]').attr('readOnly', true);
             }
         }
 

@@ -51,7 +51,7 @@ echo FormPanel2::make(
 
 echo FormPanel2::make(
     'Interest',
-    Former::select('ln_lv_interest_type', 'Type', \LookupValueList::getBy('interest type', ' and ln_lookup_value.name != "Flate" '))
+    Former::select('ln_lv_interest_type', 'Type', \LookupValueList::getBy('interest type'))
         ->required()
         ->placeholder('- Select One -') . ''
     . Former::number('min_interest', 'Min')
