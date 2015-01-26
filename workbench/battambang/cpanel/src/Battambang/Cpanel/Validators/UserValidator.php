@@ -13,14 +13,14 @@ class UserValidator extends \ValidatorAssistant
             'email',
             \Request::segment(4)
         );
-        \Rule::add('username')->required()->alphaDash()->digitsBetween(1, 30)->unique(
+        \Rule::add('username')->required()->alphaDash()->unique(
             'cp_user',
             'username',
             \Request::segment(4)
         );
-        \Rule::add('password')->required()->confirmed()
+        \Rule::add('password')->confirmed()
             ->alphaAndNum()->message('The field must be contain letters and numeric.');
-        \Rule::add('password_confirmation')->required()
+        \Rule::add('password_confirmation')
             ->alphaAndNum()->message('The field must be contain letters and numeric.');
         \Rule::add('expire_day')->required();
         \Rule::add('activated')->required();
