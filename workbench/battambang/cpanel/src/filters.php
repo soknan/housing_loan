@@ -117,7 +117,7 @@ Route::filter(
         }
         $filter = in_array($routeName, UserSession::read()->permission);
         if ($filter == false) {
-            return Redirect::back()
+            return Redirect::route('cpanel.package.home')
                 ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
         }
     }

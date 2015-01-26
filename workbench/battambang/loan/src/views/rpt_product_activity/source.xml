@@ -291,12 +291,8 @@
            $total_new_c+=$new_c;
            $total_old_c+=$old_c;
 
-           $all_c=0;$new_count=0;$old_count=0;
-           foreach($row as $c=>$r){
-              if($r->_repayment['cur']['type']!='closing'){
-                  $all_c+=count($all_cycle[$staff][$c]->total);
-              }
-           }
+
+           $all_c = $client_dis->_countAllClient($staff,$as_date);
            $total_all_c+=$all_c;
            ?>
    <Row ss:AutoFitHeight="0">

@@ -184,34 +184,16 @@ order by ln_disburse.disburse_date DESC
                     $con_acc[$row->_disburse->ln_staff_id] = new \stdClass();
                     $con_acc[$row->_disburse->ln_staff_id]->total = 0;
 
-                    /*$new_cycle[$row->_disburse->ln_staff_id] = array();
-                    $new_cycle[$row->_disburse->ln_staff_id] = new \stdClass();
-                    $new_cycle[$row->_disburse->ln_staff_id]->total = 0;
-
-                    $old_cycle[$row->_disburse->ln_staff_id] = array();
-                    $old_cycle[$row->_disburse->ln_staff_id] = new \stdClass();
-                    $old_cycle[$row->_disburse->ln_staff_id]->total = 0;*/
-
-
                 }
 
-                if (!isset($tmp[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id])) {
+                /*if (!isset($tmp[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id])) {
                     $tmp[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id] = array();
                     $all_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id] = array();
                     $all_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id] = new \stdClass();
                     $all_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id]->total = 0;
 
-                    /*$old_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id] = array();
-                    $old_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id] = new \stdClass();
-                    $old_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id]->total = 0;*/
-                }
-                $all_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id]->total;
-
-                /*if($row->_disburse->disburse_date >= $data['first_date'] and $row->_disburse->disburse_date >= $data['as_date']){
-                    if($row->_disburse->cycle >1){
-                        $old_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id]->total;
-                    }
                 }*/
+                    //$all_cycle[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id]->total;
 
                 $tmp[$row->_disburse->ln_staff_id][$row->_disburse->ln_client_id] = $row;
 
@@ -264,7 +246,7 @@ order by ln_disburse.disburse_date DESC
         $data['con_par'] = $con_par;
         $data['con_par_n'] = $con_par_n;
         $data['con_acc'] = $con_acc;
-        $data['all_cycle'] = $all_cycle;
+        //$data['all_cycle'] = $all_cycle;
         //$data['old_cycle'] = $old_cycle;
         $data['result']= $tmp;
         //var_dump($data['c_dis']); exit;
@@ -276,6 +258,17 @@ order by ln_disburse.disburse_date DESC
             ->setDateFrom($data['as_date']);
         return \Report::make('rpt_product_activity/source', $data,'productivity');
 
+    }
+
+    public function _countAllClient($id,$to){
+        $data = 0;
+        $data = Disburse::join('ln_disburse_client','ln_disburse_client.ln_disburse_id','=','ln_disburse.id')
+            ->whereRaw(" ln_disburse.ln_staff_id = '".$id."'
+            and ln_disburse_client.id not in(select p.ln_disburse_client_id from ln_perform p WHERE p.repayment_type ='closing')
+             and ln_disburse.disburse_date <=STR_TO_DATE('".$to." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s') ")
+            ->selectRaw("count(ln_disburse_client.ln_client_id) as dis")
+            ->first();
+        return $data->dis;
     }
 
     public function _countNewClient($id,$from,$to){

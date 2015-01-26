@@ -116,6 +116,11 @@ class ScheduleWeekly
                 // Calculate interest amount for payment
                 $interestPayment[$i] = \Currency::round($currency, ($temLoanAmount * $interestRateInDay * $numOfDays[$i]));
 
+                //Check if fixed interest
+                if($interestType==9){
+                    $interestPayment[$i] = \Currency::round($currency, ($installPrinAmount * $interestRate * $installmentFrequency));
+                }
+
                 // Calculate install principal for payment
                 if ($i == $temInstallPrinFrequency) {
                     if ($i != $numPayment) {

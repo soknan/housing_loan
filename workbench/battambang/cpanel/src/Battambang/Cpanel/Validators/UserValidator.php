@@ -18,9 +18,9 @@ class UserValidator extends \ValidatorAssistant
             'username',
             \Request::segment(4)
         );
-        \Rule::add('password')->required()->digitsBetween(6, 15)->confirmed()
+        \Rule::add('password')->required()->confirmed()
             ->alphaAndNum()->message('The field must be contain letters and numeric.');
-        \Rule::add('password_confirmation')->required()->digitsBetween(6, 15)
+        \Rule::add('password_confirmation')->required()
             ->alphaAndNum()->message('The field must be contain letters and numeric.');
         \Rule::add('expire_day')->required();
         \Rule::add('activated')->required();
