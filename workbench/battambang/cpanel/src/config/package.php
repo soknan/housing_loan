@@ -107,13 +107,13 @@ return array(
                 'loan.category.index' => 'list',
                 'loan.category.create' => 'create',
                 'loan.category.edit' => 'edit',
-                'loan.category.destroy' => 'delete',
+                'loan.category.delete' => 'delete',
             ),
             'product' => array(
                 'loan.product.index' => 'list',
                 'loan.product.create' => 'create',
                 'loan.product.edit' => 'edit',
-                'loan.product.destroy' => 'delete',
+                'loan.product.delete' => 'delete',
             ),
             'staff' => array(
                 'loan.staff.index' => 'list',
@@ -125,7 +125,7 @@ return array(
                 'loan.center.index' => 'list',
                 'loan.center.create' => 'create',
                 'loan.center.edit' => 'edit',
-                'loan.center.destroy' => 'delete',
+                'loan.center.delete' => 'delete',
             ),
             'client' => array(
                 'loan.client.index' => 'list',
