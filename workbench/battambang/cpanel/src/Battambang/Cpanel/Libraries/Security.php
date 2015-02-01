@@ -1,1 +1,42 @@
-<?php /*** PHP Encode v1.0 by zeura.com ***/ $XnNhAWEnhoiqwciqpoHH=file(__FILE__);eval(base64_decode("aWYoIWZ1bmN0aW9uX2V4aXN0cygiWWl1bklVWTc2YkJodWhOWUlPOCIpKXtmdW5jdGlvbiBZaXVuSVVZNzZiQmh1aE5ZSU84KCRnLCRiPTApeyRhPWltcGxvZGUoIlxuIiwkZyk7JGQ9YXJyYXkoNjU1LDIzNiw0MCk7aWYoJGI9PTApICRmPXN1YnN0cigkYSwkZFswXSwkZFsxXSk7ZWxzZWlmKCRiPT0xKSAkZj1zdWJzdHIoJGEsJGRbMF0rJGRbMV0sJGRbMl0pO2Vsc2UgJGY9dHJpbShzdWJzdHIoJGEsJGRbMF0rJGRbMV0rJGRbMl0pKTtyZXR1cm4oJGYpO319"));eval(base64_decode(YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH)));eval(ZsldkfhGYU87iyihdfsow(YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH,2),YiunIUY76bBhuhNYIO8($XnNhAWEnhoiqwciqpoHH,1)));__halt_compiler();aWYoIWZ1bmN0aW9uX2V4aXN0cygiWnNsZGtmaEdZVTg3aXlpaGRmc293Iikpe2Z1bmN0aW9uIFpzbGRrZmhHWVU4N2l5aWhkZnNvdygkYSwkaCl7aWYoJGg9PXNoYTEoJGEpKXtyZXR1cm4oZ3ppbmZsYXRlKGJhc2U2NF9kZWNvZGUoJGEpKSk7fWVsc2V7ZWNobygiRXJyb3I6IEZpbGUgTW9kaWZpZWQiKTt9fX0=66c030345ab0ac76bfd743fd811d0e5878846311rVRta9swEP4eyH+4dAE70Lx2WTLn5cNSBoUWwhIYBcM422dHRJY1SW6Tjfz3yUlDsjRpv/QElu9O99xj6bEEpqQlhgTf0BhMAxSJP5EoiPv3LFCoGOlBuVSMkKPWMKMwV8ysy6W/5RJYk3nAWQjaoLFTnIvQsExAiktyq/pl9XfGCUZgVE7XUGXSvsfIdeHQSjJFt2hoH6ztgF/wC6umOrFZZxixJ9tpzWl0ZWhl6shZIjwISRhSV+NDxbENF+19UYDhMlFZLqJ6mPFMeZ/iuGVtADsXrF/YJajCppxQE0wyYTA0cDeHW3oinsnUsoA5YQqVYlwg01y0L/GUe5qxxa5r9oc86LTkavAWnQfVgMc8S2G+IFQI7pbBPWFEqnZt+XAPWr0WdLst6Pdbw0C9AzZZ5ClMF8iXuQB3qrJEYZoegX3tQPcG2l/s8320B0IBs2wp8DxYuwf9z2C59dqXNkyeaTFsWimMncEh02xa5hQuYa85iK3oDnkWw/96rB0rbKuyeKdSZ+L5P5mIsmftz9baUHrT8X0HGuDbQ49Z4nkJGddBKRtLWjs1m3EagQmO6exbVgrQX7Ri2mh326H2qnFhFC6yrc4HZ3IrZk7Cm4O7ObMH9g/DKFKk9ckGMPmqexH3f9DvnLTZftmEM6vkO+nWoDKCcyUfT3h3C0Bkr4ETxof74SzzosJ1HutpPbIHMYa31n8IbTtt/gE=
+<?php
+namespace Battambang\Cpanel\Libraries;
+
+
+class Security
+{
+    public static function make($securityFile = true, $ip = false, $expireDate = false)
+    {
+        $msg = '<div style="text-align: center">
+                    <h1 style="background-color:#ff0000; color: #ffffff">
+                        Please Contact IT Development Team ! ! !
+                    </h1>
+                    <p style="font-size: 20px;">
+                        Mr. Yuom Theara (Team Leader), Tel: 070 550 880<br>
+                        Mr. Chum Phalkun (Programmer), Tel: 092 53 16 53<br>
+                        Mr. Mean Soknan (Programmer), Tel: 017 84 50 71
+                    </p>
+                </div>';
+        // Check security file
+        if ($securityFile) {
+            $file = 'C:\Windows\System32\\' . \Config::get('app.key') . '.btb';
+            if (!file_exists($file)) {
+                echo $msg;
+                exit;
+            }
+        }
+        // Check ip address
+        if ($ip) {
+            if (\Request::getClientIp() != $ip) {
+                echo $msg;
+                exit;
+            }
+        }
+        // Check expire date
+        if ($expireDate) {
+            if (date('Y-m-d') > $expireDate) {
+                echo $msg;
+                exit;
+            }
+        }
+    }
+}
