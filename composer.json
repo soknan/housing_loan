@@ -10,8 +10,8 @@
         "anahkiasen/former": "dev-develop",
         "chumper/datatable": "dev-master",
         "chumper/zipper": "dev-master",
-        "fadion/validator-assistant": "dev-master",
-        "fadion/rule": "dev-master",
+        "fadion/validator-assistant": "~1.0",
+        "fadion/rule": "~1.0",
         "maatwebsite/excel": "1.*",
         "davejamesmiller/laravel-breadcrumbs": "~2.2.1"
     },
