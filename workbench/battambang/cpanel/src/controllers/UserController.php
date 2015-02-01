@@ -61,7 +61,7 @@ class UserController extends BaseController
         $validator = UserValidator::make();
         if ($validator->passes()) {
 
-            $inputs = $validator->inputs();
+            $inputs = $validator->getInputs();
 
             $data = new User();
             $this->saveData($data, $inputs);
@@ -79,7 +79,7 @@ class UserController extends BaseController
             $validator = UserValidator::make();
             if ($validator->passes()) {
 
-                $inputs = $validator->inputs();
+                $inputs = $validator->getInputs();
 
                 $data = User::findOrFail($id);
                 $this->saveData($data, $inputs);

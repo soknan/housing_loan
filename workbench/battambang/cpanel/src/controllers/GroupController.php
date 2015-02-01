@@ -24,7 +24,7 @@ class GroupController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'ID', 'Name', 'Package', 'Branch', 'Permission');
+        $item = array('Action', 'ID', 'Name', 'Package', 'Branch');
 //        $data['btnAction'] = array('Add New' => route('cpanel.group.create'));
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -34,8 +34,8 @@ class GroupController extends BaseController
                 array(10, 25, 50, 100, 'All')
             ))
             ->setOptions("iDisplayLength", 10)// default show entries
-            ->setOptions("scrollY","300")
-            ->setOptions("scrollX",true)
+            //->setOptions("scrollY","300")
+            //->setOptions("scrollX",true)
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
             View::make(Config::get('battambang/cpanel::views.group_index'), $data)
@@ -159,9 +159,9 @@ class GroupController extends BaseController
                 }
                 return implode(', ',$tmp);
             })
-            ->addColumn('permission_arr', function($model){
-                    return implode(', ', json_decode($model->permission_arr, true));
-                })
+//            ->addColumn('permission_arr', function($model){
+//                    return implode(', ', json_decode($model->permission_arr, true));
+//                })
             ->searchColumns($item)
             ->orderColumns($item)
             ->make();
