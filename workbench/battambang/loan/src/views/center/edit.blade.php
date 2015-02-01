@@ -26,10 +26,10 @@ echo FormPanel2::make(
 
 echo FormPanel2::make(
     'Contact',
-    Former::select('cp_location_id', 'Location')->options(LookupValueList::getLocation(), $row->cp_location_id)->required() ->class('select2')->placeholder('- Select One -') . ''
-    . Former::select('ln_lv_geography', 'Geography')->options(LookupValueList::getBy('geography'), $row->ln_lv_geography)->required()->placeholder('- Select One -')
+    Former::select('cp_location_id', 'Location')->options(LookupValueList::getLocation(), $row->cp_location_id)->required() ->class('select2')->placeholder('- Select One -')
     ,
-    Former::hidden('cp_office_id', UserSession::read()->sub_branch)
+    Former::select('ln_lv_geography', 'Geography')->options(LookupValueList::getBy('geography'), $row->ln_lv_geography)->required()->placeholder('- Select One -') . ''
+    .Former::hidden('cp_office_id', UserSession::read()->sub_branch)
 //    Former::select('cp_office_id', 'Branch Office')
 //        ->options(\GetLists::getSubBranchList())
 //        ->required()

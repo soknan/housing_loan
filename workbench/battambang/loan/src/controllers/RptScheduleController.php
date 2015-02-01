@@ -36,7 +36,7 @@ class RptScheduleController extends BaseController{
 
 // User action
         \Event::fire('user_action.report', array('rpt_schedule'));
-        $rptFormat='Nikom'; // Kra, Nikom
+        $rptFormat='Kra'; // Kra, Nikom
 
         if($rptFormat=='Kra'){
             $rptName='Repayment Schedule Kra';
