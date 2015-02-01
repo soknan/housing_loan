@@ -12,7 +12,6 @@ use Battambang\Cpanel\LookupValue;
 use Battambang\Cpanel\WorkDay;
 use Input,
     Redirect,
-    Request,
     View,
     DB,
     Config;
@@ -24,11 +23,11 @@ class CenterController extends BaseController
     public function index()
     {
         //return \LookupValueList::getLocation();
-        $item = array('Action', 'ID','Joining Date', 'Name', 'Meeting Weekly', 'Meeting Monthly', 'Last Name','First Name');
+        $item = array('Action', 'ID', 'Joining Date', 'Name', 'Meeting Weekly', 'Meeting Monthly', 'Last Name', 'First Name');
 //        $data['btnAction'] = array('Add New' => route('loan.center.create'));
         $data['table'] = \Datatable::table()
-            ->addColumn($item) // these are the column headings to be shown
-            ->setUrl(route('api.center')) // this is the route where data will be retrieved
+            ->addColumn($item)// these are the column headings to be shown
+            ->setUrl(route('api.center'))// this is the route where data will be retrieved
             ->setOptions('aLengthMenu', array(
                 array(10, 25, 50, 100, '-1'),
                 array(10, 25, 50, 100, 'All')
@@ -42,31 +41,18 @@ class CenterController extends BaseController
 
     public function create()
     {
-        $arr = array();
-        $workday = WorkDay::orderBy('activated_at','DESC')->limit(1)->first();
-        $tmp_week = $workday->work_week;
-        $tmp_month = $workday->work_month;
-
-        $arr['work_week'] = \LookupValueList::getBy('meeting weekly');
-        if($tmp_week == 'MF') unset($arr['work_week'][32]);
-
-        $work_month = \LookupValueList::getBy('meeting monthly');
-
-        foreach ($work_month as $key=> $row) {
-            if($row <= $tmp_month){
-                $arr['work_month'][$key] = $row;
-            }
-        }
-
-
         return $this->renderLayout(
-            View::make(Config::get('battambang/loan::views.center_create'),$arr)
+            View::make(Config::get('battambang/loan::views.center_create'), $this->_meetingSchedule())
         );
     }
 
     public function edit($id)
     {
         try {
+            $meetingSchedule = $this->_meetingSchedule();
+            $arr['work_week'] = $meetingSchedule['work_week'];
+            $arr['work_month'] = $meetingSchedule['work_month'];
+
             $arr['row'] = Center::findOrFail($id);
             return $this->renderLayout(
                 View::make(Config::get('battambang/loan::views.center_edit'), $arr)
@@ -152,7 +138,7 @@ class CenterController extends BaseController
         $data->name = Input::get('name');
         $data->meeting_weekly = Input::get('meeting_weekly');
         $data->meeting_monthly = Input::get('meeting_monthly');
-        $data->joining_date = \Carbon::createFromFormat('d-m-Y',Input::get('joining_date'))->toDateString();
+        $data->joining_date = \Carbon::createFromFormat('d-m-Y', Input::get('joining_date'))->toDateString();
         $data->ln_lv_geography = Input::get('ln_lv_geography');
         $data->cp_location_id = Input::get('cp_location_id');
         $data->address = Input::get('address');
@@ -182,15 +168,15 @@ class CenterController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('id','joining_date', 'center_name', 'meeting_weekly_name', 'meeting_monthly_name', 'staff_kh_last_name','staff_kh_first_name');
+        $item = array('id', 'joining_date', 'center_name', 'meeting_weekly_name', 'meeting_monthly_name', 'staff_kh_last_name', 'staff_kh_first_name');
         $arr = DB::table('view_center')
-            ->where('id','like',\UserSession::read()->sub_branch.'%');
+            ->where('id', 'like', \UserSession::read()->sub_branch . '%');
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
                 return \Action::make()
                     ->edit(route('loan.center.edit', $model->id))
-                    ->delete(route('loan.center.delete', $model->id),'',$this->_checkStatus($model->id))
+                    ->delete(route('loan.center.delete', $model->id), '', $this->_checkStatus($model->id))
                     ->get();
             })
             ->showColumns($item)
@@ -199,12 +185,33 @@ class CenterController extends BaseController
             ->make();
     }
 
-    private function _checkStatus($id){
-        $data = Disburse::where('ln_center_id','=',$id)->count();
-        if($data > 0){
+    private function _checkStatus($id)
+    {
+        $data = Disburse::where('ln_center_id', '=', $id)->count();
+        if ($data > 0) {
             return false;
         }
         return true;
+    }
+
+    private function _meetingSchedule()
+    {
+        $arr = [];
+        $workday = WorkDay::orderBy('activated_at', 'DESC')->limit(1)->first();
+        $tmp_week = $workday->work_week;
+        $tmp_month = $workday->work_month;
+
+        $arr['work_week'] = \LookupValueList::getBy('meeting weekly');
+        if ($tmp_week == 'MF') unset($arr['work_week'][32]);
+
+        $work_month = \LookupValueList::getBy('meeting monthly');
+
+        foreach ($work_month as $key => $row) {
+            if ($row <= $tmp_month) {
+                $arr['work_month'][$key] = $row;
+            }
+        }
+        return $arr;
     }
 
 }

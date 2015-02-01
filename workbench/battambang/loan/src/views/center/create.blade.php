@@ -1,7 +1,7 @@
 @extends(Config::get('battambang/cpanel::views.layout'))
 
 @section('content')
-
+Hi
 {{Former::open( route('loan.center.store'))->method('POST')->enctype('multipart/form-data')}}
 
 <?php

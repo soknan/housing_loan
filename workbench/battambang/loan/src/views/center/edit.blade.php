@@ -10,9 +10,10 @@ echo FormPanel2::make(
     Former::text('name', 'name', $row->name)->required() . ''
     . Former::textarea('des', 'Description', $row->des)
     . Former::select('meeting_weekly', 'Meeting Weekly')
-        ->options(\LookupValueList::getBy('meeting weekly'), $row->meeting_weekly)->placeholder('- Select One -')
+        ->options($work_week, $row->meeting_weekly)->placeholder('- Select One -')
     ,
-    Former::select('meeting_monthly', 'Meeting Monthly')->options(\LookupValueList::getBy('meeting monthly'), $row->meeting_monthly)->placeholder('- Select One -') . ''
+    Former::select('meeting_monthly', 'Meeting Monthly')
+            ->options($work_month, $row->meeting_monthly)->placeholder('- Select One -') . ''
     . Former::text('joining_date', 'Joining Date', \Carbon::createFromFormat('Y-m-d',$row->joining_date)->format('d-m-Y'))->required()->append('mm/dd/yyyy')
 //    . Former::text('ln_staff_id', 'Staff')
 //        ->value($row->ln_staff_id)
