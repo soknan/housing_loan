@@ -1,5 +1,5 @@
 <?php
-namespace Battambang\Loan;
+namespace Battambang\Cpanel;
 
 use Battambang\Cpanel\Libraries\EmptyClass;
 use Input,

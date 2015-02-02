@@ -37,7 +37,7 @@ class CompanyController extends BaseController
             $validator = CompanyValidator::make();
             if ($validator->passes()) {
 
-                $inputs=$validator->inputs();
+                $inputs=$validator->getInputs();
 
                 $logo = Input::file('logo');
                 $logoPath = \URL::to('/') . '/packages/battambang/cpanel/img/cp_noimage.jpg';

@@ -22,11 +22,11 @@ class BackupRestoreController extends BaseController
         'loan'=>array(
             'default'=>'Default',
             'setting'=>'Setting',
-            'user_action'=>'User Logs'
+//            'user_action'=>'User Logs'
         ),
         'cpanel'=>array(
             'default'=>'Default',
-            'user_action'=>'User Logs'
+//            'user_action'=>'User Logs'
         )
     );
     public $tableNames = array(

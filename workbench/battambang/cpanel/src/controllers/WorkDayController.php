@@ -91,7 +91,7 @@ class WorkDayController extends BaseController
         $validator = WorkDayValidator::make();
         if ($validator->passes()) {
 
-            $inputs = $validator->inputs();
+            $inputs = $validator->getInputs();
 
             $data = new WorkDay();
             $this->saveData($data, $inputs);
@@ -110,7 +110,7 @@ class WorkDayController extends BaseController
             $validator = WorkDayValidator::make();
             if ($validator->passes()) {
 
-                $inputs = $validator->inputs();
+                $inputs = $validator->getInputs();
 
                 $data = WorkDay::findOrFail($id);
                 $this->saveData($data, $inputs);

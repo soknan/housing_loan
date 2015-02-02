@@ -13,8 +13,7 @@ echo FormPanel2::make(
     ,
     Former::text('en_short_name', 'En Short Name',$row->en_short_name)->required() . ''
     . Former::text('register_at', 'Register Date', date('d-m-Y', strtotime($row->register_at)))
-        ->placeholder(' dd-mm-yyyy')
-        ->append('<span class="glyphicon glyphicon-calendar"></span>')
+        ->append('dd-mm-yyyy')
     . Former::select('cp_office_id', 'Main Office', GetLists::getAllBranchList(), $row->cp_office_id)->class('select2')
 );
 
