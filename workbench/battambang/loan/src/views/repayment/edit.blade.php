@@ -38,15 +38,22 @@ echo FormPanel2::make(
         ->class('select2')
         ->readonly('readonly')
      .Former::hidden('ln_disburse_client_id',$client_id)
-    .Former::text('repayment_date', 'Date',\Carbon::createFromFormat('Y-m-d',$activated_at)->format('d-m-Y'))->readonly($onlyFee)->required() . ''
+    .Former::text('repayment_date', 'Date',\Carbon::createFromFormat('Y-m-d',$activated_at)
+                ->format('d-m-Y'))
+                //->readonly($onlyFee)
+                ->required() . ''
 
     .Former::select('repayment_status', 'Type')
         ->options($status,$option)
         ->class('select2')->required()
     ,
     Former::number('repayment_principal','Amount',$totalPrincipal)
-        ->step('0.01')->min(0)->required()->readonly($onlyFee)
-    .Former::number('repayment_penalty', 'penalty',$penalty)->step(0.01)->min(0)->required()->readonly($onlyFee).''
+        ->step('0.01')->min(0)
+            ->required()
+            //->readonly($onlyFee)
+    .Former::number('repayment_penalty', 'penalty',$penalty)->step(0.01)->min(0)
+            ->required()
+            //->readonly($onlyFee).''
     .Former::text('repayment_voucher_id',' Voucher',$voucher_id)->maxlength(6)
     .Former::hidden('hidden_voucher_id',$row->repayment_voucher_id)
 );
@@ -59,4 +66,15 @@ echo FormPanel2::make(
 @stop
 @section('js')
 <?php if($onlyFee==false) echo DatePicker::make('repayment_date'); ?>
+
+<script>
+    <?php
+    if($onlyFee){
+        echo "$('#repayment_date').prop('readonly', true);";
+        echo "$('#repayment_principal').prop('readonly', true);";
+        echo "$('#repayment_penalty').prop('readonly', true);";
+    }
+    ?>
+</script>
+
 @stop

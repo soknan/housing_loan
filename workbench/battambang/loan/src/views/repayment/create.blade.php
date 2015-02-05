@@ -34,7 +34,9 @@ echo FormPanel2::make(
         ->placeholder('- Select One -')
         ->class('select2')
         ->required()
-    .Former::text('repayment_date', 'Date',$activated_at)->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
+    .Former::text('repayment_date', 'Date',$activated_at)
+            ->append('dd-mm-yyyy')->required()
+            //->readonly($onlyFee) . ''
     //.Former::text('repayment_date', 'Date', date('d-m-Y'))->append('dd-mm-yyyy')->required()->readonly($onlyFee) . ''
 
     .Former::select('repayment_status', 'Type')
@@ -44,10 +46,11 @@ echo FormPanel2::make(
     ,
   Former::number('repayment_principal','Amount',$totalPrincipal)
       ->step('0.01')->min(0)
-      ->readonly($onlyFee)
+      //->readonly($onlyFee)
       ->required()
    .Former::number('repayment_penalty', 'penalty',$penalty)
-      ->step('0.01')->min(0)->required()->readonly($onlyFee). ''
+      ->step('0.01')->min(0)->required()
+      //->readonly($onlyFee). ''
     .Former::text('repayment_voucher_id',' Voucher')
           ->maxlength(6)
 );
@@ -59,13 +62,22 @@ echo FormPanel2::make(
 {{Former::close()}}
 
 @stop
+
 @section('js')
+
 <?php
-if($onlyFee==false) echo DatePicker::make('repayment_date');
-
+if($onlyFee==false){
+    echo DatePicker::make('repayment_date');
+}
 ?>
-<script>
 
+<script>
+<?php
+if($onlyFee){
+    echo "$('#repayment_date').prop('readonly', true);";
+    echo "$('#repayment_principal').prop('readonly', true);";
+    echo "$('#repayment_penalty').prop('readonly', true);";
+}
+?>
 </script>
 @stop
-
