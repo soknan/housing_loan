@@ -267,6 +267,9 @@ class ScheduleMonthly
         if ($workDay->work_week == 'MF') {
             $weekend[] = 6;
         }
+        if ($workDay->work_week == 'MSD') {
+            $weekend = array(1);
+        }
         // Set end of month
         $endMonth = array();
         for ($i = ($workDay->work_month + 1); $i <= $endWorkDay->copy()->day; $i++) {
@@ -276,13 +279,14 @@ class ScheduleMonthly
 
         // Set Sat / Sunday to $holiday[]
         $startWorkDayTem = $startWorkDay->copy();
+
         for ($i = $startWorkDay->day; $i <= $endWorkDay->day; $i++) {
             if (in_array($startWorkDayTem->dayOfWeek, $weekend) or in_array($startWorkDayTem->day, $endMonth)) {
                 $holiday[] = $startWorkDayTem->day;
             }
             $startWorkDayTem->addDay();
         }
-
+        //echo $startWorkDayTem; var_dump($weekend); exit;
         $getHoliday = Holiday::whereBetween('holiday_date', array($startWorkDay->toDateString(), $endWorkDay->toDateString()))
             ->get();
         foreach ($getHoliday as $value) {
