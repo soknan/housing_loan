@@ -23,6 +23,7 @@ class OfficeController extends BaseController
                 array(10, 25, 50, 100, '-1'),
                 array(10, 25, 50, 100, 'All')
             ))
+            ->setOptions("sScrollY",300)
             ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(

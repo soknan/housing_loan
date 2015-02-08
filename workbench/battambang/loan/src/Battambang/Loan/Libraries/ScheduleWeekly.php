@@ -12,6 +12,7 @@ class ScheduleWeekly
     public function make($loanAcc, $activatedDate)
     {
         $data = DB::table('view_schedule')->where('ln_disburse_client_id', '=', $loanAcc)->first();
+        //var_dump($data); exit;
         // General
         $disburseDate = $data->disburse_date;
         //echo 'Disburse Date: ' . $disburseDate . '<br>';
@@ -42,7 +43,6 @@ class ScheduleWeekly
 //        if (!empty($meetingDay)) {
         if ($meetingDay != '118') {
             $meetingDay = LookupValue::find($meetingDay)->code;
-
             // Calculate diff meeting day with disburse day
             $diffMeetingDay = $meetingDay - $temDisburseDate->dayOfWeek;
             if ($diffMeetingDay != 0) {
@@ -118,7 +118,7 @@ class ScheduleWeekly
 
                 //Check if fixed interest
                 if($interestType==9){
-                    $interestPayment[$i] = \Currency::round($currency, ($installPrinAmount * $interestRate * $installmentFrequency));
+                    $interestPayment[$i] = \Currency::round($currency, ($loanAmount * $interestRate * $installmentFrequency));
                 }
 
                 // Calculate install principal for payment
@@ -199,7 +199,6 @@ class ScheduleWeekly
 
                 // Check previous
                 $newDate = $this->toPrevious($date->toDateString(), $holidayInDay);
-
                 // Check next if previous is false
                 if ($newDate == false) {
                     $newDate = $this->toNext($date->toDateString(), $holidayInDay);
@@ -227,11 +226,18 @@ class ScheduleWeekly
         if ($workDay->work_week == 'MS') {
             $maxDayOfWeek = 6; // Workday until Sat
         }
+        if ($workDay->work_week == 'MSD') {
+            $maxDayOfWeek = 7; // Workday until Sat
+        }
         for ($i = $date->dayOfWeek; $i <= $maxDayOfWeek; $i++) {
-            if (!in_array($temDate->day, $holidayInDay)) {
+            if($temDate->day<=$holidayInDay){
                 return $temDate->toDateString();
             }
             $temDate = $temDate->addDay();
+            /*if (!in_array($temDate->day, $holidayInDay)) {
+                return $temDate->toDateString();
+            }
+            $temDate = $temDate->addDay();*/
         }
         return false;
     }
@@ -259,12 +265,17 @@ class ScheduleWeekly
 
         // Check work day: MF-Mon to Fri, MS-Mon to Sat
         $startWorkDay = $date->copy()->startOfWeek();
-        $endWorkDay = $date->copy()->endOfWeek()->subDays(1);
+        $endWorkDay = $date->copy()->endOfWeek();
         $holiday = array();
         $holiday[] = $date->copy()->endOfWeek()->day;
         if ($workDay->work_week == 'MF') {
-            $endWorkDay = $endWorkDay->subDays(1);
+            $endWorkDay = $endWorkDay->subDays(2);
             $holiday[] = $date->copy()->endOfWeek()->subDays(1)->day;
+        }
+
+        if ($workDay->work_week == 'MS') {
+            $endWorkDay = $endWorkDay->subDays(1);
+            $holiday[] = $date->copy()->endOfWeek()->day;
         }
 
         $getHoliday = Holiday::whereBetween('holiday_date', array($startWorkDay->toDateString(), $endWorkDay->toDateString()))->get();

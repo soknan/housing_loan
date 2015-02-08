@@ -125,7 +125,7 @@ class ScheduleMonthly
 
                 //Check if fixed interest
                 if($interestType==9){
-                    $interestPayment[$i] = \Currency::round($currency, ($installPrinAmount * $interestRate * $installmentFrequency));
+                    $interestPayment[$i] = \Currency::round($currency, ($loanAmount * $interestRate * $installmentFrequency));
                 }
 
                 // Calculate install principal for payment

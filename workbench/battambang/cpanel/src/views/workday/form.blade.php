@@ -7,7 +7,7 @@ echo Former::open($form_action)->method($form_method);
 echo FormPanel2::make(
     'General',
     Former::select('work_week', 'Work Week')
-        ->options(array('MF' => 'Monday Friday', 'MS' => 'Monday Saturday'), $form->work_week)
+        ->options(array('MF' => 'Monday Friday', 'MS' => 'Monday Saturday','MSD' => 'Monday Sunday'), $form->work_week)
         ->required()
         ->placeholder('- Select One -') . ''
     .Former::select('work_month', 'Work Month')

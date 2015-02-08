@@ -13,7 +13,7 @@ class PageHeaderItem
         if (!is_null($this->icon) or !empty($this->icon)) {
             $iconItem = '<span class="glyphicon glyphicon-' . $this->icon . '"></span> ';
         }
-        $this->header = '<div class="page-header"><h3>' . $iconItem . $title . '</h3>' . $subTitle . '</div>';
+        $this->header = '<div class="page-header"><h4>' . $iconItem . $title . '</h4>' . $subTitle . '</div>';
     }
 
     public function icon($name)

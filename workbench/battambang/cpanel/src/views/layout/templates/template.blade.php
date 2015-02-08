@@ -25,7 +25,7 @@
     @endforeach
     </tbody>
 </table>
-<div style="padding-bottom: 20px"></div>
+
 <script type="text/javascript">
     $(document).ready(function(){
         // dynamic table

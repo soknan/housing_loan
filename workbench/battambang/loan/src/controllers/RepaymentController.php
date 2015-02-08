@@ -30,9 +30,10 @@ class RepaymentController extends BaseController
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.repayment')) // this is the route where data will be retrieved
             ->setOptions('aLengthMenu', array(
-                array(10, 25, 50, 100, '-1'),
-                array(10, 25, 50, 100, 'All')
+                array(10, 25, 50, 100),
+                array(10, 25, 50, 100)
             ))
+            ->setOptions("sScrollY",300)
             ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
@@ -397,14 +398,14 @@ class RepaymentController extends BaseController
                 if ($status == 'closing') {
                     if ($data->_repayment['cur']['type'] != 'closing') {
                         if ($totalArrears != 0) {
-                            $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal'] + $data->_due_closing['principal_closing'];
-                            $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
-                            $data->_repayment['cur']['type'] = $status;
-                            $data->error = 'Closing normal !.';
-                            $pri_closing = ' ( Late : ' . number_format($data->_new_due['principal'] - $data->_due['principal'],2)
-                                . ', Cur Pri : ' . number_format($data->_due['principal'] . ', Closing : ' . $data->_due_closing['principal_closing'],2) . ' )';
-                            $int_closing = ' ( Late : ' . number_format($data->_new_due['interest'] - $data->_due['interest'],2)
+                            $pri_closing = ' ( Late : ' . number_format($data->_arrears['cur']['principal'] - $data->_due['principal'],2)
+                                . ', Cur Pri : ' . number_format($data->_due['principal'],2) . ', Closing : ' . number_format($data->_due_closing['principal_closing'],2) . ' )';
+                            $int_closing = ' ( Late : ' . number_format($data->_arrears['cur']['interest'] - $data->_due['interest'],2)
                                 . ', Cur Int : ' . number_format($data->_due['interest'],2) . ', Closing : ' . number_format($data->_due_closing['interest_closing'],2) . ', Accrued Int : ' . number_format($data->_accru_int,2) . ' )';
+                            $data->_arrears['cur']['principal'] = $data->_arrears['cur']['principal']  + $data->_due_closing['principal_closing'];
+                            $data->_arrears['cur']['interest'] = $data->_arrears['cur']['interest'] + $data->_due_closing['interest_closing'] + $data->_accru_int;
+                            $data->_repayment['cur']['type'] = 'closing';
+                            $data->error = 'Closing normal !.';
                         } else {
                             //if($data->_repayment['last']['principal'] + $data->_repayment['last']['interest'] == 0 and $data->_arrears['cur']['penalty']==0){
                             $data->_arrears['cur']['principal'] = $data->_balance_principal;

@@ -29,9 +29,10 @@ class WorkDayController extends BaseController
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.workday')) // this is the route where data will be retrieved
             ->setOptions('aLengthMenu', array(
-                array(10, 25, 50, 100, '-1'),
-                array(10, 25, 50, 100, 'All')
+                array(10, 25, 50, 100),
+                array(10, 25, 50, 100)
             ))
+            ->setOptions("sScrollY",300)
             ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(

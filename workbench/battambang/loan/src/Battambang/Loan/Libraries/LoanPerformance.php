@@ -326,6 +326,7 @@ class LoanPerformance
 
                 //Fee
                 if($this->_arrears['cur']['fee'] >0){
+                    $this->_repayment['cur']['type']='fee';
                     return $this;
                 }
                 //Set Fee = 0

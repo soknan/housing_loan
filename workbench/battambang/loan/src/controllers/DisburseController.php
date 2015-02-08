@@ -18,15 +18,16 @@ class DisburseController extends BaseController
 
     public function index()
     {
-        $item = array('Action', 'Disburse #','Disburse_Date', 'Center', 'Staff_Name', 'Product', 'Acc_Type','Currency','Client #','Files');
+        $item = array('Action', 'Disburse#','Disburse_Date', 'Center', 'Staff_Name', 'Product', 'Acc_Type','Currency','Client#','Files');
         /*$data['btnAction'] = array('Add New' => route('loan.disburse.add'));*/
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
             ->setUrl(route('api.disburse')) // this is the route where data will be retrieved
             ->setOptions('aLengthMenu', array(
-                array(10, 25, 50, 100, '-1'),
-                array(10, 25, 50, 100, 'All')
+                array(10, 25, 50, 100),
+                array(10, 25, 50, 100)
             ))
+            ->setOptions("sScrollY",300)
             ->setOptions("iDisplayLength", 10)// default show entries
             ->render('battambang/cpanel::layout.templates.template');
         return $this->renderLayout(
