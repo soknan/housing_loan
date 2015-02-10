@@ -41,7 +41,7 @@ class ScheduleWeekly
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 12-Week(...-None, 27-Mon, 28-Tue, 29-Wed, 30-Thu, 31-Fri, 32-Sat)
 //        if (!empty($meetingDay)) {
-        if ($meetingDay != '118') {
+        if ($meetingDay != '128') {
             $meetingDay = LookupValue::find($meetingDay)->code;
             // Calculate diff meeting day with disburse day
             $diffMeetingDay = $meetingDay - $temDisburseDate->dayOfWeek;

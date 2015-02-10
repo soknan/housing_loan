@@ -203,7 +203,8 @@ class CenterController extends BaseController
         $tmp_month = $workday->work_month;
 
         $arr['work_week'] = \LookupValueList::getBy('meeting weekly');
-        if ($tmp_week == 'MF') unset($arr['work_week'][32]);
+        if ($tmp_week == 'MF'){unset($arr['work_week'][32]); unset($arr['work_week'][118]);}
+        if ($tmp_week == 'MS') unset($arr['work_week'][118]);
 
         $work_month = \LookupValueList::getBy('meeting monthly');
 
