@@ -77,7 +77,7 @@ class BaseController extends Controller
 
     protected function getFooter()
     {
-        return 'COPYRIGHT &copy; ' . date('Y', time());
+        return '&copy; 2010 - ' . date('Y', time());
     }
 
     protected function getConfigByPackage($name)

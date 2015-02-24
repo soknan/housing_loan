@@ -122,14 +122,14 @@ PageHeader::make(
     'loan.fee.create',
     function (PageHeardItem $header) {
         $header->iconPlus();
-        $header->add('Free');
+        $header->add('Fee');
     }
 );
 PageHeader::make(
     'loan.fee.edit',
     function (PageHeardItem $header) {
         $header->iconEdit();
-        $header->add('Free');
+        $header->add('Fee');
     }
 );
 PageHeader::make(

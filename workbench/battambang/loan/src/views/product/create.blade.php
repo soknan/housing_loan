@@ -35,7 +35,7 @@ echo FormPanel2::make(
 echo FormPanel2::make(
     'Repayment',
     Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency'))
-    //Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency', ' and ln_lookup_value.id = 3')) // 3-Weekly, 4-Monthly
+//Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency', ' and ln_lookup_value.id = 3')) // 3-Weekly, 4-Monthly
         ->required()
         ->placeholder('- Select One -') . ''
     . Former::number('min_installment', 'Min')
