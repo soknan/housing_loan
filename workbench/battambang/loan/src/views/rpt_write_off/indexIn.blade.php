@@ -8,7 +8,7 @@
         ->multiple('multiple')
         ->required()
         .''
-    .Former::select('ln_staff_id','Staff Name')
+    .Former::select('ln_staff_id','Staff')
         ->options(array('all'=>'All'))
         ->options(LookupValueList::getStaff())
         ->class('select2')
@@ -28,7 +28,7 @@
         ->options(LookupValueList::getProduct())
         ->class('select2')
         .''.
-        Former::select('ln_lv_repay_frequency','Repay Frequency')
+        Former::select('ln_lv_repay_frequency','Repay.Fre')
             ->options(array('all'=>'All'))
             ->options(array('3'=>'Weekly','4'=>'Monthly'))
             ->class('select2').''
@@ -38,7 +38,7 @@
         ->options(LookupValueList::getProductStatus(' and code !="WOL" '))
         ->class('select2')
     .''*/
-    Former::select('location_cat','Location Category')
+    Former::select('location_cat','Location.Cat')
         ->options(LookupValueList::getLocationCategory())
         ->class('select2').''
     .Former::select('cp_location_id','Location')
@@ -46,12 +46,12 @@
         ->options(LookupValueList::getLocation())
         ->class('select2')
         .''
-    .Former::select('exchange_rate','Exchange Rate')
+    .Former::select('exchange_rate','Ex.Rate')
         ->options(LookupValueList::getExchange())
         ->class('select2')
         ->required().''
-    .Former::text('from','Date From',date('d-m-Y'))->append('dd-mm-yyyy')->required().''
-    .Former::text('to','Date To',date('d-m-Y'))->append('dd-mm-yyyy')->required().''
+    .Former::text('from','From',date('d-m-Y'))->append('dd-mm-yyyy')->required().''
+    .Former::text('to','To',date('d-m-Y'))->append('dd-mm-yyyy')->required().''
 
 )
 ?>
