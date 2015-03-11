@@ -281,6 +281,28 @@ Breadcrumbs::register(
         $bc->push('Edit', URL::route('loan.lookup_value.edit'));
     }
 );
+// Pre-Paid
+Breadcrumbs::register(
+    'loan.pre_paid.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Pre-Paid', URL::route('loan.pre_paid.index'));
+    }
+);
+Breadcrumbs::register(
+    'loan.pre_paid.create',
+    function ($bc) {
+        $bc->parent('loan.pre_paid.index');
+        $bc->push('Add New', URL::route('loan.pre_paid.create'));
+    }
+);
+Breadcrumbs::register(
+    'loan.pre_paid.edit',
+    function ($bc) {
+        $bc->parent('loan.pre_paid.index');
+        $bc->push('Edit', URL::route('loan.pre_paid.edit'));
+    }
+);
 // Client
 Breadcrumbs::register(
     'loan.client.index',
@@ -645,6 +667,14 @@ Breadcrumbs::register(
     function ($bc) {
         $bc->parent('loan.product.index');
         $bc->push('Edit', URL::route('loan.product.edit'));
+    }
+);
+// Loan In-Active Report
+Breadcrumbs::register(
+    'loan.rpt_loan_inactive.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Loan In-Active Report', URL::route('loan.rpt_loan_inactive.index'));
     }
 );
 // Product Activity Report

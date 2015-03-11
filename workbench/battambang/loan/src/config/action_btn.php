@@ -1,6 +1,9 @@
 <?php
 
 return array(
+    'pre_paid' => array(
+        'Add New' => route('loan.pre_paid.create'),
+    ),
     'lookup' => array(
         'Add New' => route('loan.lookup.create'),
     ),

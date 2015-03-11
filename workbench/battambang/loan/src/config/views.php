@@ -9,6 +9,10 @@
 
 return array(
 
+    'pre_paid_index'=>'battambang/loan::pre_paid.index',
+    'pre_paid_create'=>'battambang/loan::pre_paid.create',
+    'pre_paid_edit'=>'battambang/loan::pre_paid.edit',
+
     'client_index'=>'battambang/loan::client.index',
     'client_create'=>'battambang/loan::client.create',
     'client_edit'=>'battambang/loan::client.edit',

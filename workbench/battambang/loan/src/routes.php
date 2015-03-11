@@ -61,6 +61,50 @@ Route::group(
             )
         );
 
+        // Pre-Paid
+        Route::get(
+            'pre_paid',
+            array(
+                'as' => 'loan.pre_paid.index',
+                'uses' => 'Battambang\Loan\PrePaidController@index'
+            )
+        );
+        Route::post(
+            'pre_paid',
+            array(
+                'as' => 'loan.pre_paid.store',
+                'uses' => 'Battambang\Loan\ClientController@store'
+            )
+        );
+        Route::get(
+            'pre_paid/{id}/edit',
+            array(
+                'as' => 'loan.pre_paid.edit',
+                'uses' => 'Battambang\Loan\PrePaidController@edit'
+            )
+        );
+        Route::get(
+            'pre_paid/create',
+            array(
+                'as' => 'loan.pre_paid.create',
+                'uses' => 'Battambang\Loan\PrePaidController@create'
+            )
+        );
+        Route::put(
+            'pre_paid/update/{id}',
+            array(
+                'as' => 'loan.client.update',
+                'uses' => 'Battambang\Loan\PrePaidController@update'
+            )
+        );
+        Route::delete(
+            'pre_paid/destroy/{id}',
+            array(
+                'as' => 'loan.pre_paid.destroy',
+                'uses' => 'Battambang\Loan\PrePaidController@destroy'
+            )
+        );
+
         // Disburse
         Route::get(
             'disburse',
@@ -939,6 +983,21 @@ Route::group(
         | Report Routes
         |--------------------------------------------------------------------------
         */
+        //Loan IN Active
+        Route::get(
+            'rpt_loan_inactive',
+            array(
+                'as' => 'loan.rpt_loan_inactive.index',
+                'uses' => 'Battambang\Loan\RptLoanInActiveController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_inactive',
+            array(
+                'as' => 'loan.rpt_loan_inactive.report',
+                'uses' => 'Battambang\Loan\RptLoanInActiveController@report'
+            )
+        );
         //Product Activity
         Route::get(
             'rpt_product_activity',
@@ -1224,7 +1283,6 @@ Route::group(
 | Data Table (API) Routes
 |--------------------------------------------------------------------------
 */
-
 Route::get(
     'api/disburse_client/{disburse}',
     array(
@@ -1371,6 +1429,15 @@ Route::get(
         'uses' => 'Battambang\Loan\DashboardController@getDatatable'
     )
 );
+
+Route::get(
+    'api/pre_paid',
+    array(
+        'as' => 'api.pre_paid',
+        'uses' => 'Battambang\Loan\PrePaidController@getDatatable'
+    )
+);
+
 
 Route::get(
     'center/ajax',
