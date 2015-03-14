@@ -37,7 +37,7 @@ echo FormPanel2::make(
 ?>
 
 <div class="text-center">
-    {{ Former::lg_info_submit('Confirm')->name('confirm') . '&nbsp;' .Former::lg_primary_submit('Submit') . '&nbsp;' . Former::lg_inverse_reset('Reset') }}
+    {{ Former::lg_primary_submit('Submit') . '&nbsp;' . Former::lg_inverse_reset('Reset') }}
 </div>
 {{Former::close()}}
 

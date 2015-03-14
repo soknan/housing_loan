@@ -1,7 +1,7 @@
 @extends(Config::get('battambang/cpanel::views.layout'))
 
 @section('content')
-{{Former::open( route('loan.rpt_loan_prepaid.report'))->method('POST')}}
+{{Former::open( route('loan.rpt_loan_prepaid_withdrawal.report'))->method('POST')}}
 <?php echo FormPanel2::make(
     'General',
     Former::select('cp_office_id[]','Branch Office')
@@ -35,17 +35,7 @@
         ->class('select2').''
 
     ,
-Former::select('status','Type')
-                ->options(array('all'=>'All'))
-                ->options(array('normal'=>'Normal','closing'=>'Closing'))
-                ->class('select2')
-        .''
-    .Former::select('classify','Classify')
-        ->options(array('all'=>'All'))
-        ->options(LookupValueList::getProductStatus())
-        ->class('select2')
-    .''
-    .Former::select('location_cat','Location.Cat')
+Former::select('location_cat','Location.Cat')
         ->options(LookupValueList::getLocationCategory())
         ->class('select2').''
     .Former::select('cp_location_id','Location')

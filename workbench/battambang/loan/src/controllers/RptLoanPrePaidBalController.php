@@ -18,13 +18,13 @@ use DB;
 use Input;
 use Battambang\Loan\Libraries\LoanPerformance;
 
-class RptLoanPrePaidController extends BaseController
+class RptLoanPrePaidBalController extends BaseController
 {
     public function index()
     {
         //$data['reportHistory'] = $this->_reportHistory();
         return $this->renderLayout(
-            \View::make('battambang/loan::rpt_loan_prepaid.index')
+            \View::make('battambang/loan::rpt_loan_prepaid_bal.index')
         );
     }
 
@@ -36,7 +36,7 @@ class RptLoanPrePaidController extends BaseController
 
         $data['status'] = Input::get('status');
         $data['date_from'] = \Carbon::createFromFormat('d-m-Y',Input::get('date_from'))->toDateString();
-        $data['date_to'] = \Carbon::createFromFormat('d-m-Y',\Input::get('date_to'))->toDateString();
+        //$data['date_to'] = \Carbon::createFromFormat('d-m-Y',\Input::get('date_to'))->toDateString();
         $data['cp_office']= \Input::get('cp_office_id');
         $data['ln_staff'] = \Input::get('ln_staff_id');
         $data['cp_currency'] = \Input::get('cp_currency_id');
@@ -48,9 +48,9 @@ class RptLoanPrePaidController extends BaseController
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
 
-        if($data['date_from'] > $data['date_to']){
+        /*if($data['date_from'] > $data['date_to']){
             return \Redirect::back()->withInput()->with('error', 'Date From > Date to');
-        }
+        }*/
 
         /*if(strlen($data['cp_location'])!=8 and $data['cp_location']!='all'){
             return \Redirect::back()->withInput()->with('error','Please choose Village on Location !');
@@ -59,9 +59,8 @@ class RptLoanPrePaidController extends BaseController
         $data['exchange_rate'] = '1.00 $ = ' . $ex->khr_usd . ' ៛ , 1.00 B = ' . $ex->khr_thb . '៛';
 
         $condition = ' 1=1 ';
-        $condition.= " AND ln_pre_paid.activated_at BETWEEN
-                        STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
-                        AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s')
+        $condition.= " AND ln_pre_paid.activated_at <= STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
+
                         ";
         /*$condition.=" And perform_type ='repayment' and repayment_type!='fee' ";
         if($data['status']!='all'){
@@ -116,18 +115,19 @@ class RptLoanPrePaidController extends BaseController
 concat(`ln_client`.`kh_last_name`,' ',`ln_client`.`kh_first_name`) AS `client_name`,
 account_type.`code` as account_type
 FROM
-ln_pre_paid
+(SELECT * from ln_pre_paid ORDER BY activated_at desc)ln_pre_paid
 inner JOIN ln_disburse_client on ln_disburse_client.id = ln_pre_paid.ln_disburse_client_id
 inner JOIN ln_disburse ON ln_disburse_client.ln_disburse_id = ln_disburse.id
 INNER JOIN ln_client ON ln_client.id = ln_disburse_client.ln_client_id
 INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_account_type
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
-        where $condition
-        order by ln_pre_paid.ln_disburse_client_id
+INNER JOIN ln_perform on ln_perform.ln_disburse_client_id =ln_pre_paid.ln_disburse_client_id and ln_perform.perform_type='disburse'
+where $condition
+GROUP BY ln_pre_paid.ln_disburse_client_id
         ");
 // User action
-        \Event::fire('user_action.report', array('rpt_loan_prepaid'));
+        \Event::fire('user_action.report', array('rpt_loan_prepaid_bal'));
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
@@ -140,9 +140,9 @@ INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
        //exit;
 
         \Report::setReportName('Loan_Pre-Paid')
-            ->setDateFrom($data['date_from'])
-        ->setDateTo($data['date_to']);
-        return \Report::make('rpt_loan_prepaid/source', $data,'loan_prepaid');
+            ->setDateFrom($data['date_from']);
+
+        return \Report::make('rpt_loan_prepaid_bal/source', $data,'loan_prepaid_bal');
 
     }
 

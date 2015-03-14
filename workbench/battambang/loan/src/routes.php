@@ -983,19 +983,49 @@ Route::group(
         | Report Routes
         |--------------------------------------------------------------------------
         */
-        //Loan Pre-Paid
+        //Loan Pre-Paid Bal
         Route::get(
-            'rpt_loan_prepaid',
+            'rpt_loan_prepaid_bal',
             array(
-                'as' => 'loan.rpt_loan_prepaid.index',
-                'uses' => 'Battambang\Loan\RptLoanPrePaidController@index'
+                'as' => 'loan.rpt_loan_prepaid_bal.index',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidBalController@index'
             )
         );
         Route::post(
-            'rpt_loan_prepaid',
+            'rpt_loan_prepaid_bal',
             array(
-                'as' => 'loan.rpt_loan_prepaid.report',
-                'uses' => 'Battambang\Loan\RptLoanPrePaidController@report'
+                'as' => 'loan.rpt_loan_prepaid_bal.report',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidBalController@report'
+            )
+        );
+        //Loan Pre-Paid Withdrawal
+        Route::get(
+            'rpt_loan_prepaid_withdrawal',
+            array(
+                'as' => 'loan.rpt_loan_prepaid_withdrawal.index',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidWithdrawalController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_prepaid_withdrawal',
+            array(
+                'as' => 'loan.rpt_loan_prepaid_withdrawal.report',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidWithdrawalController@report'
+            )
+        );
+        //Loan Pre-Paid Deposit
+        Route::get(
+            'rpt_loan_prepaid_deposit',
+            array(
+                'as' => 'loan.rpt_loan_prepaid_deposit.index',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidDepositController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_prepaid_deposit',
+            array(
+                'as' => 'loan.rpt_loan_prepaid_deposit.report',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidDepositController@report'
             )
         );
         //Loan IN Active

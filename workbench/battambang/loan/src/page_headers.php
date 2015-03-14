@@ -424,10 +424,24 @@ PageHeader::make(
 |--------------------------------------------------------------------------
 */
 PageHeader::make(
-    'loan.rpt_loan_prepaid.index',
+    'loan.rpt_loan_prepaid_bal.index',
     function (PageHeardItem $header) {
         $header->iconFloppyDisk();
-        $header->add('Loan Pre-Paid');
+        $header->add('Loan Pre-Paid Balance');
+    }
+);
+PageHeader::make(
+    'loan.rpt_loan_prepaid_withdrawal.index',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('Loan Pre-Paid Withdrawal');
+    }
+);
+PageHeader::make(
+    'loan.rpt_loan_prepaid_deposit.index',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('Loan Pre-Paid Deposit');
     }
 );
 PageHeader::make(

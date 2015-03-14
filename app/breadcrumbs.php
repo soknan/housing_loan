@@ -669,12 +669,28 @@ Breadcrumbs::register(
         $bc->push('Edit', URL::route('loan.product.edit'));
     }
 );
-// Loan In-Active Report
+// Loan Pre-Paid Deposit
 Breadcrumbs::register(
-    'loan.rpt_loan_prepaid.index',
+    'loan.rpt_loan_prepaid_bal.index',
     function ($bc) {
         $bc->parent('cpanel.package.home');
-        $bc->push('Loan Pre-Paid Report', URL::route('loan.rpt_loan_prepaid.index'));
+        $bc->push('Loan Pre-Paid Balance Report', URL::route('loan.rpt_loan_prepaid_bal.index'));
+    }
+);
+// Loan Pre-Paid Deposit
+Breadcrumbs::register(
+    'loan.rpt_loan_prepaid_withdrawal.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Loan Pre-Paid Withdrawal Report', URL::route('loan.rpt_loan_prepaid_withdrawal.index'));
+    }
+);
+// Loan Pre-Paid Deposit
+Breadcrumbs::register(
+    'loan.rpt_loan_prepaid_deposit.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Loan Pre-Paid Deposit Report', URL::route('loan.rpt_loan_prepaid_deposit.index'));
     }
 );
 // Loan In-Active Report
