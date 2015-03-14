@@ -9,7 +9,7 @@ Menu::make(
                 $dropdown->add('Clients', route('loan.client.index'));
                 $dropdown->add('Disbursement', route('loan.disburse.index'));
                 $dropdown->add('Repayment', route('loan.repayment.index'));
-                /*$dropdown->add('Pre-Paid', route('loan.pre_paid.index'));*/
+                $dropdown->add('Pre-Paid', route('loan.pre_paid.index'));
                 $dropdown->add('Loan Write-Off', route('loan.write_off.index'));
                 $dropdown->divider();
                 $dropdown->add('Exchange', route('loan.exchange.index'));
@@ -56,6 +56,7 @@ Menu::make(
                 $dropdown->add('Write-Off (In Period)', route('loan.rpt_write_off_in.index'));
                 $dropdown->add('Write-Off (End Period)', route('loan.rpt_write_off_end.index'));
                 $dropdown->add('Productivity', route('loan.rpt_product_activity.index'));
+                $dropdown->add('Loan Pre-Paid', route('loan.rpt_loan_prepaid.index'));
                 $dropdown->add(
                     'Summary',
                     function ($dropdown) {

@@ -1,7 +1,7 @@
 <?php
 
 return array(
-    'pre_paid' => 'Battambang\Loan\Services\Validators\Prepaid\Validator',
+    'pre_paid' => 'Battambang\Loan\Services\Validators\PrePaid\Validator',
     'client' => 'Battambang\Loan\Services\Validators\Client\Validator',
     'center' => 'Battambang\Loan\Services\Validators\Center\Validator',
     'category' => 'Battambang\Loan\Services\Validators\Category\Validator',

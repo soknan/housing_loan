@@ -73,7 +73,7 @@ Route::group(
             'pre_paid',
             array(
                 'as' => 'loan.pre_paid.store',
-                'uses' => 'Battambang\Loan\ClientController@store'
+                'uses' => 'Battambang\Loan\PrePaidController@store'
             )
         );
         Route::get(
@@ -93,7 +93,7 @@ Route::group(
         Route::put(
             'pre_paid/update/{id}',
             array(
-                'as' => 'loan.client.update',
+                'as' => 'loan.pre_paid.update',
                 'uses' => 'Battambang\Loan\PrePaidController@update'
             )
         );
@@ -983,6 +983,21 @@ Route::group(
         | Report Routes
         |--------------------------------------------------------------------------
         */
+        //Loan Pre-Paid
+        Route::get(
+            'rpt_loan_prepaid',
+            array(
+                'as' => 'loan.rpt_loan_prepaid.index',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_prepaid',
+            array(
+                'as' => 'loan.rpt_loan_prepaid.report',
+                'uses' => 'Battambang\Loan\RptLoanPrePaidController@report'
+            )
+        );
         //Loan IN Active
         Route::get(
             'rpt_loan_inactive',

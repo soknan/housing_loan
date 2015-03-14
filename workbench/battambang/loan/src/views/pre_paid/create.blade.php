@@ -23,7 +23,7 @@ if(Session::has('data')){
 
 echo FormPanel2::make(
     'General',
-    Former::text('writeoff_date', 'Date',date('d-m-Y'))
+    Former::text('date', 'Date',date('d-m-Y'))
         ->append('dd-mm-yyyy')
         ->required() . ''
     .Former::select('ln_disburse_client_id', 'Loan Account')
@@ -31,7 +31,7 @@ echo FormPanel2::make(
         ->options(LookupValueList::getLoanAccount())
         ->class('select2')
         ->required().''
-    ,Former::file('writeoff_ref','Write-Off Ref')
+    ,Former::text('amount_pre_paid','Amount Per Paid')->required()
 
 );
 ?>
@@ -43,6 +43,6 @@ echo FormPanel2::make(
 
 @stop
 @section('js')
-<?php echo DatePicker::make('writeoff_date'); ?>
+<?php echo DatePicker::make('date'); ?>
 @stop
 

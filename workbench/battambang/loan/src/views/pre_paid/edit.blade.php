@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{Former::open( route('loan.write_off.update',$row->id))->method('PUT')->enctype('multipart/form-data')}}
+{{Former::open( route('loan.pre_paid.update',$row->id))->method('PUT')->enctype('multipart/form-data')}}
 
 <?php
 /*$activated_at = '';
@@ -23,7 +23,7 @@ if(Session::has('data')){
 
 echo FormPanel2::make(
     'General',
-    Former::text('writeoff_date', 'Date', Carbon::createFromFormat('Y-m-d',$row->activated_at)->format('d-m-Y'))
+    Former::text('date', 'Date', Carbon::createFromFormat('Y-m-d',$row->activated_at)->format('d-m-Y'))
         ->append('dd-mm-yyyy')
         ->required() . ''
     .Former::select('ln_disburse_client_id', 'Loan Account')
@@ -31,7 +31,7 @@ echo FormPanel2::make(
         ->options(LookupValueList::getLoanAccount(), $row->ln_disburse_client_id)
         ->class('select2')
         ->required().''
-    ,Former::file('writeoff_ref','Write-Off Ref')
+    ,Former::text('amount_pre_paid','Amount Per Paid',$row->amount_pre_paid)->required()
 
 );
 ?>
@@ -43,5 +43,5 @@ echo FormPanel2::make(
 
 @stop
 @section('js')
-<?php echo DatePicker::make('writeoff_date'); ?>
+<?php echo DatePicker::make('date'); ?>
 @stop

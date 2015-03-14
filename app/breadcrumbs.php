@@ -671,6 +671,14 @@ Breadcrumbs::register(
 );
 // Loan In-Active Report
 Breadcrumbs::register(
+    'loan.rpt_loan_prepaid.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Loan Pre-Paid Report', URL::route('loan.rpt_loan_prepaid.index'));
+    }
+);
+// Loan In-Active Report
+Breadcrumbs::register(
     'loan.rpt_loan_inactive.index',
     function ($bc) {
         $bc->parent('cpanel.package.home');

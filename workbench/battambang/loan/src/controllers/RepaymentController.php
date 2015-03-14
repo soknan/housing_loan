@@ -87,9 +87,10 @@ class RepaymentController extends BaseController
         $penalty = Input::get('repayment_penalty');
         $status = Input::get('repayment_status');
         $voucher_id = Input::get('repayment_voucher_id');
-
+        $pre_paid = 0;
         if ($validation->passes()) {
             $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+            $pre_paid = $this->getPrePaid(Input::get('ln_disburse_client_id'),$perform_date);
             if ($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at) {
                 $data->_arrears['cur']['principal'] = 0;
                 $data->_arrears['cur']['interest'] = 0;
@@ -175,13 +176,19 @@ class RepaymentController extends BaseController
                 $data->_repayment['cur']['type'] = 'normal';
             }
             //var_dump($data); exit;
+            $pri_amount = $data->_arrears['cur']['principal'];
+            $int_amount = $data->_arrears['cur']['interest'];
+            $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
+            $total_pay = $totalArrears - $pre_paid ;
+            $pre_paid_bal = ($pre_paid - $totalArrears > 0 ? $pre_paid - $totalArrears : 0  );
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_due['date'])) . '</strong> ,</br> '
-                    . 'Pri Amount = <strong>' . number_format($data->_arrears['cur']['principal'],2) . '</strong>' . $pri_closing . ' , '
-                    . 'Int Amount = <strong>' . number_format($data->_arrears['cur']['interest'],2) . '</strong>' . $int_closing . ' , '
-                    . 'Total Amount = <strong>' . number_format($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'],2) . ' ' . $currency->code . '</strong> ,</br> '
-                    . 'Penalty Amount = <strong>' . number_format($data->_arrears['cur']['penalty'],2) . '</strong> ( Cur : ' . number_format($data->_new_due['penalty'],2) . ', Late : ' . number_format($data->_arrears['last']['penalty'],2) . ').
-                <P>Note : ' . $data->error . '</P>';
+                    . 'Pri Amount = <strong>' . number_format($pri_amount,2) . '</strong>' . $pri_closing . ' , '
+                    . 'Int Amount = <strong>' . number_format($int_amount,2) . '</strong>' . $int_closing . ' , '
+                    . 'Total Amount = <strong>' . number_format($totalArrears,2) . ' ' . $currency->code . '</strong> ,</br> '
+                    . 'Penalty Amount = <strong>' . number_format($data->_arrears['cur']['penalty'],2) . '</strong> ( Cur : ' . number_format($data->_new_due['penalty'],2) . ', Late : ' . number_format($data->_arrears['last']['penalty'],2) . ')</br>'
+                    . 'Pre-Paid Amount = <strong>'.number_format($pre_paid,2).'</strong>'.' ( Cur Pay = '.number_format($total_pay,2).', Bal = '.number_format($pre_paid_bal,2).')'
+                    . '<P>Note : ' . $data->error . '</P>';
                    /* . \Former::open( route('loan.rpt_loan_history.report'))->method('POST')
                     . \Former::text_hidden('ln_client_id',$data->_disburse->ln_client_id)
                     . \Former::text_hidden('view_at',date('d-m-Y'))
@@ -219,8 +226,6 @@ class RepaymentController extends BaseController
                     ->with('data', $data)
                     ->with('info', $msg);
             }
-
-            $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
 
             if ($penalty != 0) {
                 if (bccomp($totalArrears, $principal, 4) == 1 and ($data->_arrears['cur']['penalty'] > $penalty or bccomp($data->_arrears['cur']['penalty'], $penalty) == 0)) {
@@ -310,6 +315,20 @@ class RepaymentController extends BaseController
                 . 'Repay Penalty Amount = <strong>' . number_format($data->_repayment['cur']['penalty'],2) . '</strong>'
                 . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
             $perform->save();
+
+            //update pre-paid
+            if($pre_paid>0){
+                $pay = $pre_paid - ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']);
+                $bal = $pay;
+                if($pay>=0){
+                    $pay = ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']);
+                }else{
+                    $pay = $pre_paid;
+                    $bal = 0;
+                }
+
+                $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at);
+            }
             // User action
             \Event::fire('user_action.add', array('repayment'));
             return Redirect::back()
@@ -335,9 +354,13 @@ class RepaymentController extends BaseController
             //echo Input::get('loan_acc'); exit;
             if ($validation->passes()) {
                 $curData = Perform::where('id', '=', $id)->get()->toArray();
-                $perform->delete($id);
+                $curP = PrePaid::where('ln_disburse_client_id','=',Input::get('ln_disburse_client_id'))
+                    ->where('activated_at','=',$perform_date)->get()->toArray();
+                $this->_delete($id);
+                //$perform->delete($id);
 
                 $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+                $pre_paid = $this->getPrePaid(Input::get('ln_disburse_client_id'),$perform_date);
                 if ($perform_date < $perform->_getLastPerform($loan_acc)->activated_at) {
                     $data->_arrears['cur']['principal'] = 0;
                     $data->_arrears['cur']['interest'] = 0;
@@ -427,22 +450,35 @@ class RepaymentController extends BaseController
                     $data->_repayment['cur']['type'] = 'normal';
                 }
 
+                $pri_amount = $data->_arrears['cur']['principal'];
+                $int_amount = $data->_arrears['cur']['interest'];
+                $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
+                $total_pay = $totalArrears - $pre_paid ;
+                $pre_paid_bal = ($pre_paid - $totalArrears > 0 ? $pre_paid - $totalArrears : 0  );
                 if (Input::has('confirm')) {
-                    $msg = 'Due Date = <strong>' . \Carbon::createFromFormat('Y-m-d', $data->_due['date'])->format('d-M-Y') . '</strong> ,</br> '
-                        . 'Pri Amount = <strong>' . number_format($data->_arrears['cur']['principal'],2) . '</strong>' . $pri_closing . ' , '
-                        . 'Int Amount = <strong>' . number_format($data->_arrears['cur']['interest'],2) . '</strong>' . $int_closing . ' , '
-                        . 'Total Amount = <strong>' . number_format($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'],2) . ' ' . $currency->code . '</strong> ,</br> '
-                        . 'Penalty Amount = <strong>' . number_format($data->_arrears['cur']['penalty'],2) . '</strong> ( Cur : ' . number_format($data->_new_due['penalty'],2) . ', Late : ' . number_format($data->_arrears['last']['penalty'],2) . ').
-                <P>Note : ' . $data->error . '</P>';
+                    $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_due['date'])) . '</strong> ,</br> '
+                        . 'Pri Amount = <strong>' . number_format($pri_amount,2) . '</strong>' . $pri_closing . ' , '
+                        . 'Int Amount = <strong>' . number_format($int_amount,2) . '</strong>' . $int_closing . ' , '
+                        . 'Total Amount = <strong>' . number_format($totalArrears,2) . ' ' . $currency->code . '</strong> ,</br> '
+                        . 'Penalty Amount = <strong>' . number_format($data->_arrears['cur']['penalty'],2) . '</strong> ( Cur : ' . number_format($data->_new_due['penalty'],2) . ', Late : ' . number_format($data->_arrears['last']['penalty'],2) . ')</br>'
+                        . 'Pre-Paid Amount = <strong>'.number_format($pre_paid,2).'</strong>'.' ( Cur Pay = '.number_format($total_pay,2).', Bal = '.number_format($pre_paid_bal,2).')'
+                        . '<P>Note : ' . $data->error . '</P>';
 
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
 
+                    unset($curP['created_at']);
+                    unset($curP['updated_at']);
+
+                    PrePaid::insert($curP);
                     Perform::insert($curData);
                     return Redirect::back()
                         ->with('data', $data)
                         ->with('info', $msg);
                 }
+                unset($curP['created_at']);
+                unset($curP['updated_at']);
+                PrePaid::insert($curP);
                 unset($curData['created_at']);
                 unset($curData['updated_at']);
                 Perform::insert($curData);
@@ -536,8 +572,22 @@ class RepaymentController extends BaseController
                     . 'Repay Total Amount = <strong>' . number_format($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest'],2) . $currency->code . '</strong>, '
                     . 'Repay Penalty Amount = <strong>' . number_format($data->_repayment['cur']['penalty'],2) . '</strong>'
                     . '<p>Repay Status : ' . $data->_repayment['cur']['type'] . ', Classify : ' . $classify->code . '</p>';
-                $perform->delete($id);
+                $this->_delete($id);
                 $perform->save();
+
+                //update pre-paid
+                if($pre_paid>0){
+                    $pay = $pre_paid - ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']);
+                    $bal = $pay;
+                    if($pay>=0){
+                        $pay = ($data->_repayment['cur']['principal'] + $data->_repayment['cur']['interest']);
+                    }else{
+                        $pay = $pre_paid;
+                        $bal = 0;
+                    }
+
+                    $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at);
+                }
                 // User action
                 \Event::fire('user_action.edit', array('repayment'));
                 return Redirect::route('loan.repayment.edit',$id)->withInput()
@@ -554,10 +604,32 @@ class RepaymentController extends BaseController
     {
         try {
             $data = Perform::findOrFail($id);
-            $data->delete();
+            //delete pre-paid
+            $p = PrePaid::where('ln_disburse_client_id', '=', $data->ln_disburse_client_id)
+                ->where('activated_at', '=',$data->activated_at)
+                ->orderBy('activated_at', 'DESC')->limit(1)->first();
+            if($p!=null) $p->delete();
+            if($data!=null) $data->delete();
             // User action
             \Event::fire('user_action.delete', array('repayment'));
             return Redirect::back()->with('success', trans('battambang/loan::repayment.delete_success'));
+        } catch (\Exception $e) {
+            return Redirect::route('loan.repayment.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+        }
+    }
+
+    private function _delete($id){
+        try {
+            $data = Perform::findOrFail($id);
+            //delete pre-paid
+            $p = PrePaid::where('ln_disburse_client_id', '=', $data->ln_disburse_client_id)
+                ->where('activated_at', '=',$data->activated_at)
+                ->orderBy('activated_at', 'DESC')->limit(1)->first();
+            if($p!=null) $p->delete();
+            if($data!=null) $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('repayment'));
+            //return Redirect::back()->with('success', trans('battambang/loan::repayment.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.repayment.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }
@@ -617,6 +689,24 @@ class RepaymentController extends BaseController
             return true;
         }
         return false;
+    }
+
+    public function getPrePaid($id,$activated_at){
+        $bal = 0;
+        $data = PrePaid::where('ln_disburse_client_id', '=', $id)
+            ->where('activated_at', '<=',$activated_at)
+            ->orderBy('activated_at', 'DESC')->limit(1)->first();
+        if($data!=null) $bal = $data->bal;
+        return $bal;
+    }
+
+    private function savePrePaid($id,$pay,$bal,$date){
+        $p = new PrePaid();
+        $p->activated_at = $date;
+        $p->ln_disburse_client_id = $id;
+        $p->amount_pay = $pay;
+        $p->bal= $bal;
+        $p->save();
     }
 
 }

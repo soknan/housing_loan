@@ -23,7 +23,7 @@ class PrePaidController extends BaseController
 
     public function index()
     {
-        $item = array('Action','ID','ACC Code','Date','CRC','Amount Pre-Paid','Amount Pay','Balance');
+        $item = array('Action','ID','ACC Code','Date','Amount Pre-Paid','Amount Pay','Balance');
 
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -53,194 +53,103 @@ class PrePaidController extends BaseController
     {
         try {
 //            $data['disburseClient'] = $this->_getLoanAccount();
-            $data['row'] = Perform::where('id', '=', $id)->first();
+            $data['row'] = PrePaid::where('id', '=', $id)->first();
             return $this->renderLayout(
                 View::make(Config::get('battambang/loan::views.pre_paid_edit'), $data)
             );
         } catch (\Exception $e) {
-            return Redirect::route('loan.repayment.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+            return Redirect::route('loan.pre_paid.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }
     }
 
     public function show($id)
     {
         try {
-            $arr['row'] = Perform::findOrFail($id);
+            $arr['row'] = PrePaid::findOrFail($id);
             return $this->renderLayout(
-                View::make(Config::get('battambang/loan::views.repayment_show'), $arr)
+                View::make(Config::get('battambang/loan::views.pre_paid_show'), $arr)
             );
         } catch (\Exception $e) {
-            return Redirect::route('loan.repayment.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+            return Redirect::route('loan.pre_paid.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }
     }
 
     public function store()
     {
         $validation = $this->getValidationService('pre_paid');
-        $perform = new LoanPerformance();
-        $msg = '';
-        $perform_date = \Carbon::createFromFormat('d-m-Y',Input::get('writeoff_date'))->toDateString() ;
-        if ($validation->passes()) {
-            $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
-            $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
-            $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
-
-            if($data->_perform_type=='writeoff'){
-                $error = 'Already Perform It.!';
-                return Redirect::back()->withInput()->with('error',$error);
-            }
-            if($data->_maturity_date > $perform_date){
-                $error = 'Your Perform Date must bigger than maturity date! '.\Carbon::createFromFormat('Y-m-d',$data->_maturity_date)->format('d-M-Y');
-                return Redirect::back()->withInput()->with('error',$error);
-            }
-            /*if( $data->_new_due['product_status']!=5){
-                $error = 'Not much with number of days to write-off (365 days after loss)';
-                return Redirect::back()->withInput()->with('error',$error);
-            }*/
-
-            if (Input::has('confirm')) {
-                $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
-                    . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] .'</strong>, '
-                    . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>.</br>'
-                    . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> , '
-                    . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong>.
-                <P>Note : ' . $data->error . '</P>';
-
-                return Redirect::back()
-                    ->withInput()
-                    ->with('info', $msg);
-            }
-
-            $ref = Input::file('writeoff_ref');
-            //$refPath = \URL::to('/') . '/packages/battambang/loan/pre_paid_ref/';
-            if (!empty($ref)) {
-                $destinationPath = public_path() . '/packages/battambang/loan/pre_paid_ref/';
-                $filename = $data->_disburse_client_id.'-'.$data->_activated_at.'.'.$ref->getClientOriginalExtension();
-                $ref->move($destinationPath, $filename);
-                //$refPath = \URL::to('/') . '/packages/battambang/loan/pre_paid_ref/' . $filename;
-            }
-
-            $data->_perform_type='writeoff';
-            $data->_new_due['product_status']=5;
-            $data->_new_due['product_status_date']=$perform_date;
-            $data->_current_product_status=5;
-            $data->_current_product_status_date= $perform_date;
-
-            $data->_repayment['cur']['date'] = '';
-            $data->_repayment['cur']['voucher_id'] = '';
-            $data->_repayment['cur']['status'] = '';
-            $data->_repayment['cur']['principal'] = '';
-            $data->_repayment['cur']['interest'] = '';
-            $data->_repayment['cur']['fee'] = '';
-            $data->_repayment['cur']['penalty'] = '';
-            $data->_repayment['cur']['type'] = '';
-            $perform->save();
+        //if ($validation->passes()) {
+            $data = new PrePaid();
+            $this->saveData($data);
             // User action
-            \Event::fire('user_action.add', array('writeoff'));
+            \Event::fire('user_action.add', array('pre_paid'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::pre_paid.create_success'));
-        }
+        //}
         return Redirect::back()->withInput()->withErrors($validation->getErrors());
     }
 
     public function update($id)
     {
-        try {
+        //try {
             $validation = $this->getValidationService('pre_paid');
-            $perform = new LoanPerformance();
-            $msg = '';
-            $perform_date = \Carbon::createFromFormat('d-m-Y',Input::get('writeoff_date'))->toDateString() ;
             if ($validation->passes()) {
-                $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
-                $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
-                $currency = Currency::where('id','=',$data->_disburse->cp_currency_id)->first();
-
-                if($data->_perform_type=='writeoff' and $data->_id != $id){
-                    $error = 'Already Perform It.!';
-                    return Redirect::back()->withInput()->with('error',$error);
-                }
-                if($data->_maturity_date > $perform_date){
-                    $error = 'Your Perform Date must bigger than maturity date! '.\Carbon::createFromFormat('Y-m-d',$data->_maturity_date)->format('d-M-Y');
-                    return Redirect::back()->withInput()->with('error',$error);
-                }
-                if( $data->_new_due['product_status']!=5){
-                    $error = 'Not much with number of days';
-                    return Redirect::back()->withInput()->with('error',$error);
-                }
-
-                if (Input::has('confirm')) {
-                    $msg = 'Due Date = <strong>' . $data->_due['date'] . '</strong> ,</br> '
-                        . 'Pri Amount = <strong>' . $data->_arrears['cur']['principal'] .'</strong>, '
-                        . 'Int Amount = <strong>' . $data->_arrears['cur']['interest'] .'</strong>.</br>'
-                        . 'Total Amount = <strong>' . ($data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest']) .' '.$currency->code. '</strong> , '
-                        . 'Penalty Amount = <strong>' . $data->_arrears['cur']['penalty'] . '</strong>.
-                <P>Note : ' . $data->error . '</P>';
-
-                    return Redirect::back()
-                        ->withInput()
-                        ->with('info', $msg);
-                }
-
-                Perform::where('id','=',$id)->delete();
-                $ref = Input::file('writeoff_ref');
-                //$refPath = \URL::to('/') . '/packages/battambang/loan/pre_paid_ref/';
-                if (!empty($ref)) {
-                    $destinationPath = public_path() . '/packages/battambang/loan/pre_paid_ref/';
-                    $filename = $data->_disburse_client_id.'-'.$data->_activated_at.'.'.$ref->getClientOriginalExtension();
-                    $ref->move($destinationPath, $filename);
-                    //$refPath = \URL::to('/') . '/packages/battambang/loan/pre_paid_ref/' . $filename;
-                }
-
-                $data->_perform_type='writeoff';
-                $data->_new_due['product_status']=5;
-                $data->_new_due['product_status_date']=$perform_date;
-                $data->_current_product_status=5;
-                $data->_current_product_status_date= $perform_date;
-                $perform->save();
+                $data = PrePaid::findOrFail($id);
+                $this->saveData($data,false);
                 // User action
-                \Event::fire('user_action.edit', array('writeoff'));
+                \Event::fire('user_action.edit', array('pre_paid'));
                 return Redirect::back()
                     ->with('success', trans('battambang/loan::pre_paid.update_success'));
             }
             return Redirect::back()->withInput()->withErrors($validation->getErrors());
-        } catch (\Exception $e) {
-            return Redirect::route('loan.pre_paid.index')->with('error', trans('battambang/cpanel::db_error.fail'));
-        }
+        //} catch (\Exception $e) {
+        //    return Redirect::route('loan.pre_paid.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+        //}
     }
 
     public function destroy($id)
     {
         try {
-            $data = Perform::where('ln_disburse_client_id','=',$id)->where('perform_type','=','writeoff');
+            $data = PrePaid::where('id','=',$id);
             $data->delete();
             // User action
-            \Event::fire('user_action.delete', array('writeoff'));
+            \Event::fire('user_action.delete', array('pre_paid'));
             return Redirect::back()->with('success', trans('battambang/loan::pre_paid.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('loan.pre_paid.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }
     }
 
-    /*private function saveData($data)
+    private function saveData($data,$save = true)
     {
-        $data->num_day = Input::get('num_day');
-        $data->activated_at = Input::get('activated_at');
+        $data->activated_at = \Carbon::createFromFormat('d-m-Y',Input::get('date'))->toDateString();
+        $data->ln_disburse_client_id = Input::get('ln_disburse_client_id');
+        $data->amount_pre_paid = Input::get('amount_pre_paid');
+        $data->bal = Input::get('amount_pre_paid');
+        if($save){
+            if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
+                $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid');
+            }
+        }else{
+            if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
+                $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal - $this->_existsAcc(Input::get('ln_disburse_client_id'))->amount_pre_paid +Input::get('amount_pre_paid');
+            }
+        }
 
         $data->save();
-    }*/
+    }
 
     public function getDatatable()
     {
-        $item = array('id','acc','date','cp_currency_id','amount_pre_paid','amount_pay','bal');
-        $arr = DB::table('view_pre_paid')
-            ->whereRaw(' substr(acc,1,4) = "'.\UserSession::read()->sub_branch.'"');
-            /*->where('perform_type','=','writeoff')->where('repayment_type','=','');*/
+        $item = array('id','ln_disburse_client_id','activated_at','amount_pre_paid','amount_pay','bal');
+        $arr = DB::table('view_pre_paid');
+            //->whereRaw(' substr(ln_disburse_client_id,4) like "'.\UserSession::read()->sub_branch.'"');
+            /*->where('perform_type','=','writeoff')->where('pre_paid_type','=','');*/
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
                 return \Action::make()
-                    ->edit(route('loan.pre_paid.edit', $model->id))
-                    ->delete(route('loan.pre_paid.destroy', $model->id))
+                    ->edit(route('loan.pre_paid.edit', $model->id),$this->_checkAction($model->id,$model->ln_disburse_client_id))
+                    ->delete(route('loan.pre_paid.destroy', $model->id),'',$this->_checkAction($model->id,$model->ln_disburse_client_id))
                     ->get();
             })
             ->showColumns($item)
@@ -248,6 +157,30 @@ class PrePaidController extends BaseController
             ->orderColumns($item)
             ->make();
     }
+
+    private function _checkAction($id, $dc)
+    {
+        $data = PrePaid::where('ln_disburse_client_id', '=', $dc)
+            ->where('amount_pay','=',null)
+            ->orderBy('id', 'desc')
+            ->limit(1)
+            ->first();
+
+        if ($data->id == $id) {
+            return true;
+        }
+        return false;
+    }
+
+    private function _existsAcc($id){
+        $bal = 0;
+        $data = PrePaid::where('ln_disburse_client_id','=',$id)
+            ->orderBy('activated_at','desc')->limit(1)
+            ->first();
+        //if($data!=null) $bal = $data->bal;
+        return $data;
+    }
+
 
 /*    private function _getLoanAccount()
     {

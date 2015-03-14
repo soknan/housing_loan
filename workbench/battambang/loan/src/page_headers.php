@@ -251,6 +251,20 @@ PageHeader::make(
     }
 );
 PageHeader::make(
+    'loan.pre_paid.create',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('Pre-Paid');
+    }
+);
+PageHeader::make(
+    'loan.pre_paid.edit',
+    function (PageHeardItem $header) {
+        $header->iconEdit();
+        $header->add('Pre-Paid');
+    }
+);
+PageHeader::make(
     'loan.client.index',
     function (PageHeardItem $header) {
         $header->iconList();
@@ -409,6 +423,13 @@ PageHeader::make(
 | Reports
 |--------------------------------------------------------------------------
 */
+PageHeader::make(
+    'loan.rpt_loan_prepaid.index',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('Loan Pre-Paid');
+    }
+);
 PageHeader::make(
     'loan.rpt_loan_inactive.index',
     function (PageHeardItem $header) {
