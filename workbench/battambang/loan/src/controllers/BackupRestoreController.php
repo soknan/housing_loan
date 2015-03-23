@@ -53,6 +53,7 @@ class BackupRestoreController extends BaseController
                 'ln_schedule'=>array('SCD','Schedule',"id LIKE '[office]%'"),
                 'ln_schedule_dt'=>array('SCD','Schedule Detail',"id LIKE '[office]%'"),
                 'ln_perform'=>array('PEF','Perform',"id LIKE '[office]%'"),
+                'ln_pre_paid'=>array('PRP','PrePaid',"ln_disburse_client_id LIKE '[office]%'"),
             ),
             'user_action'=>array(
                 'cp_user_action'=>array('CUA','User Action',"cp_office_id LIKE '[office]%'"),
@@ -99,6 +100,7 @@ class BackupRestoreController extends BaseController
                 'ln_schedule',
                 'ln_schedule_dt',
                 'ln_perform',
+                'ln_pre_paid'
             ),
             'user_action'=>array(
                 'cp_user_action',

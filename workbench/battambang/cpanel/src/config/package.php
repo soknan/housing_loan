@@ -152,6 +152,12 @@ return array(
                 'loan.repayment.edit' => 'edit',
                 'loan.repayment.destroy' => 'delete',
             ),
+            'pre-paid' => array(
+                'loan.prepaid.index' => 'list',
+                'loan.prepaid.create' => 'create',
+                'loan.prepaid.edit' => 'edit',
+                'loan.prepaid.destroy' => 'delete',
+            ),
             'write off' => array(
                 'loan.write_off.index' => 'list',
                 'loan.write_off.create' => 'create',
@@ -177,6 +183,9 @@ return array(
                 'loan.rpt_write_off_in.index' => 'loan write off (in period)',
                 'loan.rpt_write_off_end.index' => 'loan write off (end period)',
                 'loan.rpt_product_activity.index' => 'Product Activity',
+                'loan.rpt_loan_prepaid_deposit.index' => 'Pre-Paid Deposit',
+                'loan.rpt_loan_prepaid_withdrawal.index' => 'Pre-Paid Withdrawal',
+                'loan.rpt_loan_prepaid_bal.index' => 'Pre-Paid Bal',
             ),
             'summary report' => array(
                 'loan.rpt_breakdown_purpose.index' => 'loan breakdown by purpose',
