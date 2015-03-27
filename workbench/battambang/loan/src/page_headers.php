@@ -342,6 +342,13 @@ PageHeader::make(
     }
 );
 PageHeader::make(
+    'loan.disburse_client.show',
+    function (PageHeardItem $header) {
+        $header->iconPlus();
+        $header->add('Disbursement Client');
+    }
+);
+PageHeader::make(
     'loan.disburse_client.edit',
     function (PageHeardItem $header) {
         $header->iconEdit();

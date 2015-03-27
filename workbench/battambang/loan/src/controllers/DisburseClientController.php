@@ -78,24 +78,6 @@ class DisburseClientController extends BaseController
         $data['pro']->max_amount = $getLoanAmountEx['max'];
         $data['pro']->append_amount = $getLoanAmountEx['append'];
 
-/*        switch ($data['dis']->currency_code) {
-            case 'KHR':
-                $data['pro']->default_amount = \Currency::toKHR(2, $data['pro']->default_amount, $data['pro']->ln_exchange_id);
-                $data['pro']->min_amount = \Currency::toKHR(2, $data['pro']->min_amount, $data['pro']->ln_exchange_id);
-                $data['pro']->max_amount = \Currency::toKHR(2, $data['pro']->max_amount, $data['pro']->ln_exchange_id);
-                break;
-            case 'USD':
-                $data['pro']->default_amount = \Currency::toUSD(2, $data['pro']->default_amount, $data['pro']->ln_exchange_id);
-                $data['pro']->min_amount = \Currency::toUSD(2, $data['pro']->min_amount, $data['pro']->ln_exchange_id);
-                $data['pro']->max_amount = \Currency::toUSD(2, $data['pro']->max_amount, $data['pro']->ln_exchange_id);
-                break;
-            case 'THB':
-                $data['pro']->default_amount = \Currency::toTHB(2, $data['pro']->default_amount, $data['pro']->ln_exchange_id);
-                $data['pro']->min_amount = \Currency::toTHB(2, $data['pro']->min_amount, $data['pro']->ln_exchange_id);
-                $data['pro']->max_amount = \Currency::toTHB(2, $data['pro']->max_amount, $data['pro']->ln_exchange_id);
-                break;
-        }*/
-
         \Session::forget('disburse_id');
         \Session::forget('client_id');
 
@@ -139,6 +121,40 @@ class DisburseClientController extends BaseController
         );
     }
 
+    public function show($id){
+        $data['row'] = array();
+        $data['client'] = array();
+        try {
+            $data['row'] = DisburseClient::findOrFail($id);
+            //list($sub_branch,$year,$cur,$code) = explode('-',$data['row']->voucher_id);
+            $data['row']->voucher_id = substr($data['row']->voucher_id, -6);
+            $data['client'] = $this->_getClientList(" and id = '".$data['row']->ln_client_id."' ");
+            //Get Disburse
+            $dis = DB::table('view_disburse')->where('id', '=', $data['row']->ln_disburse_id)->get();
+            foreach ($dis as $row) {
+                $tmp[] = $row;
+            }
+            $data['dis'] = $row;
+            //Get Product
+            $pro = DB::table('ln_product')->where('id', '=', $data['dis']->product_id)->get();
+            foreach ($pro as $row2) {
+                $data['pro'] = $row2;
+            }
+
+            $getLoanAmountEx=$this->loanAmountEx($data['dis']->currency_code, $data['pro']->min_amount, $data['pro']->max_amount, $data['pro']->default_amount);
+            $data['pro']->default_amount = $getLoanAmountEx['default'];
+            $data['pro']->min_amount = $getLoanAmountEx['min'];
+            $data['pro']->max_amount = $getLoanAmountEx['max'];
+            $data['pro']->append_amount = $getLoanAmountEx['append'];
+
+            return $this->renderLayout(
+                View::make(Config::get('battambang/loan::views.disburse_client_show'), $data)
+            );
+        } catch (\Exception $e) {
+            return Redirect::route('loan.disburse_client.index')->with('error', trans('battambang/cpanel::db_error.fail'));
+        }
+    }
+
     public function edit($id)
     {
         $data['row'] = array();
@@ -165,24 +181,6 @@ class DisburseClientController extends BaseController
             $data['pro']->min_amount = $getLoanAmountEx['min'];
             $data['pro']->max_amount = $getLoanAmountEx['max'];
             $data['pro']->append_amount = $getLoanAmountEx['append'];
-
-/*            switch ($data['dis']->currency_code) {
-                case 'KHR':
-                    $data['pro']->default_amount = \Currency::toKHR(2, $data['pro']->default_amount, $data['pro']->ln_exchange_id);
-                    $data['pro']->min_amount = \Currency::toKHR(2, $data['pro']->min_amount, $data['pro']->ln_exchange_id);
-                    $data['pro']->max_amount = \Currency::toKHR(2, $data['pro']->max_amount, $data['pro']->ln_exchange_id);
-                    break;
-                case 'USD':
-                    $data['pro']->default_amount = \Currency::toUSD(2, $data['pro']->default_amount, $data['pro']->ln_exchange_id);
-                    $data['pro']->min_amount = \Currency::toUSD(2, $data['pro']->min_amount, $data['pro']->ln_exchange_id);
-                    $data['pro']->max_amount = \Currency::toUSD(2, $data['pro']->max_amount, $data['pro']->ln_exchange_id);
-                    break;
-                case 'THB':
-                    $data['pro']->default_amount = \Currency::toTHB(2, $data['pro']->default_amount, $data['pro']->ln_exchange_id);
-                    $data['pro']->min_amount = \Currency::toTHB(2, $data['pro']->min_amount, $data['pro']->ln_exchange_id);
-                    $data['pro']->max_amount = \Currency::toTHB(2, $data['pro']->max_amount, $data['pro']->ln_exchange_id);
-                    break;
-            }*/
 
             return $this->renderLayout(
                 View::make(Config::get('battambang/loan::views.disburse_client_edit'), $data)
@@ -405,6 +403,7 @@ class DisburseClientController extends BaseController
                 return \Action::make()
                     ->edit(route('loan.disburse_client.edit', array($model->id, $model->ln_disburse_id)),$this->_checkAction($model->id))
                     ->delete(route('loan.disburse_client.destroy', $model->id))
+                    ->show(route('loan.disburse_client.show',array($model->id, $model->ln_disburse_id)))
                     ->get();
             })
             ->showColumns($item)

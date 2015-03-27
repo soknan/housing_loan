@@ -209,6 +209,13 @@ Route::group(
             )
         );
         Route::get(
+            'disburse_client/show/{disburse_client}/{disburse}',
+            array(
+                'as' => 'loan.disburse_client.show',
+                'uses' => 'Battambang\Loan\DisburseClientController@show'
+            )
+        );
+        Route::get(
             'disburse_client/edit/{disburse_client}/{disburse}',
             array(
                 'as' => 'loan.disburse_client.edit',

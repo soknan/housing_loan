@@ -399,6 +399,13 @@ Breadcrumbs::register(
     }
 );
 Breadcrumbs::register(
+    'loan.disburse_client.show',
+    function ($bc) {
+        $bc->parent('loan.disburse_client.index');
+        $bc->push('Show', URL::route('loan.disburse_client.show'));
+    }
+);
+Breadcrumbs::register(
     'loan.disburse_client.edit',
     function ($bc) {
         $bc->parent('loan.disburse_client.index');
