@@ -371,6 +371,7 @@
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="12" ss:StyleID="s73">
     <Cell ss:StyleID="s74"><Data ss:Type="String">No</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Voucher Code</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">LA Code</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Kh Client Name</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">CRC</Data></Cell>
@@ -428,7 +429,7 @@
               ?>
    <Row ss:AutoFitHeight="0">
     <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
-
+    <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->voucher_code;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->ln_disburse_client_id;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->client_name;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $row->cp_currency_id;?></Data></Cell>
@@ -461,22 +462,22 @@
           $total_to_USD = $sub_total_khr_usd + $sub_total_thb_usd + $total_repay_usd;
           ?>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="9" ss:StyleID="m46670312"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
+    <Cell ss:MergeAcross="10" ss:StyleID="m46670312"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_khr;?></Data></Cell>
 
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="9" ss:StyleID="m46670332"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
+    <Cell ss:MergeAcross="10" ss:StyleID="m46670332"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_usd;?></Data></Cell>
 
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="9" ss:StyleID="m46670352"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
+    <Cell ss:MergeAcross="10" ss:StyleID="m46670352"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_thb;?></Data></Cell>
 
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="9" ss:StyleID="m46670372"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
+    <Cell ss:MergeAcross="10" ss:StyleID="m46670372"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_to_USD;?></Data></Cell>
 
    </Row>

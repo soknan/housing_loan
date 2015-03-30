@@ -32,6 +32,7 @@ echo FormPanel2::make(
         ->class('select2')
         ->required().''
     ,Former::text('amount_pre_paid','Amount Per Paid',$row->amount_pre_paid)->required()
+        .''.Former::text('voucher_code','Voucher Code',$row->voucher_code)->required()
 
 );
 ?>

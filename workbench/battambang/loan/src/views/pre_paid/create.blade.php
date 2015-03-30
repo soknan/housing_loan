@@ -31,7 +31,8 @@ echo FormPanel2::make(
         ->options(LookupValueList::getLoanAccount())
         ->class('select2')
         ->required().''
-    ,Former::text('amount_pre_paid','Amount Per Paid')->required()
+    ,Former::text('amount_pre_paid','Amount Per Paid')->required().''
+        .Former::text('voucher_code','Voucher Code')->required()
 
 );
 ?>

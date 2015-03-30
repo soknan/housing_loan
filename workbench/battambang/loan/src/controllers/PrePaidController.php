@@ -23,7 +23,7 @@ class PrePaidController extends BaseController
 
     public function index()
     {
-        $item = array('Action','ID','ACC Code','Date','Amount Pre-Paid','Amount Pay','Balance');
+        $item = array('Action','Voucher Code','ACC Code','Date','Amount Pre-Paid','Amount Paid','Balance');
 
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -125,6 +125,7 @@ class PrePaidController extends BaseController
         $data->ln_disburse_client_id = Input::get('ln_disburse_client_id');
         $data->amount_pre_paid = Input::get('amount_pre_paid');
         $data->bal = Input::get('amount_pre_paid');
+        $data->voucher_code = Input::get('voucher_code');
         if($save){
             if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
                 $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid');
@@ -140,7 +141,7 @@ class PrePaidController extends BaseController
 
     public function getDatatable()
     {
-        $item = array('id','ln_disburse_client_id','activated_at','amount_pre_paid','amount_pay','bal');
+        $item = array('voucher_code','ln_disburse_client_id','activated_at','amount_pre_paid','amount_paid','bal');
         $arr = DB::table('view_pre_paid');
             //->whereRaw(' substr(ln_disburse_client_id,4) like "'.\UserSession::read()->sub_branch.'"');
             /*->where('perform_type','=','writeoff')->where('pre_paid_type','=','');*/
@@ -161,7 +162,7 @@ class PrePaidController extends BaseController
     private function _checkAction($id, $dc)
     {
         $data = PrePaid::where('ln_disburse_client_id', '=', $dc)
-            ->where('amount_pay','=',null)
+            ->where('amount_paid','=',null)
             ->orderBy('id', 'desc')
             ->limit(1)
             ->first();

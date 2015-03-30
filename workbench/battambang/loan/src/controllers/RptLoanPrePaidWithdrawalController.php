@@ -62,7 +62,7 @@ class RptLoanPrePaidWithdrawalController extends BaseController
         $condition.= " AND ln_pre_paid.activated_at BETWEEN
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s')
-                        and ln_pre_paid.amount_pay >0 ";
+                        and ln_pre_paid.amount_paid >0 ";
         /*$condition.=" And perform_type ='repayment' and repayment_type!='fee' ";
         if($data['status']!='all'){
             $condition.=" AND repayment_type = '".$data['status']."'";
