@@ -11,7 +11,7 @@ class ScheduleGenerate
         //echo $loanAcc; exit();
         $row = DB::table('view_schedule')
             ->where('ln_disburse_client_id','=',$loanAcc)->first();
-        //var_dump($data); exit();
+        //var_dump($row); exit();
         $repayFrequency = $row->ln_lv_repay_frequency;
         //return $repayFrequency;
         // Repayment schedule

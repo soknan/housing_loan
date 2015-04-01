@@ -34,10 +34,22 @@ class ScheduleWeekly
 //        $numPayment = 10; // 10 times
         $numPayment = $data->num_payment; // ... times
 
+        // Interest rate
+        $interestType = $data->ln_lv_interest_type; // 4(8-Declining Balance, 9-Flat/Fixed)
+        $interestRate = $data->interest_rate / 100; // of (%)
+        $interestRateInDay = $interestRate / 7;
+
         $installPrinFrequency = $data->installment_principal_frequency; // Every 1 times <= $numPayment
         $numPaymentPrin = ceil($numPayment / $installPrinFrequency);
         $installPrinPercentage = $data->installment_principal_percentage / 100; // of (%)
         $installPrinAmount = \Currency::round($currency, ($loanAmount / $numPaymentPrin) * $installPrinPercentage);
+
+        if($interestType==129){
+            $tmpRate = $interestRate*pow((1+$interestRate),$numInstallment);
+            $tmpRate1 = pow((1+$interestRate),$numInstallment)-1;
+            //print_r($tmpRate1); exit;
+            $installPrinAmount = \Currency::round($currency, $loanAmount*($tmpRate/$tmpRate1));
+        }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 12-Week(...-None, 27-Mon, 28-Tue, 29-Wed, 30-Thu, 31-Fri, 32-Sat)
 //        if (!empty($meetingDay)) {
@@ -50,11 +62,6 @@ class ScheduleWeekly
             }
         }
         $holidayRule = $data->ln_lv_holiday_rule; // 3(5-Same, 6-Next, 7-Previous)
-
-        // Interest rate
-        $interestType = $data->ln_lv_interest_type; // 4(8-Declining Balance, 9-Flat/Fixed)
-        $interestRate = $data->interest_rate / 100; // of (%)
-        $interestRateInDay = $interestRate / 7;
 
         // Fee
         $feeType = $data->ln_lv_fee_type; // 6(12-At disbursement, 13-First Repayment, 14-Installment Principal)
@@ -121,27 +128,50 @@ class ScheduleWeekly
                     $interestPayment[$i] = \Currency::round($currency, ($loanAmount * $interestRate * $installmentFrequency));
                 }
 
-                // Calculate install principal for payment
-                if ($i == $temInstallPrinFrequency) {
-                    if ($i != $numPayment) {
-                        $principalPayment[$i] = $installPrinAmount;
-                        $temLoanAmount -= $principalPayment[$i];
-                        $temInstallPrinFrequency += $installPrinFrequency;
+                if($interestType==129) {
+                    // Calculate install principal for payment
+                    if ($i == $temInstallPrinFrequency) {
+                        if ($i != $numPayment) {
+                            $principalPayment[$i] = $installPrinAmount;
+                            $temLoanAmount -= $principalPayment[$i];
+                            $temInstallPrinFrequency += $installPrinFrequency;
 
-                        if ($temInstallPrinFrequency > $numPayment) {
-                            $temInstallPrinFrequency = $numPayment;
+                            if ($temInstallPrinFrequency > $numPayment) {
+                                $temInstallPrinFrequency = $numPayment;
+                            }
+                        } else {
+                            $principalPayment[$i] = $temLoanAmount;
+                            $temLoanAmount = 0.00;
                         }
                     } else {
-                        $principalPayment[$i] = $temLoanAmount;
-                        $temLoanAmount = 0.00;
+                        $principalPayment[$i] = 0.00;
                     }
-                } else {
-                    $principalPayment[$i] = 0.00;
+
+                    // Calculate principal balance
+                    $principalBalance[$i] = $temLoanAmount;
+                }else{
+                    $interestPayment[$i] = \Currency::round($currency,$temLoanAmount * $interestRate);
+                    // Calculate install principal for payment
+                    if ($i == $temInstallPrinFrequency) {
+                        if ($i != $numPayment) {
+                            $principalPayment[$i] = $installPrinAmount - $interestPayment[$i];
+                            $temLoanAmount -= $principalPayment[$i];
+                            $temInstallPrinFrequency += $installPrinFrequency;
+
+                            if ($temInstallPrinFrequency > $numPayment) {
+                                $temInstallPrinFrequency = $numPayment;
+                            }
+                        } else {
+                            $principalPayment[$i] = $temLoanAmount;
+                            $temLoanAmount = 0.00;
+                        }
+                    } else {
+                        $principalPayment[$i] = 0.00;
+                    }
+
+                    // Calculate principal balance
+                    $principalBalance[$i] = $temLoanAmount;
                 }
-
-                // Calculate principal balance
-                $principalBalance[$i] = $temLoanAmount;
-
                 // Check installmentFrequency
                 $temInstallmentFrequency += $installmentFrequency;
                 while ($temInstallmentFrequency > $numInstallment) {
