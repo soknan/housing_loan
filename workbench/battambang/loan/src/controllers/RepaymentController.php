@@ -327,7 +327,7 @@ class RepaymentController extends BaseController
                     $bal = 0;
                 }
 
-                $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at);
+                $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,Input::get('repayment_voucher_id'));
             }
             // User action
             \Event::fire('user_action.add', array('repayment'));
@@ -586,7 +586,7 @@ class RepaymentController extends BaseController
                         $bal = 0;
                     }
 
-                    $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at);
+                    $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,Input::get('repayment_voucher_id'));
                 }
                 // User action
                 \Event::fire('user_action.edit', array('repayment'));
@@ -700,12 +700,13 @@ class RepaymentController extends BaseController
         return $bal;
     }
 
-    private function savePrePaid($id,$pay,$bal,$date){
+    private function savePrePaid($id,$pay,$bal,$date,$voucher){
         $p = new PrePaid();
         $p->activated_at = $date;
         $p->ln_disburse_client_id = $id;
-        $p->amount_pay = $pay;
+        $p->amount_paid = $pay;
         $p->bal= $bal;
+        $p->voucher_code = $voucher;
         $p->save();
     }
 

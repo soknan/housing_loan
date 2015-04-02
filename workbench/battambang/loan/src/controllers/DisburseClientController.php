@@ -171,7 +171,7 @@ class DisburseClientController extends BaseController
             }
             $data['dis'] = $row;
             //Get Product
-            $pro = DB::table('ln_product')->where('id', '=', $data['dis']->product_id)->get();
+            $pro = DB::table('view_product')->where('id', '=', $data['dis']->product_id)->get();
             foreach ($pro as $row2) {
                 $data['pro'] = $row2;
             }

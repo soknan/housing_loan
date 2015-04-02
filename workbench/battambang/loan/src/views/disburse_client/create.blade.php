@@ -24,6 +24,19 @@ if(Session::has('errors')){
     $ln_lv_handicap='';
     $ln_lv_contact_type ='';
 }
+if($pro->interest_type_id==129){
+echo FormPanel2::make(
+        'Mortgage Info',
+        Former::number('pre_amount', 'Pre_Amount',$pro->default_amount)->required()->min(0)
+                . ''.
+        Former::number('discount', 'Discount',0)->required()->min(0)
+                ->append('%')    . ''
+        ,
+Former::number('pay_down', 'PayDown',0)->required()->min(0)
+        . ''
+);
+        }
+
 echo FormPanel2::make(
     'General',
     Former::text('ln_disburse_id', 'Disburse ID')
@@ -127,5 +140,24 @@ echo FormPanel2::make(
 
 @stop
 @section('js')
+    <script>
+        $(document).ready(function () {
+            $('[name="pre_amount"]').change(function() {changeAmount()});
+            $('[name="discount"]').change(function() {changeAmount()});
+            $('[name="pay_down"]').change(function() {changeAmount()});
+            function changeAmount() {
+                //alert('aa');
+                var pre_amount = $('[name="pre_amount"]');
+                var amount = $('[name="amount"]');
+                var discount = $('[name="discount"]');
+                var paydown = $('[name="pay_down"]');
+                var tmpDis;
+                tmpDis = discount.val()/100;
+                if(tmpDis<=0){tmpDis.val(1);}
+
+                amount.val((pre_amount.val()*tmpDis)-paydown.val());
+            }
+        });
+        </script>
 <?php echo DatePicker::make('expire_date'); ?>
 @stop

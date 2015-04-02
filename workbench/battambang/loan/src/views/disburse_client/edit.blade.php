@@ -15,6 +15,18 @@
 {{Former::open( route('loan.disburse_client.update',$row->id))->method('PUT')}}
 
 <?php
+if($pro->interest_type_id==129){
+echo FormPanel2::make(
+        'Info',
+        Former::number('pre_amount', 'Pre_Amount',$row->pre_amount)->required()
+        . ''.
+        Former::number('discount', 'Discount',$row->discount)->required()
+                ->append('%')    . ''
+        ,
+        Former::number('pay_down', 'PayDown',$row->pay_down)->required()
+        . ''
+);
+      }
 echo FormPanel2::make(
     'General',
     Former::text('ln_disburse_id', 'Disburse ID', $row->ln_disburse_id)
@@ -120,6 +132,25 @@ echo FormPanel2::make(
 @stop
 
 @section('js')
+    <script>
+        $(document).ready(function () {
+            $('[name="pre_amount"]').ready(function() {changeAmount()}).change(function() {changeAmount()});
+            $('[name="discount"]').ready(function() {changeAmount()}).change(function() {changeAmount()});
+            $('[name="pay_down"]').ready(function() {changeAmount()}).change(function() {changeAmount()});
+            function changeAmount() {
+                //alert('aa');
+                var pre_amount = $('[name="pre_amount"]');
+                var amount = $('[name="amount"]');
+                var discount = $('[name="discount"]');
+                var paydown = $('[name="pay_down"]');
+                var tmpDis;
+                tmpDis = discount.val()/100;
+                if(tmpDis<=0){tmpDis.val(1);}
+
+                amount.val((pre_amount.val()*tmpDis)-paydown.val());
+            }
+        });
+    </script>
 <?php echo DatePicker::make('expire_date'); ?>
 @stop
 

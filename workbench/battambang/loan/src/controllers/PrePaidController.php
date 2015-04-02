@@ -149,8 +149,8 @@ class PrePaidController extends BaseController
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
                 return \Action::make()
-                    ->edit(route('loan.pre_paid.edit', $model->id),$this->_checkAction($model->id,$model->ln_disburse_client_id))
-                    ->delete(route('loan.pre_paid.destroy', $model->id),'',$this->_checkAction($model->id,$model->ln_disburse_client_id))
+                    ->edit(route('loan.pre_paid.edit', $model->id),$this->_checkAction($model->id))
+                    ->delete(route('loan.pre_paid.destroy', $model->id),'',$this->_checkAction($model->id))
                     ->get();
             })
             ->showColumns($item)
@@ -159,15 +159,17 @@ class PrePaidController extends BaseController
             ->make();
     }
 
-    private function _checkAction($id, $dc)
+    private function _checkAction($id)
     {
-        $data = PrePaid::where('ln_disburse_client_id', '=', $dc)
-            ->where('amount_paid','=',null)
+        $data = PrePaid::where('id', '=', $id)
             ->orderBy('id', 'desc')
             ->limit(1)
             ->first();
+        $data1 = PrePaid::orderBy('id', 'desc')
+            ->limit(1)
+            ->first();
 
-        if ($data->id == $id) {
+        if ($data->amount_paid == null and $data->activated_at == $data1->activated_at) {
             return true;
         }
         return false;
