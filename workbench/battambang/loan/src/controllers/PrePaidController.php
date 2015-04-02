@@ -77,14 +77,21 @@ class PrePaidController extends BaseController
     public function store()
     {
         $validation = $this->getValidationService('pre_paid');
-        //if ($validation->passes()) {
+        if ($validation->passes()) {
+            if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
+                if(!$this->_checkBal(Input::get('ln_disburse_client_id'),$this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid'))){
+                    return Redirect::back()
+                        ->with('error','Your amount pre-paid is bigger than your ending balance.');
+                }
+            }
+
             $data = new PrePaid();
             $this->saveData($data);
             // User action
             \Event::fire('user_action.add', array('pre_paid'));
             return Redirect::back()
                 ->with('success', trans('battambang/loan::pre_paid.create_success'));
-        //}
+        }
         return Redirect::back()->withInput()->withErrors($validation->getErrors());
     }
 
@@ -93,6 +100,12 @@ class PrePaidController extends BaseController
         //try {
             $validation = $this->getValidationService('pre_paid');
             if ($validation->passes()) {
+                if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
+                    if(!$this->_checkBal(Input::get('ln_disburse_client_id'),$this->_existsAcc(Input::get('ln_disburse_client_id'))->bal)){
+                        return Redirect::back()
+                            ->with('error','Your amount pre-paid is bigger than your ending balance.');
+                    }
+                }
                 $data = PrePaid::findOrFail($id);
                 $this->saveData($data,false);
                 // User action
@@ -184,6 +197,16 @@ class PrePaidController extends BaseController
         return $data;
     }
 
+    private function _checkBal($id,$end_bal=0){
+        $bal = 0;
+        $data = Perform::where('ln_disburse_client_id','=',$id)
+            ->orderBy('activated_at','desc')->limit(1)
+            ->first();
+        //if($data!=null) $bal = $data->bal;
+        if($data!=null) $bal = $data->balance_principal + $data->balance_interest;
+        if($end_bal <= $bal) return true;
+        return false;
+    }
 
 /*    private function _getLoanAccount()
     {
