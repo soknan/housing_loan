@@ -138,7 +138,7 @@ class PrePaidController extends BaseController
         $data->ln_disburse_client_id = Input::get('ln_disburse_client_id');
         $data->amount_pre_paid = Input::get('amount_pre_paid');
         $data->bal = Input::get('amount_pre_paid');
-        $data->voucher_code = Input::get('voucher_code');
+        $data->voucher_code = sprintf('%06d', Input::get('voucher_code'));
         if($save){
             if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
                 $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid');
