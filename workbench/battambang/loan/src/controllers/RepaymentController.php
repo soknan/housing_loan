@@ -87,9 +87,12 @@ class RepaymentController extends BaseController
         $penalty = Input::get('repayment_penalty');
         $status = Input::get('repayment_status');
         $voucher_id = Input::get('repayment_voucher_id');
+
         $pre_paid = 0;
         if ($validation->passes()) {
             $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+            $voucher_code = \UserSession::read()->sub_branch
+                . '-' . date('Y') . '-' . $data->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher_id);
             $pre_paid = $this->getPrePaid(Input::get('ln_disburse_client_id'),$perform_date);
             if ($perform_date < $perform->_getLastPerform(Input::get('ln_disburse_client_id'))->activated_at) {
                 $data->_arrears['cur']['principal'] = 0;
@@ -124,7 +127,7 @@ class RepaymentController extends BaseController
                     $data->_repayment['cur']['type'] = $status;
                     return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                 }
-                $perform->repay($principal, $penalty, $status, $voucher_id);
+                $perform->repay($principal, $penalty, $status, $voucher_code);
                 $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
                     . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
@@ -296,7 +299,7 @@ class RepaymentController extends BaseController
                 Input::get('repayment_principal'),
                 $penalty,
                 $status,
-                Input::get('repayment_voucher_id')
+                $voucher_code
             );
 
             $tmp_voucher = Perform::where('repayment_voucher_id','=',$perform->_repayment['cur']['voucher_id'])->count();
@@ -327,7 +330,7 @@ class RepaymentController extends BaseController
                     $bal = 0;
                 }
 
-                $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,Input::get('repayment_voucher_id'));
+                $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,$voucher_code);
             }
             // User action
             \Event::fire('user_action.add', array('repayment'));
@@ -360,6 +363,8 @@ class RepaymentController extends BaseController
                 //$perform->delete($id);
 
                 $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+                $voucher_code = \UserSession::read()->sub_branch
+                    . '-' . date('Y') . '-' . $data->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher_id);
                 $pre_paid = $this->getPrePaid(Input::get('ln_disburse_client_id'),$perform_date);
                 if ($perform_date < $perform->_getLastPerform($loan_acc)->activated_at) {
                     $data->_arrears['cur']['principal'] = 0;
@@ -401,7 +406,7 @@ class RepaymentController extends BaseController
                         return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
 
-                    $perform->repay($principal, $penalty, $status, $voucher_id);
+                    $perform->repay($principal, $penalty, $status, $voucher_code);
                     $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
                         . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
@@ -553,7 +558,7 @@ class RepaymentController extends BaseController
                     Input::get('repayment_principal'),
                     Input::get('repayment_penalty'),
                     Input::get('repayment_status'),
-                    Input::get('repayment_voucher_id')
+                    $voucher_code
                 );
 
                 if(Input::get('hidden_voucher_id') != $perform->_repayment['cur']['voucher_id']){
@@ -586,7 +591,7 @@ class RepaymentController extends BaseController
                         $bal = 0;
                     }
 
-                    $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,Input::get('repayment_voucher_id'));
+                    $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,$voucher_code);
                 }
                 // User action
                 \Event::fire('user_action.edit', array('repayment'));

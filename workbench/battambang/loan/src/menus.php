@@ -6,14 +6,28 @@ Menu::make(
         $menu->add(
             'Manage Data',
             function ($dropdown) {
-                $dropdown->add('Clients', route('loan.client.index'));
+                $arr = array('loan.client.index'=>'Clients',
+                            'loan.disburse.index'=>'Disbursement',
+                            'loan.repayment.index'=>'Repayment',
+                            'loan.pre_paid.index'=>'Pre-Paid',
+                            'loan.write_off.index'=>'Loan Write-Off',
+                            'loan.exchange.index'=>'Exchange',
+                            'loan.center.index'=>'Centers'
+                );
+                if(UserSession::read()->permission==null) return;
+                foreach($arr as $key=> $value){
+                    if(in_array($key,UserSession::read()->permission)){
+                        $dropdown->add($value, route($key));
+                    }
+                }
+                /*$dropdown->add('Clients', route('loan.client.index'));
                 $dropdown->add('Disbursement', route('loan.disburse.index'));
                 $dropdown->add('Repayment', route('loan.repayment.index'));
                 $dropdown->add('Pre-Paid', route('loan.pre_paid.index'));
                 $dropdown->add('Loan Write-Off', route('loan.write_off.index'));
                 $dropdown->divider();
                 $dropdown->add('Exchange', route('loan.exchange.index'));
-                $dropdown->add('Centers', route('loan.center.index'));
+                $dropdown->add('Centers', route('loan.center.index'));*/
             }
         );
 

@@ -947,8 +947,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                     $this->_repayment['cur']['principal']= $re_pri;
                     $this->_repayment['cur']['interest']= $re_int;
                     $this->_repayment['cur']['penalty']= $penalty;
-                    $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
-                        . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
+                    $this->_repayment['cur']['voucher_id'] = $voucher;
 
                     $this->_balance_principal = $this->_balance_principal - $this->_repayment['cur']['principal'];
                     $this->_balance_interest = $this->_balance_interest - $this->_repayment['cur']['interest'];
@@ -1070,8 +1069,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_arrears['cur']['num_installment'] = $arrearsIndex;
 
                 $this->_repayment['cur']['date'] = $this->_activated_at;
-                $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
-                    . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
+                $this->_repayment['cur']['voucher_id'] = $voucher;
                 //$this->_repayment['cur']['status'] = $this->_arrears['cur']['num_day'] + $this->_repayment['last']['status'];
                 $this->_repayment['cur']['principal'] = $prin;
                 $this->_repayment['cur']['interest'] = $int;
@@ -1083,16 +1081,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 if($this->_balance_principal==0){
                     $this->_repayment['cur']['type'] = 'closing';
                 }
-                /*if($this->_arrears['cur']['num_day'] >0){
-                    $this->_repayment['cur']['status'] = $this->_getRepaymentStatus($this->_arrears['cur']['num_day'])->id;
-
-                    $this->_current_product_status = $this->_getProductStatus($this->_arrears['cur']['num_day'])->id;
-                    $this->_current_product_status_date = $this->_getProductStatusDate($this->_arrears['cur']['num_day']);
-                    if($this->_current_product_status ==5){
-                        $this->_current_product_status=4;
-                    }
-                }
-                $this->_current_product_status_principal = $this->_balance_principal;*/
 
                 if(($this->_arrears['cur']['principal'] + $this->_arrears['cur']['interest'] + $this->_arrears['cur']['penalty']) == 0 ){
                     $this->_arrears['cur']['date'] = '';
@@ -1113,8 +1101,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 }
 
                 $this->_repayment['cur']['date'] = $this->_activated_at;
-                $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
-                    . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
+                $this->_repayment['cur']['voucher_id'] = $voucher;
                 //$this->_repayment['cur']['status'] = $this->_arrears['cur']['status'];
                 $this->_repayment['cur']['status'] = $this->_new_due['product_status'];
                 $this->_repayment['cur']['principal'] = $this->_arrears['cur']['principal'];
@@ -1124,14 +1111,6 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
                 $this->_balance_principal = $this->_balance_principal - $this->_arrears['cur']['principal'];
                 $this->_balance_interest = $this->_balance_interest - $this->_arrears['cur']['interest'];
-
-                /*$this->_current_product_status = $this->_new_due['product_status'];
-                $this->_current_product_status_date = $this->_new_due['product_status_date'];
-                $this->_current_product_status_principal = $this->_balance_principal;
-
-                if($this->_current_product_status ==5){
-                    $this->_current_product_status=4;
-                }*/
 
                 $this->_arrears['cur']['principal'] = 0;
                 $this->_arrears['cur']['interest'] = 0;
@@ -1155,8 +1134,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
             case 'penalty':
 
                 $this->_repayment['cur']['date'] = $this->_activated_at;
-                $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
-                    . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
+                $this->_repayment['cur']['voucher_id'] = $voucher;
                 $this->_repayment['cur']['status'] = $this->_new_due['product_status'];
                 $this->_repayment['cur']['principal'] = $this->_arrears['cur']['principal'];
                 $this->_repayment['cur']['interest'] = $this->_arrears['cur']['interest'];
@@ -1173,8 +1151,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 break;
             case 'fee':
                 $this->_repayment['cur']['date'] = $this->_due['date'];
-                $this->_repayment['cur']['voucher_id'] = \UserSession::read()->sub_branch
-                    . '-' . date('Y') . '-' . $this->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher);
+                $this->_repayment['cur']['voucher_id'] = $voucher;
                 $this->_repayment['cur']['status'] = 1;
                 $this->_repayment['cur']['principal'] = 0;
                 $this->_repayment['cur']['interest'] = 0;

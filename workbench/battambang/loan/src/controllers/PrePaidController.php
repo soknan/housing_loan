@@ -138,7 +138,12 @@ class PrePaidController extends BaseController
         $data->ln_disburse_client_id = Input::get('ln_disburse_client_id');
         $data->amount_pre_paid = Input::get('amount_pre_paid');
         $data->bal = Input::get('amount_pre_paid');
-        $data->voucher_code = sprintf('%06d', Input::get('voucher_code'));
+
+        $ccy = Disburse::where('id',substr(Input::get('ln_disburse_client_id'),0,11))->first();
+
+        $data->voucher_code = \UserSession::read()->sub_branch
+        . '-' . date('Y') . '-' . $ccy->cp_currency_id . '-' . sprintf('%06d', Input::get('voucher_code'));
+
         if($save){
             if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
                 $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid');
@@ -161,6 +166,8 @@ class PrePaidController extends BaseController
 
         return \Datatable::query($arr)
             ->addColumn('action', function ($model) {
+                $model->voucher_code = substr($model->voucher_code,-6);
+                if($model->amount_pre_paid==null) $model->amount_pre_paid = 0;
                 return \Action::make()
                     ->edit(route('loan.pre_paid.edit', $model->id),$this->_checkAction($model->id))
                     ->delete(route('loan.pre_paid.destroy', $model->id),'',$this->_checkAction($model->id))
