@@ -340,7 +340,7 @@ class RepaymentController extends BaseController
 
     public function update($id)
     {
-        try {
+        //try {
             $validation = $this->getValidationService('repayment');
             $perform = new LoanPerformance();
             $msg = '';
@@ -354,7 +354,7 @@ class RepaymentController extends BaseController
             //echo Input::get('loan_acc'); exit;
             if ($validation->passes()) {
                 $curData = Perform::where('id', '=', $id)->get()->toArray();
-                $curP = PrePaid::where('ln_disburse_client_id','=',Input::get('ln_disburse_client_id'))
+                $curP = PrePaid::where('ln_disburse_client_id','=',$loan_acc)
                     ->where('activated_at','=',$perform_date)->get()->toArray();
                 $this->_delete($id);
                 //$perform->delete($id);
@@ -466,11 +466,11 @@ class RepaymentController extends BaseController
 
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
-
+                    PrePaid::insert($curP);
                     unset($curP['created_at']);
                     unset($curP['updated_at']);
 
-                    PrePaid::insert($curP);
+
                     Perform::insert($curData);
                     return Redirect::back()
                         ->with('data', $data)
@@ -595,9 +595,9 @@ class RepaymentController extends BaseController
                     ->with('success', trans('battambang/loan::repayment.update_success'));
             }
             return Redirect::back()->withInput()->withErrors($validation->getErrors());
-        } catch (\Exception $e) {
+        /*} catch (\Exception $e) {
             return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
-        }
+        }*/
     }
 
     public function destroy($id)
