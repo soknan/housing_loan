@@ -54,6 +54,7 @@ class PrePaidController extends BaseController
         try {
 //            $data['disburseClient'] = $this->_getLoanAccount();
             $data['row'] = PrePaid::where('id', '=', $id)->first();
+            $data['row']->voucher_code = substr($data['row']->voucher_code,-6);
             return $this->renderLayout(
                 View::make(Config::get('battambang/loan::views.pre_paid_edit'), $data)
             );
@@ -78,11 +79,9 @@ class PrePaidController extends BaseController
     {
         $validation = $this->getValidationService('pre_paid');
         if ($validation->passes()) {
-            if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
-                if(!$this->_checkBal(Input::get('ln_disburse_client_id'),$this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid'))){
-                    return Redirect::back()
-                        ->with('error','Your amount pre-paid is bigger than your ending balance.');
-                }
+            if($this->_checkBal(Input::get('ln_disburse_client_id')) < Input::get('amount_pre_paid')){
+                return Redirect::back()
+                    ->with('error','Your amount pre-paid is bigger than your ending balance('.number_format($this->_checkBal(Input::get('ln_disburse_client_id'),2)).').');
             }
 
             $data = new PrePaid();
@@ -100,12 +99,11 @@ class PrePaidController extends BaseController
         //try {
             $validation = $this->getValidationService('pre_paid');
             if ($validation->passes()) {
-                if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
-                    if(!$this->_checkBal(Input::get('ln_disburse_client_id'),$this->_existsAcc(Input::get('ln_disburse_client_id'))->bal)){
-                        return Redirect::back()
-                            ->with('error','Your amount pre-paid is bigger than your ending balance.');
-                    }
+                if($this->_checkBal(Input::get('ln_disburse_client_id'))< Input::get('amount_pre_paid')){
+                    return Redirect::back()
+                        ->with('error','Your amount pre-paid is bigger than your ending balance('.number_format($this->_checkBal(Input::get('ln_disburse_client_id'),2)).').');
                 }
+
                 $data = PrePaid::findOrFail($id);
                 $this->saveData($data,false);
                 // User action
@@ -149,8 +147,8 @@ class PrePaidController extends BaseController
                 $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal +Input::get('amount_pre_paid');
             }
         }else{
-            if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null){
-                $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal - $this->_existsAcc(Input::get('ln_disburse_client_id'))->amount_pre_paid +Input::get('amount_pre_paid');
+            if($this->_existsAcc(Input::get('ln_disburse_client_id'))!=null) {
+                $data->bal = $this->_existsAcc(Input::get('ln_disburse_client_id'))->bal - $this->_existsAcc(Input::get('ln_disburse_client_id'))->amount_pre_paid + Input::get('amount_pre_paid');
             }
         }
 
@@ -189,7 +187,7 @@ class PrePaidController extends BaseController
             ->limit(1)
             ->first();
 
-        if ($data->amount_paid == null and $data->activated_at == $data1->activated_at) {
+        if ($data->amount_paid == null and $data->id == $data1->id) {
             return true;
         }
         return false;
@@ -198,21 +196,21 @@ class PrePaidController extends BaseController
     private function _existsAcc($id){
         $bal = 0;
         $data = PrePaid::where('ln_disburse_client_id','=',$id)
-            ->orderBy('activated_at','desc')->limit(1)
+            ->orderBy('id','desc')->limit(1)
             ->first();
-        //if($data!=null) $bal = $data->bal;
+
         return $data;
     }
 
-    private function _checkBal($id,$end_bal=0){
+    private function _checkBal($id){
         $bal = 0;
         $data = Perform::where('ln_disburse_client_id','=',$id)
             ->orderBy('activated_at','desc')->limit(1)
             ->first();
         //if($data!=null) $bal = $data->bal;
         if($data!=null) $bal = $data->balance_principal + $data->balance_interest;
-        if($end_bal <= $bal) return true;
-        return false;
+
+        return $bal;
     }
 
 /*    private function _getLoanAccount()
