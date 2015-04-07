@@ -343,7 +343,7 @@ class RepaymentController extends BaseController
 
     public function update($id)
     {
-        //try {
+        try {
             $validation = $this->getValidationService('repayment');
             $perform = new LoanPerformance();
             $msg = '';
@@ -358,7 +358,7 @@ class RepaymentController extends BaseController
             if ($validation->passes()) {
                 $curData = Perform::where('id', '=', $id)->get()->toArray();
                 $curP = PrePaid::where('ln_disburse_client_id','=',$loan_acc)
-                    ->where('activated_at','=',$perform_date)->get()->toArray();
+                    ->where('voucher_code','=',$curData[0]['repayment_voucher_id'])->get()->toArray();
                 $this->_delete($id);
                 //$perform->delete($id);
 
@@ -469,13 +469,13 @@ class RepaymentController extends BaseController
                         . 'Pre-Paid Amount = <strong>'.number_format($pre_paid,2).'</strong>'.' ( Cur Pay = '.number_format($total_pay,2).', Bal = '.number_format($pre_paid_bal,2).')'
                         . '<P>Note : ' . $data->error . '</P>';
 
+                    //var_dump($curP); exit;
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
+                    unset($curData['id']);
                     PrePaid::insert($curP);
                     unset($curP['created_at']);
                     unset($curP['updated_at']);
-
-
                     Perform::insert($curData);
                     return Redirect::back()
                         ->with('data', $data)
@@ -483,6 +483,7 @@ class RepaymentController extends BaseController
                 }
                 unset($curP['created_at']);
                 unset($curP['updated_at']);
+                unset($curData['id']);
                 PrePaid::insert($curP);
                 unset($curData['created_at']);
                 unset($curData['updated_at']);
@@ -600,21 +601,19 @@ class RepaymentController extends BaseController
                     ->with('success', trans('battambang/loan::repayment.update_success'));
             }
             return Redirect::back()->withInput()->withErrors($validation->getErrors());
-        /*} catch (\Exception $e) {
+        } catch (\Exception $e) {
             return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
-        }*/
+        }
     }
 
     public function destroy($id)
     {
         try {
-            $data = Perform::findOrFail($id);
+            $data = Perform::where('id','=',$id)->first();
             //delete pre-paid
-            $p = PrePaid::where('ln_disburse_client_id', '=', $data->ln_disburse_client_id)
-                ->where('activated_at', '=',$data->activated_at)
-                ->orderBy('activated_at', 'DESC')->limit(1)->first();
-            if($p!=null) $p->delete();
-            if($data!=null) $data->delete();
+            PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
+                ->delete();
+           $data->delete();
             // User action
             \Event::fire('user_action.delete', array('repayment'));
             return Redirect::back()->with('success', trans('battambang/loan::repayment.delete_success'));
@@ -625,13 +624,12 @@ class RepaymentController extends BaseController
 
     private function _delete($id){
         try {
-            $data = Perform::findOrFail($id);
+            $data = Perform::where('id','=',$id)->first();
             //delete pre-paid
-            $p = PrePaid::where('ln_disburse_client_id', '=', $data->ln_disburse_client_id)
-                ->where('activated_at', '=',$data->activated_at)
-                ->orderBy('activated_at', 'DESC')->limit(1)->first();
-            if($p!=null) $p->delete();
-            if($data!=null) $data->delete();
+            PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
+                ->delete();
+            $data->delete();
+
             // User action
             \Event::fire('user_action.delete', array('repayment'));
             //return Redirect::back()->with('success', trans('battambang/loan::repayment.delete_success'));
