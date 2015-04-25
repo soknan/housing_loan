@@ -19,6 +19,7 @@ Menu::make(
                     if(in_array($key,UserSession::read()->permission)){
                         $dropdown->add($value, route($key));
                     }
+
                 }
                 /*$dropdown->add('Clients', route('loan.client.index'));
                 $dropdown->add('Disbursement', route('loan.disburse.index'));
@@ -35,21 +36,45 @@ Menu::make(
         $menu->add(
             'Settings',
             function ($dropdown) {
-                $dropdown->add('Fund', route('loan.fund.index'));
+                $arr = array('loan.fund.index'=>'Fund',
+                    'loan.fee.index'=>'Fee',
+                    'loan.penalty.index'=>'Penalty',
+                    'loan.penalty_closing.index'=>'Penalty Closing',
+                    'loan.holiday.index'=>'Holiday',
+                    'loan.staff.index'=>'Staff',
+                    'loan.lookup.index'=>'Lookup',
+                    'loan.lookup_value.index'=>'Lookup Value',
+                );
+                if(UserSession::read()->permission==null) return;
+                foreach($arr as $key=> $value){
+                    if(in_array($key,UserSession::read()->permission)){
+                        $dropdown->add($value, route($key));
+                    }
+                }
+                /*$dropdown->add('Fund', route('loan.fund.index'));
                 $dropdown->add('Fee', route('loan.fee.index'));
                 $dropdown->add('Penalty', route('loan.penalty.index'));
                 $dropdown->add('Penalty Closing', route('loan.penalty_closing.index'));
-                $dropdown->add('Holiday', route('loan.holiday.index'));
+                $dropdown->add('Holiday', route('loan.holiday.index'));*/
                 $dropdown->add(
                     'Product',
                     function ($dropdown) {
-                        $dropdown->add('Category', route('loan.category.index'));
-                        $dropdown->add('Type', route('loan.product.index'));
+                        $arr = array('loan.category.index'=>'Category',
+                            'loan.product.index'=>'Type',
+                        );
+                        if(UserSession::read()->permission==null) return;
+                        foreach($arr as $key=> $value){
+                            if(in_array($key,UserSession::read()->permission)){
+                                $dropdown->add($value, route($key));
+                            }
+                        }
+                        /*$dropdown->add('Category', route('loan.category.index'));
+                        $dropdown->add('Type', route('loan.product.index'));*/
                     }
                 );
-                $dropdown->add('Staff', route('loan.staff.index'));
+                /*$dropdown->add('Staff', route('loan.staff.index'));
                 $dropdown->add('Lookup', route('loan.lookup.index'));
-                $dropdown->add('Lookup Value', route('loan.lookup_value.index'));
+                $dropdown->add('Lookup Value', route('loan.lookup_value.index'));*/
             }
         );
 
@@ -57,7 +82,27 @@ Menu::make(
         $menu->add(
             'Reports',
             function ($dropdown) {
-                $dropdown->add('Repayment Schedule', route('loan.rpt_schedule.index'));
+                $arr = array('loan.rpt_schedule.index'=>'Repayment Schedule',
+                    'loan.rpt_disburse_client.index'=>'Loan Disbursement',
+                    'loan.rpt_loan_out.index'=>'Loan Outstanding',
+                    'loan.rpt_loan_late.index'=>'Loan Arrears',
+                    'loan.rpt_loan_fee.index'=>'Fee Repayment',
+                    'loan.rpt_loan_repay.index'=>'Loan Repayment',
+                    'loan.rpt_loan_finish.index'=>'Loan Closing',
+                    'loan.rpt_loan_inactive.index'=>'Loan In-Active',
+                    'loan.rpt_loan_collection_sheet.index'=>'Collection Sheet',
+                    'loan.rpt_loan_history.index'=>'Loan History',
+                    'loan.rpt_write_off_in.index'=>'Write-Off (In Period)',
+                    'loan.rpt_write_off_end.index'=>'Write-Off (End Period)',
+                    'loan.rpt_product_activity.index'=>'Productivity',
+                );
+                if(UserSession::read()->permission==null) return;
+                foreach($arr as $key=> $value){
+                    if(in_array($key,UserSession::read()->permission)){
+                        $dropdown->add($value, route($key));
+                    }
+                }
+                /*$dropdown->add('Repayment Schedule', route('loan.rpt_schedule.index'));
                 $dropdown->add('Loan Disbursement', route('loan.rpt_disburse_client.index'));
                 $dropdown->add('Loan Outstanding', route('loan.rpt_loan_out.index'));
                 $dropdown->add('Loan Arrears', route('loan.rpt_loan_late.index'));
@@ -69,25 +114,46 @@ Menu::make(
                 $dropdown->add('Loan History', route('loan.rpt_loan_history.index'));
                 $dropdown->add('Write-Off (In Period)', route('loan.rpt_write_off_in.index'));
                 $dropdown->add('Write-Off (End Period)', route('loan.rpt_write_off_end.index'));
-                $dropdown->add('Productivity', route('loan.rpt_product_activity.index'));
+                $dropdown->add('Productivity', route('loan.rpt_product_activity.index'));*/
                 $dropdown->add(
                     'Loan Pre-Paid',
                     function ($dropdown) {
-                        $dropdown->add('Deposit', route('loan.rpt_loan_prepaid_deposit.index'));
+                        $arr = array('loan.rpt_loan_prepaid_deposit.index'=>'Deposit',
+                            'loan.rpt_loan_prepaid_withdrawal.index'=>'Withdrawal',
+                            'loan.rpt_loan_prepaid_bal.index'=>'Balance',
+                        );
+                        if(UserSession::read()->permission==null) return;
+                        foreach($arr as $key=> $value){
+                            if(in_array($key,UserSession::read()->permission)){
+                                $dropdown->add($value, route($key));
+                            }
+                        }
+                       /* $dropdown->add('Deposit', route('loan.rpt_loan_prepaid_deposit.index'));
                         $dropdown->add('Withdrawal', route('loan.rpt_loan_prepaid_withdrawal.index'));
-                        $dropdown->add('Balance', route('loan.rpt_loan_prepaid_bal.index'));
+                        $dropdown->add('Balance', route('loan.rpt_loan_prepaid_bal.index'));*/
                     }
                     );
                 $dropdown->add(
                     'Summary',
                     function ($dropdown) {
-                        $dropdown->add('Loan BreakDown By Purpose', route('loan.rpt_breakdown_purpose.index'));
+                        $arr = array('loan.rpt_loan_breakdown_purpose.index'=>'Loan BreakDown By Purpose',
+                            'loan.rpt_breakdown_currency.index'=>'Loan BreakDown By Currency',
+                            'loan.rpt_nbc_7.index'=>'Loan Classification, Provisioning and Delinquency Ratio',
+                            'loan.rpt_nbc_11.index'=>'Network Information',
+                        );
+                        if(UserSession::read()->permission==null) return;
+                        foreach($arr as $key=> $value){
+                            if(in_array($key,UserSession::read()->permission)){
+                                $dropdown->add($value, route($key));
+                            }
+                        }
+                        /*$dropdown->add('Loan BreakDown By Purpose', route('loan.rpt_breakdown_purpose.index'));
                         $dropdown->add('Loan BreakDown By Currency', route('loan.rpt_breakdown_currency.index'));
                         $dropdown->add(
                             'Loan Classification, Provisioning and Delinquency Ratio',
                             route('loan.rpt_nbc_7.index')
                         );
-                        $dropdown->add('Network Information', route('loan.rpt_nbc_11.index'));
+                        $dropdown->add('Network Information', route('loan.rpt_nbc_11.index'));*/
 
                     }
                 );
@@ -102,8 +168,17 @@ Menu::make(
         $menu->add(
             'Tools',
             function ($dropdown) {
-                $dropdown->add('Backup', route('loan.backup.index'));
-                $dropdown->add('Restore', route('loan.restore.index'));
+                $arr = array('loan.backup.index'=>'Backup',
+                    'loan.restore.index'=>'Restore',
+                );
+                if(UserSession::read()->permission==null) return;
+                foreach($arr as $key=> $value){
+                    if(in_array($key,UserSession::read()->permission)){
+                        $dropdown->add($value, route($key));
+                    }
+                }
+                /*$dropdown->add('Backup', route('loan.backup.index'));
+                $dropdown->add('Restore', route('loan.restore.index'));*/
             }
         );
     }

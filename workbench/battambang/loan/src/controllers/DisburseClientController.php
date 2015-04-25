@@ -389,6 +389,10 @@ class DisburseClientController extends BaseController
         $data->ln_lv_contact_type = Input::get('ln_lv_contact_type');
         $data->contact_num = Input::get('contact_num');
         $data->email = Input::get('email');
+
+        $data->pay_down = Input::get('pay_down');
+        $data->discount = Input::get('discount');
+        $data->pre_amount = Input::get('pre_amount');
         $data->save();
     }
 

@@ -132,6 +132,7 @@ echo FormPanel2::make(
 @stop
 
 @section('js')
+ <?php  if($pro->interest_type_id==129){ ?>
     <script>
         $(document).ready(function () {
             $('[name="pre_amount"]').ready(function() {changeAmount()}).change(function() {changeAmount()});
@@ -151,6 +152,7 @@ echo FormPanel2::make(
             }
         });
     </script>
+ <?php }?>
 <?php echo DatePicker::make('expire_date'); ?>
 @stop
 
