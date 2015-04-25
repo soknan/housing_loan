@@ -127,8 +127,8 @@ class ScheduleWeekly
                 if($interestType==9){
                     $interestPayment[$i] = \Currency::round($currency, ($loanAmount * $interestRate * $installmentFrequency));
                 }
-
-                if($interestType==129) {
+                //Check if Interest rat not Mortagag
+                if($interestType!=129) {
                     // Calculate install principal for payment
                     if ($i == $temInstallPrinFrequency) {
                         if ($i != $numPayment) {
