@@ -175,8 +175,9 @@ class BackupRestoreController extends BaseController
 
         \File::put($file_name . '.sql', $return);
 
-        $zipFile = new Zipper();
-        $zipFile->zip($file_name.'.zip')->add($file_name . '.sql');
+        $zipFile = new \ZipArchive();
+        $zipFile->open($file_name.'.zip',\ZIPARCHIVE::CREATE);
+        $zipFile->addFile($file_name . '.sql') or die ("ERROR: Could not add the file $file_name");
         $zipFile->close();
 
 

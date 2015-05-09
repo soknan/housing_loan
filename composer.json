@@ -4,12 +4,12 @@
     "keywords": ["framework", "laravel"],
     "license": "MIT",
     "require": {
-        "laravel/framework": "4.2.*",
-        "barryvdh/laravel-ide-helper": "dev-master",
+        "laravel/framework": "4.2.16",
+        
         "barryvdh/laravel-debugbar": "1.*",
         "anahkiasen/former": "dev-develop",
         "chumper/datatable": "dev-master",
-        "chumper/zipper": "dev-master",
+        
         "fadion/validator-assistant": "~1.0",
         "fadion/rule": "~1.0",
         "maatwebsite/excel": "1.*",
@@ -32,7 +32,7 @@
         ],
         "post-update-cmd": [
             "php artisan clear-compiled",
-            "php artisan ide-helper:generate",
+            
             "php artisan debugbar:publish",
             "php artisan optimize"
         ],
