@@ -87,7 +87,7 @@ Breadcrumbs::register(
     'cpanel.rpt_user_action.report',
     function ($bc) {
         $bc->parent('cpanel.user.index');
-        $bc->push('Report', URL::route('cpanel.rpt_user_action.report'));
+        $bc->push('User Action', URL::route('cpanel.rpt_user_action.report'));
     }
 );
 // Company

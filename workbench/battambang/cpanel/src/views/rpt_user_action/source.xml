@@ -147,6 +147,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="8" ss:Color="#000000"/>
+
   </Style>
   <Style ss:ID="s82">
    <Alignment ss:Vertical="Center"/>
@@ -157,7 +158,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="8" ss:Color="#000000"/>
-   <NumberFormat ss:Format="d/m/yyyy"/>
+
   </Style>
   <Style ss:ID="s83">
    <Alignment ss:Vertical="Center"/>
@@ -167,7 +168,7 @@
     <Border ss:Position="Top" ss:LineStyle="Continuous" ss:Weight="1"/>
    </Borders>
    <Font ss:FontName="Calibri" x:Family="Swiss" ss:Size="8" ss:Color="#000000"/>
-   <NumberFormat ss:Format="d/m/yyyy"/>
+
   </Style>
   <Style ss:ID="s87">
    <Alignment ss:Vertical="Center"/>

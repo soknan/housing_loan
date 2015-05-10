@@ -57,9 +57,11 @@ class RptUserActionController extends BaseController
             $data['cp_office'] = $tmp_office;
         }
 
-        $data['result'] = DB::select("select * FROM cp_user_action a
+        $data['result'] = DB::select("select a.cp_office_id,f.en_name,a.cp_user_id,u.username,a.`event`,a.page
+,a.package_type,STR_TO_DATE(a.created_at,'%Y-%m-%d %H:%i:%s') created_at,a.detail
+ FROM cp_user_action a
 INNER JOIN cp_office f on f.id = a.cp_office_id
-INNER JOIN cp_user u on u.id = a.cp_user_id  where $condition ");
+INNER JOIN cp_user u on u.id = a.cp_user_id  where $condition ORDER by a.created_at desc");
 // User action
         \Event::fire('user_action.report', array('rpt_user_action'));
         if (count($data['result']) <= 0) {
