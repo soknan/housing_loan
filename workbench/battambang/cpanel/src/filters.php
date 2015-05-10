@@ -80,7 +80,7 @@ Route::filter(
     'package.cpanel',
     function () {
 
-        $routeNameTem = Route::current()->getName();
+        /*$routeNameTem = Route::current()->getName();
         list($prefix, $resource, $action) = explode('.', $routeNameTem);
 
         switch ($action) {
@@ -119,6 +119,6 @@ Route::filter(
         if ($filter == false) {
             return Redirect::route('cpanel.package.home')
                 ->with('error', Lang::get('battambang/cpanel::permissions.access_denied'));
-        }
+        }*/
     }
 );

@@ -188,7 +188,7 @@ class UserController extends BaseController
                 return implode(', ',$tmp);
             })
 
-            ->searchColumns(array('id', 'first_name', 'last_name', 'email', 'username'))
+            ->searchColumns($item)
             ->orderColumns($item)
             ->make();
     }

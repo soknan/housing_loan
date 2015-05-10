@@ -9,6 +9,8 @@
 
 return array(
 
+    'rpt_user_action' => 'battambang/cpanel::rpt_user_action.index',
+
     'layout' => 'battambang/cpanel::layout.default.master',
     'login'     => 'battambang/cpanel::dashboard.login',
     'home'  => 'battambang/cpanel::dashboard.home',

@@ -27,6 +27,7 @@ Menu::make(
                 $dropdown->add('Office', route('cpanel.office.index'));
                 $dropdown->add('Work Day', route('cpanel.workday.index'));
                 $dropdown->add('Decode Text', route('cpanel.decode.index'));
+                $dropdown->add('User Action', route('cpanel.rpt_user_action.report'));
                 $dropdown->add(
                     'Location',
                     function ($dropdown) {

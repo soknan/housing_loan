@@ -62,7 +62,7 @@ class Report {
          *	Create Directory Reports
          */
         if(!is_dir(public_path()."/reports/".Session::get('package'))){
-           mkdir(public_path()."/reports/",0770);
+           //mkdir(public_path()."/reports/",0770);
            mkdir(public_path()."/reports/".Session::get('package')."/",0770);
 
         }

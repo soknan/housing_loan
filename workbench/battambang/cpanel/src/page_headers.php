@@ -215,3 +215,10 @@ PageHeader::make(
         $header->add('Change Password');
     }
 );
+PageHeader::make(
+    'cpanel.rpt_user_action.report',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('User Action');
+    }
+);

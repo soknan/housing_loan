@@ -83,6 +83,13 @@ Breadcrumbs::register(
         $bc->push('Edit', URL::route('cpanel.user.edit'));
     }
 );
+Breadcrumbs::register(
+    'cpanel.rpt_user_action.report',
+    function ($bc) {
+        $bc->parent('cpanel.user.index');
+        $bc->push('Report', URL::route('cpanel.rpt_user_action.report'));
+    }
+);
 // Company
 Breadcrumbs::register(
     'cpanel.company.edit',

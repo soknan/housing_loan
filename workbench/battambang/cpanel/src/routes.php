@@ -307,6 +307,16 @@ Route::group(array('prefix' => 'cpanel','before' => 'auth.cpanel|package.cpanel'
     ));
 
 
+    Route::get('rpt_user_action',array(
+        'as' => 'cpanel.rpt_user_action.report',
+        'uses'=>'Battambang\Cpanel\RptUserActionController@index',
+    ));
+    Route::post('rpt_user_action',array(
+        'as' => 'cpanel.rpt_user_action.report',
+        'uses'=>'Battambang\Cpanel\RptUserActionController@report',
+    ));
+
+
 });
 
 /*
