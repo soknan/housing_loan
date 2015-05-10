@@ -63,6 +63,7 @@ class LookupValueController extends BaseController {
 
             $data = new LookupValue();
             $this->saveData($data);
+            \Event::fire('user_action.add', array('lookup_value'));
 
             return Redirect::back()
                 ->with('success', trans('battambang/loan::lookup_value.create_success'));
@@ -116,6 +117,7 @@ class LookupValueController extends BaseController {
 
             $data = LookupValue::findOrFail($id);
             $this->saveData($data);
+            \Event::fire('user_action.edit', array('lookup_value'));
 
             return Redirect::back()
                 ->with('success', trans('battambang/loan::lookup_value.update_success'));
@@ -135,6 +137,8 @@ class LookupValueController extends BaseController {
 	public function destroy($id)
 	{
         LookupValue::where('id', '=', $id)->delete();
+        \Event::fire('user_action.delete', array('lookup_value'));
+
         return Redirect::back()->with('success', trans('battambang/loan::lookup_value.delete_success'));
 	}
 

@@ -66,7 +66,8 @@ class UserController extends BaseController
 
             $data = new User();
             $this->saveData($data, $inputs);
-
+// User action
+            \Event::fire('user_action.add', array('user'));
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::user.create_success'));
 
@@ -84,7 +85,8 @@ class UserController extends BaseController
 
                 $data = User::findOrFail($id);
                 $this->saveData($data, $inputs);
-
+// User action
+                \Event::fire('user_action.edit', array('user'));
                 return Redirect::back()
                     ->with('success', trans('battambang/cpanel::user.update_success'));
             }
@@ -118,6 +120,8 @@ class UserController extends BaseController
 
             $data = User::findOrFail($id);
             $data->delete();
+            // User action
+            \Event::fire('user_action.delete', array('user'));
             return Redirect::back()->with('success', trans('battambang/cpanel::user.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('cpanel.user.index')->with('error', trans('battambang/cpanel::db_error.fail'));

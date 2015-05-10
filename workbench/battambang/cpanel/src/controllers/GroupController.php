@@ -67,7 +67,8 @@ class GroupController extends BaseController
 
         $data = new Group();
         $this->saveData($data);
-
+// User action
+        \Event::fire('user_action.add', array('group'));
         return \Response::json(
             array(
                 'success' => true,
@@ -100,7 +101,8 @@ class GroupController extends BaseController
 
         $data = Group::find($code);
         $this->saveData($data);
-
+// User action
+        \Event::fire('user_action.edit', array('group'));
         return \Response::json(
             array(
                 'success' => true,
@@ -114,7 +116,8 @@ class GroupController extends BaseController
         try {
             $data = Group::findOrFail($code);
             $data->delete();
-
+// User action
+            \Event::fire('user_action.delete', array('group'));
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::group.delete_success'));
         } catch (\Exception $e) {

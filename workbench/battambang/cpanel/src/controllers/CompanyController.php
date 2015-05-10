@@ -21,6 +21,7 @@ class CompanyController extends BaseController
     {
         try {
             $arr['row'] = Company::findOrFail($id);
+
             return $this->renderLayout(
                 View::make(Config::get('battambang/cpanel::views.company_edit'), $arr)
             );
@@ -61,7 +62,7 @@ class CompanyController extends BaseController
                 $data->website = Input::get('website');
                 $data->logo = $logoPath;
                 $data->save();
-
+                \Event::fire('user_action.edit', array('company'));
                 return Redirect::back()
                     ->with('success', trans('battambang/cpanel::company.update_success'));
             }

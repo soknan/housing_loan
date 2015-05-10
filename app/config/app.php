@@ -122,7 +122,7 @@ return array(
 		
         'Battambang\Cpanel\CpanelServiceProvider',
         'Battambang\Loan\LoanServiceProvider',
-        //'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+        'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
 		'Barryvdh\Debugbar\ServiceProvider',
         'Former\FormerServiceProvider',
         'Chumper\Datatable\DatatableServiceProvider',

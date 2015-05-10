@@ -71,6 +71,7 @@ class VillageController extends BaseController
 
             $data = new Location();
             $this->saveData($data);
+            \Event::fire('user_action.add', array('village'));
 
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::msg.create_success'));
@@ -86,6 +87,7 @@ class VillageController extends BaseController
 
                 $data = Location::findOrFail($id);
                 $this->saveData($data, false);
+                \Event::fire('user_action.edit', array('village'));
 
                 return Redirect::back()
                     ->with('success', trans('battambang/cpanel::msg.update_success'));
@@ -102,6 +104,7 @@ class VillageController extends BaseController
 
             $data = Location::findOrFail($id);
             $data->delete();
+            \Event::fire('user_action.delete', array('village'));
 
             return Redirect::back()->with('success', trans('battambang/cpanel::msg.delete_success'));
         } catch (\Exception $e) {

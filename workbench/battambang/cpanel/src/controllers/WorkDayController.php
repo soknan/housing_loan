@@ -96,6 +96,7 @@ class WorkDayController extends BaseController
 
             $data = new WorkDay();
             $this->saveData($data, $inputs);
+            \Event::fire('user_action.add', array('workday'));
 
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::workday.create_success'));
@@ -115,6 +116,7 @@ class WorkDayController extends BaseController
 
                 $data = WorkDay::findOrFail($id);
                 $this->saveData($data, $inputs);
+                \Event::fire('user_action.edit', array('workday'));
 
                 return Redirect::back()
                     ->with('success', trans('battambang/cpanel::workday.update_success'));
@@ -134,6 +136,8 @@ class WorkDayController extends BaseController
     {
         try {
             WorkDay::where('id', '=', $id)->delete();
+            \Event::fire('user_action.delete', array('workday'));
+
             return Redirect::back()->with('success', trans('battambang/cpanel::workday.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('cpanel.workday.index')->with('error', trans('battambang/cpanel::db_error.fail'));

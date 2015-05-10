@@ -70,7 +70,8 @@ class OfficeController extends BaseController
 
             $data = new Office();
             $this->saveData($data);
-
+// User action
+            \Event::fire('user_action.add', array('office'));
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::office.create_success'));
         }
@@ -85,7 +86,8 @@ class OfficeController extends BaseController
 
                 $data = Office::findOrFail($id);
                 $this->saveData($data, false);
-
+// User action
+                \Event::fire('user_action.edit', array('office'));
                 return Redirect::back()
                     ->with('success', trans('battambang/cpanel::office.update_success'));
             }
@@ -101,7 +103,8 @@ class OfficeController extends BaseController
 
             $data = Office::findOrFail($id);
             $data->delete();
-
+// User action
+            \Event::fire('user_action.delete', array('office'));
             return Redirect::back()->with('success', trans('battambang/cpanel::office.delete_success'));
         } catch (\Exception $e) {
             return Redirect::route('cpanel.office.index')->with('error', trans('battambang/cpanel::db_error.fail'));

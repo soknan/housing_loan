@@ -64,6 +64,7 @@ class LookupController extends BaseController {
 
             $data = new Lookup();
             $this->saveData($data);
+            \Event::fire('user_action.add', array('lookup'));
 
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::lookup.create_success'));
@@ -117,6 +118,7 @@ class LookupController extends BaseController {
 
             $data = lookup::findOrFail($id);
             $this->saveData($data);
+            \Event::fire('user_action.edit', array('lookup'));
 
             return Redirect::back()
                 ->with('success', trans('battambang/cpanel::lookup.update_success'));
@@ -136,6 +138,8 @@ class LookupController extends BaseController {
 	public function destroy($id)
 	{
         Lookup::where('id', '=', $id)->delete();
+        \Event::fire('user_action.delete', array('lookup'));
+
         return Redirect::back()->with('success', trans('battambang/cpanel::lookup.delete_success'));
 	}
 
