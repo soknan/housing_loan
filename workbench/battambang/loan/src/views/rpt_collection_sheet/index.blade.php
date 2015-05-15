@@ -34,7 +34,7 @@
         ->class('select2')
     .'',
         Former::select('ln_lv_repay_frequency','Repay.Fre')
-                ->options(array('3'=>'Weekly','4'=>'Monthly'))
+                ->options(array('all'=>'All','3'=>'Weekly','4'=>'Monthly'))
                 ->class('select2').''
     .Former::select('location_cat','Location.Cat')
         ->options(LookupValueList::getLocationCategory())

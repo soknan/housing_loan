@@ -688,7 +688,7 @@
               ?>
    <Row>
     <Cell ss:StyleID="s74"><Data ss:Type="Number"><?php echo $p+1;?></Data></Cell>
-    <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo $per->ln_disburse_client_id;?></Data></Cell>
+    <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo substr($per->repayment_voucher_id,-6);?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo $per->repayment_type;?></Data></Cell>
     <Cell ss:StyleID="s74"><Data ss:Type="String"><?php echo $per->current_product_status;?></Data></Cell>
     <Cell ss:StyleID="s73"><Data ss:Type="DateTime"><?php echo $per->repayment_date;?></Data></Cell>
