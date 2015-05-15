@@ -183,11 +183,11 @@ class PrePaidController extends BaseController
             ->orderBy('id', 'desc')
             ->limit(1)
             ->first();
-        $data1 = PrePaid::orderBy('id', 'desc')
+        /*$data1 = PrePaid::orderBy('id', 'desc')
             ->limit(1)
-            ->first();
+            ->first();*/
 
-        if ($data->amount_paid == null and $data->id == $data1->id) {
+        if ($data->amount_paid == null and $data->id == $id) {
             return true;
         }
         return false;
