@@ -90,7 +90,7 @@ Menu::make(
                     'loan.rpt_loan_repay.index'=>'Loan Repayment',
                     'loan.rpt_loan_finish.index'=>'Loan Closing',
                     'loan.rpt_loan_inactive.index'=>'Loan In-Active',
-                    'loan.rpt_loan_collection_sheet.index'=>'Collection Sheet',
+                    'loan.rpt_collection_sheet.index'=>'Collection Sheet',
                     'loan.rpt_loan_history.index'=>'Loan History',
                     'loan.rpt_write_off_in.index'=>'Write-Off (In Period)',
                     'loan.rpt_write_off_end.index'=>'Write-Off (End Period)',
