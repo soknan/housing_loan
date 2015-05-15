@@ -146,9 +146,9 @@ echo FormPanel2::make(
                 var paydown = $('[name="pay_down"]');
                 var tmpDis;
                 tmpDis = discount.val()/100;
-                if(tmpDis<=0){tmpDis.val(1);}
+                //if(tmpDis<=0){tmpDis.val(1);}
 
-                amount.val((pre_amount.val()*tmpDis)-paydown.val());
+                amount.val(pre_amount.val()-(pre_amount.val()*tmpDis)-paydown.val());
             }
         });
     </script>
