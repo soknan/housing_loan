@@ -695,7 +695,7 @@
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_principal;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_interest;?></Data></Cell>
        <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $per->repayment_fee;?></Data></Cell>
-    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $per->repayemnt_penalty;?></Data></Cell>
+    <Cell ss:StyleID="s69"><Data ss:Type="Number"><?php echo $per->repayment_penalty;?></Data></Cell>
     <Cell ss:StyleID="s68"><Data ss:Type="Number"><?php echo $total;?></Data></Cell>
    </Row>
    <?php }?>
