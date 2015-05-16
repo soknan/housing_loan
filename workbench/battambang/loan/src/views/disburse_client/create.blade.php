@@ -156,7 +156,7 @@ echo FormPanel2::make(
                 tmpDis = discount.val()/100;
                 //if(tmpDis<=0){tmpDis.val(1);}
 
-                amount.val(pre_amount.val()-(pre_amount.val()-tmpDis)-paydown.val());
+                amount.val(pre_amount.val()-(pre_amount.val()*tmpDis)-paydown.val());
             }
         });
         </script>

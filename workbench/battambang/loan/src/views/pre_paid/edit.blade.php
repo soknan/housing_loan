@@ -26,13 +26,14 @@ echo FormPanel2::make(
     Former::text('date', 'Date', Carbon::createFromFormat('Y-m-d',$row->activated_at)->format('d-m-Y'))
         ->append('dd-mm-yyyy')
         ->required() . ''
-    .Former::select('ln_disburse_client_id', 'Loan Account')
+    .Former::select('ln_disburse_client_id', 'Acc#')
 //        ->options($disburseClient,$row->ln_disburse_client_id)
         ->options(LookupValueList::getLoanAccount(), $row->ln_disburse_client_id)
+            ->placeholder('- Select One -')
         ->class('select2')
         ->required().''
-    ,Former::text('amount_pre_paid','Amount Per Paid',$row->amount_pre_paid)->required()
-        .''.Former::text('voucher_code','Voucher Code',$row->voucher_code)->maxlength(6)->required()
+    ,Former::text('amount_pre_paid','Per Paid',$row->amount_pre_paid)->required()
+        .''.Former::text('voucher_code','Voucher',$row->voucher_code)->maxlength(6)->required()
 
 );
 ?>

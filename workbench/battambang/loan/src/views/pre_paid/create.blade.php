@@ -26,13 +26,14 @@ echo FormPanel2::make(
     Former::text('date', 'Date',date('d-m-Y'))
         ->append('dd-mm-yyyy')
         ->required() . ''
-    .Former::select('ln_disburse_client_id', 'Loan Account')
+    .Former::select('ln_disburse_client_id', 'Acc#')
 //        ->options($disburseClient)
+            ->placeholder('- Select One -')
         ->options(LookupValueList::getLoanAccount())
         ->class('select2')
         ->required().''
-    ,Former::text('amount_pre_paid','Amount Pre-Paid')->required().''
-        .Former::text('voucher_code','Voucher Code')->maxlength(6)->required()
+    ,Former::text('amount_pre_paid','Pre-Paid')->required().''
+        .Former::text('voucher_code','Voucher')->maxlength(6)->required()
 
 );
 ?>
