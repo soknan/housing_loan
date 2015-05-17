@@ -406,7 +406,7 @@ class DisburseClientController extends BaseController
                 $model->voucher_id = substr($model->voucher_id, -6);
                 return \Action::make()
                     ->edit(route('loan.disburse_client.edit', array($model->id, $model->ln_disburse_id)),$this->_checkAction($model->id))
-                    ->delete(route('loan.disburse_client.destroy', $model->id))
+                    ->delete(route('loan.disburse_client.destroy', $model->id),'',$this->_checkAction($model->id))
                     ->show(route('loan.disburse_client.show',array($model->id, $model->ln_disburse_id)))
                     ->get();
             })

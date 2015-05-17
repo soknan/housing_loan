@@ -167,8 +167,8 @@ class PrePaidController extends BaseController
                 $model->voucher_code = substr($model->voucher_code,-6);
                 if($model->amount_pre_paid==null) $model->amount_pre_paid = 0;
                 return \Action::make()
-                    ->edit(route('loan.pre_paid.edit', $model->id),$this->_checkAction($model->id))
-                    ->delete(route('loan.pre_paid.destroy', $model->id),'',$this->_checkAction($model->id))
+                    ->edit(route('loan.pre_paid.edit', $model->id),$this->_checkAction($model->id,$model->ln_disburse_client_id))
+                    ->delete(route('loan.pre_paid.destroy', $model->id),'',$this->_checkAction($model->id,$model->ln_disburse_client_id))
                     ->get();
             })
             ->showColumns($item)
@@ -177,9 +177,9 @@ class PrePaidController extends BaseController
             ->make();
     }
 
-    private function _checkAction($id)
+    private function _checkAction($id,$acc)
     {
-        $data = PrePaid::where('id', '=', $id)
+        $data = PrePaid::where('ln_disburse_client_id', '=', $acc)
             ->orderBy('id', 'desc')
             ->limit(1)
             ->first();
