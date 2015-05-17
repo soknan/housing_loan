@@ -92,7 +92,24 @@ class RptScheduleController extends BaseController{
             $objWorkSheet->removeRow(13, 2);
             foreach($data['result'] as $key=>$value){
                 $rowNum=13+$key;
-                $dueDate=\LookupValueList::getKhmerDay($value->due_date).' '.date('d-m-Y', strtotime($value->due_date));
+
+                //Preview Schedule
+                $tmpDate = $value->due_date;
+                if(\Input::get('type')=='preview' and $data['dis']->installment_frequency >1){
+                    if($data['dis']->repayment_frequency_type_name=='Weekly'){
+                        if($key==1){
+                            $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
+                            $tmpDate = $a->subWeek();
+                        }
+                    }
+                    if($data['dis']->repayment_frequency_type_name=='Monthly'){
+                        if($key==1){
+                            $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
+                            $tmpDate = $a->subMonth();
+                        }
+                    }
+                }
+                $dueDate=\LookupValueList::getKhmerDay($tmpDate).' '.date('d-m-Y', strtotime($tmpDate));
                 if($data['dis']->ln_perform_num_installment_can_closing == $key){
                     $styleArray=array(
                         'fill'=>array(
@@ -104,6 +121,7 @@ class RptScheduleController extends BaseController{
                     $objWorkSheet->getStyle('A'.$rowNum)->getFill()->setFillType(\PHPExcel_Style_Fill::FILL_SOLID);
                     $objWorkSheet->getStyle('A'.$rowNum)->getFill()->getStartColor()->setARGB('4288CE');
                 }
+
                 $objWorkSheet->getCell('A'.$rowNum)->setValue($key);
                 $objWorkSheet->getCell('B'.$rowNum)->setValue($dueDate);
                 $objWorkSheet->getCell('C'.$rowNum)->setValue($value->num_day);
@@ -173,7 +191,24 @@ class RptScheduleController extends BaseController{
             $objWorkSheet->removeRow(11, 2);
             foreach($data['result'] as $key=>$value){
                 $rowNum=11+$key;
-                $dueDate=\LookupValueList::getKhmerDay($value->due_date).' '.date('d-m-Y', strtotime($value->due_date));
+
+                //Preview Schedule
+                $tmpDate = $value->due_date;
+                if(\Input::get('type')=='preview' and $data['dis']->installment_frequency >1){
+                    if($data['dis']->repayment_frequency_type_name=='Weekly'){
+                        if($key==1){
+                            $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
+                            $tmpDate = $a->subWeek();
+                        }
+                    }
+                    if($data['dis']->repayment_frequency_type_name=='Monthly'){
+                        if($key==1){
+                            $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
+                            $tmpDate = $a->subMonth();
+                        }
+                    }
+                }
+                $dueDate=\LookupValueList::getKhmerDay($tmpDate).' '.date('d-m-Y', strtotime($tmpDate));
                 if($data['dis']->ln_perform_num_installment_can_closing == $key){
                     $styleArray=array(
                         'fill'=>array(
