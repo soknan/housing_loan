@@ -10,7 +10,7 @@
     ->class('select2')
     ->required().''
     .Former::select('type','Type')
-    ->options(array('normal'=>'Normal','preview'=>'Preview'))->class('select2')
+    ->options(array('normal'=>'Normal','draft'=>'Draft'))->class('select2')
     ->required().'',
     Former::text('view_at','Date',date('d-m-Y'))->append('dd-mm-yyyy')->required()
 ) }}

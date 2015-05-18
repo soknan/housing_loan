@@ -93,19 +93,22 @@ class RptScheduleController extends BaseController{
             foreach($data['result'] as $key=>$value){
                 $rowNum=13+$key;
 
-                //Preview Schedule
+                //draft Schedule
                 $tmpDate = $value->due_date;
-                if(\Input::get('type')=='preview' and $data['dis']->installment_frequency >1){
+                $tmpNumDay = $value->num_day;
+                if(\Input::get('type')=='draft' and $data['dis']->installment_frequency >1){
                     if($data['dis']->repayment_frequency_type_name=='Weekly'){
-                        if($key==1){
+                        if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subWeek();
+                            $tmpNumDay = $value->num_day - 7;
                         }
                     }
                     if($data['dis']->repayment_frequency_type_name=='Monthly'){
-                        if($key==1){
+                        if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subMonth();
+                            $tmpNumDay = $value->num_day - 30;
                         }
                     }
                 }
@@ -124,7 +127,7 @@ class RptScheduleController extends BaseController{
 
                 $objWorkSheet->getCell('A'.$rowNum)->setValue($key);
                 $objWorkSheet->getCell('B'.$rowNum)->setValue($dueDate);
-                $objWorkSheet->getCell('C'.$rowNum)->setValue($value->num_day);
+                $objWorkSheet->getCell('C'.$rowNum)->setValue($tmpNumDay);
                 $objWorkSheet->getCell('D'.$rowNum)->setValue($value->principal);
                 $objWorkSheet->getCell('E'.$rowNum)->setValue($value->interest);
                 $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
@@ -192,19 +195,22 @@ class RptScheduleController extends BaseController{
             foreach($data['result'] as $key=>$value){
                 $rowNum=11+$key;
 
-                //Preview Schedule
+                //draft Schedule
                 $tmpDate = $value->due_date;
-                if(\Input::get('type')=='preview' and $data['dis']->installment_frequency >1){
+                $tmpNumDay = $value->num_day;
+                if(\Input::get('type')=='draft' and $data['dis']->installment_frequency >1){
                     if($data['dis']->repayment_frequency_type_name=='Weekly'){
-                        if($key==1){
+                        if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subWeek();
+                            $tmpNumDay = $value->num_day - 7;
                         }
                     }
                     if($data['dis']->repayment_frequency_type_name=='Monthly'){
-                        if($key==1){
+                        if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subMonth();
+                            $tmpNumDay = $value->num_day - 30;
                         }
                     }
                 }
@@ -222,7 +228,7 @@ class RptScheduleController extends BaseController{
                 }
                 $objWorkSheet->getCell('A'.$rowNum)->setValue($key);
                 $objWorkSheet->getCell('B'.$rowNum)->setValue($dueDate);
-                $objWorkSheet->getCell('C'.$rowNum)->setValue($value->num_day);
+                $objWorkSheet->getCell('C'.$rowNum)->setValue($tmpNumDay);
                 $objWorkSheet->getCell('D'.$rowNum)->setValue($value->principal);
                 $objWorkSheet->getCell('E'.$rowNum)->setValue($value->interest);
                 $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);

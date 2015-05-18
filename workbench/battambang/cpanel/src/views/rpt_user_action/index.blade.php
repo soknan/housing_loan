@@ -9,7 +9,13 @@
         ->multiple('multiple')
         ->required()
         .''
-
+.Former::select('event','Event')
+        ->options(array('all'=>'All','add'=>'Add','edit'=>'Edit','delete'=>'Delete','backup'=>'Backup','restore'=>'Restore'))
+        ->required().''
+    .Former::select('user','User')
+            ->options(array('all'=>'All'))
+            ->options($userLst)
+            ->required()
     ,
     Former::text('date_from','From',date('d-m-Y'))->append('dd-mm-yyyy')->required().''
     .Former::text('date_to','To',date('d-m-Y'))->append('dd-mm-yyyy')->required().''

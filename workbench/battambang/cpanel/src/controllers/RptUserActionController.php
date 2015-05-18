@@ -21,9 +21,9 @@ class RptUserActionController extends BaseController
 {
     public function index()
     {
-        //$data['reportHistory'] = $this->_reportHistory();
+        $data['userLst'] = User::lists('username','id');
         return $this->renderLayout(
-            \View::make('battambang/cpanel::rpt_user_action.index')
+            \View::make('battambang/cpanel::rpt_user_action.index',$data)
         );
     }
 
@@ -37,6 +37,8 @@ class RptUserActionController extends BaseController
         $data['date_from'] = \Carbon::createFromFormat('d-m-Y',Input::get('date_from'))->toDateString();
         $data['date_to'] = \Carbon::createFromFormat('d-m-Y',\Input::get('date_to'))->toDateString();
         $data['cp_office']= \Input::get('cp_office_id');
+        $data['event'] = \Input::get('event');
+        $data['user'] = \Input::get('user');
 
 
         if($data['date_from'] > $data['date_to']){
@@ -55,6 +57,14 @@ class RptUserActionController extends BaseController
             }
 
             $data['cp_office'] = $tmp_office;
+        }
+
+        if($data['event']!='all'){
+            $condition.=" AND a.event = '".$data['event']."' ";
+        }
+
+        if($data['user']!='all'){
+            $condition.=" AND a.cp_user_id = '".$data['user']."' ";
         }
 
         $data['result'] = DB::select("select a.cp_office_id,f.en_name,a.cp_user_id,u.username,a.`event`,a.page
