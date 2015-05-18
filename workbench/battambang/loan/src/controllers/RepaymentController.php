@@ -183,6 +183,7 @@ class RepaymentController extends BaseController
             $int_amount = $data->_arrears['cur']['interest'];
             $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
             $total_pay = $totalArrears - $pre_paid ;
+            if($total_pay<=0) $total_pay = 0;
             $pre_paid_bal = ($pre_paid - $totalArrears > 0 ? $pre_paid - $totalArrears : 0  );
             if (Input::has('confirm')) {
                 $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_due['date'])) . '</strong> ,</br> '

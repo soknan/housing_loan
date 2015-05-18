@@ -136,7 +136,8 @@ Menu::make(
                 $dropdown->add(
                     'Summary',
                     function ($dropdown) {
-                        $arr = array('loan.rpt_loan_breakdown_purpose.index'=>'Loan BreakDown By Purpose',
+                        $arr = array(
+                            'loan.rpt_breakdown_purpose.index'=>'Loan BreakDown By Purpose',
                             'loan.rpt_breakdown_currency.index'=>'Loan BreakDown By Currency',
                             'loan.rpt_nbc_7.index'=>'Loan Classification, Provisioning and Delinquency Ratio',
                             'loan.rpt_nbc_11.index'=>'Network Information',
