@@ -25,6 +25,9 @@ return array(
             'decode' => array(
                 'cpanel.decode.index' => 'create'
             ),
+            'user action' => array(
+                'cpanel.rpt_user_action.index' => 'user action'
+            ),
             'group' => array(
                 'cpanel.group.index' => 'list',
                 'cpanel.group.create' => 'create',
