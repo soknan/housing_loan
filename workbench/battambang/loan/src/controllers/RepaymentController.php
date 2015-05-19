@@ -389,6 +389,7 @@ class RepaymentController extends BaseController
 
                         unset($curData['created_at']);
                         unset($curData['updated_at']);
+                        unset($curData['id']);
                         Perform::insert($curData);
 
                         return Redirect::route('loan.repayment.edit',$curData[0]['id'])->withInput()
@@ -412,7 +413,7 @@ class RepaymentController extends BaseController
                         . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
                     $perform->save();
-                    return Redirect::route('loan.repayment.edit',$curData[0]['id'])->withInput()
+                    return Redirect::route('loan.repayment.edit',$perform->_id)->withInput()
                         ->with('info', $msg)
                         ->with('success', trans('battambang/loan::repayment.create_success'));
                 }
@@ -474,7 +475,7 @@ class RepaymentController extends BaseController
                     //var_dump($curP); exit;
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
-                    //unset($curData['id']);
+                    unset($curData['id']);
                     if(count($curP)>0){
                         PrePaid::insert($curP);
                         unset($curP['created_at']);
@@ -491,7 +492,7 @@ class RepaymentController extends BaseController
                     unset($curP['updated_at']);
                     PrePaid::insert($curP);
                 }
-                //unset($curData['id']);
+                unset($curData['id']);
                 unset($curData['created_at']);
                 unset($curData['updated_at']);
                 Perform::insert($curData);
