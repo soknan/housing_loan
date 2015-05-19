@@ -363,7 +363,7 @@ class RepaymentController extends BaseController
                 $this->_delete($id);
                 //$perform->delete($id);
 
-                $data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
+                $data = $perform->get($loan_acc, $perform_date);
                 $voucher_code = \UserSession::read()->sub_branch
                     . '-' . date('Y') . '-' . $data->_disburse->cp_currency_id . '-' . sprintf('%06d', $voucher_id);
                 $pre_paid = $this->getPrePaid(Input::get('ln_disburse_client_id'),$perform_date);
@@ -412,7 +412,7 @@ class RepaymentController extends BaseController
                         . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
                     $perform->save();
-                    return Redirect::back()
+                    return Redirect::route('loan.repayment.edit',$data->_id)->withInput()
                         ->with('info', $msg)
                         ->with('success', trans('battambang/loan::repayment.create_success'));
                 }
@@ -460,6 +460,7 @@ class RepaymentController extends BaseController
                 $int_amount = $data->_arrears['cur']['interest'];
                 $totalArrears = $data->_arrears['cur']['principal'] + $data->_arrears['cur']['interest'];
                 $total_pay = $totalArrears - $pre_paid ;
+                if($total_pay<=0) $total_pay = 0;
                 $pre_paid_bal = ($pre_paid - $totalArrears > 0 ? $pre_paid - $totalArrears : 0  );
                 if (Input::has('confirm')) {
                     $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_due['date'])) . '</strong> ,</br> '
@@ -597,7 +598,7 @@ class RepaymentController extends BaseController
                 }
                 // User action
                 \Event::fire('user_action.edit', array('repayment'));
-                return Redirect::route('loan.repayment.edit',$id)->withInput()
+                return Redirect::route('loan.repayment.edit',$data->_id)->withInput()
                     ->with('info', $msg)
                     ->with('success', trans('battambang/loan::repayment.update_success'));
             }
