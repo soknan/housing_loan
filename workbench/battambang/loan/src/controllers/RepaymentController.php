@@ -391,7 +391,7 @@ class RepaymentController extends BaseController
                         unset($curData['updated_at']);
                         Perform::insert($curData);
 
-                        return Redirect::back()
+                        return Redirect::route('loan.repayment.edit',$data->_id)->withInput()
                             ->with('data', $data)
                             ->with('info', $msg);
                     }
