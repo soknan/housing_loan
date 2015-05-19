@@ -475,18 +475,23 @@ class RepaymentController extends BaseController
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
                     unset($curData['id']);
-                    PrePaid::insert($curP);
-                    unset($curP['created_at']);
-                    unset($curP['updated_at']);
+                    if(count($curP)>0){
+                        PrePaid::insert($curP);
+                        unset($curP['created_at']);
+                        unset($curP['updated_at']);
+                    }
+
                     Perform::insert($curData);
                     return Redirect::back()
                         ->with('data', $data)
                         ->with('info', $msg);
                 }
-                unset($curP['created_at']);
-                unset($curP['updated_at']);
+                if(count($curP)>0) {
+                    unset($curP['created_at']);
+                    unset($curP['updated_at']);
+                    PrePaid::insert($curP);
+                }
                 unset($curData['id']);
-                PrePaid::insert($curP);
                 unset($curData['created_at']);
                 unset($curData['updated_at']);
                 Perform::insert($curData);
