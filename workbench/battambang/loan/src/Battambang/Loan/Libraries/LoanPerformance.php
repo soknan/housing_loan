@@ -151,6 +151,7 @@ class LoanPerformance
         $perform->id = $this->_id;
         if($save){
             $perform->id = \AutoCode::make('ln_perform', 'id', \UserSession::read()->sub_branch . '-', 10);
+            $this->_id = $perform->id;
         }
 
         $perform->ln_disburse_client_id = $this->_disburse_client_id;

@@ -101,14 +101,14 @@ class RptScheduleController extends BaseController{
                         if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subWeek();
-                            $tmpNumDay = $value->num_day - 7;
+                            if($key==1) $tmpNumDay = $value->num_day - 7;
                         }
                     }
                     if($data['dis']->repayment_frequency_type_name=='Monthly'){
                         if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subMonth();
-                            $tmpNumDay = $value->num_day - 30;
+                            if($key==1) $tmpNumDay = $value->num_day - 30;
                         }
                     }
                 }
@@ -203,14 +203,14 @@ class RptScheduleController extends BaseController{
                         if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subWeek();
-                            $tmpNumDay = $value->num_day - 7;
+                            if($key==1) $tmpNumDay = $value->num_day - 7;
                         }
                     }
                     if($data['dis']->repayment_frequency_type_name=='Monthly'){
                         if($key>0){
                             $a=\Carbon::createFromFormat('Y-m-d', $value->due_date);
                             $tmpDate = $a->subMonth();
-                            $tmpNumDay = $value->num_day - 30;
+                            if($key==1) $tmpNumDay = $value->num_day - 30;
                         }
                     }
                 }
