@@ -707,7 +707,7 @@ class RepaymentController extends BaseController
         $bal = 0;
         $data = PrePaid::where('ln_disburse_client_id', '=', $id)
             ->where('activated_at', '<=',$activated_at)
-            ->orderBy('activated_at', 'DESC')->limit(1)->first();
+            ->orderBy('id', 'DESC')->limit(1)->first();
         if($data!=null) $bal = $data->bal;
         return $bal;
     }
