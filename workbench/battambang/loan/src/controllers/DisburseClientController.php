@@ -100,9 +100,9 @@ class DisburseClientController extends BaseController
 
         //var_dump($this->_getClientGroup($disburse));exit;
         if(count($this->_getClientGroup($disburse)>0)){
-            $data['client'] = $this->_getClientList(" and id NOT IN('".implode("','", $this->_getClientGroup($disburse))."')");
+            $data['client'] = $this->_getClientList(" and id NOT IN('".implode("','", $this->_getClientGroup($disburse))."') order by id desc");
         }else{
-            $data['client'] = $this->_getClientList();
+            $data['client'] = $this->_getClientList(" order by id DESC");
         }
 
         //Get Disburse
