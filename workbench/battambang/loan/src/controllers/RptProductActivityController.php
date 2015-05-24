@@ -114,7 +114,7 @@ group by ln_disburse_client.id
 order by ln_disburse.disburse_date DESC
         ");
 // User action
-        //\Event::fire('user_action.report', array('rpt_loan_out'));
+        \Event::fire('user_action.report', array('rpt_productivity'));
         if (count($sql) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
