@@ -55,7 +55,7 @@ class ScheduleMonthly
             $tmpRate = $interestRate*pow((1+$interestRate),$numInstallment);
             $tmpRate1 = pow((1+$interestRate),$numInstallment)-1;
             //print_r($tmpRate1); exit;
-            $installPrinAmount = \Currency::round($currency, $loanAmount*($tmpRate/$tmpRate1));
+            $installPrinAmount = $loanAmount*($tmpRate/$tmpRate1);
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 13-Month(...-None, 33-1, 34-2,..., 57-25...28)
@@ -178,6 +178,8 @@ class ScheduleMonthly
 
                     // Calculate principal balance
                     $principalBalance[$i] = $temLoanAmount;
+                    $principalPayment[$i] = \Currency::round($currency,$principalPayment[$i]);
+                    $principalBalance[$i] = \Currency::round($currency,$principalBalance[$i]);
 
                 }
 

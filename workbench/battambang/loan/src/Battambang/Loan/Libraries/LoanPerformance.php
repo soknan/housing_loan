@@ -389,7 +389,9 @@ class LoanPerformance
 
                 if ($this->_isEqualDate($row->activated_at, $this->_activated_at)) {
                     if($this->_arrears['cur']['principal']+$this->_arrears['cur']['interest']>0){
-                        $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
+                        if($this->_arrears['cur']['num_day']>0){
+                            $this->error = 'Your Current Account has Arrears on '.$this->_arrears['cur']['date'].'';
+                        }
                         if($this->_due['principal'] > $this->_arrears['cur']['principal'] ){
                             $this->_due['principal'] = $this->_arrears['cur']['principal'];
                             $this->_new_due['principal'] = $this->_arrears['cur']['principal'];
@@ -1019,7 +1021,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                             $int += $row->interest;
                             if($tmpPrin >= 0){
                                 $prin += $row->principal;
-                                $arrearsDate = $row->due_date;
+                                $arrearsDate = '';
                             }else{
                                 $arrearsDate = $row->due_date;
                                 $prin+=$tmpInt;
@@ -1043,7 +1045,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                             if($ldate){  $ldate=false;}
                             $arrearsPrin += $row->principal;
                             $arrearsInt += $row->interest;
-
+                            if($arrearsDate=='') $arrearsDate = $row->due_date;
                         }
                     }
                     if($tmpPrin >0){
@@ -1066,7 +1068,11 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $this->_arrears['cur']['principal'] = $arrearsPrin;
                 $this->_arrears['cur']['interest'] = $arrearsInt;
                 $this->_arrears['cur']['date'] = $arrearsDate;
-                $this->_arrears['cur']['num_day'] = $this->_countDate($arrearsDate,$this->_activated_at);
+                $this->_arrears['cur']['num_day']=0;
+                if($arrearsDate!=''){
+                    $this->_arrears['cur']['num_day'] = $this->_countDate($arrearsDate,$this->_activated_at);
+                }
+
                 $this->_arrears['cur']['num_installment'] = $arrearsIndex;
 
                 $this->_repayment['cur']['date'] = $this->_activated_at;
