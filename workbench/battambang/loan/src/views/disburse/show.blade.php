@@ -13,14 +13,14 @@ echo FormPanel2::make(
     . Former::select('ln_lv_account_type', 'Account')
         ->options($account_type_arr, $row->ln_lv_account_type)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
         ->disabled()
     ,
     Former::select('cp_currency_id', 'Currency')
         ->options($currency_arr, $row->cp_currency_id)
         ->required()
         ->disabled()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
 );
 
 echo FormPanel2::make(
@@ -45,10 +45,10 @@ echo FormPanel2::make(
         ->options($installment, $row->num_installment)
         ->required()
         ->disabled()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     . Former::select('installment_frequency', 'Interest Frequency')
         ->options($int_fre, $row->installment_frequency)
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
         ->required()
         ->disabled()
     . Former::text('num_payment', 'Number Payment', $row->num_payment)
@@ -58,13 +58,13 @@ echo FormPanel2::make(
         ->options($ins_pri_fre, $row->installment_principal_frequency)
         ->required()
         ->disabled()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     ,
     Former::select('installment_principal_percentage', 'Principal %')
         ->options($insPriPercentage, $row->installment_principal_percentage)
         ->required()
         ->disabled()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
         ->append('%') . ''
     . Former::number('interest_rate', 'Interest', $row->interest_rate)
         ->step('0.01')
@@ -77,7 +77,7 @@ echo FormPanel2::make(
         ->options($fund_arr, $row->ln_fund_id)
         ->required()
         ->disabled()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     . Former::file('attach_file', 'Attach Files')
 );
 

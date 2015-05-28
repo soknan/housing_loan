@@ -11,14 +11,14 @@ echo FormPanel2::make(
         ->options(LookupValueList::getCenter())
         ->class('select2')
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     ,
 //    Former::text('ln_product_id', 'Product')->required()
     Former::select('ln_product_id', 'Product')
         ->options(LookupValueList::getProduct())
         ->class('select2')
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
 );
 ?>
 

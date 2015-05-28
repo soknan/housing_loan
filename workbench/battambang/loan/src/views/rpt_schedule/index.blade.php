@@ -6,7 +6,7 @@
     'General',
     Former::select('ln_disburse_client_id','Acc#')
     ->options(LookupValueList::getLoanAccount())
-    ->placeholder('- Select One -')
+    ->placeholder('--Select One--')
     ->class('select2')
     ->required().''
     .Former::select('type','Type')

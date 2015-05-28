@@ -8,7 +8,7 @@
 echo FormPanel2::make(
     'General',
     Former::select('ln_category_id', 'Category', \LookupValueList::getCategory())
-        ->placeholder('- Select One -')->required() . ''
+        ->placeholder('--Select One--')->required() . ''
     . Former::text('name', 'Name')
         ->required()
     . Former::textarea('des', 'Description')
@@ -37,7 +37,7 @@ echo FormPanel2::make(
     Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency'))
 //Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency', ' and ln_lookup_value.id = 3')) // 3-Weekly, 4-Monthly
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     . Former::number('min_installment', 'Min')
         ->required()->min(0)
     . Former::number('max_installment', 'Max')
@@ -47,14 +47,14 @@ echo FormPanel2::make(
         ->required()->min(0) . ''
     . Former::select('ln_lv_holiday_rule', 'Holiday', \LookupValueList::getBy('holiday rule'))
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
 );
 
 echo FormPanel2::make(
     'Interest',
     Former::select('ln_lv_interest_type', 'Type', \LookupValueList::getBy('interest type'))
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     . Former::number('min_interest', 'Min')
         ->step('0.01')->min(0)
         ->required()
@@ -76,7 +76,7 @@ echo FormPanel2::make(
 //    Former::select('ln_lv_loan_amount_type', 'Amount Type')
 //        ->options( \LookupValueList::getBy('LoanAmountType',' limit 1'))
 //        ->required()
-//        ->placeholder('- Select One -') . ''
+//        ->placeholder('--Select One--') . ''
     Former::hidden('ln_lv_loan_amount_type')
         ->value(10)// for 'None'
     . Former::number('min_amount', 'Min')
@@ -93,7 +93,7 @@ echo FormPanel2::make(
         ->append('USD').''
 //    . Former::select('ln_exchange_id', 'Exchange')
 //        ->options(LookupValueList::getExchange())
-//        ->placeholder('- Select One -')
+//        ->placeholder('--Select One--')
 //        ->class('select2')
 //        ->required()
 
@@ -103,13 +103,13 @@ echo FormPanel2::make(
     'Others',
     Former::select('ln_fee_id', 'Fee', \LookupValueList::getFee())
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     . Former::select('ln_penalty_id', 'Penalty', \LookupValueList::getPenalty())
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     .Former::select('ln_penalty_closing_id', 'Penalty Closing', \LookupValueList::getPenaltyClosing())
         ->required()
-        ->placeholder('- Select One -').''
+        ->placeholder('--Select One--').''
 
     ,
     Former::select('ln_fund_id_arr[]', 'Fund')

@@ -11,12 +11,12 @@ echo FormPanel2::make(
     . Former::select('ln_lv_account_type', 'Account')
         ->options($account_type_arr)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     ,
     Former::select('cp_currency_id', 'Currency')
         ->options($currency_arr)
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
 );
 echo FormPanel2::make(
     'Center',
@@ -41,10 +41,10 @@ echo FormPanel2::make(
     . Former::select('num_installment', 'Num Installment')
         ->options($installment,$default_installment)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     . Former::select('installment_frequency', 'Interest Frequency')
         ->options($int_fre)
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
         ->required()
     . Former::text('num_payment', 'Number Payment')
         ->readonly('readonly')
@@ -52,12 +52,12 @@ echo FormPanel2::make(
     . Former::select('installment_principal_frequency', 'Principal Frequency')
 //        ->options()
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     ,
     Former::select('installment_principal_percentage', 'Principal %')
         ->options($insPriPercentage)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
         ->append('%') . ''
     . Former::number('interest_rate', 'Interest Rate',$default_interest)
         ->step('0.01')
@@ -68,7 +68,7 @@ echo FormPanel2::make(
     . Former::select('ln_fund_id', 'Fund')
         ->options($fund_arr)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     . Former::file('attach_file', 'Attach Files')
 );
 ?>

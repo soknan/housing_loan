@@ -9,7 +9,7 @@
 echo FormPanel2::make(
     'General',
     Former::select('ln_category_id', 'Category', \LookupValueList::getCategory(), $row->ln_category_id)
-        ->placeholder('- Select One -')->required() . ''
+        ->placeholder('--Select One--')->required() . ''
     . Former::text('name', 'Name', $row->name)
         ->required()
     . Former::textarea('des', 'Description', $row->des)
@@ -39,7 +39,7 @@ echo FormPanel2::make(
     Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency'), $row->ln_lv_repay_frequency)
     //Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency', ' and ln_lookup_value.id = 3'), $row->ln_lv_repay_frequency) // 3-Weekly, 4-Monthly
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     . Former::number('min_installment', 'Min', $row->min_installment)
         ->required()->min(0)
     . Former::number('max_installment', 'Max', $row->max_installment)
@@ -49,14 +49,14 @@ echo FormPanel2::make(
         ->required()->min(0) . ''
     . Former::select('ln_lv_holiday_rule', 'Holiday', \LookupValueList::getBy('holiday rule'), $row->ln_lv_holiday_rule)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
 );
 
 echo FormPanel2::make(
     'Interest',
     Former::select('ln_lv_interest_type', 'Type', \LookupValueList::getBy('interest type'), $row->ln_lv_interest_type)
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     . Former::number('min_interest', 'Min', $row->min_interest)
         ->required()
         ->step('0.01')->min(0)
@@ -78,7 +78,7 @@ echo FormPanel2::make(
 //        ->options(\LookupValueList::getBy('LoanAmountType',' limit 1'), $row->ln_lv_loan_amount_type)
 //        ->required()
 //        ->append('USD')
-//        ->placeholder('- Select One -') . ''
+//        ->placeholder('--Select One--') . ''
     Former::hidden('ln_lv_loan_amount_type')
         ->value(10)// for 'None'
     . Former::number('min_amount', 'Min', $row->min_amount)
@@ -96,7 +96,7 @@ echo FormPanel2::make(
         ->required(). ''
 //    . Former::select('ln_exchange_id', 'Exchange')
 //        ->options(LookupValueList::getExchange(),$row->ln_exchange_id)
-//        ->placeholder('- Select One -')
+//        ->placeholder('--Select One--')
 //        ->class('select2')
 //        ->required()
 
@@ -106,13 +106,13 @@ echo FormPanel2::make(
     'Others',
     Former::select('ln_fee_id', 'Fee', \LookupValueList::getFee(), $row->ln_fee_id)
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
     . Former::select('ln_penalty_id', 'Penalty', \LookupValueList::getPenalty(), $row->ln_penalty_id)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     . Former::select('ln_penalty_closing_id', 'Penalty Closing', \LookupValueList::getPenaltyClosing(), $row->ln_penalty_closing_id)
         ->required()
-        ->placeholder('- Select One -')
+        ->placeholder('--Select One--')
     ,
     Former::select('ln_fund_id_arr[]', 'Fund')
         ->options(\LookupValueList::getFund(), json_decode($row->ln_fund_id_arr))

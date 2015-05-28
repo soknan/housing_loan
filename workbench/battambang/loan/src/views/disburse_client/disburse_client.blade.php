@@ -34,7 +34,7 @@ echo FormPanel2::make(
         ->options($client)
         ->class('select2')
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
 );
 ?>
 

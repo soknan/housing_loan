@@ -28,7 +28,7 @@ echo FormPanel2::make(
         ->required() . ''
     .Former::select('ln_disburse_client_id', 'Acc#')
 //        ->options($disburseClient)
-            ->placeholder('- Select One -')
+            ->placeholder('--Select One--')
         ->options(LookupValueList::getLoanAccount())
         ->class('select2')
         ->required().''

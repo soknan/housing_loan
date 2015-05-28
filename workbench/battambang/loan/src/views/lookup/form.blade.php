@@ -14,7 +14,7 @@ echo FormPanel2::make(
     Former::select('type', 'Type')
         ->options(array('Super' => 'Super', 'Admin' => 'Admin'), $form->type)
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
 );
 ?>
 

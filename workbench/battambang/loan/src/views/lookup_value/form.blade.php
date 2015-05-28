@@ -15,7 +15,7 @@ echo FormPanel2::make(
         ->options(\LookupValueList::getLookup(), $form->ln_lookup_id)
         ->class('select2')
         ->required()
-        ->placeholder('- Select One -') . ''
+        ->placeholder('--Select One--') . ''
 );
 ?>
 
