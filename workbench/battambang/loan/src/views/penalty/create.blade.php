@@ -10,19 +10,19 @@ echo FormPanel2::make(
     Former::text('name', 'name')->required() . ''
     .Former::select('ln_lv_penalty_type', 'Penalty Type')
         ->options(\LookupValueList::getBy('penalty type',' limit 1'))
-        ->placeholder('--Select One--')
+
         ->required()
     .Former::number('grace_period', 'grace_period')->required()
     .Former::select('ln_lv_calculate_type', 'calculate Type')
         ->options(\LookupValueList::getBy('penalty calculate type',' order by id desc limit 1'))
-        //->placeholder('--Select One')
+
         ->required()
 
     ,
     Former::number('amount', 'amount')->step(0.01)->min(0)->required(). ''
     .Former::select('ln_lv_percentage_of', 'Percentage Of')
         ->options(LookupValueList::getBy('penalty percentage of',' order by id desc limit 1'))
-        //->placeholder('--Select One')
+
         ->required()
 
 

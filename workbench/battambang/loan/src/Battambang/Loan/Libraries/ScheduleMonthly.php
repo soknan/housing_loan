@@ -155,7 +155,7 @@ class ScheduleMonthly
                     // Calculate principal balance
                     $principalBalance[$i] = $temLoanAmount;
                 }else{
-                    $interestPayment[$i] = \Currency::round($currency,$temLoanAmount * $interestRate);
+                    $interestPayment[$i] = $temLoanAmount * $interestRate;
                     // Calculate install principal for payment
                     if ($i == $temInstallPrinFrequency) {
                         if ($i != $numPayment) {
@@ -177,6 +177,7 @@ class ScheduleMonthly
                     // Calculate principal balance
                     $principalBalance[$i] = $temLoanAmount;
                     $principalPayment[$i] = \Currency::round($currency,$principalPayment[$i]);
+                    $interestPayment[$i] = \Currency::round($currency,$interestPayment[$i]);
                     $principalBalance[$i] = \Currency::round($currency,$principalBalance[$i]);
 
                 }

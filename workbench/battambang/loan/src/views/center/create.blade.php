@@ -39,7 +39,7 @@ echo FormPanel2::make(
     Former::select('ln_lv_geography', 'Geography')
                 ->options(LookupValueList::getBy('geography'))
                 ->required()
-                ->placeholder('--Select One--') . ''
+                 . ''
     .Former::hidden('cp_office_id', UserSession::read()->sub_branch)
 //   Former::select('cp_office_id', 'Branch Office')
 //        ->options(\GetLists::getSubBranchList())

@@ -10,18 +10,18 @@ echo FormPanel2::make(
     Former::text('name', 'name')->required() . ''
     .Former::select('ln_lv_fee_type', 'Fee Type')
     ->options(\LookupValueList::getBy('fee type',' and ln_lookup_value.code = "LD"'))
-    ->placeholder('--Select One--')
+
         ->required()
     .Former::select('ln_lv_calculate_type', 'Calculate Type')
     ->options(\LookupValueList::getBy('fee calculate type'))
-        ->placeholder('--Select One--')
+
         ->required()
 
     ,
     Former::number('amount', 'Amount')->min(0)->step(0.01)->required(). ''
     .Former::select('ln_lv_percentage_of', 'Percentage Of')
     ->options(LookupValueList::getBy('fee percentage of','and ln_lookup_value.code = "LA" '))
-        ->placeholder('--Select One--')
+
         ->required()
 
 

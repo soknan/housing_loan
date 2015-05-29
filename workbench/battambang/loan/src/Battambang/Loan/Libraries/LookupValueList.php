@@ -40,10 +40,11 @@ class LookupValueList
                             INNER JOIN ln_lookup_value ON ln_lookup_value.ln_lookup_id = ln_lookup.id
                             WHERE  lower(replace(ln_lookup.`name`,' ','')) = '" . $code . "' $more "
         );
-
+        if(trim($code)!='accounttype') $arr[''] = '--Select One--';
         foreach ($data as $row) {
             $arr[$row->id] = $row->name;
         }
+
         return $arr;
     }
 
@@ -402,6 +403,7 @@ ORDER BY d.disburse_date desc");
 
         $arr = array();
         $status = '';
+        $arr[''] = '--Select One--';
         foreach ($data as $row) {
             $arr[$row->id] = $row->id . ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));
         }

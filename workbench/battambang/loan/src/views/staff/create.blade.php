@@ -12,18 +12,18 @@ echo FormPanel2::make(
      .Former::text('en_first_name', 'En First Name')->required() . ''
      . Former::text('en_last_name', 'En Last Name')->required()
     . Former::text('dob', 'DOB')->required()->append('dd-mm-yyyy')
-    . Former::select('ln_lv_gender', 'Gender', \LookupValueList::getBy('gender'))->required()->placeholder('--Select One--')
+    . Former::select('ln_lv_gender', 'Gender', \LookupValueList::getBy('gender'))->required()
     ,
-    Former::select('ln_lv_marital_status', 'Status', \LookupValueList::getBy('marital status'))->required()->placeholder('--Select One--') . ''
-    . Former::select('ln_lv_education', 'Education', \LookupValueList::getBy('education'))->required()->placeholder('--Select One--')
+    Former::select('ln_lv_marital_status', 'Status', \LookupValueList::getBy('marital status'))->required() . ''
+    . Former::select('ln_lv_education', 'Education', \LookupValueList::getBy('education'))->required()
     . Former::textarea('education_des', 'Education Des')
-    . Former::select('ln_lv_title', 'Position', \LookupValueList::getBy('title'))->required()->placeholder('--Select One--')
+    . Former::select('ln_lv_title', 'Position', \LookupValueList::getBy('title'))->required()
     . Former::text('joining_date', 'Join Date')->required()->append('dd-mm-yyyy')
 );
 
 echo FormPanel2::make(
     'ID Type',
-    Former::select('ln_lv_id_type', 'ID Type', \LookupValueList::getBy('id type'))->required()->placeholder('--Select One--') . ''
+    Former::select('ln_lv_id_type', 'ID Type', \LookupValueList::getBy('id type'))->required() . ''
     . Former::text('id_num', 'ID Number')
     ,
     Former::text('expire_date', 'Expire Date')->append('dd-mm-yyyy') . ''

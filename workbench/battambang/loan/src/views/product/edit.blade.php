@@ -39,7 +39,7 @@ echo FormPanel2::make(
     Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency'), $row->ln_lv_repay_frequency)
     //Former::select('ln_lv_repay_frequency', 'Frequency', \LookupValueList::getBy('repay frequency', ' and ln_lookup_value.id = 3'), $row->ln_lv_repay_frequency) // 3-Weekly, 4-Monthly
         ->required()
-        ->placeholder('--Select One--') . ''
+         . ''
     . Former::number('min_installment', 'Min', $row->min_installment)
         ->required()->min(0)
     . Former::number('max_installment', 'Max', $row->max_installment)
@@ -49,14 +49,14 @@ echo FormPanel2::make(
         ->required()->min(0) . ''
     . Former::select('ln_lv_holiday_rule', 'Holiday', \LookupValueList::getBy('holiday rule'), $row->ln_lv_holiday_rule)
         ->required()
-        ->placeholder('--Select One--')
+
 );
 
 echo FormPanel2::make(
     'Interest',
     Former::select('ln_lv_interest_type', 'Type', \LookupValueList::getBy('interest type'), $row->ln_lv_interest_type)
         ->required()
-        ->placeholder('--Select One--') . ''
+         . ''
     . Former::number('min_interest', 'Min', $row->min_interest)
         ->required()
         ->step('0.01')->min(0)
