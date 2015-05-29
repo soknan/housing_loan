@@ -29,7 +29,7 @@ echo FormPanel2::make(
     .Former::select('ln_disburse_client_id', 'Acc#')
 //        ->options($disburseClient,$row->ln_disburse_client_id)
         ->options(LookupValueList::getLoanAccount(), $row->ln_disburse_client_id)
-            ->placeholder('--Select One--')
+           
         ->class('select2')
         ->required().''
     ,Former::text('amount_pre_paid','Per Paid',$row->amount_pre_paid)->required()
