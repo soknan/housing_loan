@@ -64,7 +64,6 @@ echo FormPanel2::make(
     . Former::select('ln_lv_history', 'History', LookupValueList::getHistory($cycle))
 //    . Former::select('ln_lv_history', 'History', LookupValueList::getBy('history'))
         ->required()
-        ->placeholder('--Select One --')
     . Former::select('ln_lv_purpose', 'Purpose',LookupValueList::getBy('purpose'))
         ->required()
 

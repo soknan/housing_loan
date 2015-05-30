@@ -54,7 +54,6 @@ echo FormPanel2::make(
         ->required() . ''
     . Former::select('ln_lv_history', 'History',LookupValueList::getHistory($row->cycle),array($row->ln_lv_history))
         ->required()
-        ->placeholder('--Select One--')
     . Former::select('ln_lv_purpose', 'Purpose',LookupValueList::getBy('purpose'),$row->ln_lv_purpose)
         ->required()
 
