@@ -127,6 +127,21 @@ echo FormPanel2::make(
 
 @stop
 @section('js')
+    <script>
+        $(document).ready(function () {
+            var r = $('[name="ln_lv_repay_frequency"]');
+            var h = $('[name="ln_lv_holiday_rule"]');
+            $('[name="ln_lv_repay_frequency"]').change(function(){
+                h.val('');
+                if(r.val()==130){
+                    h.find('[value="7"]').hide();
+                }else{
+                    h.find('[value="7"]').show();
+                }
+            });
+
+        });
+    </script>
 <?php
 echo DatePicker::make('start_date');
 echo DatePicker::make('end_date');

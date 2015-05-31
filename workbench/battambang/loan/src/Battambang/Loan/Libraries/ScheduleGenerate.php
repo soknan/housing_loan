@@ -28,6 +28,10 @@ class ScheduleGenerate
                 $monthly = new ScheduleMonthly();
                 $schedule = $monthly->make($loanAcc, $activatedDate);
                 break;
+            case 130: // Daily
+                $monthly = new ScheduleDaily();
+                $schedule = $monthly->make($loanAcc, $activatedDate);
+                break;
         }
         return $schedule;
     }

@@ -129,6 +129,27 @@ echo FormPanel2::make(
 
 @stop
 @section('js')
+    <script>
+        $(document).ready(function () {
+            var r = $('[name="ln_lv_repay_frequency"]');
+            var h = $('[name="ln_lv_holiday_rule"]');
+            r.ready(chkHoliday());
+            h.val("<?php echo  $row->ln_lv_holiday_rule ?>");
+            r.change(chkHoliday);
+
+            function chkHoliday(){
+                //alert($('[name="ln_lv_repay_frequency"]').val());
+                var h = $('[name="ln_lv_holiday_rule"]');
+                h.val('');
+                if($('[name="ln_lv_repay_frequency"]').val()==130){
+                    $('[name="ln_lv_holiday_rule"]').find('[value="7"]').hide();
+                }else{
+                    $('[name="ln_lv_holiday_rule"]').find('[value="7"]').show();
+                }
+            };
+
+        });
+    </script>
 <?php
 echo DatePicker::make('start_date');
 echo DatePicker::make('end_date');
