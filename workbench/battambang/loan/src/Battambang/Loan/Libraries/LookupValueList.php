@@ -167,6 +167,18 @@ class LookupValueList
         return $data;
     }
 
+    public function getRepFreq($more = '')
+    {
+        $arr = array();
+        $data = DB::select('select * from ln_lookup_value where ln_lookup_id = 2 ' . $more);
+        if ($data) {
+            foreach ($data as $row) {
+                $arr[$row->id] = $row->name;
+            }
+        }
+        return $arr;
+    }
+
     public function getCategory($more = '')
     {
         $arr = array();

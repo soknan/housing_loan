@@ -31,7 +31,7 @@
         .'' ,
     Former::select('ln_lv_repay_frequency','Repay.Fre')
         ->options(array('all'=>'All'))
-        ->options(array('3'=>'Weekly','4'=>'Monthly'))
+        ->options(LookupValueList::getRepFreq())
         ->class('select2').''
     .Former::select('classify','Classify')
         ->options(array('all'=>'All'))
