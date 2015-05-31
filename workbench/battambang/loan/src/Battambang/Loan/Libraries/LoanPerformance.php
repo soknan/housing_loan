@@ -524,7 +524,7 @@ class LoanPerformance
         if($this->_disburse->ln_lv_repay_frequency == 3){
             $first = $first->endOfWeek();
             $second = $second->endOfWeek();
-        }else{
+        }elseif($this->_disburse->ln_lv_repay_frequency == 4){
             $first = $first->endOfMonth();
             $second = $second->endOfMonth();
 
@@ -722,7 +722,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
         if($this->_disburse->ln_lv_repay_frequency == 3){
             $first = $first->endOfWeek();
             $second = $second->endOfWeek();
-        }else{
+        }elseif($this->_disburse->ln_lv_repay_frequency == 4){
             $first = $first->endOfMonth();
             $second = $second->endOfMonth();
         }
@@ -733,9 +733,10 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
     private  function _endOfDate($active_date)
     {
         $date = new Carbon();
+        $end = $date->createFromFormat('Y-m-d', $active_date);
         if($this->_disburse->ln_lv_repay_frequency == 3){
             $end = $date->createFromFormat('Y-m-d', $active_date)->endOfWeek();
-        }else{
+        }elseif($this->_disburse->ln_lv_repay_frequency == 4){
             $end = $date->createFromFormat('Y-m-d', $active_date)->endOfMonth();
         }
         return $end->toDateString();
@@ -781,10 +782,12 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
     }
 
     private function _getAccrueInt(){
-        $rate_type = 30;
+        $rate_type = 1;
         $renum = 1;
         if($this->_disburse->ln_lv_repay_frequency == 3){
             $rate_type = 7;
+        }elseif($this->_disburse->ln_lv_repay_frequency == 4){
+            $rate_type = 30;
         }
         $int_rate = $this->_disburse->interest_rate / $rate_type / 100;
 
