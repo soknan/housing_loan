@@ -31,7 +31,7 @@ class RptScheduleController extends BaseController{
 //var_dump($data['dis']);exit;
         //re-calculate amount for Mortagate Loan
         $installPrinAmount = 0;
-        if($data['dis']->interest_type_code=='MRG'){
+        if($data['dis']->interest_type_code=='ANT'){
             $tmpRate = 1-pow((1+$data['dis']->interest_rate/100),-$data['dis']->num_payment);
             $installPrinAmount = ($data['dis']->amount*$data['dis']->interest_rate/100)/$tmpRate;
             $installPrinAmount = \Currency::round($data['dis']->cp_currency_code,$installPrinAmount);
@@ -139,7 +139,7 @@ class RptScheduleController extends BaseController{
                 $objWorkSheet->getCell('D'.$rowNum)->setValue($value->principal);
                 $objWorkSheet->getCell('E'.$rowNum)->setValue($value->interest);
 
-                if($data['dis']->interest_type_code=='MRG'){
+                if($data['dis']->interest_type_code=='ANT'){
                     $objWorkSheet->getCell('F'.$rowNum)->setValue($installPrinAmount);
                 }else{
                     $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
@@ -244,7 +244,7 @@ class RptScheduleController extends BaseController{
                 $objWorkSheet->getCell('C'.$rowNum)->setValue($tmpNumDay);
                 $objWorkSheet->getCell('D'.$rowNum)->setValue($value->principal);
                 $objWorkSheet->getCell('E'.$rowNum)->setValue($value->interest);
-                if($data['dis']->interest_type_code=='MRG'){
+                if($data['dis']->interest_type_code=='ANT'){
                     $objWorkSheet->getCell('F'.$rowNum)->setValue($installPrinAmount);
                 }else{
                     $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
