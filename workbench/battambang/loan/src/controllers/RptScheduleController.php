@@ -28,6 +28,14 @@ class RptScheduleController extends BaseController{
         $data['view_at'] = date('d-m-Y',strtotime(\Input::get('view_at')));
         //return $id;
         $data['dis'] = \DB::table('view_schedule_report')->where('ln_disburse_client_id','=',$id)->first();
+//var_dump($data['dis']);exit;
+        //re-calculate amount for Mortagate Loan
+        $installPrinAmount = 0;
+        if($data['dis']->interest_type_code=='MRG'){
+            $tmpRate = 1-pow((1+$data['dis']->interest_rate/100),-$data['dis']->num_payment);
+            $installPrinAmount = ($data['dis']->amount*$data['dis']->interest_rate/100)/$tmpRate;
+            $installPrinAmount = \Currency::round($data['dis']->cp_currency_code,$installPrinAmount);
+        }
 
         ($data['dis']->repayment_frequency_type_code == 'W')? $data['dis']->repayment_frequency_type_code = 'សប្ដាហ៍': $data['dis']->repayment_frequency_type_code ='ខែ';
 
@@ -130,7 +138,12 @@ class RptScheduleController extends BaseController{
                 $objWorkSheet->getCell('C'.$rowNum)->setValue($tmpNumDay);
                 $objWorkSheet->getCell('D'.$rowNum)->setValue($value->principal);
                 $objWorkSheet->getCell('E'.$rowNum)->setValue($value->interest);
-                $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
+
+                if($data['dis']->interest_type_code=='MRG'){
+                    $objWorkSheet->getCell('F'.$rowNum)->setValue($installPrinAmount);
+                }else{
+                    $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
+                }
                 $objWorkSheet->getCell('G'.$rowNum)->setValue($value->balance);
             }
 
@@ -231,7 +244,11 @@ class RptScheduleController extends BaseController{
                 $objWorkSheet->getCell('C'.$rowNum)->setValue($tmpNumDay);
                 $objWorkSheet->getCell('D'.$rowNum)->setValue($value->principal);
                 $objWorkSheet->getCell('E'.$rowNum)->setValue($value->interest);
-                $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
+                if($data['dis']->interest_type_code=='MRG'){
+                    $objWorkSheet->getCell('F'.$rowNum)->setValue($installPrinAmount);
+                }else{
+                    $objWorkSheet->getCell('F'.$rowNum)->setValue('=D'.$rowNum.'+E'.$rowNum);
+                }
                 $objWorkSheet->getCell('G'.$rowNum)->setValue($value->balance);
             }
 

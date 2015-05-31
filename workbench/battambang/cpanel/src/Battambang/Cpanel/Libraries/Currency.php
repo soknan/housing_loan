@@ -27,14 +27,17 @@ class Currency
     {
         switch ($currencyID) {
             case 1: // KHR
+            case 'KHR':
                 $rounding = 100;
                 $amount = round($amount / $rounding) * $rounding;
                 break;
             case 2: // USD
+            case 'USD':
                 $rounding = 2;
                 $amount = round($amount, $rounding);
                 break;
-            case 3: // THB
+            case 3 || 'THB': // THB
+            case 'THB':
                 $rounding = 0;
                 $amount = round($amount, $rounding);
                 break;
