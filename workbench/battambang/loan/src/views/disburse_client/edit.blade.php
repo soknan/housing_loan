@@ -50,25 +50,25 @@ echo FormPanel2::make(
     'Loan Additional',
     Former::text('cycle', 'Cycle', $row->cycle)
         ->readonly('readonly')
-        ->required() . ''
+        //->required() . ''
     . Former::select('ln_lv_history', 'History',LookupValueList::getHistory($row->cycle),array($row->ln_lv_history))
-        ->required()
+        //->required()
     . Former::select('ln_lv_purpose', 'Purpose',LookupValueList::getBy('purpose'),$row->ln_lv_purpose)
-        ->required()
+        //->required()
 
     . Former::textarea('purpose_des', 'Purpose Des', $row->purpose_des)
-        ->required()
+        //->required()
     . Former::select('ln_lv_activity', 'Activity',LookupValueList::getBy('activity'),$row->ln_lv_activity)
-        ->required()
+        //->required()
 
     ,
     Former::select('ln_lv_collateral_type', 'Collateral Type',LookupValueList::getBy('collateral type'),$row->ln_lv_collateral_type)
-        ->required()
+        //->required()
          . ''
     . Former::textarea('collateral_des', 'Des', $row->collateral_des)
-        ->required()
+        //->required()
     . Former::select('ln_lv_security', 'Security',LookupValueList::getBy('security'),$row->ln_lv_security)
-        ->required()
+        //->required()
 
 );
 
@@ -77,10 +77,10 @@ echo FormPanel2::make(
     Former::select('ln_client_id', 'Client ID')
         ->options($client, $row->ln_client_id)
         ->readonly()
-        ->required()
+        //->required()
         . ''
     . Former::select('ln_lv_id_type', 'ID Type',LookupValueList::getBy('id type'), $row->ln_lv_id_type)
-        ->required()
+        //->required()
 
     . Former::text('id_num', 'ID Number', $row->id_num)
     . Former::text('expire_date', 'Expire Day',$row->expire_date=='0000-00-00'?$row->expire_date='':date('d-m-Y',strtotime($row->expire_date)) )
@@ -88,35 +88,35 @@ echo FormPanel2::make(
 
     . Former::select('ln_lv_marital_status', 'Marital Status',LookupValueList::getBy('marital status'),$row->ln_lv_marital_status)
 
-        ->required()
+        //->required()
     . Former::number('family_member', 'Family Member', $row->family_member)
-        ->required()
+        //->required()
     . Former::number('num_dependent', 'Number Dependent', $row->num_dependent)
-        ->required()
+        //->required()
     . Former::select('ln_lv_education', 'Education',LookupValueList::getBy('education'),$row->ln_lv_education)
 
-        ->required()
+        //->required()
     .Former::select('ln_lv_business', 'Business',LookupValueList::getBy('business'),$row->ln_lv_business)
 
-        ->required()
+        //->required()
     ,
      Former::select('ln_lv_poverty_status', 'Poverty Status',LookupValueList::getBy('poverty status'),$row->ln_lv_poverty_status)
-         ->required()
+         //->required()
         . ''
     . Former::number('income_amount', 'Income Amount', $row->income_amount)
         ->step('0.01')
         ->append('.00 USD')
-         ->required()
+         //->required()
     . Former::select('ln_lv_handicap', 'Handicap',LookupValueList::getBy('handicap'),$row->ln_lv_handicap)
 
-         ->required()
+         //->required()
     . Former::textarea('address', 'Address', $row->address)
-         ->required()
+         //->required()
     . Former::select('ln_lv_contact_type', 'Contact Type',LookupValueList::getBy('contact type'),$row->ln_lv_contact_type)
 
-         ->required()
+         //->required()
     . Former::text('contact_num', 'Contact Number', $row->contact_num)
-         ->required()
+         //->required()
     . Former::textarea('email', 'Email', $row->email)
 );
 
