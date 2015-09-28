@@ -54,6 +54,7 @@ class ScheduleMonthly
         if($interestType==129){
             $tmpRate = 1-pow((1+$interestRate),-$numPayment);
             $installPrinAmount = ($loanAmount*$interestRate)/$tmpRate;
+            //$installPrinAmount = $interestRate * -$loanAmount*pow((1+$interestRate),$numPayment)/(1-pow((1+$interestRate),$numPayment));
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 13-Month(...-None, 33-1, 34-2,..., 57-25...28)
@@ -107,6 +108,7 @@ class ScheduleMonthly
         $feePayment = array();
         $principalBalance = array();
         $schedule = array();
+        $tmpP=0;
 
 //        for ($i = 1; $i <= $numPayment; $i++) {
         for ($i = 0; $i <= $numPayment; $i++) {
@@ -167,7 +169,9 @@ class ScheduleMonthly
                                 $temInstallPrinFrequency = $numPayment;
                             }
                         } else {
-                            $principalPayment[$i] = $temLoanAmount;
+                            //$principalPayment[$i] = $temLoanAmount;
+                            $principalPayment[$i] = $loanAmount - $tmpP;
+                            $interestPayment[$i] =  $installPrinAmount-$principalPayment[$i];
                             $temLoanAmount = 0.00;
                         }
                     } else {
@@ -179,6 +183,7 @@ class ScheduleMonthly
                     $principalPayment[$i] = \Currency::round($currency,$principalPayment[$i]);
                     $interestPayment[$i] = \Currency::round($currency,$interestPayment[$i]);
                     $principalBalance[$i] = \Currency::round($currency,$principalBalance[$i]);
+                    $tmpP+= $principalPayment[$i];
 
                 }
 

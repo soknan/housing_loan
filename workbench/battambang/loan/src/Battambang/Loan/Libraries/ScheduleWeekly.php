@@ -45,8 +45,9 @@ class ScheduleWeekly
         $installPrinAmount = \Currency::round($currency, ($loanAmount / $numPaymentPrin) * $installPrinPercentage);
 
         if($interestType==129){
-            $tmpRate = 1-pow((1+$interestRate),-$numPayment);
-            $installPrinAmount = ($loanAmount*$interestRate)/$tmpRate;
+            //$tmpRate = 1-pow((1+$interestRate),-$numPayment);
+            //$installPrinAmount = number_format(($loanAmount*$interestRate)/$tmpRate,2);
+            $installPrinAmount = $interestRate * -$loanAmount*pow((1+$interestRate),$numPayment)/(1-pow((1+$interestRate),$numPayment));
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 12-Week(...-None, 27-Mon, 28-Tue, 29-Wed, 30-Thu, 31-Fri, 32-Sat)
@@ -101,6 +102,7 @@ class ScheduleWeekly
         $feePayment = array();
         $principalBalance = array();
         $schedule = array();
+        $tmpP=0;
 
 //        for ($i = 1; $i <= $numPayment; $i++) {
         for ($i = 0; $i <= $numPayment; $i++) {
@@ -160,7 +162,9 @@ class ScheduleWeekly
                                 $temInstallPrinFrequency = $numPayment;
                             }
                         } else {
-                            $principalPayment[$i] = $temLoanAmount;
+                            //$principalPayment[$i] = $temLoanAmount;
+                            $principalPayment[$i] = $loanAmount - $tmpP;
+                            $interestPayment[$i] =  $installPrinAmount-$principalPayment[$i];
                             $temLoanAmount = 0.00;
                         }
                     } else {
@@ -173,6 +177,7 @@ class ScheduleWeekly
                     $principalPayment[$i] = \Currency::round($currency,$principalPayment[$i]);
                     $interestPayment[$i] = \Currency::round($currency,$interestPayment[$i]);
                     $principalBalance[$i] = \Currency::round($currency,$principalBalance[$i]);
+                    $tmpP+=$principalPayment[$i];
                 }
                 // Check installmentFrequency
                 $temInstallmentFrequency += $installmentFrequency;
@@ -269,7 +274,7 @@ class ScheduleWeekly
             /*if (!in_array($temDate->day, $holidayInDay)) {
                 return $temDate->toDateString();
             }
-            $temDate = $temDate->addDay();*/
+            $temDate = $temDate->addDay();`*/
         }
         return false;
     }
