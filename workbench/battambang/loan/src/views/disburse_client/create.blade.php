@@ -26,7 +26,7 @@ if(Session::has('errors')){
 }
 if($pro->interest_type_id==129){
 echo FormPanel2::make(
-        'Mortgage Info',
+        'Additional Info',
         Former::number('pre_amount', 'Pre_Amount',$pro->default_amount)->required()->min(0)
                 . ''.
         Former::number('discount', 'Discount',0)->required()->min(0)

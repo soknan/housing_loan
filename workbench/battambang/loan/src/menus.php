@@ -7,12 +7,12 @@ Menu::make(
             'Manage Data',
             function ($dropdown) {
                 $arr = array('loan.client.index'=>'Clients',
-                            'loan.disburse.index'=>'Disbursement',
-                            'loan.repayment.index'=>'Repayment',
-                            'loan.pre_paid.index'=>'Pre-Paid',
-                            'loan.write_off.index'=>'Loan Write-Off',
-                            'loan.exchange.index'=>'Exchange',
-                            'loan.center.index'=>'Centers'
+                    'loan.disburse.index'=>'Disbursement',
+                    'loan.repayment.index'=>'Repayment',
+                    'loan.pre_paid.index'=>'Pre-Paid',
+                    'loan.write_off.index'=>'Loan Write-Off',
+                    'loan.exchange.index'=>'Exchange',
+                    'loan.center.index'=>'Centers'
                 );
                 if(UserSession::read()->permission==null) return;
                 foreach($arr as $key=> $value){
@@ -128,11 +128,11 @@ Menu::make(
                                 $dropdown->add($value, route($key));
                             }
                         }
-                       /* $dropdown->add('Deposit', route('loan.rpt_loan_prepaid_deposit.index'));
-                        $dropdown->add('Withdrawal', route('loan.rpt_loan_prepaid_withdrawal.index'));
-                        $dropdown->add('Balance', route('loan.rpt_loan_prepaid_bal.index'));*/
+                        /* $dropdown->add('Deposit', route('loan.rpt_loan_prepaid_deposit.index'));
+                         $dropdown->add('Withdrawal', route('loan.rpt_loan_prepaid_withdrawal.index'));
+                         $dropdown->add('Balance', route('loan.rpt_loan_prepaid_bal.index'));*/
                     }
-                    );
+                );
                 $dropdown->add(
                     'Summary',
                     function ($dropdown) {

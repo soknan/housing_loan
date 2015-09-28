@@ -1,5 +1,7 @@
 <?php
 Route::get('pass',function(){
+    $date = new Carbon();
+    return $date->createFromFormat('Y-m-d', '2015-9-13')->endOfWeek();
     return Hash::make('cb123456');
 });
 
@@ -1490,6 +1492,25 @@ Route::get(
     )
 );
 
+Route::any(
+    'ajax/loan_acc',
+    array(
+        'as' => 'ajax.loan_acc',
+       function(){
+           $id = \Input::get('ln_disburse_client_id');
+           $result = array();
+           $sql = DB::table('ln_disburse_client')->select('id')
+               ->whereRaw(" id like '%".$id."%' ")
+               ->take(5)->get();
+           foreach ($sql as $q) {
+           $result[] = ['id'=>$q->id,'value'=>$q->id];
+           }
+
+           return \Response::json($result);
+       }
+    )
+);
+
 
 Route::get(
     'center/ajax',
@@ -1620,3 +1641,4 @@ Route::get(
         }
     )
 );
+

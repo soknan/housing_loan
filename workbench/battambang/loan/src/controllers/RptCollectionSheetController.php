@@ -47,6 +47,7 @@ class RptCollectionSheetController extends BaseController
         $data['location_cat'] = Input::get('location_cat');
         $data['cp_location'] = \Input::get('cp_location_id');
         $data['exchange_rate_id'] = \Input::get('exchange_rate');
+        $data['type'] = \Input::get('type');
 
         if($data['date_from'] > $data['date_to']){
             return \Redirect::back()->withInput()->with('error', 'Date From > Date to');
@@ -119,10 +120,10 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
         ");
 // User action
         \Event::fire('user_action.report', array('rpt_collection_sheet'));
+
         $perform = array();
         foreach ($sql as $row) {
             $loanPerform = new LoanPerformance();
-            //$loanPerform->_last_perform_date = $data['date_from'];
             $perform[]= $loanPerform->get($row->ln_disburse_client_id,$data['date_to'],true);
         }
 
@@ -152,7 +153,7 @@ and p.ln_disburse_client_id not in(SELECT p1.ln_disburse_client_id FROM ln_perfo
                     return $v1 - $v2; // $v2 - $v1 to reverse direction
                 });
         }
-        //var_dump($tmp[0]->_arrears['cur']['principal']); exit;
+        //var_dump($tmp); exit;
 
         $data['result']= $tmp;
 

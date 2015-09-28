@@ -17,7 +17,7 @@
 <?php
 if($pro->interest_type_id==129){
 echo FormPanel2::make(
-        'Info',
+        'Additional Info',
         Former::number('pre_amount', 'Pre_Amount',$row->pre_amount)->required()
         . ''.
         Former::number('discount', 'Discount',$row->discount)->required()
@@ -32,13 +32,12 @@ echo FormPanel2::make(
     Former::text('ln_disburse_id', 'Disburse ID', $row->ln_disburse_id)
         ->required()
         ->readonly() . ''
-    . Former::number('amount', 'Amount', $row->amount)
+    . Former::text('amount', 'Amount', 1)
         ->min($pro->min_amount)
         ->max($pro->max_amount)
         ->step('0.01')
         ->required()
-        ->append($pro->append_amount)
-//        ->append(number_format($pro->min_amount,'2','.',',') . ' - ' . number_format($pro->max_amount,2,'.',',') . ' ' . $dis->currency_code)
+        ->append($pro->append_amount).''
     .Former::text_hidden('currency_id',$dis->currency_id)
     ,
     Former::text('voucher_id', 'Voucher ID', $row->voucher_id)
