@@ -44,15 +44,15 @@ class Validator extends ValidatorService
 
         static::$rules = array(
             'ln_disburse_id' => 'required',
-            'ln_lv_id_type'  => 'required',
-            'id_num'  => 'required_if:ln_lv_id_type,58|chk_id_num',
-            'expire_date'  => 'required_if:ln_lv_id_type,58',
+            //'ln_lv_id_type'  => 'required',
+            //'id_num'  => 'required_if:ln_lv_id_type,58|chk_id_num',
+            //'expire_date'  => 'required_if:ln_lv_id_type,58',
 //            'expire_date'  => 'chk_expire_date|required_if:ln_lv_id_type,58',
             'amount'  => 'required|chk_amount',
             'voucher_id'  => 'required|chk_voucher:'.\UserSession::read()->sub_branch
                 . '-' . date('Y') . '-' . \Input::get('currency_id'). '-' . sprintf('%06d', \Input::get('voucher_id')),
-            'ln_lv_history'  => 'required',
-            'ln_lv_purpose'  => 'required',
+            //'ln_lv_history'  => 'required',
+            //'ln_lv_purpose'  => 'required',
         );
 
         static::$messages = array(
