@@ -57,7 +57,9 @@ echo FormPanel2::make(
 if(true){
 echo FormPanel2::make(
     'Loan Additional',
-    Former::text_hidden('cycle', 'Cycle',$cycle)
+        Former::text('field_char_1', 'Collateral No')
+        .''
+    .Former::text_hidden('cycle', 'Cycle',$cycle)
         ->readonly('readonly')
         //->required() . ''
     . Former::select_hidden('ln_lv_history', 'History', LookupValueList::getHistory($cycle))
@@ -71,6 +73,7 @@ echo FormPanel2::make(
         //->required()
 
     ,
+
     Former::select_hidden('ln_lv_collateral_type', 'Collateral Type',LookupValueList::getBy('collateral type'))
         //->required()
          . ''

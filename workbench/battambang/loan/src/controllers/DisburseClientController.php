@@ -274,7 +274,7 @@ class DisburseClientController extends BaseController
             $validation = $this->getValidationService('disburse_client');
             if ($validation->passes()) {
                 //Delete relation
-                DisburseClient::find($id)->delete();
+                DisburseClient::where('id','=',$id)->delete();
                 Perform::where('ln_disburse_client_id','=',$id)->delete();
                 $tmp= Schedule::where('ln_disburse_client_id','=',$id)->get();
                 foreach($tmp as $key=>$val){
@@ -373,8 +373,11 @@ class DisburseClientController extends BaseController
         $data->ln_client_id = Input::get('ln_client_id');
         $data->ln_lv_id_type = Input::get('ln_lv_id_type');
         $data->id_num = Input::get('id_num');
-        $data->expire_date = '';
-        if(Input::get('expire_date')!=''){
+        //echo \Input::get('expire_date'); exit;
+
+        if(Input::get('expire_date')=='Expire Day'){
+            $data->expire_date = '0000-00-00';
+        }else{
             $data->expire_date = \Carbon::createFromFormat('d-m-Y',Input::get('expire_date'))->toDateString();
         }
         $data->ln_lv_marital_status = Input::get('ln_lv_marital_status');
@@ -393,6 +396,7 @@ class DisburseClientController extends BaseController
         $data->pay_down = Input::get('pay_down');
         $data->discount = Input::get('discount');
         $data->pre_amount = Input::get('pre_amount');
+        $data->field_char_1 = Input::get('field_char_1');
         $data->save();
     }
 
