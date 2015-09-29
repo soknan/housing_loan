@@ -24,7 +24,7 @@ if(Session::has('errors')){
     $ln_lv_handicap='';
     $ln_lv_contact_type ='';
 }
-if($pro->interest_type_id==129){
+if(true){
 echo FormPanel2::make(
         'Additional Info',
         Former::number('pre_amount', 'Pre_Amount',$pro->default_amount)->required()->min(0)
@@ -54,67 +54,67 @@ echo FormPanel2::make(
         ->maxlength(6)
         ->required() . ''
 );
-
+if(true){
 echo FormPanel2::make(
     'Loan Additional',
-    Former::text('cycle', 'Cycle',$cycle)
+    Former::text_hidden('cycle', 'Cycle',$cycle)
         ->readonly('readonly')
         //->required() . ''
-    . Former::select('ln_lv_history', 'History', LookupValueList::getHistory($cycle))
+    . Former::select_hidden('ln_lv_history', 'History', LookupValueList::getHistory($cycle))
         //->required()
-    . Former::select('ln_lv_purpose', 'Purpose',LookupValueList::getBy('purpose'))
+    . Former::select_hidden('ln_lv_purpose', 'Purpose',LookupValueList::getBy('purpose'))
         //->required()
 
-    . Former::textarea('purpose_des', 'Purpose Des')
+    . Former::textarea_hidden('purpose_des', 'Purpose Des')
         //->required()
-    . Former::select('ln_lv_activity', 'Activity',LookupValueList::getBy('activity'))
+    . Former::select_hidden('ln_lv_activity', 'Activity',LookupValueList::getBy('activity'))
         //->required()
 
     ,
-    Former::select('ln_lv_collateral_type', 'Collateral Type',LookupValueList::getBy('collateral type'))
+    Former::select_hidden('ln_lv_collateral_type', 'Collateral Type',LookupValueList::getBy('collateral type'))
         //->required()
          . ''
-    . Former::textarea('collateral_des', 'Des')
+    . Former::textarea_hidden('collateral_des', 'Des')
         //->required()
-    . Former::select('ln_lv_security', 'Security',LookupValueList::getBy('security'))
+    . Former::select_hidden('ln_lv_security', 'Security',LookupValueList::getBy('security'))
         //->required()
 
 );
-
+}
 echo FormPanel2::make(
     'Client Additional',
-    Former::select('ln_client_id', 'Client ID')
-        ->options($client)
+    Former::select('ln_client_id', 'Client ID',$client)
+        //->options($client)
         //->required()
         ->readonly()
     . Former::select('ln_lv_id_type', 'ID Type',LookupValueList::getBy('id type'),$ln_lv_id_type)
         //->required()
 
     . Former::text('id_num', 'ID Number',$id_num)
-    . Former::text('expire_date', 'Expire Day',$expire_date)
+    . Former::text_hidden('expire_date', 'Expire Day',$expire_date)
         ->append('dd/mm/yyyy')
-    . Former::select('ln_lv_marital_status', 'Marital Status',LookupValueList::getBy('marital status'),$ln_lv_marital_status)
+    . Former::select_hidden('ln_lv_marital_status', 'Marital Status',LookupValueList::getBy('marital status'),$ln_lv_marital_status)
 
         //->required()
-    . Former::number('family_member', 'Family Member',$family_member)
+    . Former::number_hidden('family_member', 'Family Member',$family_member)
         //->required()
-    . Former::number('num_dependent', 'Number Dependent',$num_dependent)
+    . Former::number_hidden('num_dependent', 'Number Dependent',$num_dependent)
         //->required()
-    . Former::select('ln_lv_education', 'Education',LookupValueList::getBy('education'),$ln_lv_education)
+    . Former::select_hidden('ln_lv_education', 'Education',LookupValueList::getBy('education'),$ln_lv_education)
 
         //->required()
-    . Former::select('ln_lv_business', 'Business',LookupValueList::getBy('business'),$ln_lv_business)
+    . Former::select_hidden('ln_lv_business', 'Business',LookupValueList::getBy('business'),$ln_lv_business)
 
         //->required()
     ,
-    Former::select('ln_lv_poverty_status', 'Poverty Status',LookupValueList::getBy('poverty status'),$ln_lv_poverty_status)
+    Former::select_hidden('ln_lv_poverty_status', 'Poverty Status',LookupValueList::getBy('poverty status'),$ln_lv_poverty_status)
         //->required()
          . ''
-    . Former::number('income_amount', 'Income Amount',$income_amount)
+    . Former::number_hidden('income_amount', 'Income Amount',$income_amount)
         ->step('0.01')
         //->required()
         ->append('.00 USD')
-    . Former::select('ln_lv_handicap', 'Handicap',LookupValueList::getBy('handicap'),$ln_lv_handicap)
+    . Former::select_hidden('ln_lv_handicap', 'Handicap',LookupValueList::getBy('handicap'),$ln_lv_handicap)
 
         //->required()
     . Former::textarea('address', 'Address',$address)
@@ -124,7 +124,7 @@ echo FormPanel2::make(
         //->required()
     . Former::text('contact_num', 'Contact Number',$contact_num)
         //->required()
-    . Former::textarea('email', 'Email',$email)
+    . Former::textarea_hidden('email', 'Email',$email)
 );
 
 ?>
