@@ -131,7 +131,7 @@ echo FormPanel2::make(
 @stop
 
 @section('js')
- <?php  if($pro->interest_type_id==129){ ?>
+ <?php  if(true){ ?>
     <script>
         $(document).ready(function () {
             $('[name="pre_amount"]').ready(function() {changeAmount()}).change(function() {changeAmount()});

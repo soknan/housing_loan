@@ -363,15 +363,15 @@ class DisburseClientController extends BaseController
         $data->voucher_id = \UserSession::read()->sub_branch
             . '-' . date('Y') . '-' . \Input::get('currency_id'). '-' . sprintf('%06d', Input::get('voucher_id'));
         $data->cycle = Input::get('cycle');
-        $data->ln_lv_history = Input::get('ln_lv_history');
-        $data->ln_lv_purpose = Input::get('ln_lv_purpose');
+        $data->ln_lv_history = 99;//Input::get('ln_lv_history');
+        $data->ln_lv_purpose = 101;//Input::get('ln_lv_purpose');
         $data->purpose_des = Input::get('purpose_des');
-        $data->ln_lv_activity = Input::get('ln_lv_activity');
-        $data->ln_lv_collateral_type = Input::get('ln_lv_collateral_type');
+        $data->ln_lv_activity = 108;//Input::get('ln_lv_activity');
+        $data->ln_lv_collateral_type = 114;//Input::get('ln_lv_collateral_type');
         $data->collateral_des = Input::get('collateral_des');
-        $data->ln_lv_security = Input::get('ln_lv_security');
+        $data->ln_lv_security = 117;//Input::get('ln_lv_security');
         $data->ln_client_id = Input::get('ln_client_id');
-        $data->ln_lv_id_type = Input::get('ln_lv_id_type');
+        $data->ln_lv_id_type = 58;//Input::get('ln_lv_id_type');
         $data->id_num = Input::get('id_num');
         //echo \Input::get('expire_date'); exit;
 
@@ -380,14 +380,14 @@ class DisburseClientController extends BaseController
         }else{
             $data->expire_date = \Carbon::createFromFormat('d-m-Y',Input::get('expire_date'))->toDateString();
         }
-        $data->ln_lv_marital_status = Input::get('ln_lv_marital_status');
+        $data->ln_lv_marital_status = 70;//Input::get('ln_lv_marital_status');
         $data->family_member = Input::get('family_member');
         $data->num_dependent = Input::get('num_dependent');
-        $data->ln_lv_education = Input::get('ln_lv_education');
-        $data->ln_lv_business = Input::get('ln_lv_business');
-        $data->ln_lv_poverty_status = Input::get('ln_lv_poverty_status');
+        $data->ln_lv_education = 72;//Input::get('ln_lv_education');
+        $data->ln_lv_business = 85;//Input::get('ln_lv_business');
+        $data->ln_lv_poverty_status = 88;//Input::get('ln_lv_poverty_status');
         $data->income_amount = Input::get('income_amount');
-        $data->ln_lv_handicap = Input::get('ln_lv_handicap');
+        $data->ln_lv_handicap = 91;//Input::get('ln_lv_handicap');
         $data->address = Input::get('address');
         $data->ln_lv_contact_type = Input::get('ln_lv_contact_type');
         $data->contact_num = Input::get('contact_num');

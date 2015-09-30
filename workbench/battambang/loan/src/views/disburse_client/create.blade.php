@@ -107,7 +107,6 @@ echo FormPanel2::make(
 
         //->required()
     . Former::select_hidden('ln_lv_business', 'Business',LookupValueList::getBy('business'),$ln_lv_business)
-
         //->required()
     ,
     Former::select_hidden('ln_lv_poverty_status', 'Poverty Status',LookupValueList::getBy('poverty status'),$ln_lv_poverty_status)
@@ -118,7 +117,6 @@ echo FormPanel2::make(
         //->required()
         ->append('.00 USD')
     . Former::select_hidden('ln_lv_handicap', 'Handicap',LookupValueList::getBy('handicap'),$ln_lv_handicap)
-
         //->required()
     . Former::textarea('address', 'Address',$address)
         //->required()
@@ -140,7 +138,7 @@ echo FormPanel2::make(
 
 @stop
 @section('js')
-    <?php  if($pro->interest_type_id==129){ ?>
+    <?php  if(true){ ?>
     <script>
         $(document).ready(function () {
             $('[name="pre_amount"]').change(function() {changeAmount()});
