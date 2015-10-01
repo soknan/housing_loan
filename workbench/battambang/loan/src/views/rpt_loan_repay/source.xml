@@ -301,7 +301,7 @@
    <Column ss:AutoFitWidth="0" ss:Width="80.25"/>
    <Column ss:AutoFitWidth="0" ss:Width="90.25"/>
    <Column ss:AutoFitWidth="0" ss:Width="80.25"/>
-   <Column ss:AutoFitWidth="0" ss:Width="22.5"/>
+   <Column ss:AutoFitWidth="0" ss:Width="52.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="46.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="42.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="59.25"/>
@@ -374,6 +374,7 @@
       <Cell ss:StyleID="s75"><Data ss:Type="String">Voucher Code</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">LA Code</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Kh Client Name</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Land ID</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">CRC</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Acc Type</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Dis Date</Data></Cell>
@@ -441,6 +442,7 @@
        <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo substr($row->repayment_voucher_id,-6);?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->ln_disburse_client_id;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->client_name;?></Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->field_char_1;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="Number"><?php echo $row->cp_currency_id;?></Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String"><?php echo $row->account_type;?></Data></Cell>
     <Cell ss:StyleID="s79"><Data ss:Type="DateTime"><?php echo $row->disburse_date;?></Data></Cell>
@@ -477,28 +479,28 @@
           $total_to_USD = $sub_total_khr_usd + $sub_total_thb_usd + $total_repay_usd;
           ?>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="11" ss:StyleID="m46670312"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
+    <Cell ss:MergeAcross="12" ss:StyleID="m46670312"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_khr;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_khr;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_repay_khr;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_khr;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="11" ss:StyleID="m46670332"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
+    <Cell ss:MergeAcross="12" ss:StyleID="m46670332"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_usd;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_usd;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_repay_usd;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_usd;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="11" ss:StyleID="m46670352"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
+    <Cell ss:MergeAcross="12" ss:StyleID="m46670352"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_thb;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_thb;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_repay_thb;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pen_thb;?></Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="11" ss:StyleID="m46670372"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
+    <Cell ss:MergeAcross="12" ss:StyleID="m46670372"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $pri_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $int_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s92"><Data ss:Type="Number"><?php echo $total_to_USD;?></Data></Cell>

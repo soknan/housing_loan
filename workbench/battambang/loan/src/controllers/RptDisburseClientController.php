@@ -103,35 +103,6 @@ class RptDisburseClientController extends BaseController
         }else{
             $data['cp_location'] = 'All';
         }
-
-        /*$data['result'] = DB::select("select ln_disburse_client.*,ln_disburse.*,
-        `ln_disburse_client`.`id` AS `id`,
-        `ln_disburse_client`.`voucher_id` AS `voucher_id`,
-        `ln_disburse_client`.`ln_disburse_id` AS `ln_disburse_id`,
-        concat(`ln_client`.`kh_last_name`,' ',`ln_client`.`kh_first_name`) AS `client_name`,
-        `ln_disburse`.`cp_currency_id` AS `cp_currency_id`,
-        `ln_disburse`.`disburse_date` AS `disburse_date`,
-        max(`ln_schedule`.`due_date`) AS `maturity_date`,
-        `ln_disburse`.`num_installment` AS `num_installment`,
-        `ln_disburse`.`interest_rate` AS `interest_rate`,
-        `ln_disburse_client`.`cycle` AS `cycle`,
-        `ln_disburse_client`.`amount` AS `amount`,
-        `ln_schedule_dt`.`fee` AS `fee`,
-        ln_perform.project_interest AS `project_interest`,
-        `account_type`.`code` AS `account_type`,
-        (`ln_disburse_client`.`amount` + `ln_schedule_dt`.`fee` + ln_perform.project_interest) AS `total_due`
-        from (((((`ln_disburse_client` join `ln_disburse` on((`ln_disburse_client`.`ln_disburse_id` = `ln_disburse`.`id`)))
-        INNER JOIN `ln_client` on((`ln_disburse_client`.`ln_client_id` = `ln_client`.`id`)))
-        join `ln_schedule` on((`ln_disburse_client`.`id` = `ln_schedule`.`ln_disburse_client_id`)))
-        join `ln_schedule_dt` on((`ln_schedule`.`id` = `ln_schedule_dt`.`ln_schedule_id`)))
-        join `ln_lookup_value` `account_type` on((`account_type`.`id` = `ln_disburse`.`ln_lv_account_type`)))
-        INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
-        INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
-        inner join ln_staff on ln_staff.id = ln_disburse.ln_staff_id
-        INNEr JOIN ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.id
-        WHERE $condition
-        group by `ln_disburse_client`.`id` ORDER by ln_disburse.disburse_date DESC"
-        );*/
         $data['result'] = DB::select("select d.*,dc.*,dc.id as id,
 dc.voucher_id as voucher_id,
 dc.ln_disburse_id as ln_disburse_id,

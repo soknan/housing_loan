@@ -44,9 +44,9 @@ class RptScheduleController extends BaseController{
 
 // User action
         \Event::fire('user_action.report', array('rpt_schedule'));
-        $rptFormat='Boribo'; // Kra, Nikom
+        $rptFormat='Borey'; // Kra, Nikom
 
-            $rptName='Repayment Schedule Boribo';
+            $rptName='Repayment Schedule Borey';
             $rptExtension='.xlsx';
 
             $objReader = new \PHPExcel_Reader_Excel2007();

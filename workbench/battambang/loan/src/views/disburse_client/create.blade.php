@@ -59,7 +59,7 @@ echo FormPanel2::make(
     'Loan Additional',
         Former::text('field_char_1', 'Collateral No')
         .''
-    .Former::text_hidden('cycle', 'Cycle',$cycle)
+    .Former::text('cycle', 'Cycle',$cycle)
         ->readonly('readonly')
         //->required() . ''
     . Former::select_hidden('ln_lv_history', 'History', LookupValueList::getHistory($cycle))
