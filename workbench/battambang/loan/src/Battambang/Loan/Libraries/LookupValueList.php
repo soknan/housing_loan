@@ -403,6 +403,7 @@ class LookupValueList
     public function getLoanAccount()
     {
             $data = \DB::select("select dc.id as id,CONCAT(c.kh_last_name,' ',c.kh_first_name) as client_kh_name,d.disburse_date as disburse_date
+,dc.field_char_1
 from ln_disburse_client dc
 LEFT JOIN ln_disburse d
 on dc.ln_disburse_id = d.id
@@ -418,7 +419,7 @@ ORDER BY d.disburse_date desc");
         $status = '';
         $arr[''] = '--Select One--';
         foreach ($data as $row) {
-            $arr[$row->id] = $row->id . ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));
+            $arr[$row->id] = $row->id . ' | ' . $row->field_char_1. ' | ' . $row->client_kh_name . ' | ' . date('d-m-Y', strtotime($row->disburse_date));
         }
 
         return $arr;

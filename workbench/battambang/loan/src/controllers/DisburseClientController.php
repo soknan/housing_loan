@@ -20,7 +20,7 @@ class DisburseClientController extends BaseController
 
     public function index($disburse)
     {
-        $item = array('Action', 'Loan_Acc #', 'Client_ID','Client_Name', 'Center', 'Product', 'Amount', 'Currency', 'Voucher_ID', 'Cycle');
+        $item = array('Action', 'Loan_Acc #','Land _ID', 'Client_ID','Client_Name', 'Center', 'Product', 'Amount', 'Currency', 'Voucher_ID', 'Cycle');
         /*$data['btnAction'] = array('Add New' => route('loan.disburse_client.add', array($disburse)));*/
         $data['table'] = \Datatable::table()
             ->addColumn($item) // these are the column headings to be shown
@@ -402,7 +402,7 @@ class DisburseClientController extends BaseController
 
     public function getDatatable($disburse)
     {
-        $item = array('id', 'client_id','client_kh_name', 'center_name', 'product_name', 'amount', 'currency_code', 'voucher_id', 'cycle');
+        $item = array('id', 'col_no','client_id','client_kh_name', 'center_name', 'product_name', 'amount', 'currency_code', 'voucher_id', 'cycle');
         $arr = DB::table('view_disburse_client')->where('ln_disburse_id', '=', $disburse)->where('id','like',\UserSession::read()->sub_branch.'%');;
 
         return \Datatable::query($arr)
