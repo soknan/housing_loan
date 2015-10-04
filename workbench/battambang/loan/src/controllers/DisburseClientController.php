@@ -439,7 +439,8 @@ class DisburseClientController extends BaseController
         }
         // User action
        \Event::fire('user_action.create', array('disburse_client'));
-        return Redirect::back();
+        return Redirect::back()->with('success',
+            trans('battambang/loan::disburse_client.update_success'));
     }
 
     private function _checkAction($id)
