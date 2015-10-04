@@ -412,6 +412,8 @@ class DisburseClientController extends BaseController
                     ->edit(route('loan.disburse_client.edit', array($model->id, $model->ln_disburse_id)),$this->_checkAction($model->id))
                     ->delete(route('loan.disburse_client.destroy', $model->id),'',$this->_checkAction($model->id))
                     ->show(route('loan.disburse_client.show',array($model->id, $model->ln_disburse_id)))
+                    ->custom(route('loan.disburse_client.close',$model->id),'Close',$this->_checkClose($model->id))
+                    ->custom(route('loan.disburse_client.close',$model->id),'Re-Open',$this->_checkOpen($model->id))
                     ->get();
             })
             ->showColumns($item)
@@ -421,6 +423,23 @@ class DisburseClientController extends BaseController
                 return '<img src = "' . $model->client_photo . '" width = "60px" > ';
             })*/
             ->make();
+    }
+
+    public function close($id){
+        $p = Perform::where('ln_disburse_client_id', '=', $id)
+            ->orderBy('id', 'DESC')->limit(1)->first();
+        if($p->repayment_type <> 'closing') {
+            $p->activated_at = date_format(new \DateTime(),'Y-m-d');
+            $p->repayment_type = 'closing';
+            //var_dump($p);exit;
+            $p->id = \AutoCode::make('ln_perform', 'id', \UserSession::read()->sub_branch . '-', 10);
+            DB::table('ln_perform')->insert($p->toarray());
+        }else{
+            $p->delete();
+        }
+        // User action
+       \Event::fire('user_action.create', array('disburse_client'));
+        return Redirect::back();
     }
 
     private function _checkAction($id)
@@ -433,6 +452,30 @@ class DisburseClientController extends BaseController
             return true;
         }
         return false;
+    }
+
+    private function _checkClose($id)
+    {
+        $data = Perform::where('ln_disburse_client_id', '=', $id)
+            ->where('repayment_type','=','closing')
+            ->limit(1)
+            ->first();
+        if (!$data) {
+            return true;
+        }
+        return false;
+    }
+
+    private function _checkOpen($id)
+    {
+        $data = Perform::where('ln_disburse_client_id', '=', $id)
+            ->where('repayment_type','=','closing')
+            ->limit(1)
+            ->first();
+        if (!$data) {
+            return false;
+        }
+        return true;
     }
 
     public  function _getClientList($more='')

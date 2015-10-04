@@ -240,6 +240,13 @@ Route::group(
                 'uses' => 'Battambang\Loan\DisburseClientController@update'
             )
         );
+        Route::get(
+            'disburse_client/close/{id}',
+            array(
+                'as' => 'loan.disburse_client.close',
+                'uses' => 'Battambang\Loan\DisburseClientController@close'
+            )
+        );
         Route::delete(
             'disburse_client/destroy/{id}',
             array(

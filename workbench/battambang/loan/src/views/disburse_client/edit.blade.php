@@ -48,7 +48,7 @@ echo FormPanel2::make(
 //->options(LookupValueList::getBy('history'),$row->ln_lv_history)
 echo FormPanel2::make(
     'Loan Additional',
-        Former::text('field_char_1', 'Collateral No',$row->field_char_1)
+        Former::text('field_char_1', 'Land ID',$row->field_char_1)
         .''
     .Former::text('cycle', 'Cycle', $row->cycle)
         ->readonly('readonly')
