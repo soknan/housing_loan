@@ -565,7 +565,7 @@
        html:Color="#000000"><?php echo $dis_data->purpose_des; ?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s64"/>
     <Cell ss:StyleID="s64"/>
-    <Cell ss:StyleID="s86"><Data ss:Type="String">Email: <?php echo $dis_data->field_char_1; ?></Data></Cell>
+    <Cell ss:StyleID="s86"><Data ss:Type="String">Land ID: <?php echo $dis_data->field_char_1; ?></Data></Cell>
     <Cell ss:Index="9" ss:StyleID="s64"/>
    </Row>
    <Row>
