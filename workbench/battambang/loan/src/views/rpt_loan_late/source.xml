@@ -458,7 +458,7 @@
     <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
     <Cell ss:StyleID="s79"><Data ss:Type="String"><?php echo $row->_disburse_client_id;?></Data></Cell>
     <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo $row->_disburse->client_name;?></Data></Cell>
-    <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo $row->_disburse->field_char_1;?></Data></Cell>
+    <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo $row->_disburse->col_no;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $row->_disburse->cp_currency_id;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $row->_disburse->account_type;?></Data></Cell>
     <Cell ss:StyleID="s81"><Data ss:Type="DateTime"><?php echo $row->_disburse->disburse_date;?></Data></Cell>

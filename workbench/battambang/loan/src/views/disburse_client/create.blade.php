@@ -57,7 +57,7 @@ echo FormPanel2::make(
 if(true){
 echo FormPanel2::make(
     'Loan Additional',
-        Former::text('field_char_1', 'Land ID')
+        Former::text('field_char_1', 'Land ID')->required()
         .''
     .Former::text('cycle', 'Cycle',$cycle)
         ->readonly('readonly')

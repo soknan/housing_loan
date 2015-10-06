@@ -51,7 +51,7 @@ on ln_disburse_client.ln_client_id = ln_client.id where ln_client.id = "'.$data[
             //$data['result'] = $row;
         }*/
         //echo $data['result'][0]->kh_first_name;
-        //var_dump($data['schedule']);
+        //var_dump($data['disburse']); exit;
         //var_dump($data['result'][3]->_arrears);
         //exit;
         // User action

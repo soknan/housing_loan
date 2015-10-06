@@ -520,7 +520,7 @@
        html:Color="#000000"><?php echo $dis_data->expire_date; ?></Font></ss:Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s83"><ss:Data ss:Type="String"
       xmlns="http://www.w3.org/TR/REC-html40"><B><Font html:Color="#000000">Contact Type:</Font></B><Font
-       html:Color="#000000"> <?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_contact_type)->first()->name; ?></Font></ss:Data></Cell>
+       html:Color="#000000"> <?php echo Battambang\Loan\LookupValue::where('id','=',$dis_data->ln_lv_contact_type)->first()->name;?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s64"/>
     <Cell ss:StyleID="s64"/>
     <Cell ss:StyleID="s83"><ss:Data ss:Type="String"
@@ -565,7 +565,7 @@
        html:Color="#000000"><?php echo $dis_data->purpose_des; ?></Font></ss:Data></Cell>
     <Cell ss:StyleID="s64"/>
     <Cell ss:StyleID="s64"/>
-    <Cell ss:StyleID="s86"><Data ss:Type="String">Email: <?php echo $dis_data->email; ?></Data></Cell>
+    <Cell ss:StyleID="s86"><Data ss:Type="String">Email: <?php echo $dis_data->field_char_1; ?></Data></Cell>
     <Cell ss:Index="9" ss:StyleID="s64"/>
    </Row>
    <Row>

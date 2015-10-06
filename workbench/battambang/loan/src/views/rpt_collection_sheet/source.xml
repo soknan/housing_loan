@@ -263,7 +263,7 @@
    <Column ss:AutoFitWidth="0" ss:Width="76.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="73.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="57"/>
-   <Column ss:Width="19.5"/>
+   <Column ss:Width="69.5"/>
    <Column ss:AutoFitWidth="0" ss:Width="36.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="50.25" ss:Span="1"/>
    <Column ss:Index="9" ss:AutoFitWidth="0" ss:Width="55.5"/>
@@ -396,6 +396,7 @@
     <Cell ss:StyleID="s79"><Data ss:Type="String">No</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">LA Code</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">Kh Clients Name</Data></Cell>
+    <Cell ss:StyleID="s78"><Data ss:Type="String">Land ID</Data></Cell>
     <!--<Cell ss:StyleID="s77"><Data ss:Type="String">Note</Data></Cell>-->
     <Cell ss:StyleID="s78"><Data ss:Type="String">Kh Vil Name</Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String">CRC</Data></Cell>
@@ -469,6 +470,7 @@
     <Cell ss:StyleID="s75"><Data ss:Type="Number"><?php echo $key+1;?></Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String"><?php echo $row->_disburse_client_id;?></Data></Cell>
     <Cell ss:StyleID="s76"><Data ss:Type="String"><?php echo $row->_disburse->client_name;?></Data></Cell>
+    <Cell ss:StyleID="s76"><Data ss:Type="String"><?php echo $row->_disburse->col_no;?></Data></Cell>
     <!--<Cell ss:StyleID="s69"><Data ss:Type="String"><?php echo $row->_disburse->contact_num;?></Data></Cell>-->
     <Cell ss:StyleID="s76"><Data ss:Type="String"><?php echo $location;?></Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="Number"><?php echo $row->_disburse->cp_currency_id;?></Data></Cell>
@@ -506,7 +508,7 @@
 
               ?>
    <Row>
-    <Cell ss:MergeAcross="8" ss:StyleID="m114618956"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
+    <Cell ss:MergeAcross="9" ss:StyleID="m114618956"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pri_khr;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_int_khr;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_col_khr;?></Data></Cell>
@@ -514,7 +516,7 @@
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
-    <Cell ss:MergeAcross="8" ss:StyleID="m114618976"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
+    <Cell ss:MergeAcross="9" ss:StyleID="m114618976"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pri_usd;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_int_usd;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_col_usd;?></Data></Cell>
@@ -522,7 +524,7 @@
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
-    <Cell ss:MergeAcross="8" ss:StyleID="m114618996"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
+    <Cell ss:MergeAcross="9" ss:StyleID="m114618996"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_pri_thb;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $col_int_thb;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_col_thb;?></Data></Cell>
@@ -530,7 +532,7 @@
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
-    <Cell ss:MergeAcross="8" ss:StyleID="m114619040"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
+    <Cell ss:MergeAcross="9" ss:StyleID="m114619040"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $pri_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $int_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s70"><Data ss:Type="Number"><?php echo $total_to_USD;?></Data></Cell>
@@ -538,7 +540,7 @@
     <Cell ss:StyleID="s69"/>
    </Row>
    <Row>
-    <Cell ss:MergeAcross="13"/>
+    <Cell ss:MergeAcross="14"/>
    </Row>
    <Row>
     <Cell ss:MergeAcross="13" ss:StyleID="s65"><Data ss:Type="String">                              Seen By                                                                                                     Verified By                                                                                                 Prepared By                           </Data></Cell>
