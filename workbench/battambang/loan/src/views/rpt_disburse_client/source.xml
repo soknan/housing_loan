@@ -235,8 +235,8 @@
    <Column ss:AutoFitWidth="0" ss:Width="47.25" ss:Span="1"/>
    <Column ss:Index="9" ss:AutoFitWidth="0" ss:Width="54.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="50"/>
-   <Column ss:AutoFitWidth="0" ss:Width="25"/>
-   <Column ss:AutoFitWidth="0" ss:Width="25"/>
+   <Column ss:AutoFitWidth="0" ss:Width="55"/>
+   <Column ss:AutoFitWidth="0" ss:Width="75"/>
    <Column ss:AutoFitWidth="0" ss:Width="60"/>
    <Column ss:AutoFitWidth="0" ss:Width="63.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="63"/>

@@ -116,7 +116,7 @@ dc.cycle as cycle,
 dc.amount as amount,
 (SELECT sd.principal+sd.interest from ln_schedule s INNER JOIN ln_schedule_dt sd
 on s.id =sd.ln_schedule_id
-where s.ln_disburse_client_id = dc.id  LIMIT 1 ) pri_installment,
+where s.ln_disburse_client_id = dc.id and s.`index` = 1 LIMIT 1 ) pri_installment,
 p.project_interest as project_interest,
 account_type.`code` AS `account_type`,
 (dc.`amount` + sum(p.repayment_fee) + p.project_interest) AS `total_due`,

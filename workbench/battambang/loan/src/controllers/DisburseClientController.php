@@ -426,21 +426,32 @@ class DisburseClientController extends BaseController
     }
 
     public function close($id){
-        $p = Perform::where('ln_disburse_client_id', '=', $id)
-            ->orderBy('id', 'DESC')->limit(1)->first();
-        if($p->repayment_type <> 'closing') {
-            $p->activated_at = date_format(new \DateTime(),'Y-m-d');
-            $p->repayment_type = 'closing';
-            //var_dump($p);exit;
-            $p->id = \AutoCode::make('ln_perform', 'id', \UserSession::read()->sub_branch . '-', 10);
-            DB::table('ln_perform')->insert($p->toarray());
-        }else{
-            $p->delete();
+        try {
+            $per = new LoanPerformance();
+            $data = $per->get($id,date_format(new \DateTime(), 'Y-m-d'));
+            if($data->_arrears['cur']['num_day'] >90) {
+                $p = Perform::where('ln_disburse_client_id', '=', $id)
+                    ->orderBy('id', 'DESC')->limit(1)->first();
+                if ($p->repayment_type <> 'closing') {
+                    $p->activated_at = date_format(new \DateTime(), 'Y-m-d');
+                    $p->repayment_type = 'closing';
+                    //var_dump($p);exit;
+                    $p->id = \AutoCode::make('ln_perform', 'id', \UserSession::read()->sub_branch . '-', 10);
+                    DB::table('ln_perform')->insert($p->toarray());
+                } else {
+                    $p->delete();
+                }
+                // User action
+                \Event::fire('user_action.create', array('disburse_client'));
+                return Redirect::back()->with('success',
+                    trans('battambang/loan::disburse_client.update_success'));
+            }else{
+                return Redirect::back()->with('error',
+                    'Arrears number of day not greater than 90 days.!');
+            }
+        }catch (\Exception $e){
+            return Redirect::route('loan.disburse_client.index')->with('error', trans('battambang/cpanel::db_error.fail'));
         }
-        // User action
-       \Event::fire('user_action.create', array('disburse_client'));
-        return Redirect::back()->with('success',
-            trans('battambang/loan::disburse_client.update_success'));
     }
 
     private function _checkAction($id)
