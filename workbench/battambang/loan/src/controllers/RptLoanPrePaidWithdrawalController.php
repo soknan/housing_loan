@@ -59,7 +59,7 @@ class RptLoanPrePaidWithdrawalController extends BaseController
         $data['exchange_rate'] = '1.00 $ = ' . $ex->khr_usd . ' ៛ , 1.00 B = ' . $ex->khr_thb . '៛';
 
         $condition = ' 1=1 ';
-        $condition.= " AND ln_pre_paid.activated_at BETWEEN
+        $condition.= " AND ln_perform.activated_at BETWEEN
                         STR_TO_DATE('".$data['date_from']." " . " 00:00:00" . "','%Y-%m-%d %H:%i:%s')
                         AND STR_TO_DATE('".$data['date_to']." " . " 23:59:59" . "','%Y-%m-%d %H:%i:%s')
                         and ln_pre_paid.amount_paid >0 ";
