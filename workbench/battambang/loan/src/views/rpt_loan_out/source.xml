@@ -460,8 +460,8 @@
     <Cell ss:StyleID="s80"><Data ss:Type="String"><?php echo $row->_disburse->col_no;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="Number"><?php echo $row->_disburse->cp_currency_id;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $row->_disburse->account_type;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="DateTime"><?php echo $row->_disburse->disburse_date;?></Data></Cell>
-    <Cell ss:StyleID="s81"><Data ss:Type="DateTime"><?php echo $row->_maturity_date;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="String"><?php echo $row->_disburse->disburse_date;?></Data></Cell>
+    <Cell ss:StyleID="s81"><Data ss:Type="String"><?php echo $row->_maturity_date;?></Data></Cell>
     <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $row->_disburse->amount;?></Data></Cell>
     <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $row->_project_interest;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $classify;?></Data></Cell>
