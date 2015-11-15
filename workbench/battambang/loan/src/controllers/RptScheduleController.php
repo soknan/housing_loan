@@ -152,8 +152,8 @@ class RptScheduleController extends BaseController{
 
             // Add client name and disburse date to sign
             $objWorkSheet->getCell('F'.(17-2+$count))->setValue($data['dis']->ln_client_kh_name);
-            $objWorkSheet->getCell('B'.(19-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
-            $objWorkSheet->getCell('F'.(19-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+            $objWorkSheet->getCell('B'.(20-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+            $objWorkSheet->getCell('F'.(20-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
 
 
         // redirect output to client browser

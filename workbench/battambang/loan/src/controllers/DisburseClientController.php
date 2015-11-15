@@ -390,6 +390,9 @@ class DisburseClientController extends BaseController
         $data->ln_lv_handicap = 91;//Input::get('ln_lv_handicap');
         $data->address = Input::get('address');
         $data->ln_lv_contact_type = Input::get('ln_lv_contact_type');
+        if($data->ln_lv_contact_type == '') {
+            $data->ln_lv_contact_type = 1;
+        }
         $data->contact_num = Input::get('contact_num');
         $data->email = Input::get('email');
 
