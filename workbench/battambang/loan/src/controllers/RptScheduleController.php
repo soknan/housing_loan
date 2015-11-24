@@ -44,7 +44,7 @@ class RptScheduleController extends BaseController{
 
 // User action
         \Event::fire('user_action.report', array('rpt_schedule'));
-        $rptFormat='Borey'; // Kra, Nikom
+        $rptFormat='Nikom'; // Kra, Nikom
 
             $rptName='Repayment Schedule Borey';
             $rptExtension='.xlsx';
@@ -151,9 +151,9 @@ class RptScheduleController extends BaseController{
             }
 
             // Add client name and disburse date to sign
-            $objWorkSheet->getCell('F'.(17-2+$count))->setValue($data['dis']->ln_client_kh_name);
-            $objWorkSheet->getCell('B'.(20-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
-            $objWorkSheet->getCell('F'.(20-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+            $objWorkSheet->getCell('F'.(26-2+$count))->setValue($data['dis']->ln_client_kh_name);
+            $objWorkSheet->getCell('B'.(28-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
+            $objWorkSheet->getCell('F'.(28-2+$count))->setValue('ថ្ងៃទី '.date('d-m-Y',strtotime($data['dis']->ln_disburse_date)));
 
 
         // redirect output to client browser
