@@ -431,6 +431,13 @@ PageHeader::make(
 |--------------------------------------------------------------------------
 */
 PageHeader::make(
+    'loan.rpt_loan_drop_out.index',
+    function (PageHeardItem $header) {
+        $header->iconFloppyDisk();
+        $header->add('Loan Drop Out');
+    }
+);
+PageHeader::make(
     'loan.rpt_loan_prepaid_bal.index',
     function (PageHeardItem $header) {
         $header->iconFloppyDisk();

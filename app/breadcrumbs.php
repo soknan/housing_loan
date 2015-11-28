@@ -844,6 +844,15 @@ Breadcrumbs::register(
     }
 );
 
+// Loan Drop-Out
+Breadcrumbs::register(
+    'loan.rpt_loan_drop_out.index',
+    function ($bc) {
+        $bc->parent('cpanel.package.home');
+        $bc->push('Loan Drop-Out', URL::route('loan.rpt_loan_drop_out.index'));
+    }
+);
+
 /*
 |--------------------------------------------------------------------------
 | Tool Breadcrumbs

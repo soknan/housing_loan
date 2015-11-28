@@ -95,6 +95,7 @@ Menu::make(
                     'loan.rpt_write_off_in.index'=>'Write-Off (In Period)',
                     'loan.rpt_write_off_end.index'=>'Write-Off (End Period)',
                     'loan.rpt_product_activity.index'=>'Productivity',
+                    'loan.rpt_loan_drop_out.index'=>'Loan Drop-Out',
                 );
                 if(UserSession::read()->permission==null) return;
                 foreach($arr as $key=> $value){

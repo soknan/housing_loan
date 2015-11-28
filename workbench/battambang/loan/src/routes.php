@@ -999,6 +999,22 @@ Route::group(
         | Report Routes
         |--------------------------------------------------------------------------
         */
+        //Loan Drop Out
+        Route::get(
+            'rpt_loan_drop_out',
+            array(
+                'as' => 'loan.rpt_loan_drop_out.index',
+                'uses' => 'Battambang\Loan\RptLoanDropOutController@index'
+            )
+        );
+        Route::post(
+            'rpt_loan_drop_out',
+            array(
+                'as' => 'loan.rpt_loan_drop_out.report',
+                'uses' => 'Battambang\Loan\RptLoanDropOutController@report'
+            )
+        );
+
         //Loan Pre-Paid Bal
         Route::get(
             'rpt_loan_prepaid_bal',

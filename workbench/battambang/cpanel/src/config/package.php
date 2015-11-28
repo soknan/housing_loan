@@ -190,6 +190,7 @@ return array(
                 'loan.rpt_loan_prepaid_withdrawal.index' => 'Pre-Paid Withdrawal',
                 'loan.rpt_loan_prepaid_bal.index' => 'Pre-Paid Bal',
                 'loan.rpt_loan_inactive.index' => 'In-active Loan',
+                'loan.rpt_loan_drop_out.index' => 'Loan Drop-Out',
             ),
             'summary report' => array(
                 'loan.rpt_breakdown_purpose.index' => 'loan breakdown by purpose',
