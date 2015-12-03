@@ -407,7 +407,7 @@
     <Cell ss:StyleID="s113"><Data ss:Type="DateTime"><?php echo $row->maturity_date;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->amount;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->project_interest;?></Data></Cell>
-    <Cell ss:StyleID="s113"><Data ss:Type="DateTime"><?php echo $row->repayment_date;?></Data></Cell>
+    <Cell ss:StyleID="s113"><Data ss:Type="DateTime"><?php echo $row->activated_at;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->balance_interest;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $pri;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $int;?></Data></Cell>
