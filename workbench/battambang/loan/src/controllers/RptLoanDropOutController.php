@@ -24,7 +24,7 @@ class RptLoanDropOutController extends BaseController
     {
         //$data['reportHistory'] = $this->_reportHistory();
         return $this->renderLayout(
-            \View::make('battambang/loan::rpt_loan_finish.index')
+            \View::make('battambang/loan::rpt_loan_drop_out.index')
         );
     }
 
@@ -126,15 +126,15 @@ left join ln_staff st on st.id = ln_center.ln_staff_id
 INNER join ln_perform on ln_perform.ln_disburse_client_id = ln_disburse_client.id
         where $condition order by ln_perform.activated_at DESC
         ");
+        //var_dump($data['result']);
+        //exit;
 // User action
-        \Event::fire('user_action.report', array('rpt_loan_close'));
+        \Event::fire('user_action.report', array('rpt_loan_drop_out'));
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');
         }
-       //var_dump($data['result']);
-       //exit;
 
-        \Report::setReportName('Loan_Closing')
+        \Report::setReportName('Loan_Drop_Out')
             ->setDateFrom($data['date_from'])
         ->setDateTo($data['date_to']);
         return \Report::make('rpt_loan_drop_out/source', $data,'loan_drop_out');
