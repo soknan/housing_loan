@@ -272,7 +272,7 @@
     <Cell ss:Index="4" ss:StyleID="s148"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="18.75" ss:StyleID="s62">
-    <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Drop-Out Report</Data></Cell>
+    <Cell ss:StyleID="s66"><Data ss:Type="String">Loan Closing Report</Data></Cell>
     <Cell ss:Index="4" ss:StyleID="s148"/>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Height="18.75" ss:StyleID="s62">
@@ -336,10 +336,8 @@
     <Cell ss:StyleID="s109"><Data ss:Type="String">Dis Date</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Mat Date</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Loan Amount</Data></Cell>
-
     <Cell ss:StyleID="s109"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Fin Date</Data></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Loss Pri</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Loss Int</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Col Prin M</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Col Int M</Data></Cell>
@@ -351,19 +349,16 @@
               $int_khr=0;
               $pen_khr=0;
               $loss_int_khr=0;
-              $loss_pri_khr=0;
 
               $pri_usd=0;
               $int_usd=0;
               $pen_usd=0;
               $loss_int_usd=0;
-              $loss_pri_usd=0;
 
               $pri_thb=0;
               $int_thb=0;
               $pen_thb=0;
               $loss_int_thb=0;
-              $loss_pri_thb=0;
               $pri = 0;
               $int =0;
               $pen = 0;
@@ -379,7 +374,6 @@
               $int=$con_cur->toKHR(1,$row->repayment_interest,$exchange_rate_id);
               $pen=$con_cur->toKHR(1,$row->repayment_penalty,$exchange_rate_id);
                   $loss_int_khr+=$con_cur->toKHR(1,$row->balance_interest,$exchange_rate_id);
-              $loss_pri_khr+=$con_cur->toKHR(1,$row->balance_principal,$exchange_rate_id);
                   break;
                   case 2:
               $pri_usd+=$con_cur->toUSD(2,$row->repayment_principal,$exchange_rate_id);
@@ -387,9 +381,8 @@
               $pen_usd+=$con_cur->toUSD(2,$row->repayment_penalty,$exchange_rate_id);
               $pri=$con_cur->toUSD(2,$row->repayment_principal,$exchange_rate_id);
               $int=$con_cur->toUSD(2,$row->repayment_interest,$exchange_rate_id);
-              $pen=$con_cur->toUSD(2,$row->repayment_penalty,$exchange_rate_id);
-              $loss_int_usd+=$con_cur->toUSD(2,$row->balance_interest,$exchange_rate_id);
-              $loss_pri_usd+=$con_cur->toUSD(2,$row->balance_principal,$exchange_rate_id);
+              $pen=$con_cur->toUSD(1,$row->repayment_penalty,$exchange_rate_id);
+              $loss_int_usd+=$row->balance_interest;
                   break;
                   case 3:
               $pri_thb+=$con_cur->toTHB(3,$row->repayment_principal,$exchange_rate_id);
@@ -397,9 +390,8 @@
               $pen_thb+=$con_cur->toTHB(3,$row->repayment_penalty,$exchange_rate_id);
               $pri=$con_cur->toTHB(3,$row->repayment_principal,$exchange_rate_id);
               $int=$con_cur->toTHB(3,$row->repayment_interest,$exchange_rate_id);
-              $pen=$con_cur->toTHB(3,$row->repayment_penalty,$exchange_rate_id);
-              $loss_int_thb+=$con_cur->toTHB(3,$row->balance_interest,$exchange_rate_id);
-              $loss_pri_thb+=$con_cur->toTHB(3,$row->balance_principal,$exchange_rate_id);
+              $pen=$con_cur->toTHB(1,$row->repayment_penalty,$exchange_rate_id);
+              $loss_int_thb+=$row->balance_interest;
                   break;
                   }
               ?>
@@ -416,7 +408,6 @@
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->amount;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->project_interest;?></Data></Cell>
     <Cell ss:StyleID="s113"><Data ss:Type="DateTime"><?php echo $row->activated_at;?></Data></Cell>
-    <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->balance_principal;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $row->balance_interest;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $pri;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $int;?></Data></Cell>
@@ -435,25 +426,21 @@
               $sub_pen_khr_usd= $con_cur->toUSD(1,$pen_khr,$exchange_rate_id);
               $sub_total_khr_usd= $con_cur->toUSD(1,$total_repay_khr,$exchange_rate_id);
               $sub_loss_khr_usd= $con_cur->toUSD(1,$loss_int_khr,$exchange_rate_id);
-              $sub_loss_pri_khr_usd= $con_cur->toUSD(1,$loss_pri_khr,$exchange_rate_id);
 
               $sub_pri_thb_usd = $con_cur->toUSD(3,$pri_thb,$exchange_rate_id);
               $sub_int_thb_usd= $con_cur->toUSD(3,$int_thb,$exchange_rate_id);
               $sub_pen_thb_usd= $con_cur->toUSD(3,$pen_thb,$exchange_rate_id);
               $sub_total_thb_usd= $con_cur->toUSD(3,$total_repay_thb,$exchange_rate_id);
               $sub_loss_thb_usd= $con_cur->toUSD(3,$loss_int_thb,$exchange_rate_id);
-              $sub_loss_pri_thb_usd= $con_cur->toUSD(3,$loss_pri_thb,$exchange_rate_id);
 
               $pri_to_USD = $sub_pri_khr_usd + $pri_usd + $sub_pri_thb_usd;
               $int_to_USD = $sub_int_khr_usd + $int_usd + $sub_int_thb_usd;
               $pen_to_USD = $sub_pen_khr_usd + $pen_usd + $sub_pen_thb_usd;
               $total_to_USD = $sub_total_khr_usd + $sub_total_thb_usd + $total_repay_usd;
               $loss_to_USD = $sub_loss_khr_usd + $sub_loss_thb_usd + $loss_int_usd;
-              $loss_pri_to_USD = $sub_loss_pri_khr_usd + $sub_loss_pri_thb_usd + $loss_pri_usd;
               ?>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="11" ss:StyleID="m48442696"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
-    <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_pri_khr;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_int_khr;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $pri_khr;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $int_khr;?></Data></Cell>
@@ -462,7 +449,6 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="11" ss:StyleID="m48442716"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
-    <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_pri_usd;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_int_usd;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $pri_usd;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $int_usd;?></Data></Cell>
@@ -471,7 +457,6 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="11" ss:StyleID="m48442736"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
-    <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_pri_thb;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_int_thb;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $pri_thb;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $int_thb;?></Data></Cell>
@@ -480,7 +465,6 @@
    </Row>
    <Row ss:AutoFitHeight="0">
     <Cell ss:MergeAcross="11" ss:StyleID="m48442756"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
-    <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_pri_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $loss_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $pri_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s132"><Data ss:Type="Number"><?php echo $int_to_USD;?></Data></Cell>
@@ -505,7 +489,7 @@
     <Cell ss:StyleID="s153"/>
    </Row>
    <Row ss:AutoFitHeight="0">
-    <Cell ss:MergeAcross="16" ss:StyleID="s67"><Data ss:Type="String">                              Seen By                                                                                                   Verified By                                                                                                  Prepared By                            </Data></Cell>
+    <Cell ss:MergeAcross="15" ss:StyleID="s67"><Data ss:Type="String">                              Seen By                                                                                                   Verified By                                                                                                  Prepared By                            </Data></Cell>
    </Row>
    <Row ss:AutoFitHeight="0" ss:Hidden="1">
     <Cell ss:StyleID="s67"/>

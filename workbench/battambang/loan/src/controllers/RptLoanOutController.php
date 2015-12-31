@@ -145,9 +145,9 @@ order by ln_disburse.disburse_date DESC
             $data['classify']= $p->code;
         }
 
-        //var_dump($perform);
-        //exit;
+
         $data['result']= $tmp;
+        //var_dump($data['result']); exit;
 
         if (count($data['result']) <= 0) {
             return \Redirect::back()->withInput(Input::except('cp_office_id'))->with('error', 'No Data Found !.');

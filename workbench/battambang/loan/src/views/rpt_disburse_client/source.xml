@@ -466,12 +466,12 @@
               $sub_pro_int_khr_usd =$con_cur->toUSD(1,$pro_int_khr,$exchange_rate_id);
 
               $sub_amount_usd_usd=$con_cur->toUSD(2,$amount_usd,$exchange_rate_id);
-              $sub_pay_usd_usd = $con_cur->toUSD(1,$pay_usd,$exchange_rate_id);
+              $sub_pay_usd_usd = $con_cur->toUSD(2,$pay_usd,$exchange_rate_id);
               $sub_fee_usd_usd=$con_cur->toUSD(2,$fee_usd,$exchange_rate_id);
               $sub_pro_int_usd_usd =$con_cur->toUSD(2,$pro_int_usd,$exchange_rate_id);
 
               $sub_amount_thb_usd=$con_cur->toUSD(3,$amount_thb,$exchange_rate_id);
-              $sub_pay_thb_usd = $con_cur->toUSD(1,$pay_thb,$exchange_rate_id);
+              $sub_pay_thb_usd = $con_cur->toUSD(3,$pay_thb,$exchange_rate_id);
               $sub_fee_thb_usd=$con_cur->toUSD(3,$fee_thb,$exchange_rate_id);
               $sub_pro_int_thb_usd=$con_cur->toUSD(3,$pro_int_thb,$exchange_rate_id);
 
