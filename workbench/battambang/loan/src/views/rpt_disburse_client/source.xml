@@ -421,13 +421,13 @@
                   break;
                   case 2:
                       $amount_usd+=$con_cur->toUSD(2,$row->amount,$exchange_rate_id);
-              $pay_usd+=$con_cur->toKHR(1,$row->pay_down,$exchange_rate_id);
+              $pay_usd+=$con_cur->toKHR(2,$row->pay_down,$exchange_rate_id);
                       $fee_usd+=$con_cur->toUSD(2,$row->fee,$exchange_rate_id);
                       $pro_int_usd+= $con_cur->toUSD(2,$row->project_interest,$exchange_rate_id);
                   break;
                   case 3:
                       $amount_thb+=$con_cur->toTHB(3,$row->amount,$exchange_rate_id);
-              $pay_thb+=$con_cur->toKHR(1,$row->pay_down,$exchange_rate_id);
+              $pay_thb+=$con_cur->toKHR(3,$row->pay_down,$exchange_rate_id);
                       $fee_thb+=$con_cur->toTHB(3,$row->fee,$exchange_rate_id);
                       $pro_int_thb+= $con_cur->toTHB(3,$row->project_interest,$exchange_rate_id);
                   break;
