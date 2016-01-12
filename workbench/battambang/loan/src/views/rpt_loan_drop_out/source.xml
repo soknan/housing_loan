@@ -339,8 +339,8 @@
 
     <Cell ss:StyleID="s109"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Fin Date</Data></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Loss Pri</Data></Cell>
-    <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Loss Int</Data></Cell>
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Bal Pri</Data></Cell>
+    <Cell ss:StyleID="s109"><Data ss:Type="String">Bal Int</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Col Prin M</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Sum Col Int M</Data></Cell>
     <Cell ss:StyleID="s109"><Data ss:Type="String">Total Sum Col M</Data></Cell>
