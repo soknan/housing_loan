@@ -372,6 +372,8 @@ class RepaymentController extends BaseController
                 }
 
                 $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,$voucher_code);
+                // User action
+                \Event::fire('user_action.add', array('pre_paid'));
             }
             // User action
             \Event::fire('user_action.add', array('repayment'));
@@ -642,6 +644,8 @@ class RepaymentController extends BaseController
                     }
 
                     $this->savePrePaid($data->_disburse_client_id,$pay,$bal,$data->_activated_at,$voucher_code);
+                    // User action
+                    \Event::fire('user_action.edit', array('pre_paid'));
                 }
                 // User action
                 \Event::fire('user_action.edit', array('repayment'));
@@ -662,8 +666,11 @@ class RepaymentController extends BaseController
             //delete pre-paid
             //echo $data->repayment_voucher_id; exit();
             PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
-                ->where('ln_disburse_client_id','=',$id)
+                ->where('ln_disburse_client_id','=',$data->ln_disburse_client_id)
+                //->where('activated_at','=',$data->activated_at)
                 ->delete();
+            // User action
+            \Event::fire('user_action.delete', array('pre_paid'));
            $data->delete();
             // User action
             \Event::fire('user_action.delete', array('repayment'));
@@ -678,8 +685,11 @@ class RepaymentController extends BaseController
             $data = Perform::where('id','=',$id)->first();
             //delete pre-paid
             PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
-                ->where('ln_disburse_client_id','=',$id)
+                ->where('ln_disburse_client_id','=',$data->ln_disburse_client_id)
+                //->where('activated_at','=',$data->activated_at)
                 ->delete();
+            // User action
+            \Event::fire('user_action.delete', array('pre_paid'));
             $data->delete();
 
             // User action
