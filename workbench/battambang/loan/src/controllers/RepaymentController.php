@@ -667,7 +667,8 @@ class RepaymentController extends BaseController
             //echo $data->repayment_voucher_id; exit();
             PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
                 ->where('ln_disburse_client_id','=',$data->ln_disburse_client_id)
-                //->where('activated_at','=',$data->activated_at)
+                ->where('activated_at','=',$data->activated_at)
+                ->where('amount_paid','>',0)
                 ->delete();
             // User action
             \Event::fire('user_action.delete', array('pre_paid'));
@@ -686,7 +687,8 @@ class RepaymentController extends BaseController
             //delete pre-paid
             PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
                 ->where('ln_disburse_client_id','=',$data->ln_disburse_client_id)
-                //->where('activated_at','=',$data->activated_at)
+                ->where('activated_at','=',$data->activated_at)
+                ->where('amount_paid','>',0)
                 ->delete();
             // User action
             \Event::fire('user_action.delete', array('pre_paid'));
