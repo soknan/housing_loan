@@ -343,11 +343,11 @@ class RepaymentController extends BaseController
                 $voucher_code
             );
 
-            $tmp_voucher = Perform::where('repayment_voucher_id','=',$perform->_repayment['cur']['voucher_id'])->count();
+            /*$tmp_voucher = Perform::where('repayment_voucher_id','=',$perform->_repayment['cur']['voucher_id'])->count();
             if($tmp_voucher>0){
                 $data->error = 'Duplicate Voucher ID';
                 return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
-            }
+            }*/
 
             //var_dump($data); exit;
             $classify = ProductStatus::where('id', '=', $data->_current_product_status)->first();
@@ -401,7 +401,8 @@ class RepaymentController extends BaseController
             if ($validation->passes()) {
                 $curData = Perform::where('id', '=', $id)->get()->toArray();
                 $curP = PrePaid::where('ln_disburse_client_id','=',$loan_acc)
-                    ->where('voucher_code','=',$curData[0]['repayment_voucher_id'])->get()->toArray();
+                    ->where('voucher_code','=',$curData[0]['repayment_voucher_id'])
+                    ->where('created_at','=',$curData[0]['created_at'])->get()->toArray();
                 $this->_delete($id);
                 //$perform->delete($id);
 
@@ -416,7 +417,7 @@ class RepaymentController extends BaseController
 
                     return Redirect::back()->with('error', $error)->with('data', $data);
                 }
-
+                //var_dump($data); exit;
                 //$data = $perform->get(Input::get('ln_disburse_client_id'), $perform_date);
                 // Fee
                 if ($data->_arrears['cur']['fee'] > 0) {
@@ -450,7 +451,7 @@ class RepaymentController extends BaseController
                         return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
 
-                    $perform->repay($principal, $penalty, $status, $voucher_code);
+                    $perform->repay($principal, $penalty, $status, $voucher_id);
                     $msg = 'Due Date = <strong>' . date('d-M-Y',strtotime($data->_repayment['cur']['date'])) . '</strong> ,</br> '
                         . 'Fee Amount = <strong>' . number_format($data->_repayment['cur']['fee'],2) . '</strong>
                         <P>Successful !</P>';
@@ -518,22 +519,25 @@ class RepaymentController extends BaseController
                     unset($curData['created_at']);
                     unset($curData['updated_at']);
                     unset($curData['id']);
-                    if(count($curP)>0){
-                        PrePaid::insert($curP);
+                    Perform::insert($curData);
+
+                    //if(count($curP[0]['id'])>0){
                         unset($curP['created_at']);
                         unset($curP['updated_at']);
-                    }
+                        unset($curP['id']);
+                        PrePaid::insert($curP);
+                    //}
 
-                    Perform::insert($curData);
                     return Redirect::route('loan.repayment.edit',$curData[0]['id'])->withInput()
                         ->with('data', $data)
                         ->with('info', $msg);
                 }
-                if(count($curP)>0) {
+                //if(count($curP[0])>0) {
+                    unset($curP['id']);
                     unset($curP['created_at']);
                     unset($curP['updated_at']);
                     PrePaid::insert($curP);
-                }
+                //}
                 unset($curData['id']);
                 unset($curData['created_at']);
                 unset($curData['updated_at']);
@@ -612,13 +616,13 @@ class RepaymentController extends BaseController
                     $voucher_code
                 );
 
-                if(Input::get('hidden_voucher_id') != $perform->_repayment['cur']['voucher_id']){
+                /*if(Input::get('hidden_voucher_id') != $perform->_repayment['cur']['voucher_id']){
                     $tmp_voucher = Perform::where('repayment_voucher_id','=',$perform->_repayment['cur']['voucher_id'])->count();
                     if($tmp_voucher>0){
                         $data->error = 'Duplicate Voucher ID';
                         return Redirect::back()->withInput()->with('data', $data)->with('error', $data->error);
                     }
-                }
+                }*/
                 //var_dump($data); exit;
                 $classify = ProductStatus::where('id', '=', $data->_current_product_status)->first();
 
@@ -668,6 +672,7 @@ class RepaymentController extends BaseController
             PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
                 ->where('ln_disburse_client_id','=',$data->ln_disburse_client_id)
                 ->where('activated_at','=',$data->activated_at)
+                ->where('created_at','=',$data->created_at)
                 ->where('amount_paid','>',0)
                 ->delete();
             // User action
@@ -688,6 +693,7 @@ class RepaymentController extends BaseController
             PrePaid::where('voucher_code', '=',$data->repayment_voucher_id)
                 ->where('ln_disburse_client_id','=',$data->ln_disburse_client_id)
                 ->where('activated_at','=',$data->activated_at)
+                ->where('created_at','=',$data->created_at)
                 ->where('amount_paid','>',0)
                 ->delete();
             // User action
@@ -763,6 +769,7 @@ class RepaymentController extends BaseController
         $data = PrePaid::where('ln_disburse_client_id', '=', $id)
             ->where('activated_at', '<=',$activated_at)
             ->orderBy('id', 'DESC')->limit(1)->first();
+
         if($data!=null) $bal = $data->bal;
         return $bal;
     }
