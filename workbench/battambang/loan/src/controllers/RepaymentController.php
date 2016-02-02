@@ -386,7 +386,7 @@ class RepaymentController extends BaseController
 
     public function update($id)
     {
-        try {
+        //try {
             $validation = $this->getValidationService('repayment');
             $perform = new LoanPerformance();
             $msg = '';
@@ -520,8 +520,8 @@ class RepaymentController extends BaseController
                     unset($curData['updated_at']);
                     unset($curData['id']);
                     Perform::insert($curData);
-
-                    if(count($curP['id'])>0){
+                    //return count($curP); exit;
+                    if(count($curP)>0){
                         unset($curP['created_at']);
                         unset($curP['updated_at']);
                         unset($curP['id']);
@@ -532,7 +532,7 @@ class RepaymentController extends BaseController
                         ->with('data', $data)
                         ->with('info', $msg);
                 }
-                if(count($curP['id'])>0){
+                if(count($curP)>0){
                     unset($curP['id']);
                     unset($curP['created_at']);
                     unset($curP['updated_at']);
@@ -658,9 +658,9 @@ class RepaymentController extends BaseController
                     ->with('success', trans('battambang/loan::repayment.update_success'));
             }
             return Redirect::back()->withInput()->withErrors($validation->getErrors());
-        } catch (\Exception $e) {
-            return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
-        }
+        //} catch (\Exception $e) {
+        //    return Redirect::back()->with('error', trans('battambang/cpanel::db_error.fail'));
+        //}
     }
 
     public function destroy($id)
