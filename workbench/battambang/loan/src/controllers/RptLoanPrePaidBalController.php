@@ -116,7 +116,7 @@ concat(`ln_client`.`kh_last_name`,' ',`ln_client`.`kh_first_name`) AS `client_na
 account_type.`code` as account_type
 ,ln_pre_paid.activated_at as activated_at
 FROM
-(SELECT * from ln_pre_paid ORDER BY activated_at desc) ln_pre_paid
+(SELECT * from ln_pre_paid ORDER BY created_at desc) ln_pre_paid
 inner JOIN ln_disburse_client on ln_disburse_client.id = ln_pre_paid.ln_disburse_client_id
 inner JOIN ln_disburse ON ln_disburse_client.ln_disburse_id = ln_disburse.id
 INNER JOIN ln_client ON ln_client.id = ln_disburse_client.ln_client_id
@@ -124,7 +124,7 @@ INNER JOIN ln_lookup_value account_type on account_type.id = ln_disburse.ln_lv_a
 INNER JOIN ln_product ON ln_product.id = ln_disburse.ln_product_id
 INNER JOIN ln_center ON ln_center.id = ln_disburse.ln_center_id
 INNER JOIN ln_perform on ln_perform.ln_disburse_client_id =ln_pre_paid.ln_disburse_client_id and ln_perform.perform_type='disburse'
-where $condition
+where $condition and ln_pre_paid.bal > 0
 GROUP BY ln_pre_paid.ln_disburse_client_id
         ");
 // User action
