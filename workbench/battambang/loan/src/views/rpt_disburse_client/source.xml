@@ -380,54 +380,73 @@
     <Cell ss:StyleID="s77"><Data ss:Type="String">Cycle</Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String">Loan Amount</Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String">Pay Down</Data></Cell>
+    <Cell ss:StyleID="s77"><Data ss:Type="String">Discount</Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String">Fee</Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s77"><Data ss:Type="String">Total Due</Data></Cell>
    </Row>
       <?php
               $amount_khr=0;
+              $discount=0;
               $pay_khr=0;
+              $dis_khr=0;
               $fee_khr=0;
               $pro_int_khr=0;
               $total_due_khr=0;
 
               $amount_usd=0;
               $pay_usd=0;
+              $dis_usd=0;
               $fee_usd=0;
               $pro_int_usd=0;
               $total_due_usd=0;
 
               $amount_thb=0;
               $pay_thb=0;
+              $dis_thb=0;
               $fee_thb=0;
               $pro_int_thb=0;
               $total_due_thb=0;
 
               $amount_to_USD = 0;
               $pay_to_USD=0;
+              $dis_to_USD=0;
               $fee_to_USD =0;
               $pro_int_to_USD = 0;
               $total_due_to_USD =0;
               $con_cur = new Battambang\Cpanel\Libraries\Currency();
               foreach($result as $key=> $row){
-
+              $discount = $row->discount;
+              if($row->discount>0){
+                  $discount=$row->pre_amount*$row->discount/100;
+              }
 
               switch ($row->cp_currency_id){
                   case 1:
                       $amount_khr+=$row->amount;
                       $pay_khr+=$row->pay_down;
+              if($row->discount>0){
+               $dis_khr+=$row->$row->pre_amount*$row->discount/100;
+              }
+
                       $fee_khr+=$row->fee;
                       $pro_int_khr+= $row->project_interest;
                   break;
                   case 2:
                       $amount_usd+=$row->amount;
                       $pay_usd+=$row->pay_down;
+              if($row->discount>0){
+              $dis_usd+=$row->pre_amount*$row->discount/100;
+              }
                       $fee_usd+=$row->fee;
                       $pro_int_usd+= $row->project_interest;
                   break;
                   case 3:
                       $amount_thb+=$row->amount;
                       $pay_thb+=$row->pay_down;
+              if($row->discount>0){
+              $dis_thb+=$row->pre_amount*$row->discount/100;
+              }
                       $fee_thb+=$row->fee;
                       $pro_int_thb+= $row->project_interest;
                   break;
@@ -450,6 +469,7 @@
     <Cell ss:StyleID="s79"><Data ss:Type="Number"><?php echo $row->cycle;?></Data></Cell>
     <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $row->amount;?></Data></Cell>
     <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $row->pay_down;?></Data></Cell>
+    <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $discount;?></Data></Cell>
     <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $row->fee;?></Data></Cell>
     <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $row->project_interest;?></Data></Cell>
     <Cell ss:StyleID="s82"><Data ss:Type="Number"><?php echo $row->total_due;?></Data></Cell>
@@ -462,21 +482,25 @@
 
               $sub_amount_khr_usd = $con_cur->toUSD(1,$amount_khr,$exchange_rate_id);
               $sub_pay_khr_usd = $con_cur->toUSD(1,$pay_khr,$exchange_rate_id);
+              $sub_dis_khr_usd = $con_cur->toUSD(1,$dis_khr,$exchange_rate_id);
               $sub_fee_khr_usd=$con_cur->toUSD(1,$fee_khr,$exchange_rate_id);
               $sub_pro_int_khr_usd =$con_cur->toUSD(1,$pro_int_khr,$exchange_rate_id);
 
               $sub_amount_usd_usd=$con_cur->toUSD(2,$amount_usd,$exchange_rate_id);
               $sub_pay_usd_usd = $con_cur->toUSD(2,$pay_usd,$exchange_rate_id);
+              $sub_dis_usd_usd = $con_cur->toUSD(2,$dis_usd,$exchange_rate_id);
               $sub_fee_usd_usd=$con_cur->toUSD(2,$fee_usd,$exchange_rate_id);
               $sub_pro_int_usd_usd =$con_cur->toUSD(2,$pro_int_usd,$exchange_rate_id);
 
               $sub_amount_thb_usd=$con_cur->toUSD(3,$amount_thb,$exchange_rate_id);
               $sub_pay_thb_usd = $con_cur->toUSD(3,$pay_thb,$exchange_rate_id);
+              $sub_dis_thb_usd = $con_cur->toUSD(3,$dis_thb,$exchange_rate_id);
               $sub_fee_thb_usd=$con_cur->toUSD(3,$fee_thb,$exchange_rate_id);
               $sub_pro_int_thb_usd=$con_cur->toUSD(3,$pro_int_thb,$exchange_rate_id);
 
               $amount_to_USD = $sub_amount_khr_usd + $sub_amount_usd_usd + $sub_amount_thb_usd;
               $pay_to_USD = $sub_pay_khr_usd + $sub_pay_usd_usd + $sub_pay_thb_usd;
+              $dis_to_USD = $sub_dis_khr_usd + $sub_dis_usd_usd + $sub_dis_thb_usd;
               $fee_to_USD = $sub_fee_khr_usd + $sub_fee_usd_usd + $sub_fee_thb_usd;
               $pro_int_to_USD = $sub_pro_int_khr_usd + $sub_pro_int_usd_usd + $sub_pro_int_thb_usd;
               $total_due_to_USD = $amount_to_USD + $fee_to_USD + $pro_int_to_USD;
@@ -485,6 +509,7 @@
     <Cell ss:MergeAcross="13" ss:StyleID="m75317736"><Data ss:Type="String">Subtotal-KHR&#160;</Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $amount_khr;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pay_khr;?></Data></Cell>
+    <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $dis_khr;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $fee_khr;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pro_int_khr;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $total_due_khr;?></Data></Cell>
@@ -493,6 +518,7 @@
     <Cell ss:MergeAcross="13" ss:StyleID="m75317756"><Data ss:Type="String">Subtotal-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $amount_usd;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pay_usd;?></Data></Cell>
+    <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $dis_usd;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $fee_usd;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pro_int_usd;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $total_due_usd;?></Data></Cell>
@@ -501,6 +527,7 @@
     <Cell ss:MergeAcross="13" ss:StyleID="m75317776"><Data ss:Type="String">Subtotal-THB&#160;</Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $amount_thb;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pay_thb;?></Data></Cell>
+    <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $dis_thb;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $fee_thb;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pro_int_thb;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $total_due_thb;?></Data></Cell>
@@ -509,6 +536,7 @@
     <Cell ss:MergeAcross="13" ss:StyleID="m75317796"><Data ss:Type="String">Total-USD&#160;</Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $amount_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pay_to_USD;?></Data></Cell>
+    <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $dis_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $fee_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $pro_int_to_USD;?></Data></Cell>
     <Cell ss:StyleID="s90"><Data ss:Type="Number"><?php echo $total_due_to_USD;?></Data></Cell>
