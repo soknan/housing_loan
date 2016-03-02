@@ -372,6 +372,7 @@
     <Cell ss:StyleID="s75"><Data ss:Type="String">Dis Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Mat Date</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Loan Amount</Data></Cell>
+    <Cell ss:StyleID="s75"><Data ss:Type="String">Discount</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Pro Int</Data></Cell>
     <Cell ss:StyleID="s75"><Data ss:Type="String">Classify</Data></Cell>
        <Cell ss:StyleID="s75"><Data ss:Type="String">CO</Data></Cell>
@@ -407,8 +408,12 @@
            $bal_pri=0;
            $bal_int = 0;
            $con_cur = new Battambang\Cpanel\Libraries\Currency();
+           $discount =0;
            foreach($result as $key=>$row){
-
+           $discount = 0;
+               if($row->_disburse->discount>0){
+                $discount = $row->_disburse->pre_amount * $row->_disburse->discount/100;
+               }
                switch ($row->_disburse->cp_currency_id){
                    case 1:
                        $pri_khr+=$con_cur->toKHR(1,$row->_arrears['cur']['principal'],$exchange_rate_id);
@@ -463,6 +468,7 @@
     <Cell ss:StyleID="s81"><Data ss:Type="String"><?php echo $row->_disburse->disburse_date;?></Data></Cell>
     <Cell ss:StyleID="s81"><Data ss:Type="String"><?php echo $row->_maturity_date;?></Data></Cell>
     <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $row->_disburse->amount;?></Data></Cell>
+    <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $discount;?></Data></Cell>
     <Cell ss:StyleID="s98"><Data ss:Type="Number"><?php echo $row->_project_interest;?></Data></Cell>
     <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $classify;?></Data></Cell>
        <Cell ss:StyleID="s78"><Data ss:Type="String"><?php echo $staff->kh_last_name.' '.$staff->kh_first_name;?></Data></Cell>
