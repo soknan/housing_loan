@@ -867,7 +867,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
 
     private function _getRepaymentStatus($num_day){
         if($num_day == 0) $num_day = 1;
-        if($num_day  > 10000) $num_day = 10000;
+        if($num_day  > 736) $num_day = 736;
         $data = \DB::table('ln_payment_status')
             ->where('f_num_day', '<=', $num_day)
             ->where('t_num_day', '>=', $num_day)
