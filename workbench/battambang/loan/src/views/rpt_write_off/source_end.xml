@@ -253,7 +253,7 @@
   </Style>
  </Styles>
  <Worksheet ss:Name="Writ-Off End">
-  <Table ss:ExpandedColumnCount="14" ss:ExpandedRowCount="36" x:FullColumns="1"
+  <Table x:FullColumns="1"
    x:FullRows="1" ss:DefaultRowHeight="15">
    <Column ss:AutoFitWidth="0" ss:Width="21.75"/>
    <Column ss:AutoFitWidth="0" ss:Width="88.5"/>
