@@ -430,9 +430,20 @@ class DisburseClientController extends BaseController
 
     public function close($id){
         try {
+            $pp = Perform::where('ln_disburse_client_id', '=', $id)
+                ->orderBy('id', 'DESC')->limit(1)->first();
+            if($pp->repayment_type =='closing') {
+                $pp->delete();
+                // User action
+                \Event::fire('user_action.create', array('disburse_client'));
+                return Redirect::back()->with('success',
+                    trans('battambang/loan::disburse_client.update_success'));
+            }
             $per = new LoanPerformance();
             $data = $per->get($id,date_format(new \DateTime(), 'Y-m-d'));
-            if($data->_arrears['cur']['num_day'] >90) {
+            //echo $data->_arrears['cur']['num_day']; exit();
+
+            if($data->_arrears['cur']['num_day'] >30) {
                 $p = Perform::where('ln_disburse_client_id', '=', $id)
                     ->orderBy('id', 'DESC')->limit(1)->first();
                 if ($p->repayment_type <> 'closing') {
