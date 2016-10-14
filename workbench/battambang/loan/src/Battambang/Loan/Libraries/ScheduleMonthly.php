@@ -18,7 +18,6 @@ class ScheduleMonthly
 
         // General
         $disburseDate = Carbon::createFromFormat('Y-m-d', $data->disburse_date);
-
         $temDisburseDate = $disburseDate->copy();
         // Work Day (validate with activatedDate)
         $workMonth = $this->_getWorkDay($activatedDate)->work_month; //
@@ -52,9 +51,12 @@ class ScheduleMonthly
         $installPrinPercentage = $data->installment_principal_percentage / 100; // of (%)
         $installPrinAmount = \Currency::round($currency, ($loanAmount / $numPaymentPrin) * $installPrinPercentage);
         if($interestType==129){
-            $tmpRate = 1-pow((1+$interestRate),-$numPayment);
-            $installPrinAmount = ($loanAmount*$interestRate)/$tmpRate;
+            $tmpRate = 1-pow((1+$interestRate * $installmentFrequency),-($numPaymentPrin));
+            $installPrinAmount = \Currency::round($currency,($loanAmount*$interestRate * $installmentFrequency)/$tmpRate);
             //$installPrinAmount = $interestRate * -$loanAmount*pow((1+$interestRate),$numPayment)/(1-pow((1+$interestRate),$numPayment));
+            if($data->round_schedule =='Y'){
+                $installPrinAmount = floor($installPrinAmount);
+            }
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 13-Month(...-None, 33-1, 34-2,..., 57-25...28)
@@ -110,6 +112,14 @@ class ScheduleMonthly
         $schedule = array();
         $tmpP=0;
 
+        $tmpBefRound =0;
+        $tmpAftRound = 0;
+
+        $tmpBefRoundPri=0;
+        $tmpAftRoundPri=0;
+        $tmpBal = $temLoanAmount;
+        $tmpDesc =0;
+
 //        for ($i = 1; $i <= $numPayment; $i++) {
         for ($i = 0; $i <= $numPayment; $i++) {
             if ($i == 0) {
@@ -121,6 +131,26 @@ class ScheduleMonthly
                 $principalBalance[$i] = $loanAmount;
             } else {
                 $temDueDate = $temDisburseDate->copy()->addMonths($temInstallmentFrequency);
+                // if set first due date
+                if($this->_isDate($data->first_due_date)){
+                    if($i==1){
+                        $firstDueDate = Carbon::createFromFormat('Y-m-d', $data->first_due_date);
+                        $temDueDate = $firstDueDate;
+                    }
+                    if($i>1 && $data->ln_lv_meeting_schedule=='125'){
+                        $temDueDate = $firstDueDate->copy()->addMonths($temInstallmentFrequency - $installmentFrequency);
+                    }
+                    if($i>1 && $data->ln_lv_meeting_schedule!='125'){
+                        $meetingDay = LookupValue::find($data->ln_lv_meeting_schedule)->code;
+
+                        // Calculate diff meeting day with disburse day
+                        $diffMeetingDay = $meetingDay - $firstDueDate->day;
+                        if ($diffMeetingDay != 0) {
+                            $firstDueDate = $firstDueDate->addDays($diffMeetingDay);
+                        }
+                        $temDueDate = $firstDueDate->copy()->addMonths($temInstallmentFrequency - $installmentFrequency );
+                    }
+                }
                 $dueDate[$i] = $this->holidayCheck($temDueDate->toDateString(), $holidayRule);
 
                 // Calculate num of days
@@ -157,7 +187,10 @@ class ScheduleMonthly
                     // Calculate principal balance
                     $principalBalance[$i] = $temLoanAmount;
                 }else{
-                    $interestPayment[$i] = $temLoanAmount * $interestRate;
+                    //NORMAL
+                    $interestPayment[$i] = \Currency::round($currency, ($temLoanAmount * $interestRateInDay * $numOfDays[$i]));
+                    // MPNT
+                    //$interestPayment[$i] = \Currency::round($currency,$temLoanAmount * $interestRate * $installmentFrequency);
                     // Calculate install principal for payment
                     if ($i == $temInstallPrinFrequency) {
                         if ($i != $numPayment) {
@@ -168,10 +201,14 @@ class ScheduleMonthly
                             if ($temInstallPrinFrequency > $numPayment) {
                                 $temInstallPrinFrequency = $numPayment;
                             }
+                            // interest > total payment
+                            if($interestPayment[$i] > $installPrinAmount){
+                                $interestPayment[$i] = 0;
+                            }
                         } else {
                             //$principalPayment[$i] = $temLoanAmount;
                             $principalPayment[$i] = $loanAmount - $tmpP;
-                            $interestPayment[$i] =  $installPrinAmount-$principalPayment[$i];
+                            //$interestPayment[$i] =  $installPrinAmount - $principalPayment[$i];
                             $temLoanAmount = 0.00;
                         }
                     } else {
@@ -210,6 +247,7 @@ class ScheduleMonthly
                 'ln_disburse_client_id' => $data->ln_disburse_client_id,
                 'closing' => $closing,
             );
+
         }
 
         return $schedule;
@@ -343,5 +381,14 @@ class ScheduleMonthly
             ->first();
 
         return $getData;
+    }
+
+    private function _isDate($val)
+    {
+        if (in_array($val, array('', '0000-00-00'))) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }

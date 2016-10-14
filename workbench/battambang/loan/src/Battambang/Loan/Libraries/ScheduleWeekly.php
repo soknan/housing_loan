@@ -19,7 +19,6 @@ class ScheduleWeekly
         $disburseDate = Carbon::createFromFormat('Y-m-d', $disburseDate);
         $temDisburseDate = $disburseDate->copy();
 
-
         // Currency
         $currency = $data->cp_currency_id; // 1-KHR, 2-USD, 3-THB
         $loanAmount = $data->ln_disburse_client_amount; // USD
@@ -45,9 +44,11 @@ class ScheduleWeekly
         $installPrinAmount = \Currency::round($currency, ($loanAmount / $numPaymentPrin) * $installPrinPercentage);
 
         if($interestType==129){
-            //$tmpRate = 1-pow((1+$interestRate),-$numPayment);
-            //$installPrinAmount = number_format(($loanAmount*$interestRate)/$tmpRate,2);
-            $installPrinAmount = $interestRate * -$loanAmount*pow((1+$interestRate),$numPayment)/(1-pow((1+$interestRate),$numPayment));
+            $tmpRate = 1-pow((1+$interestRate * $installmentFrequency),-($numPaymentPrin));
+            $installPrinAmount = \Currency::round($currency,($loanAmount*$interestRate * $installmentFrequency)/$tmpRate);
+            if($data->round_schedule =='Y'){
+                $installPrinAmount = floor($installPrinAmount);
+            }
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 12-Week(...-None, 27-Mon, 28-Tue, 29-Wed, 30-Thu, 31-Fri, 32-Sat)
@@ -104,6 +105,14 @@ class ScheduleWeekly
         $schedule = array();
         $tmpP=0;
 
+        $tmpBefRound =0;
+        $tmpAftRound = 0;
+
+        $tmpBefRoundPri=0;
+        $tmpAftRoundPri=0;
+        $tmpBal = $temLoanAmount;
+        $tmpDesc = 0;
+
 //        for ($i = 1; $i <= $numPayment; $i++) {
         for ($i = 0; $i <= $numPayment; $i++) {
             if ($i == 0) {
@@ -115,6 +124,28 @@ class ScheduleWeekly
                 $principalBalance[$i] = $loanAmount;
             } else {
                 $temDueDate = $temDisburseDate->copy()->addWeeks($temInstallmentFrequency);
+                // if set first due date
+                if($this->_isDate($data->first_due_date)){
+                    $firstDueDate = Carbon::createFromFormat('Y-m-d', $data->first_due_date);
+                    if($i==1){
+                        $temDueDate = $firstDueDate;
+                    }
+                    if($i>1 && $data->ln_lv_meeting_schedule=='125'){
+                        $temDueDate = $firstDueDate->copy()->addWeeks($temInstallmentFrequency - $installmentFrequency);
+                    }
+                    if($i>1 && $data->ln_lv_meeting_schedule!='125'){
+                        $meetingDay = LookupValue::find($data->ln_lv_meeting_schedule)->code;
+
+                        // Calculate diff meeting day with disburse day
+                        $diffMeetingDay = $meetingDay - $firstDueDate->day;
+                        if ($diffMeetingDay != 0) {
+                            $firstDueDate = $firstDueDate->addDays($diffMeetingDay);
+                        }
+                        $temDueDate = $firstDueDate->copy()->addWeeks($temInstallmentFrequency - $installmentFrequency );
+                    }
+                }
+
+
                 $dueDate[$i] = $this->holidayCheck($temDueDate->toDateString(), $holidayRule);
 
                 // Calculate num of days
@@ -150,7 +181,10 @@ class ScheduleWeekly
                     // Calculate principal balance
                     $principalBalance[$i] = $temLoanAmount;
                 }else{
-                    $interestPayment[$i] = $temLoanAmount * $interestRate;
+                    //NORMAL
+                    $interestPayment[$i] = \Currency::round($currency, ($temLoanAmount * $interestRateInDay * $numOfDays[$i]));
+                    // MPNT
+                    //$interestPayment[$i] = \Currency::round($currency,$temLoanAmount * $interestRate * $installmentFrequency);
                     // Calculate install principal for payment
                     if ($i == $temInstallPrinFrequency) {
                         if ($i != $numPayment) {
@@ -161,10 +195,14 @@ class ScheduleWeekly
                             if ($temInstallPrinFrequency > $numPayment) {
                                 $temInstallPrinFrequency = $numPayment;
                             }
+                            // interest > total payment
+                            if($interestPayment[$i] > $installPrinAmount){
+                                $interestPayment[$i] = 0;
+                            }
                         } else {
                             //$principalPayment[$i] = $temLoanAmount;
                             $principalPayment[$i] = $loanAmount - $tmpP;
-                            $interestPayment[$i] =  $installPrinAmount-$principalPayment[$i];
+                            //$interestPayment[$i] =  $installPrinAmount-$principalPayment[$i];
                             $temLoanAmount = 0.00;
                         }
                     } else {
@@ -203,6 +241,7 @@ class ScheduleWeekly
                 'closing' => $closing,
             );
         }
+
         return $schedule;
     }
 
@@ -342,5 +381,14 @@ class ScheduleWeekly
             ->first();
 
         return $getData;
+    }
+
+    private function _isDate($val)
+    {
+        if (in_array($val, array('', '0000-00-00'))) {
+            return false;
+        } else {
+            return true;
+        }
     }
 }
