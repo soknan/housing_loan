@@ -49,7 +49,7 @@ class DisburseController extends BaseController
         $center = Center::where('id','=',Input::get('ln_center_id'))->get();
 
         $product = Product::where('id','=',Input::get('ln_product_id'))->get();
-
+        //var_dump($product[0]['ln_lv_account_type_arr']);exit;
         foreach ($product as $row) {
             $data['ln_product_id'] = " and ln_product.id = '".$row->id."'";
 
@@ -216,6 +216,7 @@ class DisburseController extends BaseController
                     $arr['default_interest'] = $row1->default_interest;
 
                     $arr['ln_lv_repay_frequency'] = $row1->ln_lv_repay_frequency;
+                    $arr['ln_lv_interest_type'] = $row1->ln_lv_interest_type;
                 }
 
                 foreach ($center as $row2) {
@@ -307,6 +308,12 @@ class DisburseController extends BaseController
         $data->installment_principal_percentage = Input::get('installment_principal_percentage');
         $data->interest_rate = Input::get('interest_rate');
         $data->ln_fund_id = Input::get('ln_fund_id');
+        $data->round_schedule = Input::get('ln_lv_round_type');
+        if(Input::get('first_due_date')!=null){
+            $data->first_due_date = \Carbon::createFromFormat('d-m-Y',Input::get('first_due_date'))->toDateString();
+        }else{
+            $data->first_due_date = null;
+        }
 
         $attach_file = Input::file('attach_file');
         if (!empty($attach_file)) {
