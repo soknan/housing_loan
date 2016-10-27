@@ -55,7 +55,8 @@ class ScheduleMonthly
             $installPrinAmount = \Currency::round($currency,($loanAmount*$interestRate * $installmentFrequency)/$tmpRate);
             //$installPrinAmount = $interestRate * -$loanAmount*pow((1+$interestRate),$numPayment)/(1-pow((1+$interestRate),$numPayment));
             if($data->round_schedule =='Y'){
-                $installPrinAmount = floor($installPrinAmount);
+                //$installPrinAmount = floor($installPrinAmount);
+                $installPrinAmount = round($installPrinAmount);
             }
         }
 

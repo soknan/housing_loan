@@ -48,7 +48,8 @@ class ScheduleDaily
             $tmpRate = 1-pow((1+$interestRate * $installmentFrequency),-($numPaymentPrin));
             $installPrinAmount = \Currency::round($currency,($loanAmount*$interestRate * $installmentFrequency)/$tmpRate);
             if($data->round_schedule =='Y'){
-                $installPrinAmount = floor($installPrinAmount);
+                //$installPrinAmount = floor($installPrinAmount);
+                $installPrinAmount = round($installPrinAmount);
             }
         }
 
