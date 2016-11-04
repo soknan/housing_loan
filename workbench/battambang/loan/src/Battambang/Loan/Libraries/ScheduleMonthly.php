@@ -58,6 +58,11 @@ class ScheduleMonthly
                 //$installPrinAmount = floor($installPrinAmount);
                 $installPrinAmount = round($installPrinAmount);
             }
+        }else{
+            if($data->round_schedule =='Y'){
+                //$installPrinAmount = floor($installPrinAmount);
+                $installPrinAmount = round($installPrinAmount);
+            }
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 13-Month(...-None, 33-1, 34-2,..., 57-25...28)
@@ -167,6 +172,8 @@ class ScheduleMonthly
 
                 //Check if Interest rat not Mortagag
                 if($interestType!=129) {
+                    //round int
+                    $interestPayment[$i] = round($interestPayment[$i]);
                     // Calculate install principal for payment
                     if ($i == $temInstallPrinFrequency) {
                         if ($i != $numPayment) {

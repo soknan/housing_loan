@@ -50,6 +50,11 @@ class ScheduleWeekly
                 //$installPrinAmount = floor($installPrinAmount);
                 $installPrinAmount = round($installPrinAmount);
             }
+        }else{
+            if($data->round_schedule =='Y'){
+                //$installPrinAmount = floor($installPrinAmount);
+                $installPrinAmount = round($installPrinAmount);
+            }
         }
 
         $meetingDay = $data->ln_lv_meeting_schedule; // 12-Week(...-None, 27-Mon, 28-Tue, 29-Wed, 30-Thu, 31-Fri, 32-Sat)
@@ -161,6 +166,8 @@ class ScheduleWeekly
                 }
                 //Check if Interest rat not Mortagag
                 if($interestType!=129) {
+                    //round int
+                    $interestPayment[$i] = round($interestPayment[$i]);
                     // Calculate install principal for payment
                     if ($i == $temInstallPrinFrequency) {
                         if ($i != $numPayment) {
