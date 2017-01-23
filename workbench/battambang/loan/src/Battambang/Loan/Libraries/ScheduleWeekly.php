@@ -143,7 +143,7 @@ class ScheduleWeekly
                         $meetingDay = LookupValue::find($data->ln_lv_meeting_schedule)->code;
 
                         // Calculate diff meeting day with disburse day
-                        $diffMeetingDay = $meetingDay - $firstDueDate->day;
+                        $diffMeetingDay = $meetingDay - $firstDueDate->dayOfWeek;
                         if ($diffMeetingDay != 0) {
                             $firstDueDate = $firstDueDate->addDays($diffMeetingDay);
                         }
