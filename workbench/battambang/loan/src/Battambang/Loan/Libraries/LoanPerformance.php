@@ -946,7 +946,7 @@ WHERE ln_disburse_client.id = "'.$this->_disburse_client_id.'" ');
                 $arrearsIndex =1;
                 $arrearsDate ='';
 
-                if($this->_new_due['product_status'] == 5 and $this->_repayment['cur']['voucher_id'] == ''){
+                if($this->_new_due['product_status'] == 5 and $this->_repayment['cur']['voucher_id'] == '' and $this->_perform_type != 'repayment'){
                     $this->_perform_type = 'writeoff';
                     $wof_pri=0;
                     $wof_int=0;
